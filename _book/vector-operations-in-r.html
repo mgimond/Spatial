@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>D Vector operations in R | Intro to GIS and Spatial Analysis</title>
+  <meta name="description" content="This is a compilation of lecture notes that accompany my Intro to GIS and Spatial Analysis course." />
+  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="D Vector operations in R | Intro to GIS and Spatial Analysis" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="This is a compilation of lecture notes that accompany my Intro to GIS and Spatial Analysis course." />
+  <meta name="github-repo" content="mgimond/spatial" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="D Vector operations in R | Intro to GIS and Spatial Analysis" />
+  
+  <meta name="twitter:description" content="This is a compilation of lecture notes that accompany my Intro to GIS and Spatial Analysis course." />
+  
+
+<meta name="author" content="Manuel Gimond" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="anatomy-of-simple-feature-objects.html"/>
+<link rel="next" href="mapping-rates-in-r.html"/>
+<script src="libs/header-attrs-2.10/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<script src="libs/htmlwidgets-1.5.3/htmlwidgets.js"></script>
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/proj4-2.6.2/proj4.min.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.0.4.1/leaflet.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; } /* Alert */
+code span.an { color: #008000; } /* Annotation */
+code span.at { } /* Attribute */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #0000ff; } /* ControlFlow */
+code span.ch { color: #008080; } /* Char */
+code span.cn { } /* Constant */
+code span.co { color: #008000; } /* Comment */
+code span.cv { color: #008000; } /* CommentVar */
+code span.do { color: #008000; } /* Documentation */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.im { } /* Import */
+code span.in { color: #008000; } /* Information */
+code span.kw { color: #0000ff; } /* Keyword */
+code span.op { } /* Operator */
+code span.ot { color: #ff4000; } /* Other */
+code span.pp { color: #ff4000; } /* Preprocessor */
+code span.sc { color: #008080; } /* SpecialChar */
+code span.ss { color: #008080; } /* SpecialString */
+code span.st { color: #008080; } /* String */
+code span.va { } /* Variable */
+code span.vs { color: #008080; } /* VerbatimString */
+code span.wa { color: #008000; font-weight: bold; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
+<li class="chapter" data-level="1" data-path="introGIS.html"><a href="introGIS.html"><i class="fa fa-check"></i><b>1</b> Introduction to GIS</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="introGIS.html"><a href="introGIS.html#what-is-a-gis"><i class="fa fa-check"></i><b>1.1</b> What is a GIS?</a>
+<ul>
+<li class="chapter" data-level="1.1.1" data-path="introGIS.html"><a href="introGIS.html#gis-software"><i class="fa fa-check"></i><b>1.1.1</b> GIS software</a></li>
+<li class="chapter" data-level="1.1.2" data-path="introGIS.html"><a href="introGIS.html#qgis"><i class="fa fa-check"></i><b>1.1.2</b> QGIS</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="introGIS.html"><a href="introGIS.html#what-is-spatial-analysis"><i class="fa fa-check"></i><b>1.2</b> What is Spatial Analysis?</a></li>
+<li class="chapter" data-level="1.3" data-path="introGIS.html"><a href="introGIS.html#whats-in-an-acronym"><i class="fa fa-check"></i><b>1.3</b> What’s in an Acronym?</a></li>
+</ul></li>
+<li class="part"><span><b>PART 1: Working with spatial data</b></span></li>
+<li class="chapter" data-level="2" data-path="chp02_0.html"><a href="chp02_0.html"><i class="fa fa-check"></i><b>2</b> Feature Representation</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="chp02_0.html"><a href="chp02_0.html#vector-vs.-raster"><i class="fa fa-check"></i><b>2.1</b> Vector vs. Raster</a>
+<ul>
+<li class="chapter" data-level="2.1.1" data-path="chp02_0.html"><a href="chp02_0.html#vector"><i class="fa fa-check"></i><b>2.1.1</b> Vector</a></li>
+<li class="chapter" data-level="2.1.2" data-path="chp02_0.html"><a href="chp02_0.html#raster"><i class="fa fa-check"></i><b>2.1.2</b> Raster</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="chp02_0.html"><a href="chp02_0.html#object-vs.-field"><i class="fa fa-check"></i><b>2.2</b> Object vs. Field</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="chp02_0.html"><a href="chp02_0.html#object-view"><i class="fa fa-check"></i><b>2.2.1</b> Object View</a></li>
+<li class="chapter" data-level="2.2.2" data-path="chp02_0.html"><a href="chp02_0.html#field-view"><i class="fa fa-check"></i><b>2.2.2</b> Field View</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="chp02_0.html"><a href="chp02_0.html#scale"><i class="fa fa-check"></i><b>2.3</b> Scale</a></li>
+<li class="chapter" data-level="2.4" data-path="chp02_0.html"><a href="chp02_0.html#attribute-tables"><i class="fa fa-check"></i><b>2.4</b> Attribute Tables</a>
+<ul>
+<li class="chapter" data-level="2.4.1" data-path="chp02_0.html"><a href="chp02_0.html#measurement-levels"><i class="fa fa-check"></i><b>2.4.1</b> Measurement Levels</a></li>
+<li class="chapter" data-level="2.4.2" data-path="chp02_0.html"><a href="chp02_0.html#data-type"><i class="fa fa-check"></i><b>2.4.2</b> Data type</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="gis-data-management.html"><a href="gis-data-management.html"><i class="fa fa-check"></i><b>3</b> GIS Data Management</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="gis-data-management.html"><a href="gis-data-management.html#gis-file-data-formats"><i class="fa fa-check"></i><b>3.1</b> GIS File Data Formats</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="gis-data-management.html"><a href="gis-data-management.html#vector-data-file-formats"><i class="fa fa-check"></i><b>3.1.1</b> Vector Data File Formats</a></li>
+<li class="chapter" data-level="3.1.2" data-path="gis-data-management.html"><a href="gis-data-management.html#raster-data-file-formats"><i class="fa fa-check"></i><b>3.1.2</b> Raster Data File Formats</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="gis-data-management.html"><a href="gis-data-management.html#managing-gis-files"><i class="fa fa-check"></i><b>3.2</b> Managing GIS Files</a></li>
+<li class="chapter" data-level="3.3" data-path="gis-data-management.html"><a href="gis-data-management.html#managing-a-map-project-in-arcgis"><i class="fa fa-check"></i><b>3.3</b> Managing a Map Project in ArcGIS</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="symbolizing-features.html"><a href="symbolizing-features.html"><i class="fa fa-check"></i><b>4</b> Symbolizing features</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="symbolizing-features.html"><a href="symbolizing-features.html#color"><i class="fa fa-check"></i><b>4.1</b> Color</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="symbolizing-features.html"><a href="symbolizing-features.html#hue"><i class="fa fa-check"></i><b>4.1.1</b> Hue</a></li>
+<li class="chapter" data-level="4.1.2" data-path="symbolizing-features.html"><a href="symbolizing-features.html#lightness"><i class="fa fa-check"></i><b>4.1.2</b> Lightness</a></li>
+<li class="chapter" data-level="4.1.3" data-path="symbolizing-features.html"><a href="symbolizing-features.html#saturation"><i class="fa fa-check"></i><b>4.1.3</b> Saturation</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="symbolizing-features.html"><a href="symbolizing-features.html#color-space"><i class="fa fa-check"></i><b>4.2</b> Color Space</a></li>
+<li class="chapter" data-level="4.3" data-path="symbolizing-features.html"><a href="symbolizing-features.html#classification"><i class="fa fa-check"></i><b>4.3</b> Classification</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="symbolizing-features.html"><a href="symbolizing-features.html#qualitative-color-scheme"><i class="fa fa-check"></i><b>4.3.1</b> Qualitative color scheme</a></li>
+<li class="chapter" data-level="4.3.2" data-path="symbolizing-features.html"><a href="symbolizing-features.html#sequential-color-scheme"><i class="fa fa-check"></i><b>4.3.2</b> Sequential color scheme</a></li>
+<li class="chapter" data-level="4.3.3" data-path="symbolizing-features.html"><a href="symbolizing-features.html#divergent-color-scheme"><i class="fa fa-check"></i><b>4.3.3</b> Divergent color scheme</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="symbolizing-features.html"><a href="symbolizing-features.html#so-how-do-i-find-a-proper-color-scheme-for-my-data"><i class="fa fa-check"></i><b>4.4</b> So how do I find a proper color scheme for my data?</a></li>
+<li class="chapter" data-level="4.5" data-path="symbolizing-features.html"><a href="symbolizing-features.html#classification-intervals"><i class="fa fa-check"></i><b>4.5</b> Classification Intervals</a>
+<ul>
+<li class="chapter" data-level="4.5.1" data-path="symbolizing-features.html"><a href="symbolizing-features.html#an-interactive-example"><i class="fa fa-check"></i><b>4.5.1</b> An Interactive Example</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="pitfalls-to-avoid.html"><a href="pitfalls-to-avoid.html"><i class="fa fa-check"></i><b>5</b> Pitfalls to avoid</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="pitfalls-to-avoid.html"><a href="pitfalls-to-avoid.html#representing-count"><i class="fa fa-check"></i><b>5.1</b> Representing Count</a></li>
+<li class="chapter" data-level="5.2" data-path="pitfalls-to-avoid.html"><a href="pitfalls-to-avoid.html#maup"><i class="fa fa-check"></i><b>5.2</b> MAUP</a></li>
+<li class="chapter" data-level="5.3" data-path="pitfalls-to-avoid.html"><a href="pitfalls-to-avoid.html#ecological-fallacy"><i class="fa fa-check"></i><b>5.3</b> Ecological Fallacy</a></li>
+<li class="chapter" data-level="5.4" data-path="pitfalls-to-avoid.html"><a href="pitfalls-to-avoid.html#mapping-rates"><i class="fa fa-check"></i><b>5.4</b> Mapping rates</a></li>
+<li class="chapter" data-level="5.5" data-path="pitfalls-to-avoid.html"><a href="pitfalls-to-avoid.html#coping-with-unstable-rates"><i class="fa fa-check"></i><b>5.5</b> Coping with Unstable Rates</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="good-map-making-tips.html"><a href="good-map-making-tips.html"><i class="fa fa-check"></i><b>6</b> Good Map Making Tips</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="good-map-making-tips.html"><a href="good-map-making-tips.html#elements-of-a-map"><i class="fa fa-check"></i><b>6.1</b> Elements of a map</a></li>
+<li class="chapter" data-level="6.2" data-path="good-map-making-tips.html"><a href="good-map-making-tips.html#how-to-create-a-good-map"><i class="fa fa-check"></i><b>6.2</b> How to create a <em>good</em> map</a></li>
+<li class="chapter" data-level="6.3" data-path="good-map-making-tips.html"><a href="good-map-making-tips.html#typefaces-and-fonts"><i class="fa fa-check"></i><b>6.3</b> Typefaces and Fonts</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="uncertainty-in-census-data.html"><a href="uncertainty-in-census-data.html"><i class="fa fa-check"></i><b>7</b> Uncertainty in Census Data</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="uncertainty-in-census-data.html"><a href="uncertainty-in-census-data.html#introduction"><i class="fa fa-check"></i><b>7.1</b> Introduction</a></li>
+<li class="chapter" data-level="7.2" data-path="uncertainty-in-census-data.html"><a href="uncertainty-in-census-data.html#mapping-uncertainty"><i class="fa fa-check"></i><b>7.2</b> Mapping uncertainty</a></li>
+<li class="chapter" data-level="7.3" data-path="uncertainty-in-census-data.html"><a href="uncertainty-in-census-data.html#problems-in-mapping-uncertainty"><i class="fa fa-check"></i><b>7.3</b> Problems in mapping uncertainty</a></li>
+<li class="chapter" data-level="7.4" data-path="uncertainty-in-census-data.html"><a href="uncertainty-in-census-data.html#class-comparison-maps"><i class="fa fa-check"></i><b>7.4</b> Class comparison maps</a></li>
+<li class="chapter" data-level="7.5" data-path="uncertainty-in-census-data.html"><a href="uncertainty-in-census-data.html#problem-when-performing-bivariate-analysis"><i class="fa fa-check"></i><b>7.5</b> Problem when performing bivariate analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="spatial-operations-and-vector-overlays.html"><a href="spatial-operations-and-vector-overlays.html"><i class="fa fa-check"></i><b>8</b> Spatial Operations and Vector Overlays</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="spatial-operations-and-vector-overlays.html"><a href="spatial-operations-and-vector-overlays.html#selection-by-attribute"><i class="fa fa-check"></i><b>8.1</b> Selection by Attribute</a>
+<ul>
+<li class="chapter" data-level="8.1.1" data-path="spatial-operations-and-vector-overlays.html"><a href="spatial-operations-and-vector-overlays.html#set-algebra"><i class="fa fa-check"></i><b>8.1.1</b> Set Algebra</a></li>
+<li class="chapter" data-level="8.1.2" data-path="spatial-operations-and-vector-overlays.html"><a href="spatial-operations-and-vector-overlays.html#boolean-algebra"><i class="fa fa-check"></i><b>8.1.2</b> Boolean Algebra</a></li>
+</ul></li>
+<li class="chapter" data-level="8.2" data-path="spatial-operations-and-vector-overlays.html"><a href="spatial-operations-and-vector-overlays.html#selection-by-location"><i class="fa fa-check"></i><b>8.2</b> Selection by location</a></li>
+<li class="chapter" data-level="8.3" data-path="spatial-operations-and-vector-overlays.html"><a href="spatial-operations-and-vector-overlays.html#vector-overlay"><i class="fa fa-check"></i><b>8.3</b> Vector Overlay</a>
+<ul>
+<li class="chapter" data-level="8.3.1" data-path="spatial-operations-and-vector-overlays.html"><a href="spatial-operations-and-vector-overlays.html#clip"><i class="fa fa-check"></i><b>8.3.1</b> Clip</a></li>
+<li class="chapter" data-level="8.3.2" data-path="spatial-operations-and-vector-overlays.html"><a href="spatial-operations-and-vector-overlays.html#intersect"><i class="fa fa-check"></i><b>8.3.2</b> Intersect</a></li>
+<li class="chapter" data-level="8.3.3" data-path="spatial-operations-and-vector-overlays.html"><a href="spatial-operations-and-vector-overlays.html#union"><i class="fa fa-check"></i><b>8.3.3</b> Union</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="chp09_0.html"><a href="chp09_0.html"><i class="fa fa-check"></i><b>9</b> Coordinate Systems</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="chp09_0.html"><a href="chp09_0.html#geographic-coordinate-systems"><i class="fa fa-check"></i><b>9.1</b> Geographic Coordinate Systems</a>
+<ul>
+<li class="chapter" data-level="9.1.1" data-path="chp09_0.html"><a href="chp09_0.html#sphere-and-ellipsoid"><i class="fa fa-check"></i><b>9.1.1</b> Sphere and Ellipsoid</a></li>
+<li class="chapter" data-level="9.1.2" data-path="chp09_0.html"><a href="chp09_0.html#geoid"><i class="fa fa-check"></i><b>9.1.2</b> Geoid</a></li>
+<li class="chapter" data-level="9.1.3" data-path="chp09_0.html"><a href="chp09_0.html#datum"><i class="fa fa-check"></i><b>9.1.3</b> Datum</a></li>
+<li class="chapter" data-level="9.1.4" data-path="chp09_0.html"><a href="chp09_0.html#building-the-geographic-coordinate-system"><i class="fa fa-check"></i><b>9.1.4</b> Building the Geographic Coordinate System</a></li>
+</ul></li>
+<li class="chapter" data-level="9.2" data-path="chp09_0.html"><a href="chp09_0.html#projected-coordinate-systems"><i class="fa fa-check"></i><b>9.2</b> Projected Coordinate Systems</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="chp09_0.html"><a href="chp09_0.html#planar-projections"><i class="fa fa-check"></i><b>9.2.1</b> Planar Projections</a></li>
+<li class="chapter" data-level="9.2.2" data-path="chp09_0.html"><a href="chp09_0.html#cylindrical-projection"><i class="fa fa-check"></i><b>9.2.2</b> Cylindrical Projection</a></li>
+<li class="chapter" data-level="9.2.3" data-path="chp09_0.html"><a href="chp09_0.html#conical-projection"><i class="fa fa-check"></i><b>9.2.3</b> Conical Projection</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="chp09_0.html"><a href="chp09_0.html#spatial-properties"><i class="fa fa-check"></i><b>9.3</b> Spatial Properties</a></li>
+<li class="chapter" data-level="9.4" data-path="chp09_0.html"><a href="chp09_0.html#geodesic-geometries"><i class="fa fa-check"></i><b>9.4</b> Geodesic geometries</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="chp10_0.html"><a href="chp10_0.html"><i class="fa fa-check"></i><b>10</b> Map Algebra</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="chp10_0.html"><a href="chp10_0.html#local-operations-and-functions"><i class="fa fa-check"></i><b>10.1</b> Local operations and functions</a></li>
+<li class="chapter" data-level="10.2" data-path="chp10_0.html"><a href="chp10_0.html#focal-operations-and-functions"><i class="fa fa-check"></i><b>10.2</b> Focal operations and functions</a></li>
+<li class="chapter" data-level="10.3" data-path="chp10_0.html"><a href="chp10_0.html#zonal-operations-and-functions"><i class="fa fa-check"></i><b>10.3</b> Zonal operations and functions</a></li>
+<li class="chapter" data-level="10.4" data-path="chp10_0.html"><a href="chp10_0.html#global-operations-and-functions"><i class="fa fa-check"></i><b>10.4</b> Global operations and functions</a></li>
+<li class="chapter" data-level="10.5" data-path="chp10_0.html"><a href="chp10_0.html#operators-and-functions"><i class="fa fa-check"></i><b>10.5</b> Operators and functions</a>
+<ul>
+<li class="chapter" data-level="10.5.1" data-path="chp10_0.html"><a href="chp10_0.html#mathematical-operators-and-functions"><i class="fa fa-check"></i><b>10.5.1</b> Mathematical operators and functions</a></li>
+<li class="chapter" data-level="10.5.2" data-path="chp10_0.html"><a href="chp10_0.html#logical-comparison"><i class="fa fa-check"></i><b>10.5.2</b> Logical comparison</a></li>
+<li class="chapter" data-level="10.5.3" data-path="chp10_0.html"><a href="chp10_0.html#boolean-or-logical-operators"><i class="fa fa-check"></i><b>10.5.3</b> Boolean (or Logical) operators</a></li>
+<li class="chapter" data-level="10.5.4" data-path="chp10_0.html"><a href="chp10_0.html#combining-operations"><i class="fa fa-check"></i><b>10.5.4</b> Combining operations</a></li>
+</ul></li>
+</ul></li>
+<li class="part"><span><b>PART 2: Spatial Analysis</b></span></li>
+<li class="chapter" data-level="11" data-path="chp11_0.html"><a href="chp11_0.html"><i class="fa fa-check"></i><b>11</b> Point Pattern Analysis</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="chp11_0.html"><a href="chp11_0.html#centrography"><i class="fa fa-check"></i><b>11.1</b> Centrography</a></li>
+<li class="chapter" data-level="11.2" data-path="chp11_0.html"><a href="chp11_0.html#density-based-analysis"><i class="fa fa-check"></i><b>11.2</b> Density based analysis</a>
+<ul>
+<li class="chapter" data-level="11.2.1" data-path="chp11_0.html"><a href="chp11_0.html#global-density"><i class="fa fa-check"></i><b>11.2.1</b> Global density</a></li>
+<li class="chapter" data-level="11.2.2" data-path="chp11_0.html"><a href="chp11_0.html#local-density"><i class="fa fa-check"></i><b>11.2.2</b> Local density</a></li>
+<li class="chapter" data-level="11.2.3" data-path="chp11_0.html"><a href="chp11_0.html#modeling-intensity-as-a-function-of-a-covariate"><i class="fa fa-check"></i><b>11.2.3</b> Modeling intensity as a function of a covariate</a></li>
+</ul></li>
+<li class="chapter" data-level="11.3" data-path="chp11_0.html"><a href="chp11_0.html#distance-based-analysis"><i class="fa fa-check"></i><b>11.3</b> Distance based analysis</a>
+<ul>
+<li class="chapter" data-level="11.3.1" data-path="chp11_0.html"><a href="chp11_0.html#average-nearest-neighbor"><i class="fa fa-check"></i><b>11.3.1</b> Average Nearest Neighbor</a></li>
+<li class="chapter" data-level="11.3.2" data-path="chp11_0.html"><a href="chp11_0.html#k-and-l-functions"><i class="fa fa-check"></i><b>11.3.2</b> K and L functions</a></li>
+<li class="chapter" data-level="11.3.3" data-path="chp11_0.html"><a href="chp11_0.html#the-pair-correlation-function-g"><i class="fa fa-check"></i><b>11.3.3</b> The Pair Correlation Function <span class="math inline">\(g\)</span></a></li>
+</ul></li>
+<li class="chapter" data-level="11.4" data-path="chp11_0.html"><a href="chp11_0.html#first-and-second-order-effects"><i class="fa fa-check"></i><b>11.4</b> First and second order effects</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="hypothesis-testing.html"><a href="hypothesis-testing.html"><i class="fa fa-check"></i><b>12</b> Hypothesis testing</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="hypothesis-testing.html"><a href="hypothesis-testing.html#irpcsr"><i class="fa fa-check"></i><b>12.1</b> IRP/CSR</a></li>
+<li class="chapter" data-level="12.2" data-path="hypothesis-testing.html"><a href="hypothesis-testing.html#testing-for-csr-with-the-ann-tool"><i class="fa fa-check"></i><b>12.2</b> Testing for CSR with the ANN tool</a>
+<ul>
+<li class="chapter" data-level="12.2.1" data-path="hypothesis-testing.html"><a href="hypothesis-testing.html#arcgis-average-nearest-neighbor-tool"><i class="fa fa-check"></i><b>12.2.1</b> ArcGIS’ Average Nearest Neighbor Tool</a></li>
+<li class="chapter" data-level="12.2.2" data-path="hypothesis-testing.html"><a href="hypothesis-testing.html#a-better-approach-a-monte-carlo-test"><i class="fa fa-check"></i><b>12.2.2</b> A better approach: a Monte Carlo test</a></li>
+</ul></li>
+<li class="chapter" data-level="12.3" data-path="hypothesis-testing.html"><a href="hypothesis-testing.html#alternatives-to-csrirp"><i class="fa fa-check"></i><b>12.3</b> Alternatives to CSR/IRP</a></li>
+<li class="chapter" data-level="12.4" data-path="hypothesis-testing.html"><a href="hypothesis-testing.html#monte-carlo-test-with-k-and-l-functions"><i class="fa fa-check"></i><b>12.4</b> Monte Carlo test with K and L functions</a></li>
+<li class="chapter" data-level="12.5" data-path="hypothesis-testing.html"><a href="hypothesis-testing.html#PPM"><i class="fa fa-check"></i><b>12.5</b> Testing for a covariate effect</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html"><i class="fa fa-check"></i><b>13</b> Spatial Autocorrelation</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#global-morans-i"><i class="fa fa-check"></i><b>13.1</b> Global Moran’s I</a>
+<ul>
+<li class="chapter" data-level="13.1.1" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#computing-the-morans-i"><i class="fa fa-check"></i><b>13.1.1</b> Computing the Moran’s I</a></li>
+<li class="chapter" data-level="13.1.2" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#monte-carlo-approach-to-estimating-significance"><i class="fa fa-check"></i><b>13.1.2</b> Monte Carlo approach to estimating significance</a></li>
+</ul></li>
+<li class="chapter" data-level="13.2" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#morans-i-at-different-lags"><i class="fa fa-check"></i><b>13.2</b> Moran’s I at different lags</a></li>
+<li class="chapter" data-level="13.3" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#local-morans-i"><i class="fa fa-check"></i><b>13.3</b> Local Moran’s I</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="spatial-interpolation.html"><a href="spatial-interpolation.html"><i class="fa fa-check"></i><b>14</b> Spatial Interpolation</a>
+<ul>
+<li class="chapter" data-level="14.1" data-path="spatial-interpolation.html"><a href="spatial-interpolation.html#deterministic-approach-to-interpolation"><i class="fa fa-check"></i><b>14.1</b> Deterministic Approach to Interpolation</a>
+<ul>
+<li class="chapter" data-level="14.1.1" data-path="spatial-interpolation.html"><a href="spatial-interpolation.html#proximity-interpolation"><i class="fa fa-check"></i><b>14.1.1</b> Proximity interpolation</a></li>
+<li class="chapter" data-level="14.1.2" data-path="spatial-interpolation.html"><a href="spatial-interpolation.html#inverse-distance-weighted-idw"><i class="fa fa-check"></i><b>14.1.2</b> Inverse Distance Weighted (IDW)</a></li>
+<li class="chapter" data-level="14.1.3" data-path="spatial-interpolation.html"><a href="spatial-interpolation.html#fine-tuning-the-interpolation-parameters"><i class="fa fa-check"></i><b>14.1.3</b> Fine tuning the interpolation parameters</a></li>
+</ul></li>
+<li class="chapter" data-level="14.2" data-path="spatial-interpolation.html"><a href="spatial-interpolation.html#statistical-approach-to-interpolation"><i class="fa fa-check"></i><b>14.2</b> Statistical Approach to Interpolation</a>
+<ul>
+<li class="chapter" data-level="14.2.1" data-path="spatial-interpolation.html"><a href="spatial-interpolation.html#trend-surfaces"><i class="fa fa-check"></i><b>14.2.1</b> Trend Surfaces</a></li>
+<li class="chapter" data-level="14.2.2" data-path="spatial-interpolation.html"><a href="spatial-interpolation.html#ordinary-kriging"><i class="fa fa-check"></i><b>14.2.2</b> Ordinary Kriging</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>15</b> References</a></li>
+<li class="appendix"><span><b>Appendix</b></span></li>
+<li class="chapter" data-level="A" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html"><i class="fa fa-check"></i><b>A</b> Reading and writing spatial data in R</a>
+<ul>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_2"><i class="fa fa-check"></i>Sample files for this exercise</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_3"><i class="fa fa-check"></i>Introduction</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_4"><i class="fa fa-check"></i>Creating spatial objects</a>
+<ul>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_4_1"><i class="fa fa-check"></i>Reading a shapefile</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_4_2"><i class="fa fa-check"></i>Reading a GeoPackage</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_4_3"><i class="fa fa-check"></i>Reading a raster</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_4_5"><i class="fa fa-check"></i>Creating a spatial object from a data frame</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_4_6"><i class="fa fa-check"></i>Geocoding street addresses</a></li>
+</ul></li>
+<li><a href="reading-and-writing-spatial-data-in-r.html#app1_5">Converting from an <code>sf</code> object</a>
+<ul>
+<li><a href="reading-and-writing-spatial-data-in-r.html#app1_5_1">Converting an <code>sf</code> object to a <code>Spatial*</code> object (<code>spdep</code>/<code>sp</code>)</a></li>
+<li><a href="reading-and-writing-spatial-data-in-r.html#app1_5_2">Converting an <code>sf</code> polygon object to an <code>owin</code> object</a></li>
+<li><a href="reading-and-writing-spatial-data-in-r.html#app1_5_3">Converting an <code>sf</code> point object to a <code>ppp</code> object</a></li>
+<li><a href="reading-and-writing-spatial-data-in-r.html#app1_5_4">Converting a <code>raster</code> object to an <code>im</code> object (<code>spatstat</code>)</a></li>
+</ul></li>
+<li><a href="reading-and-writing-spatial-data-in-r.html#app1_6">Converting to an <code>sf</code> object</a></li>
+<li><a href="reading-and-writing-spatial-data-in-r.html#app1_7">Dissecting the <code>sf</code> file object</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_8"><i class="fa fa-check"></i>Exporting to different data file formats</a></li>
+</ul></li>
+<li class="chapter" data-level="B" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html"><i class="fa fa-check"></i><b>B</b> Mapping data in R</a>
+<ul>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#sample-files-for-this-exercise"><i class="fa fa-check"></i>Sample files for this exercise</a></li>
+<li><a href="mapping-data-in-r.html#tmap"><code>tmap</code></a>
+<ul>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#the-basics"><i class="fa fa-check"></i>The basics</a></li>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#combining-layers"><i class="fa fa-check"></i>Combining layers</a></li>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#tweaking-classification-schemes"><i class="fa fa-check"></i>Tweaking classification schemes</a></li>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#tweaking-colors"><i class="fa fa-check"></i>Tweaking colors</a></li>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#adding-labels"><i class="fa fa-check"></i>Adding labels</a></li>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#adding-a-grid-or-graticule"><i class="fa fa-check"></i>Adding a grid or graticule</a></li>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#adding-statistical-plots"><i class="fa fa-check"></i>Adding statistical plots</a></li>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#mapping-raster-files"><i class="fa fa-check"></i>Mapping raster files</a></li>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#changing-coordinate-systems"><i class="fa fa-check"></i>Changing coordinate systems</a></li>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#side-by-side-maps"><i class="fa fa-check"></i>Side-by-side maps</a></li>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#splitting-data-by-polygons-or-group-of-polygons"><i class="fa fa-check"></i>Splitting data by polygons or group of polygons</a></li>
+</ul></li>
+<li><a href="mapping-data-in-r.html#ggplot2"><code>ggplot2</code></a>
+<ul>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#the-basics-1"><i class="fa fa-check"></i>The basics</a></li>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#tweaking-classification-schemes-1"><i class="fa fa-check"></i>Tweaking classification schemes</a></li>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#combining-layers-1"><i class="fa fa-check"></i>Combining layers</a></li>
+</ul></li>
+<li><a href="mapping-data-in-r.html#plot_sf"><code>plot_sf</code></a>
+<ul>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#the-basics-2"><i class="fa fa-check"></i>The basics</a></li>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#adding-a-graticule"><i class="fa fa-check"></i>Adding a graticule</a></li>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#combining-layers-2"><i class="fa fa-check"></i>Combining layers</a></li>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#tweaking-colors-1"><i class="fa fa-check"></i>Tweaking colors</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="C" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html"><i class="fa fa-check"></i><b>C</b> Anatomy of simple feature objects</a>
+<ul>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#creating-point-sf-objects"><i class="fa fa-check"></i>Creating point ‘sf’ objects</a>
+<ul>
+<li><a href="anatomy-of-simple-feature-objects.html#step-1-create-the-point-geometry-sfg">Step 1: Create the point geometry: <code>sfg</code></a></li>
+<li><a href="anatomy-of-simple-feature-objects.html#step-2-create-a-column-of-simple-feature-geometries-sfc">Step 2: Create a column of simple feature geometries: <code>sfc</code></a></li>
+<li><a href="anatomy-of-simple-feature-objects.html#step-3-create-the-simple-feature-object-sf">Step 3: Create the simple feature object <code>sf</code></a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#renaming-the-geometry-column"><i class="fa fa-check"></i>Renaming the geometry column</a></li>
+<li><a href="anatomy-of-simple-feature-objects.html#adding-attributes-to-an-sf-object">Adding attributes to an <code>sf</code> object</a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#adding-a-geometry-column-to-an-existing-non-spatial-dataframe"><i class="fa fa-check"></i>Adding a geometry column to an existing non-spatial dataframe</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#creating-polyline-sf-objects"><i class="fa fa-check"></i>Creating polyline ‘sf’ objects</a>
+<ul>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#creating-branching-polyline-features"><i class="fa fa-check"></i>Creating branching polyline features</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#creating-polygon-sf-objects"><i class="fa fa-check"></i>Creating polygon ‘sf’ objects</a>
+<ul>
+<li><a href="anatomy-of-simple-feature-objects.html#polygon-simple-feature"><code>POLYGON</code> simple feature</a></li>
+<li><a href="anatomy-of-simple-feature-objects.html#multipolygon-simple-feature-multipart-features"><code>MULTIPOLYGON</code> simple feature: multipart features</a></li>
+</ul></li>
+<li><a href="anatomy-of-simple-feature-objects.html#extracting-geometry-from-an-sf-object">Extracting geometry from an <code>sf</code> object</a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#alternative-syntax"><i class="fa fa-check"></i>Alternative syntax</a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#additional-resources"><i class="fa fa-check"></i>Additional resources</a></li>
+</ul></li>
+<li class="chapter" data-level="D" data-path="vector-operations-in-r.html"><a href="vector-operations-in-r.html"><i class="fa fa-check"></i><b>D</b> Vector operations in R</a>
+<ul>
+<li class="chapter" data-level="" data-path="vector-operations-in-r.html"><a href="vector-operations-in-r.html#dissolving-geometries"><i class="fa fa-check"></i>Dissolving geometries</a>
+<ul>
+<li class="chapter" data-level="" data-path="vector-operations-in-r.html"><a href="vector-operations-in-r.html#dissolving-by-contiguous-shape"><i class="fa fa-check"></i>Dissolving by contiguous shape</a></li>
+<li class="chapter" data-level="" data-path="vector-operations-in-r.html"><a href="vector-operations-in-r.html#dissolving-by-attribute"><i class="fa fa-check"></i>Dissolving by attribute</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="vector-operations-in-r.html"><a href="vector-operations-in-r.html#subsetting-by-attribute"><i class="fa fa-check"></i>Subsetting by attribute</a></li>
+<li class="chapter" data-level="" data-path="vector-operations-in-r.html"><a href="vector-operations-in-r.html#intersecting-layers"><i class="fa fa-check"></i>Intersecting layers</a></li>
+<li class="chapter" data-level="" data-path="vector-operations-in-r.html"><a href="vector-operations-in-r.html#clipping-spatial-objects-using-other-spatial-objects"><i class="fa fa-check"></i>Clipping spatial objects using other spatial objects</a></li>
+<li class="chapter" data-level="" data-path="vector-operations-in-r.html"><a href="vector-operations-in-r.html#unioning-layers"><i class="fa fa-check"></i>Unioning layers</a></li>
+<li class="chapter" data-level="" data-path="vector-operations-in-r.html"><a href="vector-operations-in-r.html#buffering-geometries"><i class="fa fa-check"></i>Buffering geometries</a></li>
+</ul></li>
+<li class="chapter" data-level="E" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html"><i class="fa fa-check"></i><b>E</b> Mapping rates in R</a>
+<ul>
+<li class="chapter" data-level="" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html#raw-rates"><i class="fa fa-check"></i>Raw Rates</a></li>
+<li class="chapter" data-level="" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html#standardized-mortality-ratios-relative-risk."><i class="fa fa-check"></i>Standardized mortality ratios (relative risk).</a></li>
+<li class="chapter" data-level="" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html#dykes-and-unwins-chi-square-statistic"><i class="fa fa-check"></i>Dykes and Unwin’s chi-square statistic</a></li>
+<li class="chapter" data-level="" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html#unstable-ratios"><i class="fa fa-check"></i>Unstable ratios</a>
+<ul>
+<li class="chapter" data-level="" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html#global-empirical-bayes-eb-rate-estimate"><i class="fa fa-check"></i>Global Empirical Bayes (EB) rate estimate</a></li>
+<li class="chapter" data-level="" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html#local-empirical-bayes-eb-rate-estimate"><i class="fa fa-check"></i>Local Empirical Bayes (EB) rate estimate</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="F" data-path="raster-operations-in-r.html"><a href="raster-operations-in-r.html"><i class="fa fa-check"></i><b>F</b> Raster operations in R</a>
+<ul>
+<li class="chapter" data-level="" data-path="raster-operations-in-r.html"><a href="raster-operations-in-r.html#sample-files-for-this-exercise-1"><i class="fa fa-check"></i>Sample files for this exercise</a></li>
+<li class="chapter" data-level="" data-path="raster-operations-in-r.html"><a href="raster-operations-in-r.html#local-operations-and-functions-1"><i class="fa fa-check"></i>Local operations and functions</a>
+<ul>
+<li class="chapter" data-level="" data-path="raster-operations-in-r.html"><a href="raster-operations-in-r.html#unary-operations-and-functions-applied-to-single-rasters"><i class="fa fa-check"></i>Unary operations and functions (applied to single rasters)</a></li>
+<li class="chapter" data-level="" data-path="raster-operations-in-r.html"><a href="raster-operations-in-r.html#binary-operations-and-functions-where-two-rasters-are-used"><i class="fa fa-check"></i>Binary operations and functions (where two rasters are used)</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="raster-operations-in-r.html"><a href="raster-operations-in-r.html#focal-operations-and-functions-1"><i class="fa fa-check"></i>Focal operations and functions</a></li>
+<li class="chapter" data-level="" data-path="raster-operations-in-r.html"><a href="raster-operations-in-r.html#zonal-operations-and-functions-1"><i class="fa fa-check"></i>Zonal operations and functions</a></li>
+<li class="chapter" data-level="" data-path="raster-operations-in-r.html"><a href="raster-operations-in-r.html#global-operations-and-functions-1"><i class="fa fa-check"></i>Global operations and functions</a></li>
+<li class="chapter" data-level="" data-path="raster-operations-in-r.html"><a href="raster-operations-in-r.html#computing-cumulative-distances"><i class="fa fa-check"></i>Computing cumulative distances</a>
+<ul>
+<li class="chapter" data-level="" data-path="raster-operations-in-r.html"><a href="raster-operations-in-r.html#working-example"><i class="fa fa-check"></i>Working example</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="G" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html"><i class="fa fa-check"></i><b>G</b> Coordinate Systems in R</a>
+<ul>
+<li><a href="coordinate-systems-in-r.html#a-note-about-the-changes-to-the-proj-environment">A note about the changes to the <code>PROJ</code> environment</a></li>
+<li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#sample-files-for-this-exercise-2"><i class="fa fa-check"></i>Sample files for this exercise</a></li>
+<li><a href="coordinate-systems-in-r.html#loading-the-sf-package">Loading the <code>sf</code> package</a></li>
+<li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#checking-for-a-coordinate-system"><i class="fa fa-check"></i>Checking for a coordinate system</a></li>
+<li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#understanding-the-proj4-coordinate-syntax"><i class="fa fa-check"></i>Understanding the Proj4 coordinate syntax</a></li>
+<li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#assigning-a-coordinate-system"><i class="fa fa-check"></i>Assigning a coordinate system</a></li>
+<li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#transforming-coordinate-systems"><i class="fa fa-check"></i>Transforming coordinate systems</a>
+<ul>
+<li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#example-of-a-failed-transformation"><i class="fa fa-check"></i>Example of a failed transformation</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#a-note-about-containment"><i class="fa fa-check"></i>A note about containment</a></li>
+<li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#creating-tissot-indicatrix-circles"><i class="fa fa-check"></i>Creating Tissot indicatrix circles</a></li>
+</ul></li>
+<li class="chapter" data-level="H" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html"><i class="fa fa-check"></i><b>H</b> Point pattern analysis in R</a>
+<ul>
+<li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#sample-files-for-this-exercise-3"><i class="fa fa-check"></i>Sample files for this exercise</a></li>
+<li><a href="point-pattern-analysis-in-r.html#getting-external-data-into-a-spatstat-format">Getting external data into a <code>spatstat</code> format</a></li>
+<li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#prepping-the-data"><i class="fa fa-check"></i>Prepping the data</a></li>
+<li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#density-based-analysis-1"><i class="fa fa-check"></i>Density based analysis</a>
+<ul>
+<li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#quadrat-density-1"><i class="fa fa-check"></i>Quadrat density</a></li>
+<li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#quadrat-density-on-a-tessellated-surface"><i class="fa fa-check"></i>Quadrat density on a tessellated surface</a></li>
+<li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#kernel-density-raster"><i class="fa fa-check"></i>Kernel density raster</a></li>
+<li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#kernel-density-adjusted-for-covariate-1"><i class="fa fa-check"></i>Kernel density adjusted for covariate</a></li>
+<li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#modeling-intensity-as-a-function-of-a-covariate-1"><i class="fa fa-check"></i>Modeling intensity as a function of a covariate</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#distance-based-analysis-1"><i class="fa fa-check"></i>Distance based analysis</a>
+<ul>
+<li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#average-nearest-neighbor-analysis"><i class="fa fa-check"></i>Average nearest neighbor analysis</a></li>
+<li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#k-and-l-functions-1"><i class="fa fa-check"></i>K and L functions</a></li>
+<li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#pair-correlation-function-g"><i class="fa fa-check"></i>Pair correlation function g</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#hypothesis-tests"><i class="fa fa-check"></i>Hypothesis tests</a>
+<ul>
+<li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#test-for-clusteringdispersion"><i class="fa fa-check"></i>Test for clustering/dispersion</a></li>
+<li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#computing-a-pseudo-p-value-from-the-simulation"><i class="fa fa-check"></i>Computing a pseudo p-value from the simulation</a></li>
+<li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#test-for-a-poisson-point-process-model-with-a-covariate-effect"><i class="fa fa-check"></i>Test for a poisson point process model with a covariate effect</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="I" data-path="spatial-autocorrelation-in-r.html"><a href="spatial-autocorrelation-in-r.html"><i class="fa fa-check"></i><b>I</b> Spatial autocorrelation in R</a>
+<ul>
+<li class="chapter" data-level="" data-path="spatial-autocorrelation-in-r.html"><a href="spatial-autocorrelation-in-r.html#app8_1"><i class="fa fa-check"></i>Sample files for this exercise</a></li>
+<li class="chapter" data-level="" data-path="spatial-autocorrelation-in-r.html"><a href="spatial-autocorrelation-in-r.html#app8_2"><i class="fa fa-check"></i>Introduction</a></li>
+<li class="chapter" data-level="" data-path="spatial-autocorrelation-in-r.html"><a href="spatial-autocorrelation-in-r.html#app8_3"><i class="fa fa-check"></i>Define neighboring polygons</a></li>
+<li class="chapter" data-level="" data-path="spatial-autocorrelation-in-r.html"><a href="spatial-autocorrelation-in-r.html#app8_4"><i class="fa fa-check"></i>Computing the Moran’s I statistic: the hard way</a>
+<ul>
+<li class="chapter" data-level="" data-path="spatial-autocorrelation-in-r.html"><a href="spatial-autocorrelation-in-r.html#computing-a-pseudo-p-value-from-an-mc-simulation"><i class="fa fa-check"></i>Computing a pseudo p-value from an MC simulation</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="spatial-autocorrelation-in-r.html"><a href="spatial-autocorrelation-in-r.html#app8_5"><i class="fa fa-check"></i>Computing the Moran’s I statistic: the easy way</a></li>
+<li class="chapter" data-level="" data-path="spatial-autocorrelation-in-r.html"><a href="spatial-autocorrelation-in-r.html#app8_6"><i class="fa fa-check"></i>Moran’s I as a function of a distance band</a></li>
+</ul></li>
+<li class="chapter" data-level="J" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html"><i class="fa fa-check"></i><b>J</b> Interpolation in R</a>
+<ul>
+<li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#thiessen-polygons"><i class="fa fa-check"></i>Thiessen polygons</a></li>
+<li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#idw"><i class="fa fa-check"></i>IDW</a>
+<ul>
+<li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#fine-tuning-the-interpolation"><i class="fa fa-check"></i>Fine-tuning the interpolation</a></li>
+<li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#cross-validation"><i class="fa fa-check"></i>Cross-validation</a></li>
+</ul></li>
+<li><a href="interpolation-in-r.html#st-order-polynomial-fit">1<sup>st</sup> order polynomial fit</a></li>
+<li><a href="interpolation-in-r.html#nd-order-polynomial">2<sup>nd</sup> order polynomial</a></li>
+<li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#kriging"><i class="fa fa-check"></i>Kriging</a>
+<ul>
+<li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#fit-the-variogram-model"><i class="fa fa-check"></i>Fit the variogram model</a></li>
+<li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#generate-kriged-surface"><i class="fa fa-check"></i>Generate Kriged surface</a></li>
+<li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#generate-the-variance-and-confidence-interval-maps"><i class="fa fa-check"></i>Generate the variance and confidence interval maps</a></li>
+</ul></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Intro to GIS and Spatial Analysis</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="vector-operations-in-r" class="section level1" number="19">
+<h1><span class="header-section-number">D</span> Vector operations in R</h1>
+<table class="package_ver_table">
+<tbody>
+<tr>
+<td style="text-align:left;color: black !important;background-color: #ffc178 !important;text-align: center;font-size: 12px !important; 
+              margin:5px; 
+              border-radius: 8px;
+              border: 2px solid white;
+              padding-top: 1px;
+              padding-bottom: 1px;
+              padding-left: 4px;
+              padding-right: 4px;">
+R
+</td>
+<td style="text-align:left;color: black !important;background-color: #ffc178 !important;text-align: center;font-size: 12px !important; 
+              margin:5px; 
+              border-radius: 8px;
+              border: 2px solid white;
+              padding-top: 1px;
+              padding-bottom: 1px;
+              padding-left: 4px;
+              padding-right: 4px;">
+sf
+</td>
+<td style="text-align:left;color: black !important;background-color: #ffc178 !important;text-align: center;font-size: 12px !important; 
+              margin:5px; 
+              border-radius: 8px;
+              border: 2px solid white;
+              padding-top: 1px;
+              padding-bottom: 1px;
+              padding-left: 4px;
+              padding-right: 4px;">
+ggplot2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: white !important;background-color: #AAAAAA !important;text-align: center;font-size: 12px !important; 
+              margin:5px; 
+              border-radius: 8px;
+              border: 2px solid white;
+              padding-top: 1px;
+              padding-bottom: 1px;
+              padding-left: 4px;
+              padding-right: 4px;">
+4.1.1
+</td>
+<td style="text-align:left;color: white !important;background-color: #AAAAAA !important;text-align: center;font-size: 12px !important; 
+              margin:5px; 
+              border-radius: 8px;
+              border: 2px solid white;
+              padding-top: 1px;
+              padding-bottom: 1px;
+              padding-left: 4px;
+              padding-right: 4px;">
+1.0.2
+</td>
+<td style="text-align:left;color: white !important;background-color: #AAAAAA !important;text-align: center;font-size: 12px !important; 
+              margin:5px; 
+              border-radius: 8px;
+              border: 2px solid white;
+              padding-top: 1px;
+              padding-bottom: 1px;
+              padding-left: 4px;
+              padding-right: 4px;">
+3.3.5
+</td>
+</tr>
+</tbody>
+</table>
+<style type="text/css">
+.scroll1 {
+  max-height: 100px;
+  overflow-y: auto;
+  background-color: inherit;
+}
+</style>
+<p>Earlier versions of this tutorial made use of a combination of packages including <code>raster</code> and <code>rgeos</code> to perform most vector operations highlighted in this exercise. Many of these vector operations can now be performed using the <code>sf</code> package. As such, all code chunks in this tutorial make use <code>sf</code> for most vector operations.</p>
+<p>We’ll first load spatial objects used in this exercise. These include: A polygon layer that delineates Maine counties (USA), <code>s1.sf</code>; A polygon layer that delineates distances to Augusta (Maine) as concentric circles, <code>s2.sf</code>; A polyline layer of the interstate highway system that runs through Maine. These data are stored as <code>sf</code> objects.</p>
+<div class="sourceCode" id="cb179"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb179-1"><a href="vector-operations-in-r.html#cb179-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
+<span id="cb179-2"><a href="vector-operations-in-r.html#cb179-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb179-3"><a href="vector-operations-in-r.html#cb179-3" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="fu">gzcon</span>(<span class="fu">url</span>(<span class="st">&quot;https://github.com/mgimond/Spatial/raw/master/Data/Income_schooling_sf.rds&quot;</span>))</span>
+<span id="cb179-4"><a href="vector-operations-in-r.html#cb179-4" aria-hidden="true" tabindex="-1"></a>s1.sf <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(z)</span>
+<span id="cb179-5"><a href="vector-operations-in-r.html#cb179-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb179-6"><a href="vector-operations-in-r.html#cb179-6" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="fu">gzcon</span>(<span class="fu">url</span>(<span class="st">&quot;https://github.com/mgimond/Spatial/raw/master/Data/Dist_sf.rds&quot;</span>))</span>
+<span id="cb179-7"><a href="vector-operations-in-r.html#cb179-7" aria-hidden="true" tabindex="-1"></a>s2.sf <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(z)</span>
+<span id="cb179-8"><a href="vector-operations-in-r.html#cb179-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb179-9"><a href="vector-operations-in-r.html#cb179-9" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="fu">gzcon</span>(<span class="fu">url</span>(<span class="st">&quot;https://github.com/mgimond/Spatial/raw/master/Data/Highway_sf.rds&quot;</span>))</span>
+<span id="cb179-10"><a href="vector-operations-in-r.html#cb179-10" aria-hidden="true" tabindex="-1"></a>l1.sf <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(z)</span></code></pre></div>
+<p>A map of the above layers is shown below. We’ll use the <code>ggplot2</code> package too generate this and subsequent maps in this tutorial.</p>
+<div class="sourceCode" id="cb180"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb180-1"><a href="vector-operations-in-r.html#cb180-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb180-2"><a href="vector-operations-in-r.html#cb180-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb180-3"><a href="vector-operations-in-r.html#cb180-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span> </span>
+<span id="cb180-4"><a href="vector-operations-in-r.html#cb180-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> s1.sf) <span class="sc">+</span></span>
+<span id="cb180-5"><a href="vector-operations-in-r.html#cb180-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> s2.sf, <span class="at">alpha =</span> <span class="fl">0.5</span>, <span class="at">col =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
+<span id="cb180-6"><a href="vector-operations-in-r.html#cb180-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> l1.sf, <span class="at">col =</span> <span class="st">&quot;blue&quot;</span>)</span></code></pre></div>
+<p><img src="A04-Vector-Operations_files/figure-html/unnamed-chunk-4-1.png" width="450" /></p>
+<p>The attributes table for both polygon objects (<code>s1.sf</code> and <code>s2.sf</code>) are shown next. Note that each shape object has a unique set of attributes as well as a unique number of records</p>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-5"></span>
+<img src="A04-Vector-Operations_files/figure-html/unnamed-chunk-5-1.png" alt="Attribute tables for the Maine spatial object, `s1.sf`, (left table) and the distance to Augusta spatial object, `s2.sf` (right table)." width="550" />
+<p class="caption">
+Figure 2.6: Attribute tables for the Maine spatial object, <code>s1.sf</code>, (left table) and the distance to Augusta spatial object, <code>s2.sf</code> (right table).
+</p>
+</div>
+<div id="dissolving-geometries" class="section level2 unnumbered">
+<h2>Dissolving geometries</h2>
+<div id="dissolving-by-contiguous-shape" class="section level3 unnumbered">
+<h3>Dissolving by contiguous shape</h3>
+<p>There are two different ways to dissolve geometries that share a common boundary. Both are presented next.</p>
+<div id="option-1" class="section level4 unnumbered">
+<h4>Option 1</h4>
+<p>To dissolve all polygons that share at least one line segment, simply pass the object name to <code>sf</code>’s <code>st_union</code> function while making sure that the <code>by_feature</code> option is set to <code>FALSE</code>. In this example, we dissolve all polygons to create a single outline of the state of Maine.</p>
+<div class="sourceCode" id="cb181"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb181-1"><a href="vector-operations-in-r.html#cb181-1" aria-hidden="true" tabindex="-1"></a>ME <span class="ot">&lt;-</span> <span class="fu">st_union</span>(s1.sf, <span class="at">by_feature =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb181-2"><a href="vector-operations-in-r.html#cb181-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb181-3"><a href="vector-operations-in-r.html#cb181-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(ME) <span class="sc">+</span> <span class="fu">geom_sf</span>(<span class="at">fill =</span> <span class="st">&quot;grey&quot;</span>)</span></code></pre></div>
+<p><img src="A04-Vector-Operations_files/figure-html/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto auto auto 0;" /></p>
+<p>Note that the dissolving process removed all attributes from the original spatial object. You’ll also note that <code>st_union</code> returns an <code>sfc</code> object even though the input object is <code>sf</code>. You can convert the output to an <code>sf</code> object using the <code>st_sf()</code> function as in <code>st_sf(ME)</code>.</p>
+</div>
+<div id="option-2" class="section level4 unnumbered">
+<h4>Option 2</h4>
+<p>Another approach is to make use of the <code>dplyr</code> package and its <code>group_by</code>/<code>summarise</code> functions.</p>
+<div class="sourceCode" id="cb182"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb182-1"><a href="vector-operations-in-r.html#cb182-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb182-2"><a href="vector-operations-in-r.html#cb182-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb182-3"><a href="vector-operations-in-r.html#cb182-3" aria-hidden="true" tabindex="-1"></a>ME <span class="ot">&lt;-</span> s1.sf <span class="sc">%&gt;%</span> </span>
+<span id="cb182-4"><a href="vector-operations-in-r.html#cb182-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb182-5"><a href="vector-operations-in-r.html#cb182-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>()</span>
+<span id="cb182-6"><a href="vector-operations-in-r.html#cb182-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb182-7"><a href="vector-operations-in-r.html#cb182-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(ME) <span class="sc">+</span> <span class="fu">geom_sf</span>(<span class="at">fill =</span> <span class="st">&quot;grey&quot;</span>)</span></code></pre></div>
+<p><img src="A04-Vector-Operations_files/figure-html/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto auto auto 0;" /></p>
+<p>Note that this option will also remove any attributes associated with the input spatial object, however, the output remains an <code>sf</code> object (this differs from the <code>st_union</code> output).</p>
+</div>
+</div>
+<div id="dissolving-by-attribute" class="section level3 unnumbered">
+<h3>Dissolving by attribute</h3>
+<p>You can also choose to dissolve based on an attribute’s values. First, we’ll create a new column whose value will be binary (TRUE/FALSE) depending on whether or not the county income is below the counties’ median income value.</p>
+<div class="sourceCode" id="cb183"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb183-1"><a href="vector-operations-in-r.html#cb183-1" aria-hidden="true" tabindex="-1"></a>s1.sf<span class="sc">$</span>med <span class="ot">&lt;-</span> s1.sf<span class="sc">$</span>Income <span class="sc">&gt;</span> <span class="fu">median</span>(s1.sf<span class="sc">$</span>Income)</span>
+<span id="cb183-2"><a href="vector-operations-in-r.html#cb183-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb183-3"><a href="vector-operations-in-r.html#cb183-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(s1.sf) <span class="sc">+</span> <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">fill =</span> med))</span></code></pre></div>
+<p><img src="A04-Vector-Operations_files/figure-html/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto auto auto 0;" /></p>
+<p>Next, we’ll dissolve all polygons by the <code>med</code> attribute. Any polygons sharing at least one line segment that have the same <code>med</code> value will be dissolved into a single polygon.</p>
+<p>Two approaches are presented here: one using <code>sf</code>’s <code>aggregate</code> function, the other using the <code>dplyr</code> approach.</p>
+<div id="option-1-1" class="section level4 unnumbered">
+<h4>Option 1</h4>
+<div class="sourceCode" id="cb184"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb184-1"><a href="vector-operations-in-r.html#cb184-1" aria-hidden="true" tabindex="-1"></a>ME.inc <span class="ot">&lt;-</span> <span class="fu">aggregate</span>(s1.sf[<span class="st">&quot;med&quot;</span>], <span class="at">by =</span> <span class="fu">list</span>(<span class="at">diss =</span> s1.sf<span class="sc">$</span>med), </span>
+<span id="cb184-2"><a href="vector-operations-in-r.html#cb184-2" aria-hidden="true" tabindex="-1"></a>                    <span class="at">FUN =</span> <span class="cf">function</span>(x)x[<span class="dv">1</span>], <span class="at">do_union =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<p>This option will a new field defined in the <code>by =</code> parameter (<code>diss</code> in this working example).</p>
+<div class="sourceCode" id="cb185"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb185-1"><a href="vector-operations-in-r.html#cb185-1" aria-hidden="true" tabindex="-1"></a><span class="fu">st_drop_geometry</span>(ME.inc) <span class="co"># Print the layer&#39;s attributes table</span></span></code></pre></div>
+<pre><code>   diss   med
+1 FALSE FALSE
+2  TRUE  TRUE</code></pre>
+</div>
+<div id="option-2-1" class="section level4 unnumbered">
+<h4>Option 2</h4>
+<div class="sourceCode" id="cb187"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb187-1"><a href="vector-operations-in-r.html#cb187-1" aria-hidden="true" tabindex="-1"></a>ME.inc <span class="ot">&lt;-</span> s1.sf <span class="sc">%&gt;%</span> </span>
+<span id="cb187-2"><a href="vector-operations-in-r.html#cb187-2" aria-hidden="true" tabindex="-1"></a>     <span class="fu">group_by</span>(med) <span class="sc">%&gt;%</span> </span>
+<span id="cb187-3"><a href="vector-operations-in-r.html#cb187-3" aria-hidden="true" tabindex="-1"></a>     <span class="fu">summarise</span>() </span></code></pre></div>
+<p>This option will limit the attributes to that/those listed in the <code>group_by</code> function.</p>
+<div class="sourceCode" id="cb188"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb188-1"><a href="vector-operations-in-r.html#cb188-1" aria-hidden="true" tabindex="-1"></a><span class="fu">st_drop_geometry</span>(ME.inc)</span></code></pre></div>
+<pre><code># A tibble: 2 x 1
+  med  
+* &lt;lgl&gt;
+1 FALSE
+2 TRUE </code></pre>
+<p>A map of the resulting layer follows.</p>
+<div class="sourceCode" id="cb190"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb190-1"><a href="vector-operations-in-r.html#cb190-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(ME.inc) <span class="sc">+</span> <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">fill =</span> med))</span></code></pre></div>
+<p><img src="A04-Vector-Operations_files/figure-html/unnamed-chunk-13-1.png" width="672" style="display: block; margin: auto auto auto 0;" /></p>
+<p>The dissolving (aggregating) operation will, by default, eliminate all other attribute values. If you wish to summarize other attribute values along with the attribute used for dissolving, use the <code>dplyr</code> piping operation option. For example, to compute the median <code>Income</code> value for each of the below/above median income groups type the following:</p>
+<div class="sourceCode" id="cb191"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb191-1"><a href="vector-operations-in-r.html#cb191-1" aria-hidden="true" tabindex="-1"></a>ME.inc <span class="ot">&lt;-</span> s1.sf <span class="sc">%&gt;%</span>  </span>
+<span id="cb191-2"><a href="vector-operations-in-r.html#cb191-2" aria-hidden="true" tabindex="-1"></a>     <span class="fu">group_by</span>(med) <span class="sc">%&gt;%</span>   </span>
+<span id="cb191-3"><a href="vector-operations-in-r.html#cb191-3" aria-hidden="true" tabindex="-1"></a>     <span class="fu">summarize</span>(<span class="at">medinc =</span> <span class="fu">median</span>(Income)) </span>
+<span id="cb191-4"><a href="vector-operations-in-r.html#cb191-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb191-5"><a href="vector-operations-in-r.html#cb191-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(ME.inc) <span class="sc">+</span> <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">fill =</span> medinc))</span></code></pre></div>
+<p><img src="A04-Vector-Operations_files/figure-html/unnamed-chunk-14-1.png" width="672" style="display: block; margin: auto auto auto 0;" /></p>
+<p>To view the attributes table with both the aggregate variable, <code>med</code>, and the median income variable, <code>Income</code>, type:</p>
+<div class="sourceCode" id="cb192"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb192-1"><a href="vector-operations-in-r.html#cb192-1" aria-hidden="true" tabindex="-1"></a><span class="fu">st_drop_geometry</span>(ME.inc)</span></code></pre></div>
+<pre><code># A tibble: 2 x 2
+  med   medinc
+* &lt;lgl&gt;  &lt;dbl&gt;
+1 FALSE  21518
+2 TRUE   27955</code></pre>
+</div>
+</div>
+</div>
+<div id="subsetting-by-attribute" class="section level2 unnumbered">
+<h2>Subsetting by attribute</h2>
+<p>You can use conventional R dataframe manipulation operations to subset by attribute values. For example, to subset by county name (e.g. <code>Kennebec</code> county), type:</p>
+<div class="sourceCode" id="cb194"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb194-1"><a href="vector-operations-in-r.html#cb194-1" aria-hidden="true" tabindex="-1"></a>ME.ken <span class="ot">&lt;-</span> s1.sf[s1.sf<span class="sc">$</span>NAME <span class="sc">==</span> <span class="st">&quot;Kennebec&quot;</span>,]</span></code></pre></div>
+<p>You can, of course, use piping operations to perform the same task as follows:</p>
+<div class="sourceCode" id="cb195"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb195-1"><a href="vector-operations-in-r.html#cb195-1" aria-hidden="true" tabindex="-1"></a>ME.ken <span class="ot">&lt;-</span> s1.sf <span class="sc">%&gt;%</span> </span>
+<span id="cb195-2"><a href="vector-operations-in-r.html#cb195-2" aria-hidden="true" tabindex="-1"></a>      <span class="fu">filter</span>(NAME <span class="sc">==</span> <span class="st">&quot;Kennebec&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb196"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb196-1"><a href="vector-operations-in-r.html#cb196-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(ME.ken) <span class="sc">+</span> <span class="fu">geom_sf</span>()</span></code></pre></div>
+<p><img src="A04-Vector-Operations_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<p>To subset by a range of attribute values (e.g. subset by income values that are less than the median value), type:</p>
+<div class="sourceCode" id="cb197"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb197-1"><a href="vector-operations-in-r.html#cb197-1" aria-hidden="true" tabindex="-1"></a>ME.inc2 <span class="ot">&lt;-</span> s1.sf <span class="sc">%&gt;%</span> </span>
+<span id="cb197-2"><a href="vector-operations-in-r.html#cb197-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(Income <span class="sc">&lt;</span> <span class="fu">median</span>(Income))</span>
+<span id="cb197-3"><a href="vector-operations-in-r.html#cb197-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb197-4"><a href="vector-operations-in-r.html#cb197-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(ME.inc2) <span class="sc">+</span> <span class="fu">geom_sf</span>()</span></code></pre></div>
+<p><img src="A04-Vector-Operations_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+</div>
+<div id="intersecting-layers" class="section level2 unnumbered">
+<h2>Intersecting layers</h2>
+<p>To intersect two polygon objects, use <code>sf</code>’s <code>st_intersection</code> function.</p>
+<div class="sourceCode" id="cb198"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb198-1"><a href="vector-operations-in-r.html#cb198-1" aria-hidden="true" tabindex="-1"></a>clp1 <span class="ot">&lt;-</span> <span class="fu">st_intersection</span>(s1.sf, s2.sf)</span>
+<span id="cb198-2"><a href="vector-operations-in-r.html#cb198-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb198-3"><a href="vector-operations-in-r.html#cb198-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(clp1) <span class="sc">+</span> <span class="fu">geom_sf</span>()</span></code></pre></div>
+<p><img src="A04-Vector-Operations_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+<p><code>st_intersection</code> keeps all features that overlap along with their combined attributes. Note that new polygons are created which will increase the size of the attributes table beyond the size of the combined input attributes table.</p>
+<div class="sourceCode" id="cb199"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb199-1"><a href="vector-operations-in-r.html#cb199-1" aria-hidden="true" tabindex="-1"></a><span class="fu">st_drop_geometry</span>(clp1)</span></code></pre></div>
+<pre class="scroll1"><code>             NAME Income   NoSchool  NoSchoolSE IncomeSE   med distance
+8        Kennebec  25652 0.00570358 0.000917087  360.000  TRUE       20
+12        Lincoln  27839 0.00278315 0.001030800  571.515  TRUE       20
+14      Sagadahoc  28122 0.00285524 0.000900782  544.849  TRUE       20
+1        Somerset  21025 0.00521153 0.001150020  390.909 FALSE       50
+5        Franklin  21744 0.00508507 0.001641740  530.909 FALSE       50
+6          Oxford  21885 0.00700822 0.001318160  536.970 FALSE       50
+7           Waldo  23020 0.00498141 0.000918837  450.909 FALSE       50
+8.1      Kennebec  25652 0.00570358 0.000917087  360.000  TRUE       50
+9    Androscoggin  24268 0.00830953 0.001178660  460.606  TRUE       50
+11           Knox  27141 0.00652269 0.001863920  684.849  TRUE       50
+12.1      Lincoln  27839 0.00278315 0.001030800  571.515  TRUE       50
+13     Cumberland  32549 0.00494917 0.000683236  346.061  TRUE       50
+14.1    Sagadahoc  28122 0.00285524 0.000900782  544.849  TRUE       50
+1.1      Somerset  21025 0.00521153 0.001150020  390.909 FALSE       80
+2     Piscataquis  21292 0.00633830 0.002128960  724.242 FALSE       80
+3       Penobscot  23307 0.00684534 0.001025450  242.424 FALSE       80
+5.1      Franklin  21744 0.00508507 0.001641740  530.909 FALSE       80
+6.1        Oxford  21885 0.00700822 0.001318160  536.970 FALSE       80
+7.1         Waldo  23020 0.00498141 0.000918837  450.909 FALSE       80
+9.1  Androscoggin  24268 0.00830953 0.001178660  460.606  TRUE       80
+10        Hancock  28071 0.00238996 0.000784584  585.455  TRUE       80
+11.1         Knox  27141 0.00652269 0.001863920  684.849  TRUE       80
+12.2      Lincoln  27839 0.00278315 0.001030800  571.515  TRUE       80
+13.1   Cumberland  32549 0.00494917 0.000683236  346.061  TRUE       80
+14.2    Sagadahoc  28122 0.00285524 0.000900782  544.849  TRUE       80
+1.2      Somerset  21025 0.00521153 0.001150020  390.909 FALSE      120
+2.1   Piscataquis  21292 0.00633830 0.002128960  724.242 FALSE      120
+3.1     Penobscot  23307 0.00684534 0.001025450  242.424 FALSE      120
+5.2      Franklin  21744 0.00508507 0.001641740  530.909 FALSE      120
+6.2        Oxford  21885 0.00700822 0.001318160  536.970 FALSE      120
+7.2         Waldo  23020 0.00498141 0.000918837  450.909 FALSE      120
+10.1      Hancock  28071 0.00238996 0.000784584  585.455  TRUE      120
+13.2   Cumberland  32549 0.00494917 0.000683236  346.061  TRUE      120
+15           York  28496 0.00529228 0.000737195  332.121  TRUE      120</code></pre>
+</div>
+<div id="clipping-spatial-objects-using-other-spatial-objects" class="section level2 unnumbered">
+<h2>Clipping spatial objects using other spatial objects</h2>
+<p>The <code>st_intersection</code> can also be used to clip an input layer using another layer’s outer geometry boundaries as the “cookie cutter.” But note that the latter must be limited to its outer boundaries which may require that it be run through a dissolving operation (shown earlier in this tutorial) to dissolve internal boundaries.</p>
+<p>To clip <code>s2.sf</code> using the outline of <code>s1.sf</code>, type:</p>
+<div class="sourceCode" id="cb201"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb201-1"><a href="vector-operations-in-r.html#cb201-1" aria-hidden="true" tabindex="-1"></a>clp2 <span class="ot">&lt;-</span> <span class="fu">st_intersection</span>(s2.sf, <span class="fu">st_union</span>(s1.sf)) </span>
+<span id="cb201-2"><a href="vector-operations-in-r.html#cb201-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb201-3"><a href="vector-operations-in-r.html#cb201-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(clp2) <span class="sc">+</span> <span class="fu">geom_sf</span>()</span></code></pre></div>
+<p><img src="A04-Vector-Operations_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<p>The order the layers are passed to the <code>st_intersection</code> function matters. Flipping the input layer in the last example will clip <code>s1.sf</code> to <code>s2.sf</code>’s bounding polygon(s).</p>
+<div class="sourceCode" id="cb202"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb202-1"><a href="vector-operations-in-r.html#cb202-1" aria-hidden="true" tabindex="-1"></a>clp2 <span class="ot">&lt;-</span> <span class="fu">st_intersection</span>(s1.sf, <span class="fu">st_union</span>(s2.sf)) </span>
+<span id="cb202-2"><a href="vector-operations-in-r.html#cb202-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb202-3"><a href="vector-operations-in-r.html#cb202-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(clp2) <span class="sc">+</span> <span class="fu">geom_sf</span>()</span></code></pre></div>
+<p><img src="A04-Vector-Operations_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+<p>Line geometries can also be clipped to polygon features. The output will be a line object that falls within the polygons of the input polygon object. For example, to output all line segments that fall within the concentric distance circles of <code>s2.sf</code>, type:</p>
+<div class="sourceCode" id="cb203"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb203-1"><a href="vector-operations-in-r.html#cb203-1" aria-hidden="true" tabindex="-1"></a>clp3 <span class="ot">&lt;-</span> <span class="fu">st_intersection</span>(l1.sf, <span class="fu">st_union</span>(s2.sf))</span></code></pre></div>
+<p>A plot of the clipped line features is shown with the outline of the clipping feature.</p>
+<div class="sourceCode" id="cb204"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb204-1"><a href="vector-operations-in-r.html#cb204-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(clp3) <span class="sc">+</span> </span>
+<span id="cb204-2"><a href="vector-operations-in-r.html#cb204-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> clp3) <span class="sc">+</span></span>
+<span id="cb204-3"><a href="vector-operations-in-r.html#cb204-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> <span class="fu">st_union</span>(s2.sf), <span class="at">col =</span> <span class="st">&quot;red&quot;</span>, <span class="at">fill =</span> <span class="cn">NA</span> )</span></code></pre></div>
+<p><img src="A04-Vector-Operations_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
+</div>
+<div id="unioning-layers" class="section level2 unnumbered">
+<h2>Unioning layers</h2>
+<p>To union two polygon objects, use <code>sf</code>’s <code>st_union</code> function. For example,</p>
+<div class="sourceCode" id="cb205"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb205-1"><a href="vector-operations-in-r.html#cb205-1" aria-hidden="true" tabindex="-1"></a>un1  <span class="ot">&lt;-</span> <span class="fu">st_union</span>(s2.sf,s1.sf)</span>
+<span id="cb205-2"><a href="vector-operations-in-r.html#cb205-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb205-3"><a href="vector-operations-in-r.html#cb205-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(un1) <span class="sc">+</span> <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">fill =</span> NAME), <span class="at">alpha =</span> <span class="fl">0.4</span>)</span></code></pre></div>
+<p><img src="A04-Vector-Operations_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
+<p>This produces the following attributes table.</p>
+<pre class="scroll1"><code>     distance         NAME Income   NoSchool  NoSchoolSE IncomeSE   med
+1          20    Aroostook  21024 0.01338720 0.001406960  250.909 FALSE
+2          50    Aroostook  21024 0.01338720 0.001406960  250.909 FALSE
+3          80    Aroostook  21024 0.01338720 0.001406960  250.909 FALSE
+4         120    Aroostook  21024 0.01338720 0.001406960  250.909 FALSE
+1.1        20     Somerset  21025 0.00521153 0.001150020  390.909 FALSE
+2.1        50     Somerset  21025 0.00521153 0.001150020  390.909 FALSE
+3.1        80     Somerset  21025 0.00521153 0.001150020  390.909 FALSE
+4.1       120     Somerset  21025 0.00521153 0.001150020  390.909 FALSE
+1.2        20  Piscataquis  21292 0.00633830 0.002128960  724.242 FALSE
+2.2        50  Piscataquis  21292 0.00633830 0.002128960  724.242 FALSE
+3.2        80  Piscataquis  21292 0.00633830 0.002128960  724.242 FALSE
+4.2       120  Piscataquis  21292 0.00633830 0.002128960  724.242 FALSE
+1.3        20    Penobscot  23307 0.00684534 0.001025450  242.424 FALSE
+2.3        50    Penobscot  23307 0.00684534 0.001025450  242.424 FALSE
+3.3        80    Penobscot  23307 0.00684534 0.001025450  242.424 FALSE
+4.3       120    Penobscot  23307 0.00684534 0.001025450  242.424 FALSE
+1.4        20   Washington  20015 0.00478188 0.000966036  327.273 FALSE
+2.4        50   Washington  20015 0.00478188 0.000966036  327.273 FALSE
+3.4        80   Washington  20015 0.00478188 0.000966036  327.273 FALSE
+4.4       120   Washington  20015 0.00478188 0.000966036  327.273 FALSE
+1.5        20     Franklin  21744 0.00508507 0.001641740  530.909 FALSE
+2.5        50     Franklin  21744 0.00508507 0.001641740  530.909 FALSE
+3.5        80     Franklin  21744 0.00508507 0.001641740  530.909 FALSE
+4.5       120     Franklin  21744 0.00508507 0.001641740  530.909 FALSE
+1.6        20       Oxford  21885 0.00700822 0.001318160  536.970 FALSE
+2.6        50       Oxford  21885 0.00700822 0.001318160  536.970 FALSE
+3.6        80       Oxford  21885 0.00700822 0.001318160  536.970 FALSE
+4.6       120       Oxford  21885 0.00700822 0.001318160  536.970 FALSE
+1.7        20        Waldo  23020 0.00498141 0.000918837  450.909 FALSE
+2.7        50        Waldo  23020 0.00498141 0.000918837  450.909 FALSE
+3.7        80        Waldo  23020 0.00498141 0.000918837  450.909 FALSE
+4.7       120        Waldo  23020 0.00498141 0.000918837  450.909 FALSE
+1.8        20     Kennebec  25652 0.00570358 0.000917087  360.000  TRUE
+2.8        50     Kennebec  25652 0.00570358 0.000917087  360.000  TRUE
+3.8        80     Kennebec  25652 0.00570358 0.000917087  360.000  TRUE
+4.8       120     Kennebec  25652 0.00570358 0.000917087  360.000  TRUE
+1.9        20 Androscoggin  24268 0.00830953 0.001178660  460.606  TRUE
+2.9        50 Androscoggin  24268 0.00830953 0.001178660  460.606  TRUE
+3.9        80 Androscoggin  24268 0.00830953 0.001178660  460.606  TRUE
+4.9       120 Androscoggin  24268 0.00830953 0.001178660  460.606  TRUE
+1.10       20      Hancock  28071 0.00238996 0.000784584  585.455  TRUE
+2.10       50      Hancock  28071 0.00238996 0.000784584  585.455  TRUE
+3.10       80      Hancock  28071 0.00238996 0.000784584  585.455  TRUE
+4.10      120      Hancock  28071 0.00238996 0.000784584  585.455  TRUE
+1.11       20         Knox  27141 0.00652269 0.001863920  684.849  TRUE
+2.11       50         Knox  27141 0.00652269 0.001863920  684.849  TRUE
+3.11       80         Knox  27141 0.00652269 0.001863920  684.849  TRUE
+4.11      120         Knox  27141 0.00652269 0.001863920  684.849  TRUE
+1.12       20      Lincoln  27839 0.00278315 0.001030800  571.515  TRUE
+2.12       50      Lincoln  27839 0.00278315 0.001030800  571.515  TRUE
+3.12       80      Lincoln  27839 0.00278315 0.001030800  571.515  TRUE
+4.12      120      Lincoln  27839 0.00278315 0.001030800  571.515  TRUE
+1.13       20   Cumberland  32549 0.00494917 0.000683236  346.061  TRUE
+2.13       50   Cumberland  32549 0.00494917 0.000683236  346.061  TRUE
+3.13       80   Cumberland  32549 0.00494917 0.000683236  346.061  TRUE
+4.13      120   Cumberland  32549 0.00494917 0.000683236  346.061  TRUE
+1.14       20    Sagadahoc  28122 0.00285524 0.000900782  544.849  TRUE
+2.14       50    Sagadahoc  28122 0.00285524 0.000900782  544.849  TRUE
+3.14       80    Sagadahoc  28122 0.00285524 0.000900782  544.849  TRUE
+4.14      120    Sagadahoc  28122 0.00285524 0.000900782  544.849  TRUE
+1.15       20         York  28496 0.00529228 0.000737195  332.121  TRUE
+2.15       50         York  28496 0.00529228 0.000737195  332.121  TRUE
+3.15       80         York  28496 0.00529228 0.000737195  332.121  TRUE
+4.15      120         York  28496 0.00529228 0.000737195  332.121  TRUE</code></pre>
+<p>Note that the union operation can generate many <em>overlapping</em> geometries. This is because each geometry of the layers being unioned are paired up with one another creating unique combinations of each layer’s geometries.</p>
+<p><img src="img/union_output.png" width="400px" /></p>
+<p>For example, the <em>Aroostook County</em> polygon from <code>s1.sf</code> is paired with each annulus of the <code>s2.sf</code> layer creating four new geometries.</p>
+<div class="sourceCode" id="cb207"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb207-1"><a href="vector-operations-in-r.html#cb207-1" aria-hidden="true" tabindex="-1"></a>un1 <span class="sc">%&gt;%</span> <span class="fu">filter</span>(NAME <span class="sc">==</span> <span class="st">&quot;Aroostook&quot;</span>)</span></code></pre></div>
+<pre class="scroll1"><code>Simple feature collection with 4 features and 7 fields
+Geometry type: MULTIPOLYGON
+Dimension:     XY
+Bounding box:  xmin: 318980.1 ymin: 4788093 xmax: 596500.1 ymax: 5255569
+CRS:           +proj=utm +zone=19 +datum=NAD83 +units=m +no_defs +ellps=GRS80 +towgs84=0,0,0
+  distance      NAME Income  NoSchool NoSchoolSE IncomeSE   med
+1       20 Aroostook  21024 0.0133872 0.00140696  250.909 FALSE
+2       50 Aroostook  21024 0.0133872 0.00140696  250.909 FALSE
+3       80 Aroostook  21024 0.0133872 0.00140696  250.909 FALSE
+4      120 Aroostook  21024 0.0133872 0.00140696  250.909 FALSE
+                        geometry
+1 MULTIPOLYGON (((438980 4928...
+2 MULTIPOLYGON (((438980 4958...
+3 MULTIPOLYGON (((438980 4988...
+4 MULTIPOLYGON (((438980 5028...</code></pre>
+<p>The union operation creates all possible pairs of geometries between both input objects (i.e. 4 circle geometries from <code>s2.sf</code> times 16 county geometries from <code>s1.sf</code> for a total of 64 geometries).</p>
+</div>
+<div id="buffering-geometries" class="section level2 unnumbered">
+<h2>Buffering geometries</h2>
+<p>To buffer point, line or polygon geometries, use <code>sf</code>’s <code>st_buffer</code> function. For example, the following code chunk generates a 10 km (10,000 m) buffer around the polyline segments.</p>
+<div class="sourceCode" id="cb209"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb209-1"><a href="vector-operations-in-r.html#cb209-1" aria-hidden="true" tabindex="-1"></a>l1.sf.buf <span class="ot">&lt;-</span> <span class="fu">st_buffer</span>(l1.sf, <span class="at">dist =</span> <span class="dv">10000</span>)</span>
+<span id="cb209-2"><a href="vector-operations-in-r.html#cb209-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb209-3"><a href="vector-operations-in-r.html#cb209-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(l1.sf.buf) <span class="sc">+</span> <span class="fu">geom_sf</span>() <span class="sc">+</span> <span class="fu">coord_sf</span>(<span class="at">ndiscr =</span> <span class="dv">1000</span>)</span></code></pre></div>
+<p><img src="A04-Vector-Operations_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
+<p>To create a continuous polygon geometry (i.e. to eliminate overlapping buffers), we’ll follow up with one of the dissolving techniques introduced earlier in this tutorial.</p>
+<div class="sourceCode" id="cb210"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb210-1"><a href="vector-operations-in-r.html#cb210-1" aria-hidden="true" tabindex="-1"></a>l1.sf.buf.dis <span class="ot">&lt;-</span> l1.sf.buf <span class="sc">%&gt;%</span> </span>
+<span id="cb210-2"><a href="vector-operations-in-r.html#cb210-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>()  <span class="sc">%&gt;%</span> </span>
+<span id="cb210-3"><a href="vector-operations-in-r.html#cb210-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>()</span>
+<span id="cb210-4"><a href="vector-operations-in-r.html#cb210-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb210-5"><a href="vector-operations-in-r.html#cb210-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(l1.sf.buf.dis) <span class="sc">+</span> <span class="fu">geom_sf</span>() </span></code></pre></div>
+<p><img src="A04-Vector-Operations_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
+<p>If you want to preserve an attribute value (such as highway number), modify the above code as follows:</p>
+<div class="sourceCode" id="cb211"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb211-1"><a href="vector-operations-in-r.html#cb211-1" aria-hidden="true" tabindex="-1"></a>l1.sf.buf.dis <span class="ot">&lt;-</span> l1.sf.buf <span class="sc">%&gt;%</span> </span>
+<span id="cb211-2"><a href="vector-operations-in-r.html#cb211-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(Number)  <span class="sc">%&gt;%</span> </span>
+<span id="cb211-3"><a href="vector-operations-in-r.html#cb211-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>()</span>
+<span id="cb211-4"><a href="vector-operations-in-r.html#cb211-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb211-5"><a href="vector-operations-in-r.html#cb211-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(l1.sf.buf.dis, <span class="fu">aes</span>(<span class="at">fill=</span>Number) ) <span class="sc">+</span> <span class="fu">geom_sf</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>)</span></code></pre></div>
+<p><img src="A04-Vector-Operations_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="anatomy-of-simple-feature-objects.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="mapping-rates-in-r.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": false,
+"twitter": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": false,
+"google": false,
+"instapper": false
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf", "_main.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "section",
+"scroll_highlight": true
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

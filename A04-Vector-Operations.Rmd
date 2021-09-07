@@ -1,0 +1,294 @@
+# Vector operations in R 
+
+```{r, echo = FALSE}
+source("package_list.R")
+get.pckg.info("A04-Vector-Operations.Rmd")
+```
+
+
+```{css, echo=FALSE}
+.scroll1 {
+  max-height: 100px;
+  overflow-y: auto;
+  background-color: inherit;
+}
+```
+
+Earlier versions of this tutorial made use of a combination of packages including `raster` and `rgeos` to perform most vector operations highlighted in this exercise. Many of these vector operations can now be performed using the `sf` package. As such, all code chunks in this tutorial make use `sf` for most vector operations.
+
+We'll first load spatial objects used in this exercise. These include: A polygon layer that delineates Maine counties (USA), `s1.sf`; A polygon layer that delineates distances to Augusta (Maine) as concentric circles, `s2.sf`; A polyline layer of the interstate highway system that runs through Maine. These data are stored as `sf` objects.
+
+```{r}
+library(sf)
+
+z <- gzcon(url("https://github.com/mgimond/Spatial/raw/master/Data/Income_schooling_sf.rds"))
+s1.sf <- readRDS(z)
+
+z <- gzcon(url("https://github.com/mgimond/Spatial/raw/master/Data/Dist_sf.rds"))
+s2.sf <- readRDS(z)
+
+z <- gzcon(url("https://github.com/mgimond/Spatial/raw/master/Data/Highway_sf.rds"))
+l1.sf <- readRDS(z)
+```
+
+A map of the above layers is shown below. We'll use the `ggplot2` package too generate this and subsequent maps in this tutorial.
+
+```{r, out.width=450}
+library(ggplot2)
+
+ggplot() + 
+  geom_sf(data = s1.sf) +
+  geom_sf(data = s2.sf, alpha = 0.5, col = "red") +
+  geom_sf(data = l1.sf, col = "blue")
+```
+
+The attributes table for both polygon objects (`s1.sf` and `s2.sf`) are shown next. Note that each shape object has a unique set of attributes as well as a unique number of records
+
+```{r eval=T, echo=FALSE, results='asis', out.width=550, fig.cap="Attribute tables for the Maine spatial object, `s1.sf`, (left table) and the distance to Augusta spatial object, `s2.sf` (right table)."}
+library(gridExtra)
+tb.me  <- tableGrob( st_drop_geometry(s1.sf),  theme = ttheme_default(base_size = 11))
+tb.cir <- tableGrob( st_drop_geometry(s2.sf),  theme = ttheme_default(base_size = 11))
+tb <- gtable_combine(tb.me,tb.cir, along=1)
+grid.arrange(tb)
+```
+
+## Dissolving geometries {-}
+
+### Dissolving by contiguous shape {-}
+
+There are two different ways to dissolve geometries that share a common boundary. Both are presented next.
+
+#### Option 1 {-}
+
+To dissolve all polygons that share at least one line segment, simply pass the object name to `sf`'s `st_union` function while making sure that the `by_feature` option is set to `FALSE`. In this example, we dissolve all polygons to create a single outline of the state of Maine.
+
+```{r, fig.height=2.4, fig.align = "left"}
+ME <- st_union(s1.sf, by_feature = FALSE)
+
+ggplot(ME) + geom_sf(fill = "grey")
+```
+
+Note that the dissolving process removed all attributes from the original spatial object. You'll also note that `st_union` returns an `sfc` object even though the input object is `sf`. You can convert the output to an `sf` object using the `st_sf()` function as in `st_sf(ME)`.
+
+#### Option 2 {-}
+
+Another approach is to make use of the `dplyr` package and its `group_by`/`summarise` functions.
+
+```{r, fig.height=2.4, fig.align = "left"}
+library(dplyr)
+
+ME <- s1.sf %>% 
+  group_by() %>% 
+  summarise()
+
+ggplot(ME) + geom_sf(fill = "grey")
+```
+
+Note that this option will also remove any attributes associated with the input spatial object, however, the output remains an `sf` object (this differs from the `st_union` output).
+
+### Dissolving by attribute {-}
+
+You can also choose to dissolve based on an attribute's values. First, we'll create a new column whose value will be binary (TRUE/FALSE) depending on whether or not the county income is below the counties' median income value.
+
+```{r, fig.height=2.4, fig.align = "left"}
+s1.sf$med <- s1.sf$Income > median(s1.sf$Income)
+
+ggplot(s1.sf) + geom_sf(aes(fill = med))
+```
+
+Next, we'll dissolve all polygons by the `med` attribute. Any polygons sharing at least one line segment that have the same `med` value will be dissolved into a single polygon.
+
+Two approaches are presented here: one using `sf`'s `aggregate` function, the other using the `dplyr` approach.
+
+#### Option 1 {-}
+
+```{r}
+ME.inc <- aggregate(s1.sf["med"], by = list(diss = s1.sf$med), 
+                    FUN = function(x)x[1], do_union = TRUE)
+```
+
+This option will a new field defined in the `by = ` parameter (`diss` in this working example).
+
+```{r}
+st_drop_geometry(ME.inc) # Print the layer's attributes table
+```
+
+#### Option 2 {-}
+
+```{r}
+ME.inc <- s1.sf %>% 
+     group_by(med) %>% 
+     summarise() 
+```
+
+This option will limit the attributes to that/those listed in the `group_by` function.
+
+```{r}
+st_drop_geometry(ME.inc)
+```
+
+
+A map of the resulting layer follows.
+
+```{r, fig.height=2.4, fig.align = "left"}
+ggplot(ME.inc) + geom_sf(aes(fill = med))
+```
+
+The dissolving (aggregating) operation will, by default, eliminate all other attribute values. If you wish to summarize other attribute values along with the attribute used for dissolving, use the `dplyr` piping operation option. For example, to compute the median `Income` value for each of the below/above median income groups type the following:
+
+
+```{r, fig.height=2.4, fig.align = "left"}
+ME.inc <- s1.sf %>%  
+     group_by(med) %>%   
+     summarize(medinc = median(Income)) 
+
+ggplot(ME.inc) + geom_sf(aes(fill = medinc))
+```
+
+To view the attributes table with both the aggregate variable, `med`, and the median income variable, `Income`, type:
+
+```{r}
+st_drop_geometry(ME.inc)
+```
+
+## Subsetting by attribute {-}
+
+You can use conventional R dataframe manipulation operations to subset by attribute values. For example, to subset by county name (e.g. `Kennebec` county), type:
+
+```{r}
+ME.ken <- s1.sf[s1.sf$NAME == "Kennebec",]
+```
+
+You can, of course, use piping operations to perform the same task as follows:
+
+```{r}
+ME.ken <- s1.sf %>% 
+      filter(NAME == "Kennebec")
+```
+
+
+```{r,  fig.height=2.3}
+ggplot(ME.ken) + geom_sf()
+```
+
+To subset by a range of attribute values (e.g. subset by income values that are less than the median value), type:
+
+```{r,  fig.height=2.3}
+ME.inc2 <- s1.sf %>% 
+    filter(Income < median(Income))
+
+ggplot(ME.inc2) + geom_sf()
+```
+
+## Intersecting layers {-}
+
+To intersect two polygon objects, use `sf`'s `st_intersection` function.
+
+```{r,  fig.height=2.3}
+clp1 <- st_intersection(s1.sf, s2.sf)
+
+ggplot(clp1) + geom_sf()
+```
+
+`st_intersection` keeps all features that overlap along with their combined attributes. Note that new polygons are created which will increase the size of the attributes table beyond the size of the combined input attributes table.
+
+```{r tblgrb2, class.output="scroll1"}
+st_drop_geometry(clp1)
+```
+
+## Clipping spatial objects using other spatial objects {-}
+
+The `st_intersection` can also be used to clip an input layer using another layer's outer geometry boundaries as the "cookie cutter". But note that the latter must be limited to its outer boundaries which may require that it be run through a dissolving operation (shown earlier in this tutorial) to dissolve internal boundaries.
+
+To clip `s2.sf` using the outline of `s1.sf`, type:
+
+```{r,  fig.height=2.3}
+clp2 <- st_intersection(s2.sf, st_union(s1.sf)) 
+
+ggplot(clp2) + geom_sf()
+```
+
+The order the layers are passed to the `st_intersection` function matters. Flipping the input layer in the last example will clip `s1.sf` to `s2.sf`'s bounding polygon(s).
+
+```{r,  fig.height=2.3}
+clp2 <- st_intersection(s1.sf, st_union(s2.sf)) 
+
+ggplot(clp2) + geom_sf()
+```
+
+Line geometries can also be clipped to polygon features. The output will be a line object that falls within the polygons of the input polygon object. For example, to output all line segments that fall within the concentric distance circles of `s2.sf`, type:
+
+```{r}
+clp3 <- st_intersection(l1.sf, st_union(s2.sf))
+```
+
+A plot of the clipped line features is shown with the outline of the clipping feature.
+
+```{r,  fig.height=2.3}
+ggplot(clp3) + 
+  geom_sf(data = clp3) +
+  geom_sf(data = st_union(s2.sf), col = "red", fill = NA )
+```
+
+
+## Unioning layers {-}
+
+To union two polygon objects, use `sf`'s `st_union` function. For example,
+
+```{r, fig.height=2.4}
+un1  <- st_union(s2.sf,s1.sf)
+
+ggplot(un1) + geom_sf(aes(fill = NAME), alpha = 0.4)
+```
+
+This produces the following attributes table.
+
+```{r echo=FALSE,  class.output="scroll1" }
+print(st_drop_geometry(un1))
+```
+
+Note that the union operation can generate many *overlapping* geometries. This is because each geometry of the layers being unioned are paired up with one another creating unique combinations of each layer's geometries.
+
+```{r, out.width = "400px", echo = FALSE}
+knitr::include_graphics("img/union_output.png")
+```
+
+For example, the *Aroostook County* polygon from `s1.sf` is paired with each annulus of the `s2.sf` layer creating four new geometries.
+
+```{r class.output="scroll1" }
+un1 %>% filter(NAME == "Aroostook")
+```
+
+The union operation creates all possible pairs of geometries between both input objects (i.e. 4 circle geometries from `s2.sf` times 16 county geometries from `s1.sf` for a total of 64 geometries).
+
+## Buffering geometries {-}
+
+To buffer point, line or polygon geometries, use `sf`'s `st_buffer` function. For example, the following code chunk generates a 10 km (10,000 m) buffer around the polyline segments.
+
+```{r, fig.height=2.4}
+l1.sf.buf <- st_buffer(l1.sf, dist = 10000)
+
+ggplot(l1.sf.buf) + geom_sf() + coord_sf(ndiscr = 1000)
+```
+
+To create a continuous polygon geometry (i.e. to eliminate overlapping buffers), we'll follow up with one of the dissolving techniques introduced earlier in this tutorial.
+
+```{r, fig.height=2.4}
+l1.sf.buf.dis <- l1.sf.buf %>% 
+  group_by()  %>% 
+  summarise()
+
+ggplot(l1.sf.buf.dis) + geom_sf() 
+```
+
+If you want to preserve an attribute value (such as highway number), modify the above code as follows:
+
+```{r, fig.height=2.4}
+l1.sf.buf.dis <- l1.sf.buf %>% 
+    group_by(Number)  %>% 
+    summarise()
+
+ggplot(l1.sf.buf.dis, aes(fill=Number) ) + geom_sf(alpha = 0.5)
+```
+
+

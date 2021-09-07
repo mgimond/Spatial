@@ -1,0 +1,352 @@
+# References
+
+<div id="refs"></div>
+
+# (APPENDIX) Appendix {-}
+
+# Reading and writing spatial data in R
+
+```{r set-options, echo=FALSE, cache=FALSE}
+options(width = 100)
+```
+
+```{r, echo = FALSE}
+source("package_list.R")
+get.pckg.info("A01-Data-Manipulation.Rmd")
+```
+
+## Sample files for this exercise{-#app1_2}
+
+First, you will need to download some sample files from the github repository.  Make sure to set your R session folder to the directory where you will want to save the sample files before running the following code chunks.
+
+
+```{r results='hide'}
+download.file("http://github.com/mgimond/Spatial/raw/master/Data/Income_schooling.zip", 
+              destfile = "Income_schooling.zip" , mode='wb')
+unzip("Income_schooling.zip", exdir = ".")
+file.remove("Income_schooling.zip")
+
+```
+
+
+```{r}
+download.file("http://github.com/mgimond/Spatial/raw/master/Data/rail_inters.gpkg", 
+              destfile = "./rail_inters.gpkg", mode='wb')
+```
+
+```{r}
+download.file("http://github.com/mgimond/Spatial/raw/master/Data/elev.img",  
+              destfile = "./elev.img", mode='wb')               
+```
+
+## Introduction {-#app1_3}
+
+There are several different R spatial formats to choose from. Your choice of format will largely be dictated by the package(s) and or function(s) used in your workflow. A breakdown of formats and intended use are listed below.
+
+
+```{r echo=FALSE}
+my_tbl <- tibble::tribble(
+  ~`Data format`, ~`Used with...`, ~`Used in package...`,  ~`Used for...`, ~Comment,
+  "\`sf\`", "vector",  "\`sf\`, others", "visualizing, manipulating, querying", "This is likely to become the new spatial standard in R. Will also read from spatially enabled databases such as postgresSQL.",
+   "\`raster\`",  "raster", "\`raster\`, others", "visualizing, manipulating, spatial statistics", "This is the most versatile raster format",
+   "\`SpatialPoints*\` \n \`SpatialPolygons*\` \n \`SpatialLines*\` \n \`SpatialGrid*\`\n",  "vector and raster",  "\`sp\`, \`spdep\`",  "Visualizing, spatial statistics", "These are legacy formats. \`spdep\` now accepts  `sf` objects",
+    "\`ppp\` \`owin\`",   "vector",   "\`spatstat\`", "Point pattern analysis/statistics", NA,
+     "\`im\`",   "raster",   "\`spatstat\`", "Point pattern analysis/statistics", NA
+  )
+
+
+`%>%` <- magrittr::`%>%`
+kableExtra::kable_styling(
+        kableExtra::kable(my_tbl, digits = 3, row.names = FALSE, align = c("r", "c","c","l","l") ,
+        caption = NULL, format = "html"),
+        bootstrap_options = c("striped", "hover", "condensed"),
+        position = "left", full_width = FALSE)  %>% 
+  kableExtra::row_spec(0, color="white", background = "#6E6E6E", align="c") %>%  
+  kableExtra::footnote(number=c("The `spatial*` format includes SpatialPointsDataFrame, SpatialPolygonsDataFrame, SpatialLinesDataFrame, etc...") )
+
+```
+
+
+There is an attempt at standardizing the spatial format in the R ecosystem by adopting a well established set of spatial standards known as [simple features](https://en.wikipedia.org/wiki/Simple_Features). This effort results in a recently developed package called  [`sf`](https://r-spatial.github.io/sf/) [@sf]. It is therefore recommended that you work in an `sf` framework  when possible. As of this writing, most of the _basic_ data manipulation and visualization operations can be successfully conducted using `sf` spatial objects. 
+
+Some packages such as `spdep` and `spatstat` require specialized data object types. This tutorial will highlight some useful conversion functions for this purpose.
+
+
+
+## Creating spatial objects {-#app1_4}
+
+The following sections demonstrate different spatial data object creation strategies.
+
+### Reading a shapefile {-#app1_4_1}
+
+Shapefiles consist of many files sharing the same core filename and different suffixes (i.e. file extensions). For example, the sample shapefile used in this exercise consists of the following files:
+
+```{r echo= FALSE}
+list.files(".", "Income_schooling.*")
+```
+
+Note that the number of files associated with a shapefile can vary. `sf` only needs to be given the `*.shp` name. It will then know which other files to read into R such as projection information and attribute table.
+
+```{r results='hide'}
+library(sf)
+s.sf <- st_read("Income_schooling.shp")
+```
+
+Let's view the first few records in the spatial data object. 
+
+```{r}
+head(s.sf, n=4)  # List spatial object and the first 4 attribute records
+```
+
+Note that the `sf` object stores not only the geometry but the coordinate system information and attribute data as well. These will be explored later in this exercise.
+
+### Reading a GeoPackage {-#app1_4_2}
+
+A geopackage can store more than one layer. To list the layers available in the geopackage, type:
+
+```{r}
+st_layers("rail_inters.gpkg")
+```
+
+In this example, we have two separate layers: `Interstate` and `Rail`. We can extract each layer separately via the `layer=` parameter.
+
+```{r results='hide'}
+inter.sf <- st_read("rail_inters.gpkg", layer="Interstate")
+rail.sf  <- st_read("rail_inters.gpkg", layer="Rail")
+```
+
+### Reading a raster {-#app1_4_3}
+
+The `raster` package will read many different raster file formats such as geoTiff, Imagine and HDF5 just to name a few. To see a list of supported raster file formats simply run `rgdal::gdalDrivers()` at a command prompt. The `rgdal` package is normally installed with your installation of `raster`.
+
+In the following example, an _Imagine_ raster file is read into R.
+
+```{r}
+library(raster)
+elev.r <- raster("elev.img")
+```
+
+What sets a `raster` object apart from other R data file objects is its storage. By default, data files are loaded into memory but `raster` objects are not. This can be convenient when working with raster files too large for memory. But this comes at a performance cost. If your RAM is large enough to handle your raster file, it's best to load the entire dataset into memory.
+
+To check if the `elev.r` object is loaded into memory, run:
+
+```{r}
+inMemory(elev.r)
+```
+
+To force the raster into memory use `readAll()`:
+
+```{r}
+elev.r <- readAll(raster("elev.img"))
+```
+
+Let's check that the raster is indeed loaded into memory:
+
+```{r}
+inMemory(elev.r)
+```
+
+Now let's look at the raster's properties:
+
+```{r}
+elev.r
+```
+
+The raster object returns its grid dimensions (number of rows and columns), pixel size/resolution (in the layer's coordinate system units), geographic extent, native coordinate system (UTM NAD83 Zone 19 with units of meters) and min/max raster values.
+
+### Creating a spatial object from a data frame {-#app1_4_5}
+
+Geographic point data locations recorded in a spreadsheet can be converted to a spatial point object. Note that it's important that you specify the coordinate system used to record the coordinate pairs since such information is not stored in a data frame. In the following example, the coordinate values are recorded in a WGS 1984 geographic coordinate system (`crs = 4326`).
+
+```{r}
+# Create a simple dataframe with lat/long values
+df <- data.frame(lon = c(-68.783, -69.6458, -69.7653),
+                 lat = c(44.8109, 44.5521, 44.3235),
+                 Name= c("Bangor", "Waterville", "Augusta"))
+
+# Convert the dataframe to a spatial object. Note that the
+# crs= 4326 parameter assigns a WGS84 coordinate system to the 
+# spatial object
+p.sf <- st_as_sf(df, coords = c("lon", "lat"), crs = 4326) 
+p.sf  
+```
+
+### Geocoding street addresses {-#app1_4_6}
+
+The `ggmap` package offers a geocoding function called `mutate_geocode` which will take a table with physical addresses and create a new table with latitude and longitude values for those addresses. However, as of Spring 2019, `ggmap` will only access Google's API  which requires that a key be created on the Google Cloud (the latter will also require that a paid account be created with Google Cloud). The Data Science Toolkit, a previously free API alternative, has (as of May 2019) terminated its mapping services.
+
+The Google API option will not be covered here, instead, the reader is encouraged to read the detailed instructions on `ggmap`'s [Github page](https://github.com/dkahle/ggmap).
+
+For a free (but manual) alternative, you can use the US Census Bureau's [geocoding service](https://geocoding.geo.census.gov/geocoder/locations/addressbatch?form) for creating lat/lon values from US street addresses. This needs to be completed via their web interface and the resulting data table (a CSV file) would then need to be loaded into R as a data frame.
+
+## Converting from an `sf` object {-#app1_5}
+
+Packages such as `spdep` and `spatsat` currently do not support `sf` objects. The following sections demonstrate methods to convert from `sf` to other formats.
+
+### Converting an `sf` object to a `Spatial*` object (`spdep`/`sp`) {-#app1_5_1}
+
+The following code will convert point, polyline or polygon features to a `spatial*` object. While the current version of `spdep` will now accept `sf` objects, converting to `spatial*` objects will be necessary with legacy `spdep` packages. In this example, an `sf` polygon feature is converted to a `SpatialPolygonsDataFrame` object.
+
+```{r}
+s.sp <- as(s.sf, "Spatial")
+class(s.sp)
+```
+
+Note that if you wish to create a `Spatial*` object directly from a shapefile (and bypass the `sf` object creation), you could run the `maptools` function `readShapeSpatial("Income_schooling.shp")` or `rgdal`'s `readORG(".","Income_schooling.shp")`. However, this former _strips_ the coordinate system information from the spatial object.
+
+### Converting an `sf` polygon object to an `owin` object {-#app1_5_2}
+
+The `spatstat` package is normally used to analyze point patterns however, in most cases, the study extent needs to be explicitly defined by a polygon object. The polygon should be of class `owin`. Conversion from `sf` to `owin` requires the use of the `maptools` package.
+
+Note that the attribute table gets stripped from the polygon data. This is usually fine given that the only reason for converting a polygon to an `owin` format is for delineating the study boundary.
+
+```{r}
+library(maptools)
+s.owin <- as(s.sp, "owin")
+class(s.owin)
+```
+
+### Converting an `sf` point object to a `ppp` object {-#app1_5_3}
+
+As of this writing, it seems that you need to first convert the `sf` object to a `SpatialPoints*` before creating a `ppp` object as shown in the following code chunk. Note that the `maptools` package is required for this step.
+
+```{r error=TRUE}
+p.sp  <- as(p.sf, "Spatial")  # Create Spatial* object
+p.ppp <- as(p.sp, "ppp")      # Create ppp object
+```
+
+
+A `ppp` object is associated with the `spatstat` package which is designed to work off of a projected (cartesian) coordinate system. The error message reminds us that a geographic coordinate system (i.e. one that uses angular measurements such as latitude/longitude) cannot be used with this package. If you encounter this error, you will need to project the `p.sp` or `ps.f` layer to a projected coordinate system.
+
+In this example, we'll project the `p.sf` object to a UTM coordinate system (`epsg=32619`). Coordinate systems in R are treated in a separate appendix. 
+
+```{r}
+p.sf.utm <- st_transform(p.sf, 32619) # project from geographic to UTM
+p.sp  <- as(p.sf.utm, "Spatial")      # Create Spatial* object
+p.ppp <- as(p.sp, "ppp")              # Create ppp object
+class(p.ppp)
+```
+
+Note that if the point layer has an attribute table, its attributes will be converted to `ppp` _marks_.
+
+### Converting a `raster` object to an `im` object (`spatstat`) {-#app1_5_4}
+
+The `maptools` package will readily convert a `raster` object to an `im` object using the `as.im.RasterLayer()` function.
+
+```{r}
+elev.im <- as.im.RasterLayer(elev.r) # From the maptools package
+class(elev.im)
+```
+
+## Converting to an `sf` object {-#app1_6}
+
+All aforementioned spatial formats, except `owin`, can be coerced to an `sf` object via the `st_as_sf` function. for example:
+
+```{r results='hide'}
+st_as_sf(p.ppp)  # For converting a ppp object to an sf object
+st_as_sf(s.sp)   # For converting a Spatial* object to an sf object
+```
+
+## Dissecting the `sf` file object {-#app1_7}
+
+```{r}
+head(s.sf,3)
+```
+
+The first line of output gives us the geometry type, `MULTIPOLYGON`,  a multi-polygon data type. This is also referred to as a multipart polygon. A single-part `sf` polygon object will adopt the `POLYGON` geometry.
+
+The next few lines of output give us the layer's bounding extent in the layer's native coordinate system units. You can extract the extent via the `extent()` function as in `extent(s.sf)`.
+
+The following code chunk can be used to extract addition coordinate information from the data. 
+
+```{r eval = FALSE}
+st_crs(s.sf)
+```
+
+Depending on the version of the `PROJ` library used by `sf`, you can get two different outputs. If your version of `sf` is built with a version of `PROJ` older than `6.0`, the output will consist of an **epsg** code (when available) and a **proj4** string as follows:
+
+```{r eval = FALSE}
+Coordinate Reference System:
+  EPSG: 26919 
+  proj4string: "+proj=utm +zone=19 +datum=NAD83 +units=m +no_defs"
+```
+
+
+If your version of `sf` is built with a version of `PROJ` `6.0` or greater, the output will consist of a user defined CS definition (e.g. an **epsg** code), if  available, and a *Well Known Text* (WKT) formatted coordinate definition that consists of a series of `[ ]` tags as follows:
+
+```{r echo = FALSE}
+st_crs(s.sf)
+```
+
+The WKT format will usually start with a `PROJCRS[...]` tag for a projected coordinate system, or a `GEOGCRS[...]` tag for a geographic coordinate system. More information on coordinate systems in R can be found in  [the appendix](https://mgimond.github.io/Spatial/A06-Coordinate-Systems.html).
+
+What remains of the `sf` summary output is the first few records of the attribute table. You can extract the object's table to a dedicated data frame via:
+
+```{r}
+s.df <- data.frame(s.sf)
+class(s.df)
+head(s.df, 5)
+```
+
+The above chunk will also create a geometry column. This column is somewhat unique in that it stores its contents as a **list** of geometry coordinate pairs (polygon vertex coordinate values in this example).
+
+```{r}
+str(s.df)
+```
+
+You can also opt to remove this column prior to creating the dataframe as follows:
+
+```{r}
+s.nogeom.df <- st_set_geometry(s.sf, NULL) 
+class(s.nogeom.df)
+head(s.nogeom.df, 5)
+```
+
+## Exporting to different data file formats {-#app1_8}
+
+You can export an `sf` object to many different spatial file formats such as a shapefile or a geopackage.
+
+```{r eval=FALSE}
+st_write(s.sf, "shapefile_out.shp", driver="ESRI Shapefile")  # create to a shapefile 
+st_write(s.sf, " s.gpkg", driver="GPKG")  # Create a geopackage file
+```
+
+You can see a list of writable vector formats via a call to `subset(rgdal::ogrDrivers(), write == TRUE)`. Only as subset of the output is shown in the following example. Note that supported file formats will differ from platform to platform.
+
+```{r echo=2}
+tail(head(
+  subset(rgdal::ogrDrivers(), write == TRUE)
+, 16), 7)
+
+```
+
+
+The value in the `name` column is the driver name used in the `st_write()` function.
+
+To export a raster to a data file, use `writeRaster()` from the `raster` package.
+
+```{r eval=FALSE}
+writeRaster(elev.r, "elev_out.tif", format="GTiff" ) # Create a geoTiff file
+writeRaster(elev.r, "elev_out.img", format="HFA" )  # Create an Imagine raster file
+```
+
+You can see a list of writable raster formats via a call to `subset(rgdal::gdalDrivers(), create == TRUE)`. 
+
+```{r echo=2}
+tail(head(
+  subset(rgdal::gdalDrivers(), create == TRUE)
+, 16), 7)
+
+```
+
+The value in the `name` column is the format parameter name used in the `writeRaster()` function.
+
+```{r remove_temp_files, echo = FALSE}
+files.rm <- dir(".", "Income_schooling.*")
+file.remove(file.path(".", files.rm ))
+
+file.remove(file.path(".", "elev.img" ))
+
+file.remove(file.path(".", "rail_inters.gpkg" ))
+```
+
