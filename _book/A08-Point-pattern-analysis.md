@@ -121,7 +121,7 @@ The [first appendix](https://mgimond.github.io/Spatial/reading-and-writing-spati
     # Load an MA.shp polygon shapefile 
     s  <- st_read("MA.shp")
     w  <- as.owin(s)
-    w.km <- rescale(w, 1000)) 
+    w.km <- rescale(w, 1000)
 
     # Load a starbucks.shp point feature shapefile
     s  <- st_read("starbucks.shp")  
