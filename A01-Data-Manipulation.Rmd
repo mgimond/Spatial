@@ -21,7 +21,7 @@ First, you will need to download some sample files from the github repository.  
 
 
 ```{r results='hide'}
-download.file("http://github.com/mgimond/Spatial/raw/master/Data/Income_schooling.zip", 
+download.file("https://github.com/mgimond/Spatial/raw/main/Data/Income_schooling.zip", 
               destfile = "Income_schooling.zip" , mode='wb')
 unzip("Income_schooling.zip", exdir = ".")
 file.remove("Income_schooling.zip")
@@ -30,12 +30,12 @@ file.remove("Income_schooling.zip")
 
 
 ```{r}
-download.file("http://github.com/mgimond/Spatial/raw/master/Data/rail_inters.gpkg", 
+download.file("https://github.com/mgimond/Spatial/raw/main/Data/rail_inters.gpkg", 
               destfile = "./rail_inters.gpkg", mode='wb')
 ```
 
 ```{r}
-download.file("http://github.com/mgimond/Spatial/raw/master/Data/elev.img",  
+download.file("https://github.com/mgimond/Spatial/raw/main/Data/elev.img",  
               destfile = "./elev.img", mode='wb')               
 ```
 
@@ -341,8 +341,8 @@ tail(head(
 
 The value in the `name` column is the format parameter name used in the `writeRaster()` function.
 
-```{r remove_temp_files, echo = FALSE}
-files.rm <- dir(".", "Income_schooling.*")
+```{r remove_temp_files, echo = FALSE, results='hide', message=FALSE}
+files.rm <- dir(".", "Income_schooling.*") 
 file.remove(file.path(".", files.rm ))
 
 file.remove(file.path(".", "elev.img" ))

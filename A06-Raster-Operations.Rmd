@@ -10,7 +10,7 @@ get.pckg.info("A06-Raster-Operations.Rmd")
 We'll first load spatial objects used in this exercise from a remote website: an elevation `raster` object, a bathymetry `raster` object and a continents `sf` vector object 
 
 ```{r}
-load(url("http://github.com/mgimond/Spatial/raw/master/Data/raster.RData"))
+load(url("https://github.com/mgimond/Spatial/raw/main/Data/raster.RData"))
 ```
 
 Both rasters cover the entire globe. Elevation below mean sea level are encoded as `0` in the elevation raster. Likewise, bathymetry values above mean sea level are encoded as `0`.

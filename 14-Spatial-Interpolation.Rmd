@@ -7,11 +7,11 @@ library(rgdal)
 library(tmap)
 
 # Load precipitation point data
-z <- gzcon(url("http://github.com/mgimond/Spatial/raw/master/Data/precip.rds"))
+z <- gzcon(url("https://github.com/mgimond/Spatial/raw/main/Data/precip.rds"))
 P <- readRDS(z)
 
 # Load extent data
-z <- gzcon(url("http://github.com/mgimond/Spatial/raw/master/Data/texas.rds"))
+z <- gzcon(url("https://github.com/mgimond/Spatial/raw/main/Data/texas.rds"))
 W <- readRDS(z)
 
 # Force the point object extent to that of Texas

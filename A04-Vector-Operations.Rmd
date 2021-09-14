@@ -21,13 +21,13 @@ We'll first load spatial objects used in this exercise. These include: A polygon
 ```{r}
 library(sf)
 
-z <- gzcon(url("https://github.com/mgimond/Spatial/raw/master/Data/Income_schooling_sf.rds"))
+z <- gzcon(url("https://github.com/mgimond/Spatial/raw/main/Data/Income_schooling_sf.rds"))
 s1.sf <- readRDS(z)
 
-z <- gzcon(url("https://github.com/mgimond/Spatial/raw/master/Data/Dist_sf.rds"))
+z <- gzcon(url("https://github.com/mgimond/Spatial/raw/main/Data/Dist_sf.rds"))
 s2.sf <- readRDS(z)
 
-z <- gzcon(url("https://github.com/mgimond/Spatial/raw/master/Data/Highway_sf.rds"))
+z <- gzcon(url("https://github.com/mgimond/Spatial/raw/main/Data/Highway_sf.rds"))
 l1.sf <- readRDS(z)
 ```
 

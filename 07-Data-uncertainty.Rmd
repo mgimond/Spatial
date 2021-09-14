@@ -3,7 +3,7 @@
 ```{r, message=FALSE,warning=FALSE,echo=FALSE}
 library(sf)
 
-load(url("http://github.com/mgimond/Spatial/raw/master/Data/moransI.RData"))
+load(url("https://github.com/mgimond/Spatial/raw/main/Data/moransI.RData"))
 ```
 
 ## Introduction

@@ -12,7 +12,7 @@ For a basic theoretical treatise on point pattern analysis (PPA) the reader is e
 Data used in the following exercises can be loaded into your current R session by running the following chunk of code.
 
 ```{r}
-load(url("http://github.com/mgimond/Spatial/raw/master/Data/ppa.RData"))
+load(url("https://github.com/mgimond/Spatial/raw/main/Data/ppa.RData"))
 ```
 
 The data objects consist of three spatial data layers:

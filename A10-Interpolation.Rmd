@@ -12,11 +12,11 @@ library(rgdal)
 library(tmap)
 
 # Load precipitation data
-z <- gzcon(url("http://github.com/mgimond/Spatial/raw/master/Data/precip.rds"))
+z <- gzcon(url("https://github.com/mgimond/Spatial/raw/main/Data/precip.rds"))
 P <- readRDS(z)
 
 # Load Texas boudary map
-z <- gzcon(url("http://github.com/mgimond/Spatial/raw/master/Data/texas.rds"))
+z <- gzcon(url("https://github.com/mgimond/Spatial/raw/main/Data/texas.rds"))
 W <- readRDS(z)
 
 # Replace point boundary extent with that of Texas

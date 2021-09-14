@@ -15,7 +15,7 @@ Data used in the following exercises can be loaded into your current R session b
 ```{r}
 library(sf)
 
-load(url("http://github.com/mgimond/Spatial/raw/master/Data/Sample1.RData"))
+load(url("https://github.com/mgimond/Spatial/raw/main/Data/Sample1.RData"))
 ```
 
 The data objects consist of five layers: an elevation raster (`elev.r`), an interstate polyline layer (`inter.sf`), a point cities layer (p.sf), a railroad polyline layer (`rail.sf`) and a Maine counties polygon layer (`s.sf`). All vector layers are `sf` objects. All layers are in a UTM/NAD83 projection (Zone 19N) except `p.sf` which is in a WGS 1984 geographic coordinate system.

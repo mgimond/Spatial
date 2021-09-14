@@ -12,7 +12,7 @@ For a basic theoretical treatise on spatial autocorrelation the reader is encour
 Data used in the following exercises can be loaded into your current R session by running the following chunk of code.
 
 ```{r}
-load(url("http://github.com/mgimond/Spatial/raw/master/Data/moransI.RData"))
+load(url("https://github.com/mgimond/Spatial/raw/main/Data/moransI.RData"))
 ```
 
 The data object consists of a `SpatialPolygonsDataFrame` vector layer, `s1`, representing income and education data aggregated at the county level for the state of Maine.

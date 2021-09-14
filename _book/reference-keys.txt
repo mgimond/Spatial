@@ -182,7 +182,7 @@ raster-data-file-formats
 imagine
 geotiff
 file-geodatabase-1
-managing-gis-files
+managing-gis-files-in-arcgis
 managing-a-map-project-in-arcgis
 symbolizing-features
 color

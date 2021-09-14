@@ -22,7 +22,7 @@ There has been a significant change in the `PROJ` library since the introduction
 Data used in this exercise can be loaded into your current R session by running the following chunk of code.
 
 ```{r}
-load(url("http://github.com/mgimond/Spatial/raw/master/Data/Sample1.RData"))
+load(url("https://github.com/mgimond/Spatial/raw/main/Data/Sample1.RData"))
 ```
 
 Only two data layers will be used in this exercise: a Maine counties polygon layer (`s.sf`) and an elevation raster layer (`elev.r`). The former is in an `sf` format and the latter is in a `raster` format. You can remove the other data objects from your environment via:
