@@ -198,7 +198,7 @@ div.csl-indent {
 <li class="chapter" data-level="3.1.1" data-path="gis-data-management.html"><a href="gis-data-management.html#vector-data-file-formats"><i class="fa fa-check"></i><b>3.1.1</b> Vector Data File Formats</a></li>
 <li class="chapter" data-level="3.1.2" data-path="gis-data-management.html"><a href="gis-data-management.html#raster-data-file-formats"><i class="fa fa-check"></i><b>3.1.2</b> Raster Data File Formats</a></li>
 </ul></li>
-<li class="chapter" data-level="3.2" data-path="gis-data-management.html"><a href="gis-data-management.html#managing-gis-files"><i class="fa fa-check"></i><b>3.2</b> Managing GIS Files</a></li>
+<li class="chapter" data-level="3.2" data-path="gis-data-management.html"><a href="gis-data-management.html#managing-gis-files-in-arcgis"><i class="fa fa-check"></i><b>3.2</b> Managing GIS Files in ArcGIS</a></li>
 <li class="chapter" data-level="3.3" data-path="gis-data-management.html"><a href="gis-data-management.html#managing-a-map-project-in-arcgis"><i class="fa fa-check"></i><b>3.3</b> Managing a Map Project in ArcGIS</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="symbolizing-features.html"><a href="symbolizing-features.html"><i class="fa fa-check"></i><b>4</b> Symbolizing features</a>
@@ -645,13 +645,13 @@ maptools
 <div id="app1_2" class="section level2 unnumbered">
 <h2>Sample files for this exercise</h2>
 <p>First, you will need to download some sample files from the github repository. Make sure to set your R session folder to the directory where you will want to save the sample files before running the following code chunks.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="reading-and-writing-spatial-data-in-r.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">download.file</span>(<span class="st">&quot;http://github.com/mgimond/Spatial/raw/master/Data/Income_schooling.zip&quot;</span>, </span>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="reading-and-writing-spatial-data-in-r.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">download.file</span>(<span class="st">&quot;https://github.com/mgimond/Spatial/raw/main/Data/Income_schooling.zip&quot;</span>, </span>
 <span id="cb6-2"><a href="reading-and-writing-spatial-data-in-r.html#cb6-2" aria-hidden="true" tabindex="-1"></a>              <span class="at">destfile =</span> <span class="st">&quot;Income_schooling.zip&quot;</span> , <span class="at">mode=</span><span class="st">&#39;wb&#39;</span>)</span>
 <span id="cb6-3"><a href="reading-and-writing-spatial-data-in-r.html#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">unzip</span>(<span class="st">&quot;Income_schooling.zip&quot;</span>, <span class="at">exdir =</span> <span class="st">&quot;.&quot;</span>)</span>
 <span id="cb6-4"><a href="reading-and-writing-spatial-data-in-r.html#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="fu">file.remove</span>(<span class="st">&quot;Income_schooling.zip&quot;</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="reading-and-writing-spatial-data-in-r.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">download.file</span>(<span class="st">&quot;http://github.com/mgimond/Spatial/raw/master/Data/rail_inters.gpkg&quot;</span>, </span>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="reading-and-writing-spatial-data-in-r.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">download.file</span>(<span class="st">&quot;https://github.com/mgimond/Spatial/raw/main/Data/rail_inters.gpkg&quot;</span>, </span>
 <span id="cb7-2"><a href="reading-and-writing-spatial-data-in-r.html#cb7-2" aria-hidden="true" tabindex="-1"></a>              <span class="at">destfile =</span> <span class="st">&quot;./rail_inters.gpkg&quot;</span>, <span class="at">mode=</span><span class="st">&#39;wb&#39;</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="reading-and-writing-spatial-data-in-r.html#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">download.file</span>(<span class="st">&quot;http://github.com/mgimond/Spatial/raw/master/Data/elev.img&quot;</span>,  </span>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="reading-and-writing-spatial-data-in-r.html#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">download.file</span>(<span class="st">&quot;https://github.com/mgimond/Spatial/raw/main/Data/elev.img&quot;</span>,  </span>
 <span id="cb8-2"><a href="reading-and-writing-spatial-data-in-r.html#cb8-2" aria-hidden="true" tabindex="-1"></a>              <span class="at">destfile =</span> <span class="st">&quot;./elev.img&quot;</span>, <span class="at">mode=</span><span class="st">&#39;wb&#39;</span>)               </span></code></pre></div>
 </div>
 <div id="app1_3" class="section level2 unnumbered">
@@ -1046,9 +1046,6 @@ PROJCRS[&quot;NAD83 / UTM zone 19N&quot;,
 55 GTiff                              GeoTIFF   TRUE  TRUE     TRUE
 56   GTX             NOAA Vertical Datum .GTX   TRUE FALSE     TRUE</code></pre>
 <p>The value in the <code>name</code> column is the format parameter name used in the <code>writeRaster()</code> function.</p>
-<pre><code>[1] TRUE TRUE TRUE TRUE TRUE TRUE</code></pre>
-<pre><code>[1] TRUE</code></pre>
-<pre><code>[1] TRUE</code></pre>
 
 </div>
 </div>

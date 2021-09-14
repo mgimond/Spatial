@@ -198,7 +198,7 @@ div.csl-indent {
 <li class="chapter" data-level="3.1.1" data-path="gis-data-management.html"><a href="gis-data-management.html#vector-data-file-formats"><i class="fa fa-check"></i><b>3.1.1</b> Vector Data File Formats</a></li>
 <li class="chapter" data-level="3.1.2" data-path="gis-data-management.html"><a href="gis-data-management.html#raster-data-file-formats"><i class="fa fa-check"></i><b>3.1.2</b> Raster Data File Formats</a></li>
 </ul></li>
-<li class="chapter" data-level="3.2" data-path="gis-data-management.html"><a href="gis-data-management.html#managing-gis-files"><i class="fa fa-check"></i><b>3.2</b> Managing GIS Files</a></li>
+<li class="chapter" data-level="3.2" data-path="gis-data-management.html"><a href="gis-data-management.html#managing-gis-files-in-arcgis"><i class="fa fa-check"></i><b>3.2</b> Managing GIS Files in ArcGIS</a></li>
 <li class="chapter" data-level="3.3" data-path="gis-data-management.html"><a href="gis-data-management.html#managing-a-map-project-in-arcgis"><i class="fa fa-check"></i><b>3.3</b> Managing a Map Project in ArcGIS</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="symbolizing-features.html"><a href="symbolizing-features.html"><i class="fa fa-check"></i><b>4</b> Symbolizing features</a>
@@ -631,23 +631,23 @@ ggplot2
 </style>
 <p>Earlier versions of this tutorial made use of a combination of packages including <code>raster</code> and <code>rgeos</code> to perform most vector operations highlighted in this exercise. Many of these vector operations can now be performed using the <code>sf</code> package. As such, all code chunks in this tutorial make use <code>sf</code> for most vector operations.</p>
 <p>We’ll first load spatial objects used in this exercise. These include: A polygon layer that delineates Maine counties (USA), <code>s1.sf</code>; A polygon layer that delineates distances to Augusta (Maine) as concentric circles, <code>s2.sf</code>; A polyline layer of the interstate highway system that runs through Maine. These data are stored as <code>sf</code> objects.</p>
-<div class="sourceCode" id="cb179"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb179-1"><a href="vector-operations-in-r.html#cb179-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
-<span id="cb179-2"><a href="vector-operations-in-r.html#cb179-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb179-3"><a href="vector-operations-in-r.html#cb179-3" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="fu">gzcon</span>(<span class="fu">url</span>(<span class="st">&quot;https://github.com/mgimond/Spatial/raw/master/Data/Income_schooling_sf.rds&quot;</span>))</span>
-<span id="cb179-4"><a href="vector-operations-in-r.html#cb179-4" aria-hidden="true" tabindex="-1"></a>s1.sf <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(z)</span>
-<span id="cb179-5"><a href="vector-operations-in-r.html#cb179-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb179-6"><a href="vector-operations-in-r.html#cb179-6" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="fu">gzcon</span>(<span class="fu">url</span>(<span class="st">&quot;https://github.com/mgimond/Spatial/raw/master/Data/Dist_sf.rds&quot;</span>))</span>
-<span id="cb179-7"><a href="vector-operations-in-r.html#cb179-7" aria-hidden="true" tabindex="-1"></a>s2.sf <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(z)</span>
-<span id="cb179-8"><a href="vector-operations-in-r.html#cb179-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb179-9"><a href="vector-operations-in-r.html#cb179-9" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="fu">gzcon</span>(<span class="fu">url</span>(<span class="st">&quot;https://github.com/mgimond/Spatial/raw/master/Data/Highway_sf.rds&quot;</span>))</span>
-<span id="cb179-10"><a href="vector-operations-in-r.html#cb179-10" aria-hidden="true" tabindex="-1"></a>l1.sf <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(z)</span></code></pre></div>
+<div class="sourceCode" id="cb176"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb176-1"><a href="vector-operations-in-r.html#cb176-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
+<span id="cb176-2"><a href="vector-operations-in-r.html#cb176-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb176-3"><a href="vector-operations-in-r.html#cb176-3" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="fu">gzcon</span>(<span class="fu">url</span>(<span class="st">&quot;https://github.com/mgimond/Spatial/raw/main/Data/Income_schooling_sf.rds&quot;</span>))</span>
+<span id="cb176-4"><a href="vector-operations-in-r.html#cb176-4" aria-hidden="true" tabindex="-1"></a>s1.sf <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(z)</span>
+<span id="cb176-5"><a href="vector-operations-in-r.html#cb176-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb176-6"><a href="vector-operations-in-r.html#cb176-6" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="fu">gzcon</span>(<span class="fu">url</span>(<span class="st">&quot;https://github.com/mgimond/Spatial/raw/main/Data/Dist_sf.rds&quot;</span>))</span>
+<span id="cb176-7"><a href="vector-operations-in-r.html#cb176-7" aria-hidden="true" tabindex="-1"></a>s2.sf <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(z)</span>
+<span id="cb176-8"><a href="vector-operations-in-r.html#cb176-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb176-9"><a href="vector-operations-in-r.html#cb176-9" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="fu">gzcon</span>(<span class="fu">url</span>(<span class="st">&quot;https://github.com/mgimond/Spatial/raw/main/Data/Highway_sf.rds&quot;</span>))</span>
+<span id="cb176-10"><a href="vector-operations-in-r.html#cb176-10" aria-hidden="true" tabindex="-1"></a>l1.sf <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(z)</span></code></pre></div>
 <p>A map of the above layers is shown below. We’ll use the <code>ggplot2</code> package too generate this and subsequent maps in this tutorial.</p>
-<div class="sourceCode" id="cb180"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb180-1"><a href="vector-operations-in-r.html#cb180-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb180-2"><a href="vector-operations-in-r.html#cb180-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb180-3"><a href="vector-operations-in-r.html#cb180-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span> </span>
-<span id="cb180-4"><a href="vector-operations-in-r.html#cb180-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> s1.sf) <span class="sc">+</span></span>
-<span id="cb180-5"><a href="vector-operations-in-r.html#cb180-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> s2.sf, <span class="at">alpha =</span> <span class="fl">0.5</span>, <span class="at">col =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
-<span id="cb180-6"><a href="vector-operations-in-r.html#cb180-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> l1.sf, <span class="at">col =</span> <span class="st">&quot;blue&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb177"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb177-1"><a href="vector-operations-in-r.html#cb177-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb177-2"><a href="vector-operations-in-r.html#cb177-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb177-3"><a href="vector-operations-in-r.html#cb177-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span> </span>
+<span id="cb177-4"><a href="vector-operations-in-r.html#cb177-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> s1.sf) <span class="sc">+</span></span>
+<span id="cb177-5"><a href="vector-operations-in-r.html#cb177-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> s2.sf, <span class="at">alpha =</span> <span class="fl">0.5</span>, <span class="at">col =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
+<span id="cb177-6"><a href="vector-operations-in-r.html#cb177-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> l1.sf, <span class="at">col =</span> <span class="st">&quot;blue&quot;</span>)</span></code></pre></div>
 <p><img src="A04-Vector-Operations_files/figure-html/unnamed-chunk-4-1.png" width="450" /></p>
 <p>The attributes table for both polygon objects (<code>s1.sf</code> and <code>s2.sf</code>) are shown next. Note that each shape object has a unique set of attributes as well as a unique number of records</p>
 <div class="figure"><span style="display:block;" id="fig:unnamed-chunk-5"></span>
@@ -664,22 +664,22 @@ Figure 2.6: Attribute tables for the Maine spatial object, <code>s1.sf</code>, (
 <div id="option-1" class="section level4 unnumbered">
 <h4>Option 1</h4>
 <p>To dissolve all polygons that share at least one line segment, simply pass the object name to <code>sf</code>’s <code>st_union</code> function while making sure that the <code>by_feature</code> option is set to <code>FALSE</code>. In this example, we dissolve all polygons to create a single outline of the state of Maine.</p>
-<div class="sourceCode" id="cb181"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb181-1"><a href="vector-operations-in-r.html#cb181-1" aria-hidden="true" tabindex="-1"></a>ME <span class="ot">&lt;-</span> <span class="fu">st_union</span>(s1.sf, <span class="at">by_feature =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb181-2"><a href="vector-operations-in-r.html#cb181-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb181-3"><a href="vector-operations-in-r.html#cb181-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(ME) <span class="sc">+</span> <span class="fu">geom_sf</span>(<span class="at">fill =</span> <span class="st">&quot;grey&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb178"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb178-1"><a href="vector-operations-in-r.html#cb178-1" aria-hidden="true" tabindex="-1"></a>ME <span class="ot">&lt;-</span> <span class="fu">st_union</span>(s1.sf, <span class="at">by_feature =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb178-2"><a href="vector-operations-in-r.html#cb178-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb178-3"><a href="vector-operations-in-r.html#cb178-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(ME) <span class="sc">+</span> <span class="fu">geom_sf</span>(<span class="at">fill =</span> <span class="st">&quot;grey&quot;</span>)</span></code></pre></div>
 <p><img src="A04-Vector-Operations_files/figure-html/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto auto auto 0;" /></p>
 <p>Note that the dissolving process removed all attributes from the original spatial object. You’ll also note that <code>st_union</code> returns an <code>sfc</code> object even though the input object is <code>sf</code>. You can convert the output to an <code>sf</code> object using the <code>st_sf()</code> function as in <code>st_sf(ME)</code>.</p>
 </div>
 <div id="option-2" class="section level4 unnumbered">
 <h4>Option 2</h4>
 <p>Another approach is to make use of the <code>dplyr</code> package and its <code>group_by</code>/<code>summarise</code> functions.</p>
-<div class="sourceCode" id="cb182"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb182-1"><a href="vector-operations-in-r.html#cb182-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb182-2"><a href="vector-operations-in-r.html#cb182-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb182-3"><a href="vector-operations-in-r.html#cb182-3" aria-hidden="true" tabindex="-1"></a>ME <span class="ot">&lt;-</span> s1.sf <span class="sc">%&gt;%</span> </span>
-<span id="cb182-4"><a href="vector-operations-in-r.html#cb182-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb182-5"><a href="vector-operations-in-r.html#cb182-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>()</span>
-<span id="cb182-6"><a href="vector-operations-in-r.html#cb182-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb182-7"><a href="vector-operations-in-r.html#cb182-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(ME) <span class="sc">+</span> <span class="fu">geom_sf</span>(<span class="at">fill =</span> <span class="st">&quot;grey&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb179"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb179-1"><a href="vector-operations-in-r.html#cb179-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb179-2"><a href="vector-operations-in-r.html#cb179-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb179-3"><a href="vector-operations-in-r.html#cb179-3" aria-hidden="true" tabindex="-1"></a>ME <span class="ot">&lt;-</span> s1.sf <span class="sc">%&gt;%</span> </span>
+<span id="cb179-4"><a href="vector-operations-in-r.html#cb179-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb179-5"><a href="vector-operations-in-r.html#cb179-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>()</span>
+<span id="cb179-6"><a href="vector-operations-in-r.html#cb179-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb179-7"><a href="vector-operations-in-r.html#cb179-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(ME) <span class="sc">+</span> <span class="fu">geom_sf</span>(<span class="at">fill =</span> <span class="st">&quot;grey&quot;</span>)</span></code></pre></div>
 <p><img src="A04-Vector-Operations_files/figure-html/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto auto auto 0;" /></p>
 <p>Note that this option will also remove any attributes associated with the input spatial object, however, the output remains an <code>sf</code> object (this differs from the <code>st_union</code> output).</p>
 </div>
@@ -687,46 +687,46 @@ Figure 2.6: Attribute tables for the Maine spatial object, <code>s1.sf</code>, (
 <div id="dissolving-by-attribute" class="section level3 unnumbered">
 <h3>Dissolving by attribute</h3>
 <p>You can also choose to dissolve based on an attribute’s values. First, we’ll create a new column whose value will be binary (TRUE/FALSE) depending on whether or not the county income is below the counties’ median income value.</p>
-<div class="sourceCode" id="cb183"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb183-1"><a href="vector-operations-in-r.html#cb183-1" aria-hidden="true" tabindex="-1"></a>s1.sf<span class="sc">$</span>med <span class="ot">&lt;-</span> s1.sf<span class="sc">$</span>Income <span class="sc">&gt;</span> <span class="fu">median</span>(s1.sf<span class="sc">$</span>Income)</span>
-<span id="cb183-2"><a href="vector-operations-in-r.html#cb183-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb183-3"><a href="vector-operations-in-r.html#cb183-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(s1.sf) <span class="sc">+</span> <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">fill =</span> med))</span></code></pre></div>
+<div class="sourceCode" id="cb180"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb180-1"><a href="vector-operations-in-r.html#cb180-1" aria-hidden="true" tabindex="-1"></a>s1.sf<span class="sc">$</span>med <span class="ot">&lt;-</span> s1.sf<span class="sc">$</span>Income <span class="sc">&gt;</span> <span class="fu">median</span>(s1.sf<span class="sc">$</span>Income)</span>
+<span id="cb180-2"><a href="vector-operations-in-r.html#cb180-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb180-3"><a href="vector-operations-in-r.html#cb180-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(s1.sf) <span class="sc">+</span> <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">fill =</span> med))</span></code></pre></div>
 <p><img src="A04-Vector-Operations_files/figure-html/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto auto auto 0;" /></p>
 <p>Next, we’ll dissolve all polygons by the <code>med</code> attribute. Any polygons sharing at least one line segment that have the same <code>med</code> value will be dissolved into a single polygon.</p>
 <p>Two approaches are presented here: one using <code>sf</code>’s <code>aggregate</code> function, the other using the <code>dplyr</code> approach.</p>
 <div id="option-1-1" class="section level4 unnumbered">
 <h4>Option 1</h4>
-<div class="sourceCode" id="cb184"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb184-1"><a href="vector-operations-in-r.html#cb184-1" aria-hidden="true" tabindex="-1"></a>ME.inc <span class="ot">&lt;-</span> <span class="fu">aggregate</span>(s1.sf[<span class="st">&quot;med&quot;</span>], <span class="at">by =</span> <span class="fu">list</span>(<span class="at">diss =</span> s1.sf<span class="sc">$</span>med), </span>
-<span id="cb184-2"><a href="vector-operations-in-r.html#cb184-2" aria-hidden="true" tabindex="-1"></a>                    <span class="at">FUN =</span> <span class="cf">function</span>(x)x[<span class="dv">1</span>], <span class="at">do_union =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb181"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb181-1"><a href="vector-operations-in-r.html#cb181-1" aria-hidden="true" tabindex="-1"></a>ME.inc <span class="ot">&lt;-</span> <span class="fu">aggregate</span>(s1.sf[<span class="st">&quot;med&quot;</span>], <span class="at">by =</span> <span class="fu">list</span>(<span class="at">diss =</span> s1.sf<span class="sc">$</span>med), </span>
+<span id="cb181-2"><a href="vector-operations-in-r.html#cb181-2" aria-hidden="true" tabindex="-1"></a>                    <span class="at">FUN =</span> <span class="cf">function</span>(x)x[<span class="dv">1</span>], <span class="at">do_union =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <p>This option will a new field defined in the <code>by =</code> parameter (<code>diss</code> in this working example).</p>
-<div class="sourceCode" id="cb185"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb185-1"><a href="vector-operations-in-r.html#cb185-1" aria-hidden="true" tabindex="-1"></a><span class="fu">st_drop_geometry</span>(ME.inc) <span class="co"># Print the layer&#39;s attributes table</span></span></code></pre></div>
+<div class="sourceCode" id="cb182"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb182-1"><a href="vector-operations-in-r.html#cb182-1" aria-hidden="true" tabindex="-1"></a><span class="fu">st_drop_geometry</span>(ME.inc) <span class="co"># Print the layer&#39;s attributes table</span></span></code></pre></div>
 <pre><code>   diss   med
 1 FALSE FALSE
 2  TRUE  TRUE</code></pre>
 </div>
 <div id="option-2-1" class="section level4 unnumbered">
 <h4>Option 2</h4>
-<div class="sourceCode" id="cb187"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb187-1"><a href="vector-operations-in-r.html#cb187-1" aria-hidden="true" tabindex="-1"></a>ME.inc <span class="ot">&lt;-</span> s1.sf <span class="sc">%&gt;%</span> </span>
-<span id="cb187-2"><a href="vector-operations-in-r.html#cb187-2" aria-hidden="true" tabindex="-1"></a>     <span class="fu">group_by</span>(med) <span class="sc">%&gt;%</span> </span>
-<span id="cb187-3"><a href="vector-operations-in-r.html#cb187-3" aria-hidden="true" tabindex="-1"></a>     <span class="fu">summarise</span>() </span></code></pre></div>
+<div class="sourceCode" id="cb184"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb184-1"><a href="vector-operations-in-r.html#cb184-1" aria-hidden="true" tabindex="-1"></a>ME.inc <span class="ot">&lt;-</span> s1.sf <span class="sc">%&gt;%</span> </span>
+<span id="cb184-2"><a href="vector-operations-in-r.html#cb184-2" aria-hidden="true" tabindex="-1"></a>     <span class="fu">group_by</span>(med) <span class="sc">%&gt;%</span> </span>
+<span id="cb184-3"><a href="vector-operations-in-r.html#cb184-3" aria-hidden="true" tabindex="-1"></a>     <span class="fu">summarise</span>() </span></code></pre></div>
 <p>This option will limit the attributes to that/those listed in the <code>group_by</code> function.</p>
-<div class="sourceCode" id="cb188"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb188-1"><a href="vector-operations-in-r.html#cb188-1" aria-hidden="true" tabindex="-1"></a><span class="fu">st_drop_geometry</span>(ME.inc)</span></code></pre></div>
+<div class="sourceCode" id="cb185"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb185-1"><a href="vector-operations-in-r.html#cb185-1" aria-hidden="true" tabindex="-1"></a><span class="fu">st_drop_geometry</span>(ME.inc)</span></code></pre></div>
 <pre><code># A tibble: 2 x 1
   med  
 * &lt;lgl&gt;
 1 FALSE
 2 TRUE </code></pre>
 <p>A map of the resulting layer follows.</p>
-<div class="sourceCode" id="cb190"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb190-1"><a href="vector-operations-in-r.html#cb190-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(ME.inc) <span class="sc">+</span> <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">fill =</span> med))</span></code></pre></div>
+<div class="sourceCode" id="cb187"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb187-1"><a href="vector-operations-in-r.html#cb187-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(ME.inc) <span class="sc">+</span> <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">fill =</span> med))</span></code></pre></div>
 <p><img src="A04-Vector-Operations_files/figure-html/unnamed-chunk-13-1.png" width="672" style="display: block; margin: auto auto auto 0;" /></p>
 <p>The dissolving (aggregating) operation will, by default, eliminate all other attribute values. If you wish to summarize other attribute values along with the attribute used for dissolving, use the <code>dplyr</code> piping operation option. For example, to compute the median <code>Income</code> value for each of the below/above median income groups type the following:</p>
-<div class="sourceCode" id="cb191"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb191-1"><a href="vector-operations-in-r.html#cb191-1" aria-hidden="true" tabindex="-1"></a>ME.inc <span class="ot">&lt;-</span> s1.sf <span class="sc">%&gt;%</span>  </span>
-<span id="cb191-2"><a href="vector-operations-in-r.html#cb191-2" aria-hidden="true" tabindex="-1"></a>     <span class="fu">group_by</span>(med) <span class="sc">%&gt;%</span>   </span>
-<span id="cb191-3"><a href="vector-operations-in-r.html#cb191-3" aria-hidden="true" tabindex="-1"></a>     <span class="fu">summarize</span>(<span class="at">medinc =</span> <span class="fu">median</span>(Income)) </span>
-<span id="cb191-4"><a href="vector-operations-in-r.html#cb191-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb191-5"><a href="vector-operations-in-r.html#cb191-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(ME.inc) <span class="sc">+</span> <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">fill =</span> medinc))</span></code></pre></div>
+<div class="sourceCode" id="cb188"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb188-1"><a href="vector-operations-in-r.html#cb188-1" aria-hidden="true" tabindex="-1"></a>ME.inc <span class="ot">&lt;-</span> s1.sf <span class="sc">%&gt;%</span>  </span>
+<span id="cb188-2"><a href="vector-operations-in-r.html#cb188-2" aria-hidden="true" tabindex="-1"></a>     <span class="fu">group_by</span>(med) <span class="sc">%&gt;%</span>   </span>
+<span id="cb188-3"><a href="vector-operations-in-r.html#cb188-3" aria-hidden="true" tabindex="-1"></a>     <span class="fu">summarize</span>(<span class="at">medinc =</span> <span class="fu">median</span>(Income)) </span>
+<span id="cb188-4"><a href="vector-operations-in-r.html#cb188-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb188-5"><a href="vector-operations-in-r.html#cb188-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(ME.inc) <span class="sc">+</span> <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">fill =</span> medinc))</span></code></pre></div>
 <p><img src="A04-Vector-Operations_files/figure-html/unnamed-chunk-14-1.png" width="672" style="display: block; margin: auto auto auto 0;" /></p>
 <p>To view the attributes table with both the aggregate variable, <code>med</code>, and the median income variable, <code>Income</code>, type:</p>
-<div class="sourceCode" id="cb192"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb192-1"><a href="vector-operations-in-r.html#cb192-1" aria-hidden="true" tabindex="-1"></a><span class="fu">st_drop_geometry</span>(ME.inc)</span></code></pre></div>
+<div class="sourceCode" id="cb189"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb189-1"><a href="vector-operations-in-r.html#cb189-1" aria-hidden="true" tabindex="-1"></a><span class="fu">st_drop_geometry</span>(ME.inc)</span></code></pre></div>
 <pre><code># A tibble: 2 x 2
   med   medinc
 * &lt;lgl&gt;  &lt;dbl&gt;
@@ -738,28 +738,28 @@ Figure 2.6: Attribute tables for the Maine spatial object, <code>s1.sf</code>, (
 <div id="subsetting-by-attribute" class="section level2 unnumbered">
 <h2>Subsetting by attribute</h2>
 <p>You can use conventional R dataframe manipulation operations to subset by attribute values. For example, to subset by county name (e.g. <code>Kennebec</code> county), type:</p>
-<div class="sourceCode" id="cb194"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb194-1"><a href="vector-operations-in-r.html#cb194-1" aria-hidden="true" tabindex="-1"></a>ME.ken <span class="ot">&lt;-</span> s1.sf[s1.sf<span class="sc">$</span>NAME <span class="sc">==</span> <span class="st">&quot;Kennebec&quot;</span>,]</span></code></pre></div>
+<div class="sourceCode" id="cb191"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb191-1"><a href="vector-operations-in-r.html#cb191-1" aria-hidden="true" tabindex="-1"></a>ME.ken <span class="ot">&lt;-</span> s1.sf[s1.sf<span class="sc">$</span>NAME <span class="sc">==</span> <span class="st">&quot;Kennebec&quot;</span>,]</span></code></pre></div>
 <p>You can, of course, use piping operations to perform the same task as follows:</p>
-<div class="sourceCode" id="cb195"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb195-1"><a href="vector-operations-in-r.html#cb195-1" aria-hidden="true" tabindex="-1"></a>ME.ken <span class="ot">&lt;-</span> s1.sf <span class="sc">%&gt;%</span> </span>
-<span id="cb195-2"><a href="vector-operations-in-r.html#cb195-2" aria-hidden="true" tabindex="-1"></a>      <span class="fu">filter</span>(NAME <span class="sc">==</span> <span class="st">&quot;Kennebec&quot;</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb196"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb196-1"><a href="vector-operations-in-r.html#cb196-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(ME.ken) <span class="sc">+</span> <span class="fu">geom_sf</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb192"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb192-1"><a href="vector-operations-in-r.html#cb192-1" aria-hidden="true" tabindex="-1"></a>ME.ken <span class="ot">&lt;-</span> s1.sf <span class="sc">%&gt;%</span> </span>
+<span id="cb192-2"><a href="vector-operations-in-r.html#cb192-2" aria-hidden="true" tabindex="-1"></a>      <span class="fu">filter</span>(NAME <span class="sc">==</span> <span class="st">&quot;Kennebec&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb193"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb193-1"><a href="vector-operations-in-r.html#cb193-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(ME.ken) <span class="sc">+</span> <span class="fu">geom_sf</span>()</span></code></pre></div>
 <p><img src="A04-Vector-Operations_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
 <p>To subset by a range of attribute values (e.g. subset by income values that are less than the median value), type:</p>
-<div class="sourceCode" id="cb197"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb197-1"><a href="vector-operations-in-r.html#cb197-1" aria-hidden="true" tabindex="-1"></a>ME.inc2 <span class="ot">&lt;-</span> s1.sf <span class="sc">%&gt;%</span> </span>
-<span id="cb197-2"><a href="vector-operations-in-r.html#cb197-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(Income <span class="sc">&lt;</span> <span class="fu">median</span>(Income))</span>
-<span id="cb197-3"><a href="vector-operations-in-r.html#cb197-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb197-4"><a href="vector-operations-in-r.html#cb197-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(ME.inc2) <span class="sc">+</span> <span class="fu">geom_sf</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb194"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb194-1"><a href="vector-operations-in-r.html#cb194-1" aria-hidden="true" tabindex="-1"></a>ME.inc2 <span class="ot">&lt;-</span> s1.sf <span class="sc">%&gt;%</span> </span>
+<span id="cb194-2"><a href="vector-operations-in-r.html#cb194-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(Income <span class="sc">&lt;</span> <span class="fu">median</span>(Income))</span>
+<span id="cb194-3"><a href="vector-operations-in-r.html#cb194-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb194-4"><a href="vector-operations-in-r.html#cb194-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(ME.inc2) <span class="sc">+</span> <span class="fu">geom_sf</span>()</span></code></pre></div>
 <p><img src="A04-Vector-Operations_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
 </div>
 <div id="intersecting-layers" class="section level2 unnumbered">
 <h2>Intersecting layers</h2>
 <p>To intersect two polygon objects, use <code>sf</code>’s <code>st_intersection</code> function.</p>
-<div class="sourceCode" id="cb198"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb198-1"><a href="vector-operations-in-r.html#cb198-1" aria-hidden="true" tabindex="-1"></a>clp1 <span class="ot">&lt;-</span> <span class="fu">st_intersection</span>(s1.sf, s2.sf)</span>
-<span id="cb198-2"><a href="vector-operations-in-r.html#cb198-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb198-3"><a href="vector-operations-in-r.html#cb198-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(clp1) <span class="sc">+</span> <span class="fu">geom_sf</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb195"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb195-1"><a href="vector-operations-in-r.html#cb195-1" aria-hidden="true" tabindex="-1"></a>clp1 <span class="ot">&lt;-</span> <span class="fu">st_intersection</span>(s1.sf, s2.sf)</span>
+<span id="cb195-2"><a href="vector-operations-in-r.html#cb195-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb195-3"><a href="vector-operations-in-r.html#cb195-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(clp1) <span class="sc">+</span> <span class="fu">geom_sf</span>()</span></code></pre></div>
 <p><img src="A04-Vector-Operations_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
 <p><code>st_intersection</code> keeps all features that overlap along with their combined attributes. Note that new polygons are created which will increase the size of the attributes table beyond the size of the combined input attributes table.</p>
-<div class="sourceCode" id="cb199"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb199-1"><a href="vector-operations-in-r.html#cb199-1" aria-hidden="true" tabindex="-1"></a><span class="fu">st_drop_geometry</span>(clp1)</span></code></pre></div>
+<div class="sourceCode" id="cb196"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb196-1"><a href="vector-operations-in-r.html#cb196-1" aria-hidden="true" tabindex="-1"></a><span class="fu">st_drop_geometry</span>(clp1)</span></code></pre></div>
 <pre class="scroll1"><code>             NAME Income   NoSchool  NoSchoolSE IncomeSE   med distance
 8        Kennebec  25652 0.00570358 0.000917087  360.000  TRUE       20
 12        Lincoln  27839 0.00278315 0.001030800  571.515  TRUE       20
@@ -800,29 +800,29 @@ Figure 2.6: Attribute tables for the Maine spatial object, <code>s1.sf</code>, (
 <h2>Clipping spatial objects using other spatial objects</h2>
 <p>The <code>st_intersection</code> can also be used to clip an input layer using another layer’s outer geometry boundaries as the “cookie cutter.” But note that the latter must be limited to its outer boundaries which may require that it be run through a dissolving operation (shown earlier in this tutorial) to dissolve internal boundaries.</p>
 <p>To clip <code>s2.sf</code> using the outline of <code>s1.sf</code>, type:</p>
-<div class="sourceCode" id="cb201"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb201-1"><a href="vector-operations-in-r.html#cb201-1" aria-hidden="true" tabindex="-1"></a>clp2 <span class="ot">&lt;-</span> <span class="fu">st_intersection</span>(s2.sf, <span class="fu">st_union</span>(s1.sf)) </span>
-<span id="cb201-2"><a href="vector-operations-in-r.html#cb201-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb201-3"><a href="vector-operations-in-r.html#cb201-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(clp2) <span class="sc">+</span> <span class="fu">geom_sf</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb198"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb198-1"><a href="vector-operations-in-r.html#cb198-1" aria-hidden="true" tabindex="-1"></a>clp2 <span class="ot">&lt;-</span> <span class="fu">st_intersection</span>(s2.sf, <span class="fu">st_union</span>(s1.sf)) </span>
+<span id="cb198-2"><a href="vector-operations-in-r.html#cb198-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb198-3"><a href="vector-operations-in-r.html#cb198-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(clp2) <span class="sc">+</span> <span class="fu">geom_sf</span>()</span></code></pre></div>
 <p><img src="A04-Vector-Operations_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
 <p>The order the layers are passed to the <code>st_intersection</code> function matters. Flipping the input layer in the last example will clip <code>s1.sf</code> to <code>s2.sf</code>’s bounding polygon(s).</p>
-<div class="sourceCode" id="cb202"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb202-1"><a href="vector-operations-in-r.html#cb202-1" aria-hidden="true" tabindex="-1"></a>clp2 <span class="ot">&lt;-</span> <span class="fu">st_intersection</span>(s1.sf, <span class="fu">st_union</span>(s2.sf)) </span>
-<span id="cb202-2"><a href="vector-operations-in-r.html#cb202-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb202-3"><a href="vector-operations-in-r.html#cb202-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(clp2) <span class="sc">+</span> <span class="fu">geom_sf</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb199"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb199-1"><a href="vector-operations-in-r.html#cb199-1" aria-hidden="true" tabindex="-1"></a>clp2 <span class="ot">&lt;-</span> <span class="fu">st_intersection</span>(s1.sf, <span class="fu">st_union</span>(s2.sf)) </span>
+<span id="cb199-2"><a href="vector-operations-in-r.html#cb199-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb199-3"><a href="vector-operations-in-r.html#cb199-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(clp2) <span class="sc">+</span> <span class="fu">geom_sf</span>()</span></code></pre></div>
 <p><img src="A04-Vector-Operations_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
 <p>Line geometries can also be clipped to polygon features. The output will be a line object that falls within the polygons of the input polygon object. For example, to output all line segments that fall within the concentric distance circles of <code>s2.sf</code>, type:</p>
-<div class="sourceCode" id="cb203"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb203-1"><a href="vector-operations-in-r.html#cb203-1" aria-hidden="true" tabindex="-1"></a>clp3 <span class="ot">&lt;-</span> <span class="fu">st_intersection</span>(l1.sf, <span class="fu">st_union</span>(s2.sf))</span></code></pre></div>
+<div class="sourceCode" id="cb200"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb200-1"><a href="vector-operations-in-r.html#cb200-1" aria-hidden="true" tabindex="-1"></a>clp3 <span class="ot">&lt;-</span> <span class="fu">st_intersection</span>(l1.sf, <span class="fu">st_union</span>(s2.sf))</span></code></pre></div>
 <p>A plot of the clipped line features is shown with the outline of the clipping feature.</p>
-<div class="sourceCode" id="cb204"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb204-1"><a href="vector-operations-in-r.html#cb204-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(clp3) <span class="sc">+</span> </span>
-<span id="cb204-2"><a href="vector-operations-in-r.html#cb204-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> clp3) <span class="sc">+</span></span>
-<span id="cb204-3"><a href="vector-operations-in-r.html#cb204-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> <span class="fu">st_union</span>(s2.sf), <span class="at">col =</span> <span class="st">&quot;red&quot;</span>, <span class="at">fill =</span> <span class="cn">NA</span> )</span></code></pre></div>
+<div class="sourceCode" id="cb201"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb201-1"><a href="vector-operations-in-r.html#cb201-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(clp3) <span class="sc">+</span> </span>
+<span id="cb201-2"><a href="vector-operations-in-r.html#cb201-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> clp3) <span class="sc">+</span></span>
+<span id="cb201-3"><a href="vector-operations-in-r.html#cb201-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> <span class="fu">st_union</span>(s2.sf), <span class="at">col =</span> <span class="st">&quot;red&quot;</span>, <span class="at">fill =</span> <span class="cn">NA</span> )</span></code></pre></div>
 <p><img src="A04-Vector-Operations_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
 </div>
 <div id="unioning-layers" class="section level2 unnumbered">
 <h2>Unioning layers</h2>
 <p>To union two polygon objects, use <code>sf</code>’s <code>st_union</code> function. For example,</p>
-<div class="sourceCode" id="cb205"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb205-1"><a href="vector-operations-in-r.html#cb205-1" aria-hidden="true" tabindex="-1"></a>un1  <span class="ot">&lt;-</span> <span class="fu">st_union</span>(s2.sf,s1.sf)</span>
-<span id="cb205-2"><a href="vector-operations-in-r.html#cb205-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb205-3"><a href="vector-operations-in-r.html#cb205-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(un1) <span class="sc">+</span> <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">fill =</span> NAME), <span class="at">alpha =</span> <span class="fl">0.4</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb202"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb202-1"><a href="vector-operations-in-r.html#cb202-1" aria-hidden="true" tabindex="-1"></a>un1  <span class="ot">&lt;-</span> <span class="fu">st_union</span>(s2.sf,s1.sf)</span>
+<span id="cb202-2"><a href="vector-operations-in-r.html#cb202-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb202-3"><a href="vector-operations-in-r.html#cb202-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(un1) <span class="sc">+</span> <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">fill =</span> NAME), <span class="at">alpha =</span> <span class="fl">0.4</span>)</span></code></pre></div>
 <p><img src="A04-Vector-Operations_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
 <p>This produces the following attributes table.</p>
 <pre class="scroll1"><code>     distance         NAME Income   NoSchool  NoSchoolSE IncomeSE   med
@@ -893,7 +893,7 @@ Figure 2.6: Attribute tables for the Maine spatial object, <code>s1.sf</code>, (
 <p>Note that the union operation can generate many <em>overlapping</em> geometries. This is because each geometry of the layers being unioned are paired up with one another creating unique combinations of each layer’s geometries.</p>
 <p><img src="img/union_output.png" width="400px" /></p>
 <p>For example, the <em>Aroostook County</em> polygon from <code>s1.sf</code> is paired with each annulus of the <code>s2.sf</code> layer creating four new geometries.</p>
-<div class="sourceCode" id="cb207"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb207-1"><a href="vector-operations-in-r.html#cb207-1" aria-hidden="true" tabindex="-1"></a>un1 <span class="sc">%&gt;%</span> <span class="fu">filter</span>(NAME <span class="sc">==</span> <span class="st">&quot;Aroostook&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb204"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb204-1"><a href="vector-operations-in-r.html#cb204-1" aria-hidden="true" tabindex="-1"></a>un1 <span class="sc">%&gt;%</span> <span class="fu">filter</span>(NAME <span class="sc">==</span> <span class="st">&quot;Aroostook&quot;</span>)</span></code></pre></div>
 <pre class="scroll1"><code>Simple feature collection with 4 features and 7 fields
 Geometry type: MULTIPOLYGON
 Dimension:     XY
@@ -914,23 +914,23 @@ CRS:           +proj=utm +zone=19 +datum=NAD83 +units=m +no_defs +ellps=GRS80 +t
 <div id="buffering-geometries" class="section level2 unnumbered">
 <h2>Buffering geometries</h2>
 <p>To buffer point, line or polygon geometries, use <code>sf</code>’s <code>st_buffer</code> function. For example, the following code chunk generates a 10 km (10,000 m) buffer around the polyline segments.</p>
-<div class="sourceCode" id="cb209"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb209-1"><a href="vector-operations-in-r.html#cb209-1" aria-hidden="true" tabindex="-1"></a>l1.sf.buf <span class="ot">&lt;-</span> <span class="fu">st_buffer</span>(l1.sf, <span class="at">dist =</span> <span class="dv">10000</span>)</span>
-<span id="cb209-2"><a href="vector-operations-in-r.html#cb209-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb209-3"><a href="vector-operations-in-r.html#cb209-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(l1.sf.buf) <span class="sc">+</span> <span class="fu">geom_sf</span>() <span class="sc">+</span> <span class="fu">coord_sf</span>(<span class="at">ndiscr =</span> <span class="dv">1000</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb206"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb206-1"><a href="vector-operations-in-r.html#cb206-1" aria-hidden="true" tabindex="-1"></a>l1.sf.buf <span class="ot">&lt;-</span> <span class="fu">st_buffer</span>(l1.sf, <span class="at">dist =</span> <span class="dv">10000</span>)</span>
+<span id="cb206-2"><a href="vector-operations-in-r.html#cb206-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb206-3"><a href="vector-operations-in-r.html#cb206-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(l1.sf.buf) <span class="sc">+</span> <span class="fu">geom_sf</span>() <span class="sc">+</span> <span class="fu">coord_sf</span>(<span class="at">ndiscr =</span> <span class="dv">1000</span>)</span></code></pre></div>
 <p><img src="A04-Vector-Operations_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
 <p>To create a continuous polygon geometry (i.e. to eliminate overlapping buffers), we’ll follow up with one of the dissolving techniques introduced earlier in this tutorial.</p>
-<div class="sourceCode" id="cb210"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb210-1"><a href="vector-operations-in-r.html#cb210-1" aria-hidden="true" tabindex="-1"></a>l1.sf.buf.dis <span class="ot">&lt;-</span> l1.sf.buf <span class="sc">%&gt;%</span> </span>
-<span id="cb210-2"><a href="vector-operations-in-r.html#cb210-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>()  <span class="sc">%&gt;%</span> </span>
-<span id="cb210-3"><a href="vector-operations-in-r.html#cb210-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>()</span>
-<span id="cb210-4"><a href="vector-operations-in-r.html#cb210-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb210-5"><a href="vector-operations-in-r.html#cb210-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(l1.sf.buf.dis) <span class="sc">+</span> <span class="fu">geom_sf</span>() </span></code></pre></div>
+<div class="sourceCode" id="cb207"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb207-1"><a href="vector-operations-in-r.html#cb207-1" aria-hidden="true" tabindex="-1"></a>l1.sf.buf.dis <span class="ot">&lt;-</span> l1.sf.buf <span class="sc">%&gt;%</span> </span>
+<span id="cb207-2"><a href="vector-operations-in-r.html#cb207-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>()  <span class="sc">%&gt;%</span> </span>
+<span id="cb207-3"><a href="vector-operations-in-r.html#cb207-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>()</span>
+<span id="cb207-4"><a href="vector-operations-in-r.html#cb207-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb207-5"><a href="vector-operations-in-r.html#cb207-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(l1.sf.buf.dis) <span class="sc">+</span> <span class="fu">geom_sf</span>() </span></code></pre></div>
 <p><img src="A04-Vector-Operations_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
 <p>If you want to preserve an attribute value (such as highway number), modify the above code as follows:</p>
-<div class="sourceCode" id="cb211"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb211-1"><a href="vector-operations-in-r.html#cb211-1" aria-hidden="true" tabindex="-1"></a>l1.sf.buf.dis <span class="ot">&lt;-</span> l1.sf.buf <span class="sc">%&gt;%</span> </span>
-<span id="cb211-2"><a href="vector-operations-in-r.html#cb211-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(Number)  <span class="sc">%&gt;%</span> </span>
-<span id="cb211-3"><a href="vector-operations-in-r.html#cb211-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>()</span>
-<span id="cb211-4"><a href="vector-operations-in-r.html#cb211-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb211-5"><a href="vector-operations-in-r.html#cb211-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(l1.sf.buf.dis, <span class="fu">aes</span>(<span class="at">fill=</span>Number) ) <span class="sc">+</span> <span class="fu">geom_sf</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb208"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb208-1"><a href="vector-operations-in-r.html#cb208-1" aria-hidden="true" tabindex="-1"></a>l1.sf.buf.dis <span class="ot">&lt;-</span> l1.sf.buf <span class="sc">%&gt;%</span> </span>
+<span id="cb208-2"><a href="vector-operations-in-r.html#cb208-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(Number)  <span class="sc">%&gt;%</span> </span>
+<span id="cb208-3"><a href="vector-operations-in-r.html#cb208-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>()</span>
+<span id="cb208-4"><a href="vector-operations-in-r.html#cb208-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb208-5"><a href="vector-operations-in-r.html#cb208-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(l1.sf.buf.dis, <span class="fu">aes</span>(<span class="at">fill=</span>Number) ) <span class="sc">+</span> <span class="fu">geom_sf</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>)</span></code></pre></div>
 <p><img src="A04-Vector-Operations_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
 
 </div>
