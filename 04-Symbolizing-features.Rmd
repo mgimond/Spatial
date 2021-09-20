@@ -196,13 +196,13 @@ par(OP)
 
 Election results is an example of a dataset that can be displayed using a qualitative color scheme. But be careful in your choice of hues if a cultural bias exists (i.e. it may not make sense to assign "blue" to republican or "red"" to democratic regions).
 
-```{r f04-qualitative-map, fig.cap = "Map of 2012 election results shown in a qualitative color scheme. Note the use of three hues (red, blue and gray) of equal lightness and saturation.", echo=FALSE, fig.width = 4.5,fig.height=4}
+```{r f04-qualitative-map, fig.cap = "Map of 2012 election results shown in a qualitative color scheme. Note the use of three hues (red, blue and gray) of equal lightness and saturation.", echo=FALSE, fig.width = 4.5,fig.height=4, message=FALSE}
 
 
 library(sf)
 
 # Read in map data and compute a rate for mapping
-s <- st_read("img/Data/ME_elections_2012.shp")
+s <- st_read("img/Data/ME_elections_2012.shp", quiet = TRUE)
 
 # Using plot.sf
 OP <- par(mar=c(0,0,0,0))
@@ -244,7 +244,7 @@ Distribution of income is a good example of a sequential map. Income values are 
 library(classInt)
 library(sf)
 
-s <- st_read("img/Data/Maine_income_ed.shp")
+s <- st_read("img/Data/Maine_income_ed.shp", quiet = TRUE)
 n <- 7 
 brk <- classIntervals(s$Household_,n,style="equal")
 
