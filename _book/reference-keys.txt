@@ -60,10 +60,14 @@ fig:f07-regression1
 fig:f07-regression2
 fig:f07-regression-envelope
 fig:f08-sel1
-fig:f08-sel1-result
 fig:f08-sel2
+fig:f08-sel1-result
+fig:f08-sel3
 fig:f08-loc1
 fig:f08-loc1-map
+fig:f08-clip
+fig:f08-intersect
+fig:f08-union
 fig:f09-latlong
 fig:f09-sphere-slice
 fig:f09-sphere-ellipse
