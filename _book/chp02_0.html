@@ -610,6 +610,7 @@ Figure 2.5: A simple raster object defined by a 10x10 array of cells or pixels.
 <p>A raster data model uses an array of cells, or pixels, to represent real-world objects. Raster datasets are commonly used for representing and managing imagery, surface temperatures, digital elevation models, and numerous other entities.</p>
 <p>A raster can be thought of as a special case of an area object where the area is divided into a regular grid of cells. But a regularly spaced array of marked points may be a better analogy since rasters are stored as an array of values where each cell is defined by a single coordinate pair inside of most GIS environments.</p>
 <p>Implicit in a raster data model is a value associated with each cell or pixel. This is in contrast to a vector model that may or may not have a value associated with the geometric primitive.</p>
+<p>Also note that a raster data structure is square or rectangular. So, if the features in a raster do not cover the full square or rectangular extent, their pixel values will be set to no data values (e.g. <code>NULL</code> or <code>NoData</code>).</p>
 </div>
 </div>
 <div id="object-vs.-field" class="section level2" number="2.2">

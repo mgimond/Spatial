@@ -88,6 +88,8 @@ A raster can be thought of as a special case of an area object where the area is
 
 Implicit in a raster data model is a value associated with each cell or pixel. This is in contrast to a vector model that may or may not have a value associated with the geometric primitive.
 
+Also note that a raster data structure is square or rectangular. So, if the features in a raster do not cover the full square or rectangular extent, their pixel values will be set to no data values (e.g. `NULL` or `NoData`).
+
 ## Object vs. Field
 
 The traditional vector/raster perspective of our world is one that has been driven by software and data storage environments. But this perspective is not particularly helpful if one is interested in analyzing the pattern. In fact, it can mask some important properties of the entity being studied. An object vs. field view of the world proves to be more insightful even though it may seem more abstract.
