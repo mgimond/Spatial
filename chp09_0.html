@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 9 Coordinate Systems | Intro to GIS and Spatial Analysis</title>
   <meta name="description" content="This is a compilation of lecture notes that accompany my Intro to GIS and Spatial Analysis course." />
-  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.23 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 9 Coordinate Systems | Intro to GIS and Spatial Analysis" />
   <meta property="og:type" content="book" />
@@ -32,9 +32,8 @@
   
 <link rel="prev" href="spatial-operations-and-vector-overlays.html"/>
 <link rel="next" href="chp10_0.html"/>
-<script src="libs/header-attrs-2.10/header-attrs.js"></script>
+<script src="libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -42,6 +41,7 @@
 <link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
 
 
 
@@ -785,7 +785,7 @@ A <strong>geodesic distance</strong> is the shortest distance between two points
 <p>At first glance, the geodesic distance may seem nonsensical given its curved appearance on the projected map. However, this curvature is a byproduct of the current reference system’s increasing distance distortion as one progresses poleward. If you are still not convinced, you can display the geodesic and planar distance layers on a 3D globe (or a projection that mimics the view of the 3D earth as viewed from space, centered on the mid-point of the geodesic line segment).</p>
 <p><img src="09-Coordinate-systems_files/figure-html/unnamed-chunk-10-1.png" width="240" /></p>
 <p>So if a geodesic measurement is more precise than a planar measurement, why not perform all spatial operations using geodesic geometry? In many cases, a geodesic approach to spatial operations can be perfectly acceptable and is even encouraged. The downside is in its computational requirements. It’s far more computationally efficient to compute area/distance on a plane than it is on a spheroid. This is because geodesic calculations have no simple algebraic solutions and involve approximations that may require iterative solutions. So this may be a computationally taxing approach if processing millions of line segments.</p>
-<p>Note that not all geodesic measurement implementations are equal. Some more efficient algorithms that minimize computation time may reduce precision in the process. Some of ArcMap’s functions offer the option to compute geodesic distances and areas however ArcMap does not clearly indicate how its geodesic calculations are implemented. The data analysis environment R has a package called <code>geosphere</code> that implements well defined geodesic measurement algorithms adopted from the authoritative set of <a href="https://geographiclib.sourceforge.io/">GeographicLib</a> libraries.</p>
+<p>Note that not all geodesic measurement implementations are equal. Some more efficient algorithms that minimize computation time may reduce precision in the process. Some of ArcGIS’s functions offer the option to compute geodesic distances and areas. The data analysis environment R has several packages that will compute geodesic measurements including <code>geosphere</code> (which implements a well defined geodesic measurement algorithms adopted from the authoritative set of <a href="https://geographiclib.sourceforge.io/">GeographicLib</a> libraries), <code>lwgeom</code>, and an implementation of Google’s spherical measurement library called <code>s2</code> .</p>
 
 </div>
 </div>
@@ -799,6 +799,7 @@ A <strong>geodesic distance</strong> is the shortest distance between two points
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
 <script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
@@ -841,7 +842,7 @@ gitbook.start({
 },
 "download": ["_main.pdf", "_main.epub"],
 "search": {
-"engine": "fuse",
+"engine": "lunr",
 "options": null
 },
 "toc": {

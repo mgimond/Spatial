@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>C Anatomy of simple feature objects | Intro to GIS and Spatial Analysis</title>
   <meta name="description" content="This is a compilation of lecture notes that accompany my Intro to GIS and Spatial Analysis course." />
-  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.23 and GitBook 2.6.7" />
 
   <meta property="og:title" content="C Anatomy of simple feature objects | Intro to GIS and Spatial Analysis" />
   <meta property="og:type" content="book" />
@@ -32,9 +32,8 @@
   
 <link rel="prev" href="mapping-data-in-r.html"/>
 <link rel="next" href="vector-operations-in-r.html"/>
-<script src="libs/header-attrs-2.10/header-attrs.js"></script>
+<script src="libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -42,6 +41,7 @@
 <link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
 
 
 
@@ -713,8 +713,8 @@ Geodetic CRS:  WGS 84
 <div id="adding-attributes-to-an-sf-object" class="section level3 unnumbered">
 <h3>Adding attributes to an <code>sf</code> object</h3>
 <p>The <code>p.sf</code> object is nothing more than a dataframe with a geometry column of <code>list</code> data type.</p>
-<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb114-1"><a href="anatomy-of-simple-feature-objects.html#cb114-1" aria-hidden="true" tabindex="-1"></a><span class="fu">typeof</span>(p.sf<span class="sc">$</span>geom)</span></code></pre></div>
-<pre><code>[1] &quot;NULL&quot;</code></pre>
+<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb114-1"><a href="anatomy-of-simple-feature-objects.html#cb114-1" aria-hidden="true" tabindex="-1"></a><span class="fu">typeof</span>(p.sf<span class="sc">$</span>coords)</span></code></pre></div>
+<pre><code>[1] &quot;list&quot;</code></pre>
 <p>Storing spatial features in a dataframe has many benefits, one of which is operating on the features’ attribute values. For example, we can add a new column with attribute values for each geometry entry. Here, we’ll assign letters to each point. Note that the order in which the attribute values are passed to the dataframe must match that of the geometry elements.</p>
 <div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb116-1"><a href="anatomy-of-simple-feature-objects.html#cb116-1" aria-hidden="true" tabindex="-1"></a>p.sf<span class="sc">$</span>val1 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;A&quot;</span>, <span class="st">&quot;B&quot;</span>, <span class="st">&quot;C&quot;</span>)</span>
 <span id="cb116-2"><a href="anatomy-of-simple-feature-objects.html#cb116-2" aria-hidden="true" tabindex="-1"></a>p.sf</span></code></pre></div>
@@ -1071,6 +1071,7 @@ CRS:           NA</code></pre>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
 <script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
@@ -1113,7 +1114,7 @@ gitbook.start({
 },
 "download": ["_main.pdf", "_main.epub"],
 "search": {
-"engine": "fuse",
+"engine": "lunr",
 "options": null
 },
 "toc": {
