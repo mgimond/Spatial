@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>E Mapping rates in R | Intro to GIS and Spatial Analysis</title>
   <meta name="description" content="This is a compilation of lecture notes that accompany my Intro to GIS and Spatial Analysis course." />
-  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.23 and GitBook 2.6.7" />
 
   <meta property="og:title" content="E Mapping rates in R | Intro to GIS and Spatial Analysis" />
   <meta property="og:type" content="book" />
@@ -32,9 +32,8 @@
   
 <link rel="prev" href="vector-operations-in-r.html"/>
 <link rel="next" href="raster-operations-in-r.html"/>
-<script src="libs/header-attrs-2.10/header-attrs.js"></script>
+<script src="libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -42,6 +41,7 @@
 <link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
 
 
 
@@ -675,7 +675,7 @@ rgdal
 <p>The Auckland dataset from the <code>spdep</code> package will be used throughout this exercise. Some of the graphics that follow are R reproductions of Bailey and Gatrell’s book, <em>Interactive Spatial Data Analysis</em> <span class="citation">(<a href="#ref-BaileyGatrell" role="doc-biblioref">Bailey and Gatrell 1995</a>)</span>.</p>
 <div class="sourceCode" id="cb209"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb209-1"><a href="mapping-rates-in-r.html#cb209-1" aria-hidden="true" tabindex="-1"></a>auckland <span class="ot">&lt;-</span> <span class="fu">readOGR</span>(<span class="fu">system.file</span>(<span class="st">&quot;shapes/auckland.shp&quot;</span>, <span class="at">package=</span><span class="st">&quot;spData&quot;</span>)[<span class="dv">1</span>])</span></code></pre></div>
 <pre><code>OGR data source with driver: ESRI Shapefile 
-Source: &quot;C:\Users\mgimond\Documents\R\win-library\4.1\spData\shapes\auckland.shp&quot;, layer: &quot;auckland&quot;
+Source: &quot;C:\Users\mgimo\Documents\R\win-library\4.1\spData\shapes\auckland.shp&quot;, layer: &quot;auckland&quot;
 with 167 features
 It has 4 fields</code></pre>
 <p>The Auckland data represents total infant deaths (under the age of five) for Auckland, New Zealand, spanning the years 1977 through 1985 for different census area units. The following block of code maps these counts by area. Both equal interval and quantile classification schemes of the same data are mapped.</p>
@@ -793,6 +793,7 @@ Dykes, J. A., and D. J. Unwin. 2001. <span>“<span class="nocase">Maps of the C
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
 <script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
@@ -835,7 +836,7 @@ gitbook.start({
 },
 "download": ["_main.pdf", "_main.epub"],
 "search": {
-"engine": "fuse",
+"engine": "lunr",
 "options": null
 },
 "toc": {

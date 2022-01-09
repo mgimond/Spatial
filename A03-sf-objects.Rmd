@@ -92,7 +92,7 @@ p.sf
 The `p.sf` object is nothing more than a dataframe with a geometry column of `list` data type.
 
 ```{r}
-typeof(p.sf$geom)
+typeof(p.sf$coords)
 ```
 
 Storing spatial features in a dataframe has many benefits, one of which is operating on the features' attribute values. For example, we can add a new column with attribute values for each geometry entry. Here, we'll assign letters to each point. Note that the order in which the attribute values are passed to the dataframe must match that of the geometry elements.
