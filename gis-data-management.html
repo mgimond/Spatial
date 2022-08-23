@@ -6,11 +6,10 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 3 GIS Data Management | Intro to GIS and Spatial Analysis</title>
   <meta name="description" content="This is a compilation of lecture notes that accompany my Intro to GIS and Spatial Analysis course." />
-  <meta name="generator" content="bookdown 0.23 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.28 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 3 GIS Data Management | Intro to GIS and Spatial Analysis" />
   <meta property="og:type" content="book" />
-  
   
   <meta property="og:description" content="This is a compilation of lecture notes that accompany my Intro to GIS and Spatial Analysis course." />
   <meta name="github-repo" content="mgimond/spatial" />
@@ -32,8 +31,8 @@
   
 <link rel="prev" href="chp02_0.html"/>
 <link rel="next" href="symbolizing-features.html"/>
-<script src="libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -49,19 +48,19 @@
 
 
 
-
-<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
-<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
 <script src="libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
-<script src="libs/htmlwidgets-1.5.3/htmlwidgets.js"></script>
+<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
 <link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet-1.3.1/leaflet.js"></script>
 <link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
 <script src="libs/proj4-2.6.2/proj4.min.js"></script>
 <script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
 <link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
-<script src="libs/leaflet-binding-2.0.4.1/leaflet.js"></script>
+<script src="libs/leaflet-binding-2.1.1/leaflet.js"></script>
 
 
 <style type="text/css">
@@ -359,21 +358,21 @@ div.csl-indent {
 <li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_4_5"><i class="fa fa-check"></i>Creating a spatial object from a data frame</a></li>
 <li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_4_6"><i class="fa fa-check"></i>Geocoding street addresses</a></li>
 </ul></li>
-<li><a href="reading-and-writing-spatial-data-in-r.html#app1_5">Converting from an <code>sf</code> object</a>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_5"><i class="fa fa-check"></i>Converting from an <code>sf</code> object</a>
 <ul>
-<li><a href="reading-and-writing-spatial-data-in-r.html#app1_5_1">Converting an <code>sf</code> object to a <code>Spatial*</code> object (<code>spdep</code>/<code>sp</code>)</a></li>
-<li><a href="reading-and-writing-spatial-data-in-r.html#app1_5_2">Converting an <code>sf</code> polygon object to an <code>owin</code> object</a></li>
-<li><a href="reading-and-writing-spatial-data-in-r.html#app1_5_3">Converting an <code>sf</code> point object to a <code>ppp</code> object</a></li>
-<li><a href="reading-and-writing-spatial-data-in-r.html#app1_5_4">Converting a <code>raster</code> object to an <code>im</code> object (<code>spatstat</code>)</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_5_1"><i class="fa fa-check"></i>Converting an <code>sf</code> object to a <code>Spatial*</code> object (<code>spdep</code>/<code>sp</code>)</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_5_2"><i class="fa fa-check"></i>Converting an <code>sf</code> polygon object to an <code>owin</code> object</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_5_3"><i class="fa fa-check"></i>Converting an <code>sf</code> point object to a <code>ppp</code> object</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_5_4"><i class="fa fa-check"></i>Converting a <code>raster</code> object to an <code>im</code> object (<code>spatstat</code>)</a></li>
 </ul></li>
-<li><a href="reading-and-writing-spatial-data-in-r.html#app1_6">Converting to an <code>sf</code> object</a></li>
-<li><a href="reading-and-writing-spatial-data-in-r.html#app1_7">Dissecting the <code>sf</code> file object</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_6"><i class="fa fa-check"></i>Converting to an <code>sf</code> object</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_7"><i class="fa fa-check"></i>Dissecting the <code>sf</code> file object</a></li>
 <li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_8"><i class="fa fa-check"></i>Exporting to different data file formats</a></li>
 </ul></li>
 <li class="chapter" data-level="B" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html"><i class="fa fa-check"></i><b>B</b> Mapping data in R</a>
 <ul>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#sample-files-for-this-exercise"><i class="fa fa-check"></i>Sample files for this exercise</a></li>
-<li><a href="mapping-data-in-r.html#tmap"><code>tmap</code></a>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#tmap"><i class="fa fa-check"></i><code>tmap</code></a>
 <ul>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#the-basics"><i class="fa fa-check"></i>The basics</a></li>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#combining-layers"><i class="fa fa-check"></i>Combining layers</a></li>
@@ -387,13 +386,13 @@ div.csl-indent {
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#side-by-side-maps"><i class="fa fa-check"></i>Side-by-side maps</a></li>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#splitting-data-by-polygons-or-group-of-polygons"><i class="fa fa-check"></i>Splitting data by polygons or group of polygons</a></li>
 </ul></li>
-<li><a href="mapping-data-in-r.html#ggplot2"><code>ggplot2</code></a>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#ggplot2"><i class="fa fa-check"></i><code>ggplot2</code></a>
 <ul>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#the-basics-1"><i class="fa fa-check"></i>The basics</a></li>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#tweaking-classification-schemes-1"><i class="fa fa-check"></i>Tweaking classification schemes</a></li>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#combining-layers-1"><i class="fa fa-check"></i>Combining layers</a></li>
 </ul></li>
-<li><a href="mapping-data-in-r.html#plot_sf"><code>plot_sf</code></a>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#plot_sf"><i class="fa fa-check"></i><code>plot_sf</code></a>
 <ul>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#the-basics-2"><i class="fa fa-check"></i>The basics</a></li>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#adding-a-graticule"><i class="fa fa-check"></i>Adding a graticule</a></li>
@@ -405,11 +404,11 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#creating-point-sf-objects"><i class="fa fa-check"></i>Creating point ‘sf’ objects</a>
 <ul>
-<li><a href="anatomy-of-simple-feature-objects.html#step-1-create-the-point-geometry-sfg">Step 1: Create the point geometry: <code>sfg</code></a></li>
-<li><a href="anatomy-of-simple-feature-objects.html#step-2-create-a-column-of-simple-feature-geometries-sfc">Step 2: Create a column of simple feature geometries: <code>sfc</code></a></li>
-<li><a href="anatomy-of-simple-feature-objects.html#step-3-create-the-simple-feature-object-sf">Step 3: Create the simple feature object <code>sf</code></a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#step-1-create-the-point-geometry-sfg"><i class="fa fa-check"></i>Step 1: Create the point geometry: <code>sfg</code></a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#step-2-create-a-column-of-simple-feature-geometries-sfc"><i class="fa fa-check"></i>Step 2: Create a column of simple feature geometries: <code>sfc</code></a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#step-3-create-the-simple-feature-object-sf"><i class="fa fa-check"></i>Step 3: Create the simple feature object <code>sf</code></a></li>
 <li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#renaming-the-geometry-column"><i class="fa fa-check"></i>Renaming the geometry column</a></li>
-<li><a href="anatomy-of-simple-feature-objects.html#adding-attributes-to-an-sf-object">Adding attributes to an <code>sf</code> object</a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#adding-attributes-to-an-sf-object"><i class="fa fa-check"></i>Adding attributes to an <code>sf</code> object</a></li>
 <li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#adding-a-geometry-column-to-an-existing-non-spatial-dataframe"><i class="fa fa-check"></i>Adding a geometry column to an existing non-spatial dataframe</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#creating-polyline-sf-objects"><i class="fa fa-check"></i>Creating polyline ‘sf’ objects</a>
@@ -418,10 +417,10 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#creating-polygon-sf-objects"><i class="fa fa-check"></i>Creating polygon ‘sf’ objects</a>
 <ul>
-<li><a href="anatomy-of-simple-feature-objects.html#polygon-simple-feature"><code>POLYGON</code> simple feature</a></li>
-<li><a href="anatomy-of-simple-feature-objects.html#multipolygon-simple-feature-multipart-features"><code>MULTIPOLYGON</code> simple feature: multipart features</a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#polygon-simple-feature"><i class="fa fa-check"></i><code>POLYGON</code> simple feature</a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#multipolygon-simple-feature-multipart-features"><i class="fa fa-check"></i><code>MULTIPOLYGON</code> simple feature: multipart features</a></li>
 </ul></li>
-<li><a href="anatomy-of-simple-feature-objects.html#extracting-geometry-from-an-sf-object">Extracting geometry from an <code>sf</code> object</a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#extracting-geometry-from-an-sf-object"><i class="fa fa-check"></i>Extracting geometry from an <code>sf</code> object</a></li>
 <li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#alternative-syntax"><i class="fa fa-check"></i>Alternative syntax</a></li>
 <li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#additional-resources"><i class="fa fa-check"></i>Additional resources</a></li>
 </ul></li>
@@ -441,7 +440,7 @@ div.csl-indent {
 <li class="chapter" data-level="E" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html"><i class="fa fa-check"></i><b>E</b> Mapping rates in R</a>
 <ul>
 <li class="chapter" data-level="" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html#raw-rates"><i class="fa fa-check"></i>Raw Rates</a></li>
-<li class="chapter" data-level="" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html#standardized-mortality-ratios-relative-risk."><i class="fa fa-check"></i>Standardized mortality ratios (relative risk).</a></li>
+<li class="chapter" data-level="" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html#standardized-mortality-ratios-relative-risk"><i class="fa fa-check"></i>Standardized mortality ratios (relative risk)</a></li>
 <li class="chapter" data-level="" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html#dykes-and-unwins-chi-square-statistic"><i class="fa fa-check"></i>Dykes and Unwin’s chi-square statistic</a></li>
 <li class="chapter" data-level="" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html#unstable-ratios"><i class="fa fa-check"></i>Unstable ratios</a>
 <ul>
@@ -467,9 +466,9 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="G" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html"><i class="fa fa-check"></i><b>G</b> Coordinate Systems in R</a>
 <ul>
-<li><a href="coordinate-systems-in-r.html#a-note-about-the-changes-to-the-proj-environment">A note about the changes to the <code>PROJ</code> environment</a></li>
+<li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#a-note-about-the-changes-to-the-proj-environment"><i class="fa fa-check"></i>A note about the changes to the <code>PROJ</code> environment</a></li>
 <li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#sample-files-for-this-exercise-2"><i class="fa fa-check"></i>Sample files for this exercise</a></li>
-<li><a href="coordinate-systems-in-r.html#loading-the-sf-package">Loading the <code>sf</code> package</a></li>
+<li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#loading-the-sf-package"><i class="fa fa-check"></i>Loading the <code>sf</code> package</a></li>
 <li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#checking-for-a-coordinate-system"><i class="fa fa-check"></i>Checking for a coordinate system</a></li>
 <li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#understanding-the-proj4-coordinate-syntax"><i class="fa fa-check"></i>Understanding the Proj4 coordinate syntax</a></li>
 <li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#assigning-a-coordinate-system"><i class="fa fa-check"></i>Assigning a coordinate system</a></li>
@@ -483,7 +482,7 @@ div.csl-indent {
 <li class="chapter" data-level="H" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html"><i class="fa fa-check"></i><b>H</b> Point pattern analysis in R</a>
 <ul>
 <li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#sample-files-for-this-exercise-3"><i class="fa fa-check"></i>Sample files for this exercise</a></li>
-<li><a href="point-pattern-analysis-in-r.html#getting-external-data-into-a-spatstat-format">Getting external data into a <code>spatstat</code> format</a></li>
+<li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#getting-external-data-into-a-spatstat-format"><i class="fa fa-check"></i>Getting external data into a <code>spatstat</code> format</a></li>
 <li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#prepping-the-data"><i class="fa fa-check"></i>Prepping the data</a></li>
 <li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#density-based-analysis-1"><i class="fa fa-check"></i>Density based analysis</a>
 <ul>
@@ -526,8 +525,8 @@ div.csl-indent {
 <li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#fine-tuning-the-interpolation"><i class="fa fa-check"></i>Fine-tuning the interpolation</a></li>
 <li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#cross-validation"><i class="fa fa-check"></i>Cross-validation</a></li>
 </ul></li>
-<li><a href="interpolation-in-r.html#st-order-polynomial-fit">1<sup>st</sup> order polynomial fit</a></li>
-<li><a href="interpolation-in-r.html#nd-order-polynomial">2<sup>nd</sup> order polynomial</a></li>
+<li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#st-order-polynomial-fit"><i class="fa fa-check"></i>1<sup>st</sup> order polynomial fit</a></li>
+<li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#nd-order-polynomial"><i class="fa fa-check"></i>2<sup>nd</sup> order polynomial</a></li>
 <li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#kriging"><i class="fa fa-check"></i>Kriging</a>
 <ul>
 <li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#fit-the-variogram-model"><i class="fa fa-check"></i>Fit the variogram model</a></li>
@@ -552,15 +551,15 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="gis-data-management" class="section level1" number="3">
-<h1><span class="header-section-number">Chapter 3</span> GIS Data Management</h1>
-<div id="gis-file-data-formats" class="section level2" number="3.1">
-<h2><span class="header-section-number">3.1</span> GIS File Data Formats</h2>
+<div id="gis-data-management" class="section level1 hasAnchor" number="3">
+<h1><span class="header-section-number">Chapter 3</span> GIS Data Management<a href="gis-data-management.html#gis-data-management" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="gis-file-data-formats" class="section level2 hasAnchor" number="3.1">
+<h2><span class="header-section-number">3.1</span> GIS File Data Formats<a href="gis-data-management.html#gis-file-data-formats" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>In the GIS world, you will encounter many different GIS file formats. Some file formats are unique to specific GIS applications, others are universal. For this course, we will focus on a subset of spatial data file formats: <strong>shapefiles</strong> for vector data, <strong>imagine</strong> and <strong>GeoTiff</strong> files for rasters and <strong>file geodatabases</strong> for both vector and raster data.</p>
-<div id="vector-data-file-formats" class="section level3" number="3.1.1">
-<h3><span class="header-section-number">3.1.1</span> Vector Data File Formats</h3>
-<div id="shapefile" class="section level4" number="3.1.1.1">
-<h4><span class="header-section-number">3.1.1.1</span> Shapefile</h4>
+<div id="vector-data-file-formats" class="section level3 hasAnchor" number="3.1.1">
+<h3><span class="header-section-number">3.1.1</span> Vector Data File Formats<a href="gis-data-management.html#vector-data-file-formats" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="shapefile" class="section level4 hasAnchor" number="3.1.1.1">
+<h4><span class="header-section-number">3.1.1.1</span> Shapefile<a href="gis-data-management.html#shapefile" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>A <strong>shapefile</strong> is a file-based data format native to ArcView 3.x software (a much older version of ArcMap). Conceptually, a shapefile is a feature class–it stores a collection of features that have the same geometry type (point, line, or polygon), the same attributes, and a common spatial extent.</p>
 <p>Despite what its name may imply, a “single” shapefile is actually composed of at least three files, and as many as eight. Each file that makes up a “shapefile” has a common filename but different extension type.</p>
 <p>The list of files that define a “shapefile” are shown in the following table. Note that each file has a specific role in defining a shapefile.</p>
@@ -607,8 +606,8 @@ div.csl-indent {
 </tbody>
 </table>
 </div>
-<div id="file-geodatabase" class="section level4" number="3.1.1.2">
-<h4><span class="header-section-number">3.1.1.2</span> File Geodatabase</h4>
+<div id="file-geodatabase" class="section level4 hasAnchor" number="3.1.1.2">
+<h4><span class="header-section-number">3.1.1.2</span> File Geodatabase<a href="gis-data-management.html#file-geodatabase" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>A <strong>file geodatabase</strong> is a relational database storage format. It’s a far more complex data structure than the shapefile and consists of a <strong>.gdb</strong> folder housing dozens of files. Its complexity renders it more versatile allowing it to store multiple feature classes and enabling topological definitions (i.e. allowing the user to define rules that govern the way different feature classes relate to one another). An example of the contents of a geodatabase is shown in the following figure.</p>
 <div class="figure"><span style="display:block;" id="fig:f02-gdb"></span>
 <img src="img/geodatabase.jpg" alt="Sample content of an ArcGIS file geodatabase. (src: esri)" width="444" />
@@ -617,32 +616,32 @@ Figure 3.1: Sample content of an ArcGIS file geodatabase. (src: esri)
 </p>
 </div>
 </div>
-<div id="geopackage" class="section level4" number="3.1.1.3">
-<h4><span class="header-section-number">3.1.1.3</span> GeoPackage</h4>
+<div id="geopackage" class="section level4 hasAnchor" number="3.1.1.3">
+<h4><span class="header-section-number">3.1.1.3</span> GeoPackage<a href="gis-data-management.html#geopackage" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>This is a relatively new data format that follows <a href="https://en.wikipedia.org/wiki/Open_format">open format standards</a> (i.e. it is non-proprietary). It’s built on top of SQLite (a self-contained relational database). Its one big advantage over many other vector formats is its compactness–coordinate value, metadata, attribute table, projection information, etc…, are all stored in a <em>single</em> file which facilitates portability. Its filename usually ends in <code>.gpkg</code>. Applications such as QGIS (2.12 and up), R and ArcGIS will recognize this format (ArcGIS version 10.2.2 and above will read the file from ArcCatalog but requires a script to create a GeoPackage).</p>
 </div>
 </div>
-<div id="raster-data-file-formats" class="section level3" number="3.1.2">
-<h3><span class="header-section-number">3.1.2</span> Raster Data File Formats</h3>
+<div id="raster-data-file-formats" class="section level3 hasAnchor" number="3.1.2">
+<h3><span class="header-section-number">3.1.2</span> Raster Data File Formats<a href="gis-data-management.html#raster-data-file-formats" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Rasters are in part defined by their pixel depth. Pixel depth defines the range of distinct values the raster can store. For example, a 1-bit raster can only store 2 distinct values: 0 and 1.</p>
 <p><img src="03-Data-Management_files/figure-html/unnamed-chunk-1-1.png" width="288" /></p>
 <p>There is a wide range of raster file formats used in the GIS world. Some of the most popular ones are listed below.</p>
-<div id="imagine" class="section level4" number="3.1.2.1">
-<h4><span class="header-section-number">3.1.2.1</span> Imagine</h4>
+<div id="imagine" class="section level4 hasAnchor" number="3.1.2.1">
+<h4><span class="header-section-number">3.1.2.1</span> Imagine<a href="gis-data-management.html#imagine" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>The <strong>Imagine</strong> file format was originally created by an image processing software company called ERDAS. This file format consists of a single <strong>.img</strong> file. This is a simpler file format than the shapefile. It is sometimes accompanied by an .xml file which usually stores metadata information about the raster layer.</p>
 </div>
-<div id="geotiff" class="section level4" number="3.1.2.2">
-<h4><span class="header-section-number">3.1.2.2</span> GeoTiff</h4>
+<div id="geotiff" class="section level4 hasAnchor" number="3.1.2.2">
+<h4><span class="header-section-number">3.1.2.2</span> GeoTiff<a href="gis-data-management.html#geotiff" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>A popular public domain raster data format is the <strong>GeoTIFF</strong> format. If maximum portability and platform independence is important, this file format may be a good choice.</p>
 </div>
-<div id="file-geodatabase-1" class="section level4" number="3.1.2.3">
-<h4><span class="header-section-number">3.1.2.3</span> File Geodatabase</h4>
+<div id="file-geodatabase-1" class="section level4 hasAnchor" number="3.1.2.3">
+<h4><span class="header-section-number">3.1.2.3</span> File Geodatabase<a href="gis-data-management.html#file-geodatabase-1" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>A raster file can also be stored in a file geodatabase alongside vector files. Geodatabases have the benefit of defining image mosaic structures thus allowing the user to create “stitched” images from multiple image files stored in the geodatabase. Also, processing very large raster files can be computationally more efficient when stored in a file geodatabase as opposed to an Imagine or GeoTiff file format.</p>
 </div>
 </div>
 </div>
-<div id="managing-gis-files-in-arcgis" class="section level2" number="3.2">
-<h2><span class="header-section-number">3.2</span> Managing GIS Files in ArcGIS</h2>
+<div id="managing-gis-files-in-arcgis" class="section level2 hasAnchor" number="3.2">
+<h2><span class="header-section-number">3.2</span> Managing GIS Files in ArcGIS<a href="gis-data-management.html#managing-gis-files-in-arcgis" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Unless you are intimately familiar with the file structure of a GIS file, it is best to copy/move/delete GIS files from within the software environment. <strong>ArcCatalog</strong> (part of the ArcGIS suite) acts like a Windows file management environment with the added benefit that it recognizes GIS files.</p>
 <div class="figure"><span style="display:block;" id="fig:f02-catalog"></span>
 <img src="img/ArcCatalog.jpg" alt="Windows Explorer view vs. ArcCatalog view. Note, for example, how the many files that make up the Cities shapefile (as viewed in a Windows file manager environment) appears as a single entry in the ArcCatalog view. This makes it easier to rename the shapefile since it needs to be done only for a single entry in ArcCatalog (as opposed to renaming the Cities files seven times in the Windows file manager environment)." width="1071" />
@@ -651,8 +650,8 @@ Figure 3.2: Windows Explorer view vs. ArcCatalog view. Note, for example, how t
 </p>
 </div>
 </div>
-<div id="managing-a-map-project-in-arcgis" class="section level2" number="3.3">
-<h2><span class="header-section-number">3.3</span> Managing a Map Project in ArcGIS</h2>
+<div id="managing-a-map-project-in-arcgis" class="section level2 hasAnchor" number="3.3">
+<h2><span class="header-section-number">3.3</span> Managing a Map Project in ArcGIS<a href="gis-data-management.html#managing-a-map-project-in-arcgis" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Unlike many other software environments such as word processors and spreadsheets, a GIS map project is not self-contained in a single file. A GIS map consists of many files: ArcGIS’ <em>.aprx</em> file and the various vector and/or raster files used in the map project. The <em>.aprx</em> file only stores information about how the different layers are to be symbolized and the GIS file locations these layers point to.</p>
 <p>Because of the complex data structure associated with GIS maps, it’s usually best to store the <em>.aprx</em> and all associated GIS files under a single project directory. Then, when you are ready to share your map project with someone else, just pass along that project folder as is or compressed in a zip or tar file.</p>
 <p>Because .<em>aprx</em> map files read data from GIS files, it must know where to find these files on your computer or across the network. There are two ways in which a map document can store the location to the GIS files: as a <strong>relative pathname</strong> or a <strong>full pathname</strong>. In older esri GIS applications, like <strong>ArcMap</strong>, the user had the choice to save a project using <strong>relative</strong> or <strong>full</strong> pathnames.</p>
@@ -681,7 +680,6 @@ Figure 3.2: Windows Explorer view vs. ArcCatalog view. Note, for example, how t
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
-<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
 <script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
@@ -722,9 +720,9 @@ gitbook.start({
 "link": null,
 "text": null
 },
-"download": ["_main.pdf", "_main.epub"],
+"download": {},
 "search": {
-"engine": "lunr",
+"engine": "fuse",
 "options": null
 },
 "toc": {
@@ -741,7 +739,7 @@ gitbook.start({
     var script = document.createElement("script");
     script.type = "text/javascript";
     var src = "true";
-    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:")
       if (/^https?:/.test(src))
         src = src.replace(/^https?:/, '');

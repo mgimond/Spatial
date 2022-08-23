@@ -6,11 +6,10 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>B Mapping data in R | Intro to GIS and Spatial Analysis</title>
   <meta name="description" content="This is a compilation of lecture notes that accompany my Intro to GIS and Spatial Analysis course." />
-  <meta name="generator" content="bookdown 0.23 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.28 and GitBook 2.6.7" />
 
   <meta property="og:title" content="B Mapping data in R | Intro to GIS and Spatial Analysis" />
   <meta property="og:type" content="book" />
-  
   
   <meta property="og:description" content="This is a compilation of lecture notes that accompany my Intro to GIS and Spatial Analysis course." />
   <meta name="github-repo" content="mgimond/spatial" />
@@ -32,8 +31,8 @@
   
 <link rel="prev" href="reading-and-writing-spatial-data-in-r.html"/>
 <link rel="next" href="anatomy-of-simple-feature-objects.html"/>
-<script src="libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -49,19 +48,19 @@
 
 
 
-
-<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
-<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
 <script src="libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
-<script src="libs/htmlwidgets-1.5.3/htmlwidgets.js"></script>
+<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
 <link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet-1.3.1/leaflet.js"></script>
 <link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
 <script src="libs/proj4-2.6.2/proj4.min.js"></script>
 <script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
 <link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
-<script src="libs/leaflet-binding-2.0.4.1/leaflet.js"></script>
+<script src="libs/leaflet-binding-2.1.1/leaflet.js"></script>
 
 
 <style type="text/css">
@@ -359,21 +358,21 @@ div.csl-indent {
 <li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_4_5"><i class="fa fa-check"></i>Creating a spatial object from a data frame</a></li>
 <li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_4_6"><i class="fa fa-check"></i>Geocoding street addresses</a></li>
 </ul></li>
-<li><a href="reading-and-writing-spatial-data-in-r.html#app1_5">Converting from an <code>sf</code> object</a>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_5"><i class="fa fa-check"></i>Converting from an <code>sf</code> object</a>
 <ul>
-<li><a href="reading-and-writing-spatial-data-in-r.html#app1_5_1">Converting an <code>sf</code> object to a <code>Spatial*</code> object (<code>spdep</code>/<code>sp</code>)</a></li>
-<li><a href="reading-and-writing-spatial-data-in-r.html#app1_5_2">Converting an <code>sf</code> polygon object to an <code>owin</code> object</a></li>
-<li><a href="reading-and-writing-spatial-data-in-r.html#app1_5_3">Converting an <code>sf</code> point object to a <code>ppp</code> object</a></li>
-<li><a href="reading-and-writing-spatial-data-in-r.html#app1_5_4">Converting a <code>raster</code> object to an <code>im</code> object (<code>spatstat</code>)</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_5_1"><i class="fa fa-check"></i>Converting an <code>sf</code> object to a <code>Spatial*</code> object (<code>spdep</code>/<code>sp</code>)</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_5_2"><i class="fa fa-check"></i>Converting an <code>sf</code> polygon object to an <code>owin</code> object</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_5_3"><i class="fa fa-check"></i>Converting an <code>sf</code> point object to a <code>ppp</code> object</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_5_4"><i class="fa fa-check"></i>Converting a <code>raster</code> object to an <code>im</code> object (<code>spatstat</code>)</a></li>
 </ul></li>
-<li><a href="reading-and-writing-spatial-data-in-r.html#app1_6">Converting to an <code>sf</code> object</a></li>
-<li><a href="reading-and-writing-spatial-data-in-r.html#app1_7">Dissecting the <code>sf</code> file object</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_6"><i class="fa fa-check"></i>Converting to an <code>sf</code> object</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_7"><i class="fa fa-check"></i>Dissecting the <code>sf</code> file object</a></li>
 <li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_8"><i class="fa fa-check"></i>Exporting to different data file formats</a></li>
 </ul></li>
 <li class="chapter" data-level="B" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html"><i class="fa fa-check"></i><b>B</b> Mapping data in R</a>
 <ul>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#sample-files-for-this-exercise"><i class="fa fa-check"></i>Sample files for this exercise</a></li>
-<li><a href="mapping-data-in-r.html#tmap"><code>tmap</code></a>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#tmap"><i class="fa fa-check"></i><code>tmap</code></a>
 <ul>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#the-basics"><i class="fa fa-check"></i>The basics</a></li>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#combining-layers"><i class="fa fa-check"></i>Combining layers</a></li>
@@ -387,13 +386,13 @@ div.csl-indent {
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#side-by-side-maps"><i class="fa fa-check"></i>Side-by-side maps</a></li>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#splitting-data-by-polygons-or-group-of-polygons"><i class="fa fa-check"></i>Splitting data by polygons or group of polygons</a></li>
 </ul></li>
-<li><a href="mapping-data-in-r.html#ggplot2"><code>ggplot2</code></a>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#ggplot2"><i class="fa fa-check"></i><code>ggplot2</code></a>
 <ul>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#the-basics-1"><i class="fa fa-check"></i>The basics</a></li>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#tweaking-classification-schemes-1"><i class="fa fa-check"></i>Tweaking classification schemes</a></li>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#combining-layers-1"><i class="fa fa-check"></i>Combining layers</a></li>
 </ul></li>
-<li><a href="mapping-data-in-r.html#plot_sf"><code>plot_sf</code></a>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#plot_sf"><i class="fa fa-check"></i><code>plot_sf</code></a>
 <ul>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#the-basics-2"><i class="fa fa-check"></i>The basics</a></li>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#adding-a-graticule"><i class="fa fa-check"></i>Adding a graticule</a></li>
@@ -405,11 +404,11 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#creating-point-sf-objects"><i class="fa fa-check"></i>Creating point ‘sf’ objects</a>
 <ul>
-<li><a href="anatomy-of-simple-feature-objects.html#step-1-create-the-point-geometry-sfg">Step 1: Create the point geometry: <code>sfg</code></a></li>
-<li><a href="anatomy-of-simple-feature-objects.html#step-2-create-a-column-of-simple-feature-geometries-sfc">Step 2: Create a column of simple feature geometries: <code>sfc</code></a></li>
-<li><a href="anatomy-of-simple-feature-objects.html#step-3-create-the-simple-feature-object-sf">Step 3: Create the simple feature object <code>sf</code></a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#step-1-create-the-point-geometry-sfg"><i class="fa fa-check"></i>Step 1: Create the point geometry: <code>sfg</code></a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#step-2-create-a-column-of-simple-feature-geometries-sfc"><i class="fa fa-check"></i>Step 2: Create a column of simple feature geometries: <code>sfc</code></a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#step-3-create-the-simple-feature-object-sf"><i class="fa fa-check"></i>Step 3: Create the simple feature object <code>sf</code></a></li>
 <li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#renaming-the-geometry-column"><i class="fa fa-check"></i>Renaming the geometry column</a></li>
-<li><a href="anatomy-of-simple-feature-objects.html#adding-attributes-to-an-sf-object">Adding attributes to an <code>sf</code> object</a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#adding-attributes-to-an-sf-object"><i class="fa fa-check"></i>Adding attributes to an <code>sf</code> object</a></li>
 <li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#adding-a-geometry-column-to-an-existing-non-spatial-dataframe"><i class="fa fa-check"></i>Adding a geometry column to an existing non-spatial dataframe</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#creating-polyline-sf-objects"><i class="fa fa-check"></i>Creating polyline ‘sf’ objects</a>
@@ -418,10 +417,10 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#creating-polygon-sf-objects"><i class="fa fa-check"></i>Creating polygon ‘sf’ objects</a>
 <ul>
-<li><a href="anatomy-of-simple-feature-objects.html#polygon-simple-feature"><code>POLYGON</code> simple feature</a></li>
-<li><a href="anatomy-of-simple-feature-objects.html#multipolygon-simple-feature-multipart-features"><code>MULTIPOLYGON</code> simple feature: multipart features</a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#polygon-simple-feature"><i class="fa fa-check"></i><code>POLYGON</code> simple feature</a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#multipolygon-simple-feature-multipart-features"><i class="fa fa-check"></i><code>MULTIPOLYGON</code> simple feature: multipart features</a></li>
 </ul></li>
-<li><a href="anatomy-of-simple-feature-objects.html#extracting-geometry-from-an-sf-object">Extracting geometry from an <code>sf</code> object</a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#extracting-geometry-from-an-sf-object"><i class="fa fa-check"></i>Extracting geometry from an <code>sf</code> object</a></li>
 <li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#alternative-syntax"><i class="fa fa-check"></i>Alternative syntax</a></li>
 <li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#additional-resources"><i class="fa fa-check"></i>Additional resources</a></li>
 </ul></li>
@@ -441,7 +440,7 @@ div.csl-indent {
 <li class="chapter" data-level="E" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html"><i class="fa fa-check"></i><b>E</b> Mapping rates in R</a>
 <ul>
 <li class="chapter" data-level="" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html#raw-rates"><i class="fa fa-check"></i>Raw Rates</a></li>
-<li class="chapter" data-level="" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html#standardized-mortality-ratios-relative-risk."><i class="fa fa-check"></i>Standardized mortality ratios (relative risk).</a></li>
+<li class="chapter" data-level="" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html#standardized-mortality-ratios-relative-risk"><i class="fa fa-check"></i>Standardized mortality ratios (relative risk)</a></li>
 <li class="chapter" data-level="" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html#dykes-and-unwins-chi-square-statistic"><i class="fa fa-check"></i>Dykes and Unwin’s chi-square statistic</a></li>
 <li class="chapter" data-level="" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html#unstable-ratios"><i class="fa fa-check"></i>Unstable ratios</a>
 <ul>
@@ -467,9 +466,9 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="G" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html"><i class="fa fa-check"></i><b>G</b> Coordinate Systems in R</a>
 <ul>
-<li><a href="coordinate-systems-in-r.html#a-note-about-the-changes-to-the-proj-environment">A note about the changes to the <code>PROJ</code> environment</a></li>
+<li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#a-note-about-the-changes-to-the-proj-environment"><i class="fa fa-check"></i>A note about the changes to the <code>PROJ</code> environment</a></li>
 <li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#sample-files-for-this-exercise-2"><i class="fa fa-check"></i>Sample files for this exercise</a></li>
-<li><a href="coordinate-systems-in-r.html#loading-the-sf-package">Loading the <code>sf</code> package</a></li>
+<li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#loading-the-sf-package"><i class="fa fa-check"></i>Loading the <code>sf</code> package</a></li>
 <li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#checking-for-a-coordinate-system"><i class="fa fa-check"></i>Checking for a coordinate system</a></li>
 <li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#understanding-the-proj4-coordinate-syntax"><i class="fa fa-check"></i>Understanding the Proj4 coordinate syntax</a></li>
 <li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#assigning-a-coordinate-system"><i class="fa fa-check"></i>Assigning a coordinate system</a></li>
@@ -483,7 +482,7 @@ div.csl-indent {
 <li class="chapter" data-level="H" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html"><i class="fa fa-check"></i><b>H</b> Point pattern analysis in R</a>
 <ul>
 <li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#sample-files-for-this-exercise-3"><i class="fa fa-check"></i>Sample files for this exercise</a></li>
-<li><a href="point-pattern-analysis-in-r.html#getting-external-data-into-a-spatstat-format">Getting external data into a <code>spatstat</code> format</a></li>
+<li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#getting-external-data-into-a-spatstat-format"><i class="fa fa-check"></i>Getting external data into a <code>spatstat</code> format</a></li>
 <li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#prepping-the-data"><i class="fa fa-check"></i>Prepping the data</a></li>
 <li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#density-based-analysis-1"><i class="fa fa-check"></i>Density based analysis</a>
 <ul>
@@ -526,8 +525,8 @@ div.csl-indent {
 <li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#fine-tuning-the-interpolation"><i class="fa fa-check"></i>Fine-tuning the interpolation</a></li>
 <li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#cross-validation"><i class="fa fa-check"></i>Cross-validation</a></li>
 </ul></li>
-<li><a href="interpolation-in-r.html#st-order-polynomial-fit">1<sup>st</sup> order polynomial fit</a></li>
-<li><a href="interpolation-in-r.html#nd-order-polynomial">2<sup>nd</sup> order polynomial</a></li>
+<li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#st-order-polynomial-fit"><i class="fa fa-check"></i>1<sup>st</sup> order polynomial fit</a></li>
+<li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#nd-order-polynomial"><i class="fa fa-check"></i>2<sup>nd</sup> order polynomial</a></li>
 <li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#kriging"><i class="fa fa-check"></i>Kriging</a>
 <ul>
 <li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#fit-the-variogram-model"><i class="fa fa-check"></i>Fit the variogram model</a></li>
@@ -552,8 +551,8 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="mapping-data-in-r" class="section level1" number="17">
-<h1><span class="header-section-number">B</span> Mapping data in R</h1>
+<div id="mapping-data-in-r" class="section level1 hasAnchor" number="17">
+<h1><span class="header-section-number">B</span> Mapping data in R<a href="mapping-data-in-r.html#mapping-data-in-r" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <table class="package_ver_table">
 <tbody>
 <tr>
@@ -617,7 +616,7 @@ raster
               padding-bottom: 1px;
               padding-left: 4px;
               padding-right: 4px;">
-4.1.1
+4.2.1
 </td>
 <td style="text-align:left;color: white !important;background-color: #AAAAAA !important;text-align: center;font-size: 12px !important; 
               margin:5px; 
@@ -627,7 +626,7 @@ raster
               padding-bottom: 1px;
               padding-left: 4px;
               padding-right: 4px;">
-1.0.2
+1.0.8
 </td>
 <td style="text-align:left;color: white !important;background-color: #AAAAAA !important;text-align: center;font-size: 12px !important; 
               margin:5px; 
@@ -637,7 +636,7 @@ raster
               padding-bottom: 1px;
               padding-left: 4px;
               padding-right: 4px;">
-3.3.2
+3.3.3
 </td>
 <td style="text-align:left;color: white !important;background-color: #AAAAAA !important;text-align: center;font-size: 12px !important; 
               margin:5px; 
@@ -647,7 +646,7 @@ raster
               padding-bottom: 1px;
               padding-left: 4px;
               padding-right: 4px;">
-3.3.5
+3.3.6
 </td>
 <td style="text-align:left;color: white !important;background-color: #AAAAAA !important;text-align: center;font-size: 12px !important; 
               margin:5px; 
@@ -657,25 +656,25 @@ raster
               padding-bottom: 1px;
               padding-left: 4px;
               padding-right: 4px;">
-3.4.13
+3.5.29
 </td>
 </tr>
 </tbody>
 </table>
 <p>There are many mapping environments that can be adopted in R. Three are presented in this tutorial: <code>tmap</code>, <code>ggplot2</code> and <code>plot_sf</code>.</p>
-<div id="sample-files-for-this-exercise" class="section level2 unnumbered">
-<h2>Sample files for this exercise</h2>
+<div id="sample-files-for-this-exercise" class="section level2 unnumbered hasAnchor">
+<h2>Sample files for this exercise<a href="mapping-data-in-r.html#sample-files-for-this-exercise" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Data used in the following exercises can be loaded into your current R session by running the following chunk of code.</p>
 <div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="mapping-data-in-r.html#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
 <span id="cb54-2"><a href="mapping-data-in-r.html#cb54-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb54-3"><a href="mapping-data-in-r.html#cb54-3" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="fu">url</span>(<span class="st">&quot;https://github.com/mgimond/Spatial/raw/main/Data/Sample1.RData&quot;</span>))</span></code></pre></div>
 <p>The data objects consist of five layers: an elevation raster (<code>elev.r</code>), an interstate polyline layer (<code>inter.sf</code>), a point cities layer (p.sf), a railroad polyline layer (<code>rail.sf</code>) and a Maine counties polygon layer (<code>s.sf</code>). All vector layers are <code>sf</code> objects. All layers are in a UTM/NAD83 projection (Zone 19N) except <code>p.sf</code> which is in a WGS 1984 geographic coordinate system.</p>
 </div>
-<div id="tmap" class="section level2 unnumbered">
-<h2><code>tmap</code></h2>
+<div id="tmap" class="section level2 unnumbered hasAnchor">
+<h2><code>tmap</code><a href="mapping-data-in-r.html#tmap" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The <code>tmap</code> package is specifically developed for mapping spatial data. As such, it offers the greatest mapping options. The package recognizes <code>sf</code>, <code>raster</code> and <code>Spatial*</code> objects.</p>
-<div id="the-basics" class="section level3 unnumbered">
-<h3>The basics</h3>
+<div id="the-basics" class="section level3 unnumbered hasAnchor">
+<h3>The basics<a href="mapping-data-in-r.html#the-basics" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>To map the counties polygon layer using a grey color scheme, type:</p>
 <div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="mapping-data-in-r.html#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tmap) </span>
 <span id="cb55-2"><a href="mapping-data-in-r.html#cb55-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(s.sf) <span class="sc">+</span> <span class="fu">tm_polygons</span>(<span class="at">col=</span><span class="st">&quot;grey&quot;</span>, <span class="at">border.col=</span><span class="st">&quot;white&quot;</span>)</span></code></pre></div>
@@ -700,8 +699,8 @@ raster
 <p><img src="A02-Mapping-data_files/figure-html/unnamed-chunk-7-1.png" width="480" /></p>
 <p>Note that the <code>tm_fill</code> function is nearly identical to the <code>tm_polygons</code> function with the difference being that the <code>tm_fill</code> function does not draw polygon borders.</p>
 </div>
-<div id="combining-layers" class="section level3 unnumbered">
-<h3>Combining layers</h3>
+<div id="combining-layers" class="section level3 unnumbered hasAnchor">
+<h3>Combining layers<a href="mapping-data-in-r.html#combining-layers" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>You can easily stack layers by piecing together additional <code>tm_shape</code>functions. In the following example, the railroad layer and the point layer are added to the income map. The railroad layer is mapped using the <code>tm_lines</code> function and the cities point layer is mapped using the <code>tm_dots</code> function. Note that layers are pieced together using the <code>+</code> symbol.</p>
 <div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="mapping-data-in-r.html#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(s.sf) <span class="sc">+</span> </span>
 <span id="cb60-2"><a href="mapping-data-in-r.html#cb60-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_polygons</span>(<span class="st">&quot;Income&quot;</span>, <span class="at">border.col =</span> <span class="cn">NULL</span>) <span class="sc">+</span> </span>
@@ -712,8 +711,8 @@ raster
 <p>Layers are stacked in the order in which they are listed. In the above example, the point layer is the last layer called therefore it is drawn on top of the previously drawn layers.</p>
 <p>Note that if a layer’s coordinate system is properly defined, <code>tmap</code> will reproject, on-the-fly, any layer whose coordinate system does not match that of the first layer in the stack. In this example, <code>s.sf</code> defines the map’s coordinate system (UTM/NAD83). <code>p.sf</code> is in a geographic coordinate system and is thus reprojected on-the-fly to properly overlap the other layers in the map.</p>
 </div>
-<div id="tweaking-classification-schemes" class="section level3 unnumbered">
-<h3>Tweaking classification schemes</h3>
+<div id="tweaking-classification-schemes" class="section level3 unnumbered hasAnchor">
+<h3>Tweaking classification schemes<a href="mapping-data-in-r.html#tweaking-classification-schemes" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>You can control the classification type, color scheme, and bin numbers via the <code>tm_polygons</code> function. For example, to apply a quantile scheme with 6 bins and varying shades of green, type:</p>
 <div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="mapping-data-in-r.html#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(s.sf) <span class="sc">+</span> </span>
 <span id="cb61-2"><a href="mapping-data-in-r.html#cb61-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_polygons</span>(<span class="st">&quot;Income&quot;</span>, <span class="at">style =</span> <span class="st">&quot;quantile&quot;</span>, <span class="at">n =</span> <span class="dv">6</span>, <span class="at">palette =</span> <span class="st">&quot;Greens&quot;</span>) <span class="sc">+</span> </span>
@@ -734,8 +733,8 @@ raster
 <span id="cb63-6"><a href="mapping-data-in-r.html#cb63-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_legend</span>(<span class="at">outside =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <p><img src="A02-Mapping-data_files/figure-html/unnamed-chunk-11-1.png" width="480" /></p>
 </div>
-<div id="tweaking-colors" class="section level3 unnumbered">
-<h3>Tweaking colors</h3>
+<div id="tweaking-colors" class="section level3 unnumbered hasAnchor">
+<h3>Tweaking colors<a href="mapping-data-in-r.html#tweaking-colors" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>There are many color schemes to choose from, but you will probably want to stick to color swatches established by <a href="http://colorbrewer2.org">Cynthia Brewer</a>. These palettes are available in <code>tmap</code> and their names are listed below.</p>
 <p>For <strong>sequential</strong> color schemes, you can choose from the following palettes.</p>
 <p><img src="A02-Mapping-data_files/figure-html/unnamed-chunk-12-1.png" width="384" /></p>
@@ -757,8 +756,8 @@ raster
 <p>The character <code>\n</code> in the “<code>Fraction without \na HS degree</code>” string is interpreted by R as a <em>new line</em> (carriage return).</p>
 <p>If you want to reverse the color scheme simply add the minus symbol <code>-</code> in front of the palette name as in <code>palette = "-YlOrBr"</code></p>
 </div>
-<div id="adding-labels" class="section level3 unnumbered">
-<h3>Adding labels</h3>
+<div id="adding-labels" class="section level3 unnumbered hasAnchor">
+<h3>Adding labels<a href="mapping-data-in-r.html#adding-labels" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>You can add text and labels using the <code>tm_text</code> function. In the following example, point labels are added to the right of the points with the text left justified (<code>just = "left"</code>) and with an x offset of 0.5 units for added buffer between the point and the text.</p>
 <div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="mapping-data-in-r.html#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(s.sf) <span class="sc">+</span> </span>
 <span id="cb66-2"><a href="mapping-data-in-r.html#cb66-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_polygons</span>(<span class="st">&quot;NAME&quot;</span>, <span class="at">palette =</span> <span class="st">&quot;Pastel1&quot;</span>, <span class="at">border.col =</span> <span class="st">&quot;white&quot;</span>) <span class="sc">+</span> </span>
@@ -769,8 +768,8 @@ raster
 <p><img src="A02-Mapping-data_files/figure-html/unnamed-chunk-17-1.png" width="480" /></p>
 <p>The <code>tm_text</code> function accepts an auto placement option via the parameter <code>auto.placement = TRUE</code>. This uses a simulated annealing algorithm. Note that this automated approach may not generate the same text placement after each run.</p>
 </div>
-<div id="adding-a-grid-or-graticule" class="section level3 unnumbered">
-<h3>Adding a grid or graticule</h3>
+<div id="adding-a-grid-or-graticule" class="section level3 unnumbered hasAnchor">
+<h3>Adding a grid or graticule<a href="mapping-data-in-r.html#adding-a-grid-or-graticule" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>You can add a grid or graticule to the map using the <code>tm_grid</code> function. You will need to modify the map’s default viewport setting via the <code>tm_layout</code> function to provide space for the grid labels. In the following example, the grid is generated using the layer’s UTM coordinate system and is divided into roughly four segments along the x-axis and five segments along the y-axis. The function will adjust the grid placement so as to generate “pretty” label values.</p>
 <div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="mapping-data-in-r.html#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(s.sf) <span class="sc">+</span> </span>
 <span id="cb67-2"><a href="mapping-data-in-r.html#cb67-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_polygons</span>(<span class="st">&quot;NAME&quot;</span>, <span class="at">palette =</span> <span class="st">&quot;Pastel1&quot;</span>) <span class="sc">+</span> </span>
@@ -803,8 +802,8 @@ raster
 <p><img src="A02-Mapping-data_files/figure-html/unnamed-chunk-20-1.png" width="480" /></p>
 <p>Here, we use the unicode <em>decimal</em> representation of the ° symbol (unicode <em>176</em>) and pass it to the <code>intToUtf8</code> function. A list of unicode characters and their decimal representation can be found on this <a href="https://en.wikipedia.org/wiki/List_of_Unicode_characters#Latin-1_Supplement">Wikipedia</a> page.</p>
 </div>
-<div id="adding-statistical-plots" class="section level3 unnumbered">
-<h3>Adding statistical plots</h3>
+<div id="adding-statistical-plots" class="section level3 unnumbered hasAnchor">
+<h3>Adding statistical plots<a href="mapping-data-in-r.html#adding-statistical-plots" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>A histogram of the variables being mapped can be added to the legend element. By default, the histogram will inherit the colors used in the classification scheme.</p>
 <div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="mapping-data-in-r.html#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(s.sf) <span class="sc">+</span> </span>
 <span id="cb70-2"><a href="mapping-data-in-r.html#cb70-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_polygons</span>(<span class="st">&quot;NoSchool&quot;</span>, <span class="at">palette =</span> <span class="st">&quot;YlOrBr&quot;</span>, <span class="at">n =</span> <span class="dv">6</span>, </span>
@@ -812,8 +811,8 @@ raster
 <span id="cb70-4"><a href="mapping-data-in-r.html#cb70-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_legend</span>(<span class="at">outside =</span> <span class="cn">TRUE</span>, <span class="at">hist.width =</span> <span class="dv">2</span>) </span></code></pre></div>
 <p><img src="A02-Mapping-data_files/figure-html/unnamed-chunk-21-1.png" width="480" /></p>
 </div>
-<div id="mapping-raster-files" class="section level3 unnumbered">
-<h3>Mapping raster files</h3>
+<div id="mapping-raster-files" class="section level3 unnumbered hasAnchor">
+<h3>Mapping raster files<a href="mapping-data-in-r.html#mapping-raster-files" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Raster objects can be mapped by specifying the <code>tm_raster</code> function. For example to plot the elevation raster and assign 64 continuous shades of the built-in terrain color ramp, type:</p>
 <div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="mapping-data-in-r.html#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(elev.r) <span class="sc">+</span> </span>
 <span id="cb71-2"><a href="mapping-data-in-r.html#cb71-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_raster</span>(<span class="at">style =</span> <span class="st">&quot;cont&quot;</span>, <span class="at">title =</span> <span class="st">&quot;Elevation (m)&quot;</span>,</span>
@@ -837,8 +836,8 @@ raster
 <p><img src="A02-Mapping-data_files/figure-html/unnamed-chunk-24-1.png" width="480" /></p>
 <p>Note that the Brewer palette names can also be used with rasters.</p>
 </div>
-<div id="changing-coordinate-systems" class="section level3 unnumbered">
-<h3>Changing coordinate systems</h3>
+<div id="changing-coordinate-systems" class="section level3 unnumbered hasAnchor">
+<h3>Changing coordinate systems<a href="mapping-data-in-r.html#changing-coordinate-systems" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p><code>tmap</code> can change the output’s coordinate system without needing to reproject the data layers. In the following example, the elevation raster, railroad layer and point city layer are mapped onto a <em>USA Contiguous Albers Equal Area Conic</em> projection. A lat/long grid is added as a reference.</p>
 <div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="mapping-data-in-r.html#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the Albers coordinate system</span></span>
 <span id="cb74-2"><a href="mapping-data-in-r.html#cb74-2" aria-hidden="true" tabindex="-1"></a>aea <span class="ot">&lt;-</span>  <span class="st">&quot;+proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=37.5 +lon_0=-96 +ellps=GRS80 +datum=NAD83&quot;</span></span>
@@ -859,8 +858,8 @@ raster
 <p>The first data layer’s <code>projection=</code> parameter will define the map’s coordinate system. Note that this parameter does not need to be specified in the other layers taking part in the output map.</p>
 <p>If a projection is not explicitly defined in the first call to <code>tm_shape</code>, then the output map will default to the first layer’s reference system.</p>
 </div>
-<div id="side-by-side-maps" class="section level3 unnumbered">
-<h3>Side-by-side maps</h3>
+<div id="side-by-side-maps" class="section level3 unnumbered hasAnchor">
+<h3>Side-by-side maps<a href="mapping-data-in-r.html#side-by-side-maps" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>You can piece maps together side-by-side using the <code>tmap_arrange</code> function. You first need to save each map to a separate object before combining them. For example:</p>
 <div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="mapping-data-in-r.html#cb75-1" aria-hidden="true" tabindex="-1"></a>inc.map <span class="ot">&lt;-</span> <span class="fu">tm_shape</span>(s.sf) <span class="sc">+</span> <span class="fu">tm_polygons</span>(<span class="at">col=</span><span class="st">&quot;Income&quot;</span>)<span class="sc">+</span></span>
 <span id="cb75-2"><a href="mapping-data-in-r.html#cb75-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_legend</span>(<span class="at">outside=</span><span class="cn">TRUE</span>) </span>
@@ -872,8 +871,8 @@ raster
 <span id="cb75-8"><a href="mapping-data-in-r.html#cb75-8" aria-hidden="true" tabindex="-1"></a><span class="fu">tmap_arrange</span>(inc.map, school.map, name.map)</span></code></pre></div>
 <p><img src="A02-Mapping-data_files/figure-html/unnamed-chunk-26-1.png" width="1248" /></p>
 </div>
-<div id="splitting-data-by-polygons-or-group-of-polygons" class="section level3 unnumbered">
-<h3>Splitting data by polygons or group of polygons</h3>
+<div id="splitting-data-by-polygons-or-group-of-polygons" class="section level3 unnumbered hasAnchor">
+<h3>Splitting data by polygons or group of polygons<a href="mapping-data-in-r.html#splitting-data-by-polygons-or-group-of-polygons" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>You can split the output into groups of features based on a column attribute. For example, to split the income map into individual polygons via the <code>NAME</code> attribute, type:</p>
 <div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb76-1"><a href="mapping-data-in-r.html#cb76-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(s.sf) <span class="sc">+</span> <span class="fu">tm_polygons</span>(<span class="at">col =</span> <span class="st">&quot;Income&quot;</span>) <span class="sc">+</span></span>
 <span id="cb76-2"><a href="mapping-data-in-r.html#cb76-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_legend</span>(<span class="at">outside =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
@@ -882,11 +881,11 @@ raster
 <p>The order of the faceted plot follows the alphanumeric order of the faceting attribute values. If you want to change the faceted order, you will need to change the attribute’s <a href="https://mgimond.github.io/ES218/Week02a.html#Rearranging_level_order">level order</a>.</p>
 </div>
 </div>
-<div id="ggplot2" class="section level2 unnumbered">
-<h2><code>ggplot2</code></h2>
+<div id="ggplot2" class="section level2 unnumbered hasAnchor">
+<h2><code>ggplot2</code><a href="mapping-data-in-r.html#ggplot2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>If you are already familiar with <code>ggplot2</code>, you will find it easy to transition to spatial data visualization. The key <em>geom</em> used when mapping spatial data is <code>geom_sf()</code>.</p>
-<div id="the-basics-1" class="section level3 unnumbered">
-<h3>The basics</h3>
+<div id="the-basics-1" class="section level3 unnumbered hasAnchor">
+<h3>The basics<a href="mapping-data-in-r.html#the-basics-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>If you wish to simply plot the geometric elements of a layer, type:</p>
 <div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="mapping-data-in-r.html#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
 <span id="cb77-2"><a href="mapping-data-in-r.html#cb77-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> s.sf) <span class="sc">+</span> <span class="fu">geom_sf</span>()</span></code></pre></div>
@@ -924,15 +923,15 @@ raster
 <p><img src="A02-Mapping-data_files/figure-html/unnamed-chunk-36-1.png" width="336" /></p>
 <p>To remove outlines, simply pass <code>NA</code> to <code>col</code> (e.g. <code>col = NA</code>) in the <code>geom_sf</code> function.</p>
 </div>
-<div id="tweaking-classification-schemes-1" class="section level3 unnumbered">
-<h3>Tweaking classification schemes</h3>
+<div id="tweaking-classification-schemes-1" class="section level3 unnumbered hasAnchor">
+<h3>Tweaking classification schemes<a href="mapping-data-in-r.html#tweaking-classification-schemes-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>To bin the color scheme by assigning ranges of income values to a unique set of color swatches defined by hex values, use one of the <code>scale_fill_steps*</code> family of functions.</p>
 <div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb86-1"><a href="mapping-data-in-r.html#cb86-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> s.sf, <span class="fu">aes</span>(<span class="at">fill =</span> Income)) <span class="sc">+</span> <span class="fu">geom_sf</span>() <span class="sc">+</span></span>
 <span id="cb86-2"><a href="mapping-data-in-r.html#cb86-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_stepsn</span>(<span class="at">colors =</span> <span class="fu">c</span>(<span class="st">&quot;#D73027&quot;</span>, <span class="st">&quot;#FC8D59&quot;</span>, <span class="st">&quot;#FEE08B&quot;</span>, </span>
 <span id="cb86-3"><a href="mapping-data-in-r.html#cb86-3" aria-hidden="true" tabindex="-1"></a>                               <span class="st">&quot;#D9EF8B&quot;</span>, <span class="st">&quot;#91CF60&quot;</span>) ,</span>
 <span id="cb86-4"><a href="mapping-data-in-r.html#cb86-4" aria-hidden="true" tabindex="-1"></a>                    <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">22000</span>, <span class="dv">25000</span>, <span class="dv">27000</span>, <span class="dv">30000</span>))</span></code></pre></div>
 <p><img src="A02-Mapping-data_files/figure-html/unnamed-chunk-37-1.png" width="336" /></p>
-<p>You can adopt Brewer’s color schemes (see <a href="#app2_2_3">the section</a> on Brewer’s color schemes) by applying one of the <code>scale_..._fermenter()</code> functions and specifying the classification type (sequential, <code>seq</code>; divergent, <code>div</code>; or categorical, <code>qual</code>) and the palette name. For example, to adopt a divergent color scheme using the <code>"PRGn"</code> colors, type:</p>
+<p>You can adopt Brewer’s color schemes by applying one of the <code>scale_..._fermenter()</code> functions and specifying the classification type (sequential, <code>seq</code>; divergent, <code>div</code>; or categorical, <code>qual</code>) and the palette name. For example, to adopt a divergent color scheme using the <code>"PRGn"</code> colors, type:</p>
 <div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="mapping-data-in-r.html#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> s.sf, <span class="fu">aes</span>(<span class="at">fill =</span> Income)) <span class="sc">+</span> <span class="fu">geom_sf</span>() <span class="sc">+</span></span>
 <span id="cb87-2"><a href="mapping-data-in-r.html#cb87-2" aria-hidden="true" tabindex="-1"></a>   <span class="fu">scale_fill_fermenter</span>(<span class="at">type =</span> <span class="st">&quot;div&quot;</span>, <span class="at">palette =</span> <span class="st">&quot;PRGn&quot;</span>, <span class="at">n.breaks =</span> <span class="dv">4</span>)</span></code></pre></div>
 <p><img src="A02-Mapping-data_files/figure-html/unnamed-chunk-38-1.png" width="336" /></p>
@@ -953,8 +952,8 @@ raster
 <span id="cb89-10"><a href="mapping-data-in-r.html#cb89-10" aria-hidden="true" tabindex="-1"></a>                                              <span class="at">barwidth =</span> <span class="fu">unit</span>(<span class="fl">0.15</span>, <span class="st">&quot;in&quot;</span>))) </span></code></pre></div>
 <p><img src="A02-Mapping-data_files/figure-html/unnamed-chunk-40-1.png" width="336" /></p>
 </div>
-<div id="combining-layers-1" class="section level3 unnumbered">
-<h3>Combining layers</h3>
+<div id="combining-layers-1" class="section level3 unnumbered hasAnchor">
+<h3>Combining layers<a href="mapping-data-in-r.html#combining-layers-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>You can overlap layers in the map by adding calls to <code>geom_sf</code>. In such a scenario, it might be best for readability sake to specify the layer name in the <code>geom_sf</code> function instead of the <code>ggplot</code> function.</p>
 <div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="mapping-data-in-r.html#cb90-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span> </span>
 <span id="cb90-2"><a href="mapping-data-in-r.html#cb90-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> s.sf, <span class="fu">aes</span>(<span class="at">fill =</span> Income)) <span class="sc">+</span></span>
@@ -976,11 +975,11 @@ raster
 <p><img src="A02-Mapping-data_files/figure-html/unnamed-chunk-42-1.png" width="336" /></p>
 </div>
 </div>
-<div id="plot_sf" class="section level2 unnumbered">
-<h2><code>plot_sf</code></h2>
+<div id="plot_sf" class="section level2 unnumbered hasAnchor">
+<h2><code>plot_sf</code><a href="mapping-data-in-r.html#plot_sf" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The <code>sf</code> package has its own plot method. This is a convenient way to generate simple plots without needing additional plotting packages.</p>
-<div id="the-basics-2" class="section level3 unnumbered">
-<h3>The basics</h3>
+<div id="the-basics-2" class="section level3 unnumbered hasAnchor">
+<h3>The basics<a href="mapping-data-in-r.html#the-basics-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>By default, when passing an <code>sf</code> object to `plot, the function will generate as may plots as there are attribute columns. For example</p>
 <div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb92-1"><a href="mapping-data-in-r.html#cb92-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(s.sf)</span></code></pre></div>
 <p><img src="A02-Mapping-data_files/figure-html/unnamed-chunk-43-1.png" width="336" /></p>
@@ -994,14 +993,14 @@ raster
 <div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="mapping-data-in-r.html#cb95-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(s.sf), <span class="at">col =</span><span class="st">&quot;grey&quot;</span>, <span class="at">border =</span> <span class="st">&quot;white&quot;</span>)</span></code></pre></div>
 <p><img src="A02-Mapping-data_files/figure-html/unnamed-chunk-46-1.png" width="336" /></p>
 </div>
-<div id="adding-a-graticule" class="section level3 unnumbered">
-<h3>Adding a graticule</h3>
+<div id="adding-a-graticule" class="section level3 unnumbered hasAnchor">
+<h3>Adding a graticule<a href="mapping-data-in-r.html#adding-a-graticule" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>You can add a graticule by setting the graticule parameter to <code>TRUE</code>. To add graticule labels, set <code>axes</code> to <code>TRUE</code>.</p>
 <div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="mapping-data-in-r.html#cb96-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(s.sf), <span class="at">col =</span><span class="st">&quot;grey&quot;</span>, <span class="at">border =</span> <span class="st">&quot;white&quot;</span>, <span class="at">graticule =</span> <span class="cn">TRUE</span>, <span class="at">axes=</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <p><img src="A02-Mapping-data_files/figure-html/unnamed-chunk-47-1.png" width="316.8" /></p>
 </div>
-<div id="combining-layers-2" class="section level3 unnumbered">
-<h3>Combining layers</h3>
+<div id="combining-layers-2" class="section level3 unnumbered hasAnchor">
+<h3>Combining layers<a href="mapping-data-in-r.html#combining-layers-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>To add layers, generate a new call to <code>plot</code> with the <code>add</code> parameter set to <code>TRUE</code>. For example, to add <code>rail.sf</code> and <code>p.sf</code> to the map, type:</p>
 <div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb97-1"><a href="mapping-data-in-r.html#cb97-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(s.sf), <span class="at">col =</span><span class="st">&quot;grey&quot;</span>, <span class="at">border =</span> <span class="st">&quot;white&quot;</span>, <span class="at">graticule =</span> <span class="cn">TRUE</span>, <span class="at">axes=</span> <span class="cn">TRUE</span>)</span>
 <span id="cb97-2"><a href="mapping-data-in-r.html#cb97-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(rail.sf,  <span class="at">col =</span> <span class="st">&quot;grey20&quot;</span>, <span class="at">add =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
@@ -1012,8 +1011,8 @@ raster
 <span id="cb98-2"><a href="mapping-data-in-r.html#cb98-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(rail.sf), <span class="at">col =</span><span class="st">&quot;grey&quot;</span>, <span class="at">border =</span> <span class="st">&quot;white&quot;</span>, <span class="at">add =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <p><img src="A02-Mapping-data_files/figure-html/unnamed-chunk-49-1.png" width="316.8" /></p>
 </div>
-<div id="tweaking-colors-1" class="section level3 unnumbered">
-<h3>Tweaking colors</h3>
+<div id="tweaking-colors-1" class="section level3 unnumbered hasAnchor">
+<h3>Tweaking colors<a href="mapping-data-in-r.html#tweaking-colors-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>You can tweak the color schemes as well as the legend display. The latter will require the use of R’s built-in <code>par</code> function whereby the <code>las = 1</code> parameter will render the key labels horizontal, and the <code>omi</code> parameter will prevent the legend labels from being cropped.</p>
 <div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb99-1"><a href="mapping-data-in-r.html#cb99-1" aria-hidden="true" tabindex="-1"></a>OP <span class="ot">&lt;-</span> <span class="fu">par</span>(<span class="at">las =</span> <span class="dv">1</span>, <span class="at">omi=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="fl">0.6</span>))</span>
 <span id="cb99-2"><a href="mapping-data-in-r.html#cb99-2" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">plot</span>(s.sf[<span class="st">&quot;Income&quot;</span>], <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">20000</span>, <span class="dv">22000</span>, <span class="dv">25000</span>, <span class="dv">26000</span>, <span class="dv">27000</span>, <span class="dv">30000</span>, <span class="dv">33000</span>),</span>
@@ -1038,7 +1037,6 @@ raster
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
-<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
 <script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
@@ -1079,9 +1077,9 @@ gitbook.start({
 "link": null,
 "text": null
 },
-"download": ["_main.pdf", "_main.epub"],
+"download": {},
 "search": {
-"engine": "lunr",
+"engine": "fuse",
 "options": null
 },
 "toc": {
@@ -1098,7 +1096,7 @@ gitbook.start({
     var script = document.createElement("script");
     script.type = "text/javascript";
     var src = "true";
-    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:")
       if (/^https?:/.test(src))
         src = src.replace(/^https?:/, '');

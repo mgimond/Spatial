@@ -6,11 +6,10 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 5 Pitfalls to avoid | Intro to GIS and Spatial Analysis</title>
   <meta name="description" content="This is a compilation of lecture notes that accompany my Intro to GIS and Spatial Analysis course." />
-  <meta name="generator" content="bookdown 0.23 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.28 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 5 Pitfalls to avoid | Intro to GIS and Spatial Analysis" />
   <meta property="og:type" content="book" />
-  
   
   <meta property="og:description" content="This is a compilation of lecture notes that accompany my Intro to GIS and Spatial Analysis course." />
   <meta name="github-repo" content="mgimond/spatial" />
@@ -32,8 +31,8 @@
   
 <link rel="prev" href="symbolizing-features.html"/>
 <link rel="next" href="good-map-making-tips.html"/>
-<script src="libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -49,19 +48,19 @@
 
 
 
-
-<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
-<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
 <script src="libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
-<script src="libs/htmlwidgets-1.5.3/htmlwidgets.js"></script>
+<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
 <link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet-1.3.1/leaflet.js"></script>
 <link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
 <script src="libs/proj4-2.6.2/proj4.min.js"></script>
 <script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
 <link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
-<script src="libs/leaflet-binding-2.0.4.1/leaflet.js"></script>
+<script src="libs/leaflet-binding-2.1.1/leaflet.js"></script>
 
 
 <style type="text/css">
@@ -359,21 +358,21 @@ div.csl-indent {
 <li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_4_5"><i class="fa fa-check"></i>Creating a spatial object from a data frame</a></li>
 <li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_4_6"><i class="fa fa-check"></i>Geocoding street addresses</a></li>
 </ul></li>
-<li><a href="reading-and-writing-spatial-data-in-r.html#app1_5">Converting from an <code>sf</code> object</a>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_5"><i class="fa fa-check"></i>Converting from an <code>sf</code> object</a>
 <ul>
-<li><a href="reading-and-writing-spatial-data-in-r.html#app1_5_1">Converting an <code>sf</code> object to a <code>Spatial*</code> object (<code>spdep</code>/<code>sp</code>)</a></li>
-<li><a href="reading-and-writing-spatial-data-in-r.html#app1_5_2">Converting an <code>sf</code> polygon object to an <code>owin</code> object</a></li>
-<li><a href="reading-and-writing-spatial-data-in-r.html#app1_5_3">Converting an <code>sf</code> point object to a <code>ppp</code> object</a></li>
-<li><a href="reading-and-writing-spatial-data-in-r.html#app1_5_4">Converting a <code>raster</code> object to an <code>im</code> object (<code>spatstat</code>)</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_5_1"><i class="fa fa-check"></i>Converting an <code>sf</code> object to a <code>Spatial*</code> object (<code>spdep</code>/<code>sp</code>)</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_5_2"><i class="fa fa-check"></i>Converting an <code>sf</code> polygon object to an <code>owin</code> object</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_5_3"><i class="fa fa-check"></i>Converting an <code>sf</code> point object to a <code>ppp</code> object</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_5_4"><i class="fa fa-check"></i>Converting a <code>raster</code> object to an <code>im</code> object (<code>spatstat</code>)</a></li>
 </ul></li>
-<li><a href="reading-and-writing-spatial-data-in-r.html#app1_6">Converting to an <code>sf</code> object</a></li>
-<li><a href="reading-and-writing-spatial-data-in-r.html#app1_7">Dissecting the <code>sf</code> file object</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_6"><i class="fa fa-check"></i>Converting to an <code>sf</code> object</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_7"><i class="fa fa-check"></i>Dissecting the <code>sf</code> file object</a></li>
 <li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_8"><i class="fa fa-check"></i>Exporting to different data file formats</a></li>
 </ul></li>
 <li class="chapter" data-level="B" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html"><i class="fa fa-check"></i><b>B</b> Mapping data in R</a>
 <ul>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#sample-files-for-this-exercise"><i class="fa fa-check"></i>Sample files for this exercise</a></li>
-<li><a href="mapping-data-in-r.html#tmap"><code>tmap</code></a>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#tmap"><i class="fa fa-check"></i><code>tmap</code></a>
 <ul>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#the-basics"><i class="fa fa-check"></i>The basics</a></li>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#combining-layers"><i class="fa fa-check"></i>Combining layers</a></li>
@@ -387,13 +386,13 @@ div.csl-indent {
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#side-by-side-maps"><i class="fa fa-check"></i>Side-by-side maps</a></li>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#splitting-data-by-polygons-or-group-of-polygons"><i class="fa fa-check"></i>Splitting data by polygons or group of polygons</a></li>
 </ul></li>
-<li><a href="mapping-data-in-r.html#ggplot2"><code>ggplot2</code></a>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#ggplot2"><i class="fa fa-check"></i><code>ggplot2</code></a>
 <ul>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#the-basics-1"><i class="fa fa-check"></i>The basics</a></li>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#tweaking-classification-schemes-1"><i class="fa fa-check"></i>Tweaking classification schemes</a></li>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#combining-layers-1"><i class="fa fa-check"></i>Combining layers</a></li>
 </ul></li>
-<li><a href="mapping-data-in-r.html#plot_sf"><code>plot_sf</code></a>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#plot_sf"><i class="fa fa-check"></i><code>plot_sf</code></a>
 <ul>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#the-basics-2"><i class="fa fa-check"></i>The basics</a></li>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#adding-a-graticule"><i class="fa fa-check"></i>Adding a graticule</a></li>
@@ -405,11 +404,11 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#creating-point-sf-objects"><i class="fa fa-check"></i>Creating point ‘sf’ objects</a>
 <ul>
-<li><a href="anatomy-of-simple-feature-objects.html#step-1-create-the-point-geometry-sfg">Step 1: Create the point geometry: <code>sfg</code></a></li>
-<li><a href="anatomy-of-simple-feature-objects.html#step-2-create-a-column-of-simple-feature-geometries-sfc">Step 2: Create a column of simple feature geometries: <code>sfc</code></a></li>
-<li><a href="anatomy-of-simple-feature-objects.html#step-3-create-the-simple-feature-object-sf">Step 3: Create the simple feature object <code>sf</code></a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#step-1-create-the-point-geometry-sfg"><i class="fa fa-check"></i>Step 1: Create the point geometry: <code>sfg</code></a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#step-2-create-a-column-of-simple-feature-geometries-sfc"><i class="fa fa-check"></i>Step 2: Create a column of simple feature geometries: <code>sfc</code></a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#step-3-create-the-simple-feature-object-sf"><i class="fa fa-check"></i>Step 3: Create the simple feature object <code>sf</code></a></li>
 <li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#renaming-the-geometry-column"><i class="fa fa-check"></i>Renaming the geometry column</a></li>
-<li><a href="anatomy-of-simple-feature-objects.html#adding-attributes-to-an-sf-object">Adding attributes to an <code>sf</code> object</a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#adding-attributes-to-an-sf-object"><i class="fa fa-check"></i>Adding attributes to an <code>sf</code> object</a></li>
 <li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#adding-a-geometry-column-to-an-existing-non-spatial-dataframe"><i class="fa fa-check"></i>Adding a geometry column to an existing non-spatial dataframe</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#creating-polyline-sf-objects"><i class="fa fa-check"></i>Creating polyline ‘sf’ objects</a>
@@ -418,10 +417,10 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#creating-polygon-sf-objects"><i class="fa fa-check"></i>Creating polygon ‘sf’ objects</a>
 <ul>
-<li><a href="anatomy-of-simple-feature-objects.html#polygon-simple-feature"><code>POLYGON</code> simple feature</a></li>
-<li><a href="anatomy-of-simple-feature-objects.html#multipolygon-simple-feature-multipart-features"><code>MULTIPOLYGON</code> simple feature: multipart features</a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#polygon-simple-feature"><i class="fa fa-check"></i><code>POLYGON</code> simple feature</a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#multipolygon-simple-feature-multipart-features"><i class="fa fa-check"></i><code>MULTIPOLYGON</code> simple feature: multipart features</a></li>
 </ul></li>
-<li><a href="anatomy-of-simple-feature-objects.html#extracting-geometry-from-an-sf-object">Extracting geometry from an <code>sf</code> object</a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#extracting-geometry-from-an-sf-object"><i class="fa fa-check"></i>Extracting geometry from an <code>sf</code> object</a></li>
 <li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#alternative-syntax"><i class="fa fa-check"></i>Alternative syntax</a></li>
 <li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#additional-resources"><i class="fa fa-check"></i>Additional resources</a></li>
 </ul></li>
@@ -441,7 +440,7 @@ div.csl-indent {
 <li class="chapter" data-level="E" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html"><i class="fa fa-check"></i><b>E</b> Mapping rates in R</a>
 <ul>
 <li class="chapter" data-level="" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html#raw-rates"><i class="fa fa-check"></i>Raw Rates</a></li>
-<li class="chapter" data-level="" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html#standardized-mortality-ratios-relative-risk."><i class="fa fa-check"></i>Standardized mortality ratios (relative risk).</a></li>
+<li class="chapter" data-level="" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html#standardized-mortality-ratios-relative-risk"><i class="fa fa-check"></i>Standardized mortality ratios (relative risk)</a></li>
 <li class="chapter" data-level="" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html#dykes-and-unwins-chi-square-statistic"><i class="fa fa-check"></i>Dykes and Unwin’s chi-square statistic</a></li>
 <li class="chapter" data-level="" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html#unstable-ratios"><i class="fa fa-check"></i>Unstable ratios</a>
 <ul>
@@ -467,9 +466,9 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="G" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html"><i class="fa fa-check"></i><b>G</b> Coordinate Systems in R</a>
 <ul>
-<li><a href="coordinate-systems-in-r.html#a-note-about-the-changes-to-the-proj-environment">A note about the changes to the <code>PROJ</code> environment</a></li>
+<li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#a-note-about-the-changes-to-the-proj-environment"><i class="fa fa-check"></i>A note about the changes to the <code>PROJ</code> environment</a></li>
 <li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#sample-files-for-this-exercise-2"><i class="fa fa-check"></i>Sample files for this exercise</a></li>
-<li><a href="coordinate-systems-in-r.html#loading-the-sf-package">Loading the <code>sf</code> package</a></li>
+<li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#loading-the-sf-package"><i class="fa fa-check"></i>Loading the <code>sf</code> package</a></li>
 <li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#checking-for-a-coordinate-system"><i class="fa fa-check"></i>Checking for a coordinate system</a></li>
 <li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#understanding-the-proj4-coordinate-syntax"><i class="fa fa-check"></i>Understanding the Proj4 coordinate syntax</a></li>
 <li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#assigning-a-coordinate-system"><i class="fa fa-check"></i>Assigning a coordinate system</a></li>
@@ -483,7 +482,7 @@ div.csl-indent {
 <li class="chapter" data-level="H" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html"><i class="fa fa-check"></i><b>H</b> Point pattern analysis in R</a>
 <ul>
 <li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#sample-files-for-this-exercise-3"><i class="fa fa-check"></i>Sample files for this exercise</a></li>
-<li><a href="point-pattern-analysis-in-r.html#getting-external-data-into-a-spatstat-format">Getting external data into a <code>spatstat</code> format</a></li>
+<li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#getting-external-data-into-a-spatstat-format"><i class="fa fa-check"></i>Getting external data into a <code>spatstat</code> format</a></li>
 <li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#prepping-the-data"><i class="fa fa-check"></i>Prepping the data</a></li>
 <li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#density-based-analysis-1"><i class="fa fa-check"></i>Density based analysis</a>
 <ul>
@@ -526,8 +525,8 @@ div.csl-indent {
 <li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#fine-tuning-the-interpolation"><i class="fa fa-check"></i>Fine-tuning the interpolation</a></li>
 <li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#cross-validation"><i class="fa fa-check"></i>Cross-validation</a></li>
 </ul></li>
-<li><a href="interpolation-in-r.html#st-order-polynomial-fit">1<sup>st</sup> order polynomial fit</a></li>
-<li><a href="interpolation-in-r.html#nd-order-polynomial">2<sup>nd</sup> order polynomial</a></li>
+<li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#st-order-polynomial-fit"><i class="fa fa-check"></i>1<sup>st</sup> order polynomial fit</a></li>
+<li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#nd-order-polynomial"><i class="fa fa-check"></i>2<sup>nd</sup> order polynomial</a></li>
 <li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#kriging"><i class="fa fa-check"></i>Kriging</a>
 <ul>
 <li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#fit-the-variogram-model"><i class="fa fa-check"></i>Fit the variogram model</a></li>
@@ -552,10 +551,10 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="pitfalls-to-avoid" class="section level1" number="5">
-<h1><span class="header-section-number">Chapter 5</span> Pitfalls to avoid</h1>
-<div id="representing-count" class="section level2" number="5.1">
-<h2><span class="header-section-number">5.1</span> Representing Count</h2>
+<div id="pitfalls-to-avoid" class="section level1 hasAnchor" number="5">
+<h1><span class="header-section-number">Chapter 5</span> Pitfalls to avoid<a href="pitfalls-to-avoid.html#pitfalls-to-avoid" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="representing-count" class="section level2 hasAnchor" number="5.1">
+<h2><span class="header-section-number">5.1</span> Representing Count<a href="pitfalls-to-avoid.html#representing-count" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Let’s define a 5km x 5km area and map the location of each individual inside the study area. Let’s assume, for sake of argument, that individuals are laid out in a perfect grid pattern. Now let’s define two different zoning schemes: one which follows a uniform grid pattern and another that does not. The layout of individuals relative to both zonal schemes are shown in Figure <a href="pitfalls-to-avoid.html#fig:grid-vs-tess-layout">5.1</a>.</p>
 <div class="figure"><span style="display:block;" id="fig:grid-vs-tess-layout"></span>
 <img src="img/grid_vs_tess_layout.svg" alt="Figure shows the layout of individuals inside two different zonal unit configurations."  />
@@ -578,8 +577,8 @@ Figure 5.3: Point density choropleth maps. The sample study extent is 20x20 unit
 </p>
 </div>
 </div>
-<div id="maup" class="section level2" number="5.2">
-<h2><span class="header-section-number">5.2</span> MAUP</h2>
+<div id="maup" class="section level2 hasAnchor" number="5.2">
+<h2><span class="header-section-number">5.2</span> MAUP<a href="pitfalls-to-avoid.html#maup" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Continuing with the uniform point distribution from the last section, let’s assume that as part of the survey, two variables (v1 and v2) were recorded for each point (symbolized as varying shades of green and reds in the two left-hand maps of Figure <a href="pitfalls-to-avoid.html#fig:v1-and-v2-raw">5.4</a>). We might be interested in assessing if the variables v1 and v2 are correlated (i.e. as variable v1 increases in value, does this trigger a monotonic increase or decrease in variable v2?). One way to visualize the relationship between two variables is to generate a bivariate scatter plot (right plot of Figure <a href="pitfalls-to-avoid.html#fig:v1-and-v2-raw">5.4</a>).</p>
 <div class="figure"><span style="display:block;" id="fig:v1-and-v2-raw"></span>
 <img src="img/v1_and_v2_raw.png" alt="Plots of variables v1 and v2 for each individual in the survey. The color scheme is sequential with darker colors depicting higher values and lighter colors depicting lower values." width="550" />
@@ -605,12 +604,12 @@ Figure 5.6: Data summarized using a non-uniform aggregation scheme.The resulting
 <p>Note the high <span class="math inline">\(R^2\)</span> value, yet the underlying v1 and v2 variables from which the aggregated values were computed were not at all correlated! It should be clear by now that different aggregation schemes can result in completely different analyses outcomes. In fact, it would not be impossible to come up with an aggregation scheme that would produce near perfect correlation between variables v1 and v2.</p>
 <p>This problem is often referred to as the <strong>modifiable aerial unit problem (MAUP)</strong> and has, as you can well imagine by now, some serious implications. Unfortunately, this problem is often overlooked in many analyses that involve aggregated data.</p>
 </div>
-<div id="ecological-fallacy" class="section level2" number="5.3">
-<h2><span class="header-section-number">5.3</span> Ecological Fallacy</h2>
+<div id="ecological-fallacy" class="section level2 hasAnchor" number="5.3">
+<h2><span class="header-section-number">5.3</span> Ecological Fallacy<a href="pitfalls-to-avoid.html#ecological-fallacy" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>But, as is often the case, our analysis is constrained by the data at hand. So when analyzing aggregated data, you must be careful in how you frame the results. For example, if your analysis was conducted with the data summarized using the non-uniform aggregation scheme shown in Figure <a href="pitfalls-to-avoid.html#fig:v1-and-v2-nonunif">5.6</a>, you might be tempted to state that there is a strong relationship between variables v1 and v2 at the <em>individual</em> level. But doing so leads to the <strong>ecological fallacy</strong> where the statistical relationship at one level of aggregation is (wrongly) assumed to hold at any other levels of aggregation (including at the individual level). In fact, all you can really say is that “<em>at this level of aggregation, we observe a strong relationship between v1 and v2</em>” and nothing more!</p>
 </div>
-<div id="mapping-rates" class="section level2" number="5.4">
-<h2><span class="header-section-number">5.4</span> Mapping rates</h2>
+<div id="mapping-rates" class="section level2 hasAnchor" number="5.4">
+<h2><span class="header-section-number">5.4</span> Mapping rates<a href="pitfalls-to-avoid.html#mapping-rates" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>One of the first pitfalls you’ve been taught to avoid is the mapping of counts when the aerial units associated with these values are not uniform in size and shape. Two options in resolving this problem are: normalizing counts to area or normalizing counts to some underlying population count. An example of the latter is the mapping of infection rates or mortality rates. For example, the following map displays the distribution of kidney cancer death rates (by county) for the period 1980 to 1984.</p>
 <div class="figure"><span style="display:block;" id="fig:f05-kidney0"></span>
 <img src="img/raw_rates.png" alt="Kidney cancer death rates for the period spanning 1980-1984." width="504" />
@@ -658,8 +657,8 @@ Figure 5.12: Plot of rates vs population counts on log scales.
 <p>This little exercise reveals that you could never calculate a rate of 5 in 100,000 with a population count of just 1000. You either compute a rate of <span class="math inline">\(0\)</span> or a rate of <span class="math inline">\(0.001\)</span> (or more). In fact, you would need a large population count to accurately estimate the real death rate. Turning our attention back to our map, you will notice that a large majority of the counties have a small population count (about a quarter have a population count of 22,000 or less). This explains the wide range of rates observed for these smaller counties; the larger counties don’t have such a wide swing in values because they have a larger sample size which can more accurately reflect the true death rate.</p>
 <p>Rates that are computed using relatively small “at risk” population counts are deemed <strong>unstable</strong>.</p>
 </div>
-<div id="coping-with-unstable-rates" class="section level2" number="5.5">
-<h2><span class="header-section-number">5.5</span> Coping with Unstable Rates</h2>
+<div id="coping-with-unstable-rates" class="section level2 hasAnchor" number="5.5">
+<h2><span class="header-section-number">5.5</span> Coping with Unstable Rates<a href="pitfalls-to-avoid.html#coping-with-unstable-rates" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>To compensate for the small population counts, we can minimize the influence those counties have on the representation of the spatial distribution of rates. One such technique, empirical Bayes (EB) method, does just that. Where county population counts are small, the “rates” are modified to match the overall expected rate (which is an average value of all rates in the map). This minimizes the counties’ influence on the range of rate values. EB techniques for rate smoothing aren’t available in ArcGIS but are available in a couple of free and open source applications such as <a href="http://geodacenter.github.io/">GeoDa</a> and <a href="http://www.r-project.org/">R</a>. An example implementation in R is shown in the Appendix section.</p>
 <p>An EB smoothed representation of kidney cancer deaths gives us the following rate vs population plot:</p>
 <div class="figure"><span style="display:block;" id="fig:EBRate-vs-pop-log"></span>
@@ -704,7 +703,6 @@ Figure 5.15: Bottom 10% of counties with the lowest kidney cancer death rates us
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
-<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
 <script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
@@ -745,9 +743,9 @@ gitbook.start({
 "link": null,
 "text": null
 },
-"download": ["_main.pdf", "_main.epub"],
+"download": {},
 "search": {
-"engine": "lunr",
+"engine": "fuse",
 "options": null
 },
 "toc": {
@@ -764,7 +762,7 @@ gitbook.start({
     var script = document.createElement("script");
     script.type = "text/javascript";
     var src = "true";
-    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:")
       if (/^https?:/.test(src))
         src = src.replace(/^https?:/, '');

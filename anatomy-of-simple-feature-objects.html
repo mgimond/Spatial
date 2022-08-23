@@ -6,11 +6,10 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>C Anatomy of simple feature objects | Intro to GIS and Spatial Analysis</title>
   <meta name="description" content="This is a compilation of lecture notes that accompany my Intro to GIS and Spatial Analysis course." />
-  <meta name="generator" content="bookdown 0.23 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.28 and GitBook 2.6.7" />
 
   <meta property="og:title" content="C Anatomy of simple feature objects | Intro to GIS and Spatial Analysis" />
   <meta property="og:type" content="book" />
-  
   
   <meta property="og:description" content="This is a compilation of lecture notes that accompany my Intro to GIS and Spatial Analysis course." />
   <meta name="github-repo" content="mgimond/spatial" />
@@ -32,8 +31,8 @@
   
 <link rel="prev" href="mapping-data-in-r.html"/>
 <link rel="next" href="vector-operations-in-r.html"/>
-<script src="libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -49,19 +48,19 @@
 
 
 
-
-<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
-<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
 <script src="libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
-<script src="libs/htmlwidgets-1.5.3/htmlwidgets.js"></script>
+<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
 <link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet-1.3.1/leaflet.js"></script>
 <link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
 <script src="libs/proj4-2.6.2/proj4.min.js"></script>
 <script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
 <link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
-<script src="libs/leaflet-binding-2.0.4.1/leaflet.js"></script>
+<script src="libs/leaflet-binding-2.1.1/leaflet.js"></script>
 
 
 <style type="text/css">
@@ -359,21 +358,21 @@ div.csl-indent {
 <li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_4_5"><i class="fa fa-check"></i>Creating a spatial object from a data frame</a></li>
 <li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_4_6"><i class="fa fa-check"></i>Geocoding street addresses</a></li>
 </ul></li>
-<li><a href="reading-and-writing-spatial-data-in-r.html#app1_5">Converting from an <code>sf</code> object</a>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_5"><i class="fa fa-check"></i>Converting from an <code>sf</code> object</a>
 <ul>
-<li><a href="reading-and-writing-spatial-data-in-r.html#app1_5_1">Converting an <code>sf</code> object to a <code>Spatial*</code> object (<code>spdep</code>/<code>sp</code>)</a></li>
-<li><a href="reading-and-writing-spatial-data-in-r.html#app1_5_2">Converting an <code>sf</code> polygon object to an <code>owin</code> object</a></li>
-<li><a href="reading-and-writing-spatial-data-in-r.html#app1_5_3">Converting an <code>sf</code> point object to a <code>ppp</code> object</a></li>
-<li><a href="reading-and-writing-spatial-data-in-r.html#app1_5_4">Converting a <code>raster</code> object to an <code>im</code> object (<code>spatstat</code>)</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_5_1"><i class="fa fa-check"></i>Converting an <code>sf</code> object to a <code>Spatial*</code> object (<code>spdep</code>/<code>sp</code>)</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_5_2"><i class="fa fa-check"></i>Converting an <code>sf</code> polygon object to an <code>owin</code> object</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_5_3"><i class="fa fa-check"></i>Converting an <code>sf</code> point object to a <code>ppp</code> object</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_5_4"><i class="fa fa-check"></i>Converting a <code>raster</code> object to an <code>im</code> object (<code>spatstat</code>)</a></li>
 </ul></li>
-<li><a href="reading-and-writing-spatial-data-in-r.html#app1_6">Converting to an <code>sf</code> object</a></li>
-<li><a href="reading-and-writing-spatial-data-in-r.html#app1_7">Dissecting the <code>sf</code> file object</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_6"><i class="fa fa-check"></i>Converting to an <code>sf</code> object</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_7"><i class="fa fa-check"></i>Dissecting the <code>sf</code> file object</a></li>
 <li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_8"><i class="fa fa-check"></i>Exporting to different data file formats</a></li>
 </ul></li>
 <li class="chapter" data-level="B" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html"><i class="fa fa-check"></i><b>B</b> Mapping data in R</a>
 <ul>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#sample-files-for-this-exercise"><i class="fa fa-check"></i>Sample files for this exercise</a></li>
-<li><a href="mapping-data-in-r.html#tmap"><code>tmap</code></a>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#tmap"><i class="fa fa-check"></i><code>tmap</code></a>
 <ul>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#the-basics"><i class="fa fa-check"></i>The basics</a></li>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#combining-layers"><i class="fa fa-check"></i>Combining layers</a></li>
@@ -387,13 +386,13 @@ div.csl-indent {
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#side-by-side-maps"><i class="fa fa-check"></i>Side-by-side maps</a></li>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#splitting-data-by-polygons-or-group-of-polygons"><i class="fa fa-check"></i>Splitting data by polygons or group of polygons</a></li>
 </ul></li>
-<li><a href="mapping-data-in-r.html#ggplot2"><code>ggplot2</code></a>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#ggplot2"><i class="fa fa-check"></i><code>ggplot2</code></a>
 <ul>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#the-basics-1"><i class="fa fa-check"></i>The basics</a></li>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#tweaking-classification-schemes-1"><i class="fa fa-check"></i>Tweaking classification schemes</a></li>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#combining-layers-1"><i class="fa fa-check"></i>Combining layers</a></li>
 </ul></li>
-<li><a href="mapping-data-in-r.html#plot_sf"><code>plot_sf</code></a>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#plot_sf"><i class="fa fa-check"></i><code>plot_sf</code></a>
 <ul>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#the-basics-2"><i class="fa fa-check"></i>The basics</a></li>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#adding-a-graticule"><i class="fa fa-check"></i>Adding a graticule</a></li>
@@ -405,11 +404,11 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#creating-point-sf-objects"><i class="fa fa-check"></i>Creating point ‘sf’ objects</a>
 <ul>
-<li><a href="anatomy-of-simple-feature-objects.html#step-1-create-the-point-geometry-sfg">Step 1: Create the point geometry: <code>sfg</code></a></li>
-<li><a href="anatomy-of-simple-feature-objects.html#step-2-create-a-column-of-simple-feature-geometries-sfc">Step 2: Create a column of simple feature geometries: <code>sfc</code></a></li>
-<li><a href="anatomy-of-simple-feature-objects.html#step-3-create-the-simple-feature-object-sf">Step 3: Create the simple feature object <code>sf</code></a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#step-1-create-the-point-geometry-sfg"><i class="fa fa-check"></i>Step 1: Create the point geometry: <code>sfg</code></a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#step-2-create-a-column-of-simple-feature-geometries-sfc"><i class="fa fa-check"></i>Step 2: Create a column of simple feature geometries: <code>sfc</code></a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#step-3-create-the-simple-feature-object-sf"><i class="fa fa-check"></i>Step 3: Create the simple feature object <code>sf</code></a></li>
 <li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#renaming-the-geometry-column"><i class="fa fa-check"></i>Renaming the geometry column</a></li>
-<li><a href="anatomy-of-simple-feature-objects.html#adding-attributes-to-an-sf-object">Adding attributes to an <code>sf</code> object</a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#adding-attributes-to-an-sf-object"><i class="fa fa-check"></i>Adding attributes to an <code>sf</code> object</a></li>
 <li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#adding-a-geometry-column-to-an-existing-non-spatial-dataframe"><i class="fa fa-check"></i>Adding a geometry column to an existing non-spatial dataframe</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#creating-polyline-sf-objects"><i class="fa fa-check"></i>Creating polyline ‘sf’ objects</a>
@@ -418,10 +417,10 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#creating-polygon-sf-objects"><i class="fa fa-check"></i>Creating polygon ‘sf’ objects</a>
 <ul>
-<li><a href="anatomy-of-simple-feature-objects.html#polygon-simple-feature"><code>POLYGON</code> simple feature</a></li>
-<li><a href="anatomy-of-simple-feature-objects.html#multipolygon-simple-feature-multipart-features"><code>MULTIPOLYGON</code> simple feature: multipart features</a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#polygon-simple-feature"><i class="fa fa-check"></i><code>POLYGON</code> simple feature</a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#multipolygon-simple-feature-multipart-features"><i class="fa fa-check"></i><code>MULTIPOLYGON</code> simple feature: multipart features</a></li>
 </ul></li>
-<li><a href="anatomy-of-simple-feature-objects.html#extracting-geometry-from-an-sf-object">Extracting geometry from an <code>sf</code> object</a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#extracting-geometry-from-an-sf-object"><i class="fa fa-check"></i>Extracting geometry from an <code>sf</code> object</a></li>
 <li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#alternative-syntax"><i class="fa fa-check"></i>Alternative syntax</a></li>
 <li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#additional-resources"><i class="fa fa-check"></i>Additional resources</a></li>
 </ul></li>
@@ -441,7 +440,7 @@ div.csl-indent {
 <li class="chapter" data-level="E" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html"><i class="fa fa-check"></i><b>E</b> Mapping rates in R</a>
 <ul>
 <li class="chapter" data-level="" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html#raw-rates"><i class="fa fa-check"></i>Raw Rates</a></li>
-<li class="chapter" data-level="" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html#standardized-mortality-ratios-relative-risk."><i class="fa fa-check"></i>Standardized mortality ratios (relative risk).</a></li>
+<li class="chapter" data-level="" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html#standardized-mortality-ratios-relative-risk"><i class="fa fa-check"></i>Standardized mortality ratios (relative risk)</a></li>
 <li class="chapter" data-level="" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html#dykes-and-unwins-chi-square-statistic"><i class="fa fa-check"></i>Dykes and Unwin’s chi-square statistic</a></li>
 <li class="chapter" data-level="" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html#unstable-ratios"><i class="fa fa-check"></i>Unstable ratios</a>
 <ul>
@@ -467,9 +466,9 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="G" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html"><i class="fa fa-check"></i><b>G</b> Coordinate Systems in R</a>
 <ul>
-<li><a href="coordinate-systems-in-r.html#a-note-about-the-changes-to-the-proj-environment">A note about the changes to the <code>PROJ</code> environment</a></li>
+<li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#a-note-about-the-changes-to-the-proj-environment"><i class="fa fa-check"></i>A note about the changes to the <code>PROJ</code> environment</a></li>
 <li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#sample-files-for-this-exercise-2"><i class="fa fa-check"></i>Sample files for this exercise</a></li>
-<li><a href="coordinate-systems-in-r.html#loading-the-sf-package">Loading the <code>sf</code> package</a></li>
+<li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#loading-the-sf-package"><i class="fa fa-check"></i>Loading the <code>sf</code> package</a></li>
 <li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#checking-for-a-coordinate-system"><i class="fa fa-check"></i>Checking for a coordinate system</a></li>
 <li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#understanding-the-proj4-coordinate-syntax"><i class="fa fa-check"></i>Understanding the Proj4 coordinate syntax</a></li>
 <li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#assigning-a-coordinate-system"><i class="fa fa-check"></i>Assigning a coordinate system</a></li>
@@ -483,7 +482,7 @@ div.csl-indent {
 <li class="chapter" data-level="H" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html"><i class="fa fa-check"></i><b>H</b> Point pattern analysis in R</a>
 <ul>
 <li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#sample-files-for-this-exercise-3"><i class="fa fa-check"></i>Sample files for this exercise</a></li>
-<li><a href="point-pattern-analysis-in-r.html#getting-external-data-into-a-spatstat-format">Getting external data into a <code>spatstat</code> format</a></li>
+<li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#getting-external-data-into-a-spatstat-format"><i class="fa fa-check"></i>Getting external data into a <code>spatstat</code> format</a></li>
 <li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#prepping-the-data"><i class="fa fa-check"></i>Prepping the data</a></li>
 <li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#density-based-analysis-1"><i class="fa fa-check"></i>Density based analysis</a>
 <ul>
@@ -526,8 +525,8 @@ div.csl-indent {
 <li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#fine-tuning-the-interpolation"><i class="fa fa-check"></i>Fine-tuning the interpolation</a></li>
 <li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#cross-validation"><i class="fa fa-check"></i>Cross-validation</a></li>
 </ul></li>
-<li><a href="interpolation-in-r.html#st-order-polynomial-fit">1<sup>st</sup> order polynomial fit</a></li>
-<li><a href="interpolation-in-r.html#nd-order-polynomial">2<sup>nd</sup> order polynomial</a></li>
+<li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#st-order-polynomial-fit"><i class="fa fa-check"></i>1<sup>st</sup> order polynomial fit</a></li>
+<li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#nd-order-polynomial"><i class="fa fa-check"></i>2<sup>nd</sup> order polynomial</a></li>
 <li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#kriging"><i class="fa fa-check"></i>Kriging</a>
 <ul>
 <li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#fit-the-variogram-model"><i class="fa fa-check"></i>Fit the variogram model</a></li>
@@ -552,8 +551,8 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="anatomy-of-simple-feature-objects" class="section level1" number="18">
-<h1><span class="header-section-number">C</span> Anatomy of simple feature objects</h1>
+<div id="anatomy-of-simple-feature-objects" class="section level1 hasAnchor" number="18">
+<h1><span class="header-section-number">C</span> Anatomy of simple feature objects<a href="anatomy-of-simple-feature-objects.html#anatomy-of-simple-feature-objects" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <table class="package_ver_table">
 <tbody>
 <tr>
@@ -597,7 +596,7 @@ ggplot2
               padding-bottom: 1px;
               padding-left: 4px;
               padding-right: 4px;">
-4.1.1
+4.2.1
 </td>
 <td style="text-align:left;color: white !important;background-color: #AAAAAA !important;text-align: center;font-size: 12px !important; 
               margin:5px; 
@@ -607,7 +606,7 @@ ggplot2
               padding-bottom: 1px;
               padding-left: 4px;
               padding-right: 4px;">
-1.0.2
+1.0.8
 </td>
 <td style="text-align:left;color: white !important;background-color: #AAAAAA !important;text-align: center;font-size: 12px !important; 
               margin:5px; 
@@ -617,22 +616,22 @@ ggplot2
               padding-bottom: 1px;
               padding-left: 4px;
               padding-right: 4px;">
-3.3.5
+3.3.6
 </td>
 </tr>
 </tbody>
 </table>
 <p>This tutorial exposes you to the building blocks of simple feature objects via the the creation of point, polyline and polygon features from scratch.</p>
-<div id="creating-point-sf-objects" class="section level2 unnumbered">
-<h2>Creating point ‘sf’ objects</h2>
+<div id="creating-point-sf-objects" class="section level2 unnumbered hasAnchor">
+<h2>Creating point ‘sf’ objects<a href="anatomy-of-simple-feature-objects.html#creating-point-sf-objects" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>We will start off by exploring the creation of a singlepart point feature object. There are three phases in creating a point simple feature (<code>sf</code>) object:</p>
 <ul>
 <li>Defining the coordinate pairs via a point geometry object, <code>sfg</code>;</li>
 <li>Creating a simple feature column object, <code>sfc</code>, from the point geometries;</li>
 <li>Creating the simple feature object, <code>sf</code>.</li>
 </ul>
-<div id="step-1-create-the-point-geometry-sfg" class="section level3 unnumbered">
-<h3>Step 1: Create the point geometry: <code>sfg</code></h3>
+<div id="step-1-create-the-point-geometry-sfg" class="section level3 unnumbered hasAnchor">
+<h3>Step 1: Create the point geometry: <code>sfg</code><a href="anatomy-of-simple-feature-objects.html#step-1-create-the-point-geometry-sfg" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Here, we’ll create three separate point objects. We’ll adopt a geographic coordinate system, but note that we do not specify the coordinate system just yet.</p>
 <div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="anatomy-of-simple-feature-objects.html#cb100-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
 <span id="cb100-2"><a href="anatomy-of-simple-feature-objects.html#cb100-2" aria-hidden="true" tabindex="-1"></a>p1.sfg <span class="ot">&lt;-</span> <span class="fu">st_point</span>(<span class="fu">c</span>(<span class="sc">-</span><span class="dv">70</span>, <span class="dv">45</span>)) </span>
@@ -644,8 +643,8 @@ ggplot2
 <p>What we are looking for is a <code>sfg</code> class. You’ll note other classes associated with this object such as <code>POINT</code> which defines the geometric primitive. You’ll see examples of other geometric primitives later in this tutorial.</p>
 <p>Note that if a multipart point feature object is desired, the <code>st_multipoint()</code> function needs to be used instead of <code>st_point()</code> with the coordinate pairs defined in matrix as in <code>st_multipoint(matrix( c(-70, 45, -69, 44, -69, 45), ncol = 2, byrow = TRUE  ) )</code>.</p>
 </div>
-<div id="step-2-create-a-column-of-simple-feature-geometries-sfc" class="section level3 unnumbered">
-<h3>Step 2: Create a column of simple feature geometries: <code>sfc</code></h3>
+<div id="step-2-create-a-column-of-simple-feature-geometries-sfc" class="section level3 unnumbered hasAnchor">
+<h3>Step 2: Create a column of simple feature geometries: <code>sfc</code><a href="anatomy-of-simple-feature-objects.html#step-2-create-a-column-of-simple-feature-geometries-sfc" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Next, we’ll combine the point geometries into a single object.</p>
 <p>Note that if you are to define a coordinate system for the features, you can do so here via the <code>crs=</code> parameter. We use the WGS 1984 reference system (EPSG code of <code>4326</code>).</p>
 <div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="anatomy-of-simple-feature-objects.html#cb103-1" aria-hidden="true" tabindex="-1"></a>p.sfc <span class="ot">&lt;-</span> <span class="fu">st_sfc</span>( <span class="fu">list</span>(p1.sfg, p2.sfg, p3.sfg), <span class="at">crs =</span> <span class="dv">4326</span> )</span>
@@ -661,8 +660,8 @@ Geodetic CRS:  WGS 84</code></pre>
 <p>You can access each point using <code>list</code> operations. For example, to access the second point, type:</p>
 <div class="sourceCode" id="cb107"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb107-1"><a href="anatomy-of-simple-feature-objects.html#cb107-1" aria-hidden="true" tabindex="-1"></a>p.sfc[[<span class="dv">2</span>]]</span></code></pre></div>
 </div>
-<div id="step-3-create-the-simple-feature-object-sf" class="section level3 unnumbered">
-<h3>Step 3: Create the simple feature object <code>sf</code></h3>
+<div id="step-3-create-the-simple-feature-object-sf" class="section level3 unnumbered hasAnchor">
+<h3>Step 3: Create the simple feature object <code>sf</code><a href="anatomy-of-simple-feature-objects.html#step-3-create-the-simple-feature-object-sf" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The final step is to create the simple feature object.</p>
 <div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb108-1"><a href="anatomy-of-simple-feature-objects.html#cb108-1" aria-hidden="true" tabindex="-1"></a>p.sf <span class="ot">&lt;-</span> <span class="fu">st_sf</span>(p.sfc)</span>
 <span id="cb108-2"><a href="anatomy-of-simple-feature-objects.html#cb108-2" aria-hidden="true" tabindex="-1"></a>p.sf</span></code></pre></div>
@@ -676,8 +675,8 @@ Geodetic CRS:  WGS 84
 2 POINT (-69 44)
 3 POINT (-69 45)</code></pre>
 </div>
-<div id="renaming-the-geometry-column" class="section level3 unnumbered">
-<h3>Renaming the geometry column</h3>
+<div id="renaming-the-geometry-column" class="section level3 unnumbered hasAnchor">
+<h3>Renaming the geometry column<a href="anatomy-of-simple-feature-objects.html#renaming-the-geometry-column" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The above step generated a geometry column named after the input <code>sfc</code> object name (<code>p.sfc</code> in our example). This is perfectly functional since the <code>sf</code> object knows that this is the geometry column. We can confirm this by checking out <code>p.sf</code>’s attributes.</p>
 <div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb110-1"><a href="anatomy-of-simple-feature-objects.html#cb110-1" aria-hidden="true" tabindex="-1"></a><span class="fu">attributes</span>(p.sf)</span></code></pre></div>
 <pre><code>$names
@@ -710,8 +709,8 @@ Geodetic CRS:  WGS 84
 2 POINT (-69 44)
 3 POINT (-69 45)</code></pre>
 </div>
-<div id="adding-attributes-to-an-sf-object" class="section level3 unnumbered">
-<h3>Adding attributes to an <code>sf</code> object</h3>
+<div id="adding-attributes-to-an-sf-object" class="section level3 unnumbered hasAnchor">
+<h3>Adding attributes to an <code>sf</code> object<a href="anatomy-of-simple-feature-objects.html#adding-attributes-to-an-sf-object" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The <code>p.sf</code> object is nothing more than a dataframe with a geometry column of <code>list</code> data type.</p>
 <div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb114-1"><a href="anatomy-of-simple-feature-objects.html#cb114-1" aria-hidden="true" tabindex="-1"></a><span class="fu">typeof</span>(p.sf<span class="sc">$</span>coords)</span></code></pre></div>
 <pre><code>[1] &quot;list&quot;</code></pre>
@@ -731,8 +730,8 @@ Geodetic CRS:  WGS 84
 <div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb118-1"><a href="anatomy-of-simple-feature-objects.html#cb118-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(p.sf, <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">axes =</span> <span class="cn">TRUE</span>, <span class="at">main =</span> <span class="cn">NULL</span>)</span></code></pre></div>
 <p><img src="A03-sf-objects_files/figure-html/unnamed-chunk-12-1.png" width="273.6" /></p>
 </div>
-<div id="adding-a-geometry-column-to-an-existing-non-spatial-dataframe" class="section level3 unnumbered">
-<h3>Adding a geometry column to an existing non-spatial dataframe</h3>
+<div id="adding-a-geometry-column-to-an-existing-non-spatial-dataframe" class="section level3 unnumbered hasAnchor">
+<h3>Adding a geometry column to an existing non-spatial dataframe<a href="anatomy-of-simple-feature-objects.html#adding-a-geometry-column-to-an-existing-non-spatial-dataframe" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>A nifty property of the <code>sfc</code> object created in step 2 above is the ability to append it to an existing dataframe using the <code>st_geometry()</code> function. In the following example, we’ll create a dataframe, then append the geometry column to that dataframe.</p>
 <div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb119-1"><a href="anatomy-of-simple-feature-objects.html#cb119-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">col1 =</span> <span class="fu">c</span>(<span class="st">&quot;A&quot;</span>, <span class="st">&quot;B&quot;</span>,<span class="st">&quot;C&quot;</span>))</span>
 <span id="cb119-2"><a href="anatomy-of-simple-feature-objects.html#cb119-2" aria-hidden="true" tabindex="-1"></a><span class="fu">st_geometry</span>(df) <span class="ot">&lt;-</span> p.sfc</span></code></pre></div>
@@ -749,8 +748,8 @@ Geodetic CRS:  WGS 84
 3    C POINT (-69 45)</code></pre>
 </div>
 </div>
-<div id="creating-polyline-sf-objects" class="section level2 unnumbered">
-<h2>Creating polyline ‘sf’ objects</h2>
+<div id="creating-polyline-sf-objects" class="section level2 unnumbered hasAnchor">
+<h2>Creating polyline ‘sf’ objects<a href="anatomy-of-simple-feature-objects.html#creating-polyline-sf-objects" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The steps are similar to creating a point object. You first create the geometry(ies), you then combine the geometry(ies) into a spatial feature column before creating the simple feature object.</p>
 <p>First, we need to define the vertices that will define each line segment of the polyline. The order in which the vertices are defined matters: The order defines each connecting line segment ends. The coordinate pairs of each vertex are stored in a matrix.</p>
 <div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb122-1"><a href="anatomy-of-simple-feature-objects.html#cb122-1" aria-hidden="true" tabindex="-1"></a>l <span class="ot">&lt;-</span> <span class="fu">rbind</span>( <span class="fu">c</span>(<span class="sc">-</span><span class="dv">70</span>, <span class="dv">45</span>), <span class="fu">c</span>(<span class="sc">-</span><span class="dv">69</span>, <span class="dv">44</span>), <span class="fu">c</span>(<span class="sc">-</span><span class="dv">69</span>, <span class="dv">45</span>) )</span></code></pre></div>
@@ -771,8 +770,8 @@ Geodetic CRS:  WGS 84
 <p>Even though we have multiple line segments, they are all associated with a single polyline feature, hence they each share the same attribute.</p>
 <div class="sourceCode" id="cb127"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb127-1"><a href="anatomy-of-simple-feature-objects.html#cb127-1" aria-hidden="true" tabindex="-1"></a> <span class="fu">plot</span>(l.sf, <span class="at">type =</span> <span class="st">&quot;b&quot;</span>, <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">main =</span> <span class="cn">NULL</span>, <span class="at">axes =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <p><img src="A03-sf-objects_files/figure-html/unnamed-chunk-19-1.png" width="192" /></p>
-<div id="creating-branching-polyline-features" class="section level3 unnumbered">
-<h3>Creating branching polyline features</h3>
+<div id="creating-branching-polyline-features" class="section level3 unnumbered hasAnchor">
+<h3>Creating branching polyline features<a href="anatomy-of-simple-feature-objects.html#creating-branching-polyline-features" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>You can also create polyline features with branching segments (i.e. where at least one vertex is associated with more than two line segments). You simply need to make sure that the coordinate values for the overlapping vertices share the exact same values.</p>
 <div class="sourceCode" id="cb128"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb128-1"><a href="anatomy-of-simple-feature-objects.html#cb128-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define coordinate pairs</span></span>
 <span id="cb128-2"><a href="anatomy-of-simple-feature-objects.html#cb128-2" aria-hidden="true" tabindex="-1"></a>l1 <span class="ot">&lt;-</span> <span class="fu">rbind</span>( <span class="fu">c</span>(<span class="sc">-</span><span class="dv">70</span>, <span class="dv">45</span>), <span class="fu">c</span>(<span class="sc">-</span><span class="dv">69</span>, <span class="dv">44</span>), <span class="fu">c</span>(<span class="sc">-</span><span class="dv">69</span>, <span class="dv">45</span>) )</span>
@@ -793,8 +792,8 @@ Geodetic CRS:  WGS 84
 <p><img src="A03-sf-objects_files/figure-html/unnamed-chunk-20-1.png" width="168" /></p>
 </div>
 </div>
-<div id="creating-polygon-sf-objects" class="section level2 unnumbered">
-<h2>Creating polygon ‘sf’ objects</h2>
+<div id="creating-polygon-sf-objects" class="section level2 unnumbered hasAnchor">
+<h2>Creating polygon ‘sf’ objects<a href="anatomy-of-simple-feature-objects.html#creating-polygon-sf-objects" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>General steps in creating a polygon <code>sf</code> spatial object from scratch include:</p>
 <ul>
 <li>Defining the vertices of each polygon in a matrix;</li>
@@ -802,16 +801,16 @@ Geodetic CRS:  WGS 84
 <li>Creating an <code>sfg</code> polygon geometry object from the list;</li>
 <li>Creating an <code>sf</code> spatial object.</li>
 </ul>
-<p>Defining a polygon’s geometry is a bit more involved than a polyline in that a polygon defines an enclosed area. By convention, simple features record vertices coordinate pairs in a counterclockwise direction such that the area to the <strong>left</strong> of a polygon’s perimeter when traveling in the direction of the recorded vertices is the polygon’s “inside.” This is counter to the order in which vertices are recorded in a shapefile whereby the area to the <strong>right</strong> of the traveled path along the polygon’s perimeter is deemed “inside.”</p>
+<p>Defining a polygon’s geometry is a bit more involved than a polyline in that a polygon defines an enclosed area. By convention, simple features record vertices coordinate pairs in a counterclockwise direction such that the area to the <strong>left</strong> of a polygon’s perimeter when traveling in the direction of the recorded vertices is the polygon’s “inside”. This is counter to the order in which vertices are recorded in a shapefile whereby the area to the <strong>right</strong> of the traveled path along the polygon’s perimeter is deemed “inside”.</p>
 <p><img src="A03-sf-objects_files/figure-html/unnamed-chunk-21-1.png" width="576" /></p>
 <p>A polygon hole has its ring defined in the opposite direction: clockwise for a simple feature object and counterclockwise for a shapefile.</p>
 <p><img src="A03-sf-objects_files/figure-html/unnamed-chunk-22-1.png" width="576" /></p>
 <p>For many applications in R, the ring direction will not matter, but for a few they might. So when possible, adopt the simple feature paradigm when defining the coordinate pairs. Note that importing a shapefile into an R session will usually automatically reverse the polygons’ ring direction.</p>
 <p>There are two types of polygon geometries that can be adopted depending on your needs: <code>POLYGON</code> and <code>MULTIPOLYGON</code>.</p>
-<div id="polygon-simple-feature" class="section level3 unnumbered">
-<h3><code>POLYGON</code> simple feature</h3>
-<div id="a-plain-polygon" class="section level4 unnumbered">
-<h4>A plain polygon</h4>
+<div id="polygon-simple-feature" class="section level3 unnumbered hasAnchor">
+<h3><code>POLYGON</code> simple feature<a href="anatomy-of-simple-feature-objects.html#polygon-simple-feature" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="a-plain-polygon" class="section level4 unnumbered hasAnchor">
+<h4>A plain polygon<a href="anatomy-of-simple-feature-objects.html#a-plain-polygon" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>We’ll first create a simple polygon shaped like a triangle. The <code>sf</code> output structure will be similar to that for the <code>POINT</code> and <code>POLYLINE</code> objects with the coordinate pairs defining the polygon vertices stored in a geometry column.</p>
 <p><img src="img/sf_fig1.png" /></p>
 <p>The polygon coordinate values are defined in a matrix. The last coordinate pair must match the first coordinate pair. The coordinate values will be recorded in a geographic coordinate system (latitude, longitude) but the reference system won’t be defined until the creation of the <code>sfc</code> object.</p>
@@ -852,8 +851,8 @@ Geodetic CRS:  WGS 84
 <div class="sourceCode" id="cb139"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb139-1"><a href="anatomy-of-simple-feature-objects.html#cb139-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(poly.sf, <span class="at">col =</span> <span class="st">&quot;bisque&quot;</span>, <span class="at">axes =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <p><img src="A03-sf-objects_files/figure-html/unnamed-chunk-30-1.png" width="168" /></p>
 </div>
-<div id="a-polygon-with-a-hole" class="section level4 unnumbered">
-<h4>A polygon with a hole</h4>
+<div id="a-polygon-with-a-hole" class="section level4 unnumbered hasAnchor">
+<h4>A polygon with a hole<a href="anatomy-of-simple-feature-objects.html#a-polygon-with-a-hole" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>In this example, we’ll add a hole to the polygon. Recall that its outer ring will need to be recorded in a counterclockwise direction and its hole in a clockwise direction.</p>
 <p>The resulting data object will have the following structure.</p>
 <p><img src="img/sf_fig2.png" /></p>
@@ -881,8 +880,8 @@ Geodetic CRS:  WGS 84
 <div class="sourceCode" id="cb146"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb146-1"><a href="anatomy-of-simple-feature-objects.html#cb146-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(poly.sf, <span class="at">col =</span> <span class="st">&quot;bisque&quot;</span>, <span class="at">axes =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <p><img src="A03-sf-objects_files/figure-html/unnamed-chunk-36-1.png" width="168" /></p>
 </div>
-<div id="combining-polygons-singlepart-features" class="section level4 unnumbered">
-<h4>Combining polygons: singlepart features</h4>
+<div id="combining-polygons-singlepart-features" class="section level4 unnumbered hasAnchor">
+<h4>Combining polygons: singlepart features<a href="anatomy-of-simple-feature-objects.html#combining-polygons-singlepart-features" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>In this example, we’ll create two distinct polygons by adding a second polygon to the one created in the last step. The output will be a singlepart polygon feature (i.e. each polygon can be assigned its own unique attribute value).</p>
 <p><img src="img/sf_fig3.png" /></p>
 <p>We’ll create the second polygon (the first polygon having already been created in the previous section).</p>
@@ -926,8 +925,8 @@ Geodetic CRS:  WGS 84
 <div class="sourceCode" id="cb155"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb155-1"><a href="anatomy-of-simple-feature-objects.html#cb155-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(poly.sf, <span class="at">col =</span> <span class="st">&quot;bisque&quot;</span>, <span class="at">axes =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <p><img src="A03-sf-objects_files/figure-html/unnamed-chunk-42-1.png" width="168" /></p>
 </div>
-<div id="adding-attributes" class="section level4 unnumbered">
-<h4>Adding attributes</h4>
+<div id="adding-attributes" class="section level4 unnumbered hasAnchor">
+<h4>Adding attributes<a href="anatomy-of-simple-feature-objects.html#adding-attributes" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>As with the point <code>sf</code> object created earlier in this exercise, we can append columns to the polygon <code>sf</code> object. But make sure that the order of the attribute values match the order in which the polygons are stored in the <code>sf</code> object.</p>
 <div class="sourceCode" id="cb156"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb156-1"><a href="anatomy-of-simple-feature-objects.html#cb156-1" aria-hidden="true" tabindex="-1"></a>poly.sf<span class="sc">$</span>id <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;A&quot;</span>, <span class="st">&quot;B&quot;</span>)</span>
 <span id="cb156-2"><a href="anatomy-of-simple-feature-objects.html#cb156-2" aria-hidden="true" tabindex="-1"></a>poly.sf</span></code></pre></div>
@@ -943,8 +942,8 @@ Geodetic CRS:  WGS 84
 <p><img src="A03-sf-objects_files/figure-html/unnamed-chunk-44-1.png" width="288" /></p>
 </div>
 </div>
-<div id="multipolygon-simple-feature-multipart-features" class="section level3 unnumbered">
-<h3><code>MULTIPOLYGON</code> simple feature: multipart features</h3>
+<div id="multipolygon-simple-feature-multipart-features" class="section level3 unnumbered hasAnchor">
+<h3><code>MULTIPOLYGON</code> simple feature: multipart features<a href="anatomy-of-simple-feature-objects.html#multipolygon-simple-feature-multipart-features" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>If multiple polygons are to share the same attribute record (a scenario referred to as multipart geometry in some GIS applications), you need to use the <code>st_multipolygon()</code> function when creating the <code>sfg</code> object.</p>
 <p>In this example, we’ll combine the two polygon created in the last example into a single geometry element.</p>
 <p><img src="img/sf_fig4.png" /></p>
@@ -970,8 +969,8 @@ Geodetic CRS:  WGS 84
                        mpoly.sfc
 1 MULTIPOLYGON (((-66 43, -70...</code></pre>
 <p>Note the single geometric entry in the table.</p>
-<div id="mixing-singlepart-and-multipart-elements" class="section level4 unnumbered">
-<h4>Mixing singlepart and multipart elements</h4>
+<div id="mixing-singlepart-and-multipart-elements" class="section level4 unnumbered hasAnchor">
+<h4>Mixing singlepart and multipart elements<a href="anatomy-of-simple-feature-objects.html#mixing-singlepart-and-multipart-elements" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>A <code>MULTIPOLGON</code> geometry can be used to store a single polygon as well. In this example, we’ll create a <code>MULTIPOLYGON</code> <code>sf</code> object that will combine multipart and singlepart polygons.</p>
 <p><img src="img/sf_fig5.png" /></p>
 <p>To make this example more interesting, we’ll have one of the elements (<code>poly4.coords</code>) overlapping several polygons. Note that any overlapping polygon needs to be in its own <code>MULTIPOLYGON</code> or <code>POLYGON</code> entry–if it’s added to an existing entry (i.e. combined with another polygon geometry), it may be treated as a hole, even if the coordinate values are recorded in a counterclockwise direction.</p>
@@ -1002,8 +1001,8 @@ Geodetic CRS:  WGS 84
 </div>
 </div>
 </div>
-<div id="extracting-geometry-from-an-sf-object" class="section level2 unnumbered">
-<h2>Extracting geometry from an <code>sf</code> object</h2>
+<div id="extracting-geometry-from-an-sf-object" class="section level2 unnumbered hasAnchor">
+<h2>Extracting geometry from an <code>sf</code> object<a href="anatomy-of-simple-feature-objects.html#extracting-geometry-from-an-sf-object" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>You can extract the geometry from an <code>sf</code> object via the <code>st_geometry</code> function. For example,</p>
 <div class="sourceCode" id="cb167"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb167-1"><a href="anatomy-of-simple-feature-objects.html#cb167-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create sfc from sf</span></span>
 <span id="cb167-2"><a href="anatomy-of-simple-feature-objects.html#cb167-2" aria-hidden="true" tabindex="-1"></a><span class="fu">st_geometry</span>(mpoly.sf)</span></code></pre></div>
@@ -1040,8 +1039,8 @@ Geodetic CRS:  WGS 84</code></pre>
 [3,]  -69   47
 [4,]  -67   45</code></pre>
 </div>
-<div id="alternative-syntax" class="section level2 unnumbered">
-<h2>Alternative syntax</h2>
+<div id="alternative-syntax" class="section level2 unnumbered hasAnchor">
+<h2>Alternative syntax<a href="anatomy-of-simple-feature-objects.html#alternative-syntax" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>In this tutorial, you were instructed to define the coordinate pairs in matrices. This is probably the simplest way to enter coordinate values manually. You can, however, bypass the creation of a matrix and simply define the coordinate pairs using the WKT syntax.</p>
 <p>For example, to generate the <code>POLYGON</code> geometry object from above, you could simply type:</p>
 <div class="sourceCode" id="cb172"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb172-1"><a href="anatomy-of-simple-feature-objects.html#cb172-1" aria-hidden="true" tabindex="-1"></a><span class="fu">st_as_sfc</span>(  <span class="st">&quot;POLYGON ((-66 43, -70 47, -70 43, -66 43), (-68 44, -69 44, -69 45, -68 44))&quot;</span> )</span></code></pre></div>
@@ -1052,11 +1051,11 @@ Bounding box:  xmin: -70 ymin: 43 xmax: -66 ymax: 47
 CRS:           NA</code></pre>
 <p>Note that the WKT syntax is that listed in the <code>sfc</code> and <code>sf</code> geometry columns. Also note that the function <code>st_as_sfc</code> is used as opposed to the <code>st_sfc</code> function used with matrices in earlier steps.</p>
 </div>
-<div id="additional-resources" class="section level2 unnumbered">
-<h2>Additional resources</h2>
+<div id="additional-resources" class="section level2 unnumbered hasAnchor">
+<h2>Additional resources<a href="anatomy-of-simple-feature-objects.html#additional-resources" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <ul>
-<li>Pebesma, Edzer. 2018. “Simple Features for R: Standardized Support for Spatial Vector Data,” The R Journal, pages 439-446.</li>
-<li>Pebesma, Edzar and Bivand, Roger. “Spatial Data Science: with applications in R,” <a href="https://keen-swartz-3146c4.netlify.app/" class="uri">https://keen-swartz-3146c4.netlify.app/</a></li>
+<li>Pebesma, Edzer. 2018. “Simple Features for R: Standardized Support for Spatial Vector Data”, The R Journal, pages 439-446.</li>
+<li>Pebesma, Edzar and Bivand, Roger. “Spatial Data Science: with applications in R”, <a href="https://keen-swartz-3146c4.netlify.app/" class="uri">https://keen-swartz-3146c4.netlify.app/</a></li>
 </ul>
 
 </div>
@@ -1071,7 +1070,6 @@ CRS:           NA</code></pre>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
-<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
 <script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
@@ -1112,9 +1110,9 @@ gitbook.start({
 "link": null,
 "text": null
 },
-"download": ["_main.pdf", "_main.epub"],
+"download": {},
 "search": {
-"engine": "lunr",
+"engine": "fuse",
 "options": null
 },
 "toc": {
@@ -1131,7 +1129,7 @@ gitbook.start({
     var script = document.createElement("script");
     script.type = "text/javascript";
     var src = "true";
-    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:")
       if (/^https?:/.test(src))
         src = src.replace(/^https?:/, '');

@@ -6,11 +6,10 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>F Raster operations in R | Intro to GIS and Spatial Analysis</title>
   <meta name="description" content="This is a compilation of lecture notes that accompany my Intro to GIS and Spatial Analysis course." />
-  <meta name="generator" content="bookdown 0.23 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.28 and GitBook 2.6.7" />
 
   <meta property="og:title" content="F Raster operations in R | Intro to GIS and Spatial Analysis" />
   <meta property="og:type" content="book" />
-  
   
   <meta property="og:description" content="This is a compilation of lecture notes that accompany my Intro to GIS and Spatial Analysis course." />
   <meta name="github-repo" content="mgimond/spatial" />
@@ -32,8 +31,8 @@
   
 <link rel="prev" href="mapping-rates-in-r.html"/>
 <link rel="next" href="coordinate-systems-in-r.html"/>
-<script src="libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -49,19 +48,19 @@
 
 
 
-
-<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
-<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
 <script src="libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
-<script src="libs/htmlwidgets-1.5.3/htmlwidgets.js"></script>
+<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
 <link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet-1.3.1/leaflet.js"></script>
 <link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
 <script src="libs/proj4-2.6.2/proj4.min.js"></script>
 <script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
 <link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
-<script src="libs/leaflet-binding-2.0.4.1/leaflet.js"></script>
+<script src="libs/leaflet-binding-2.1.1/leaflet.js"></script>
 
 
 <style type="text/css">
@@ -359,21 +358,21 @@ div.csl-indent {
 <li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_4_5"><i class="fa fa-check"></i>Creating a spatial object from a data frame</a></li>
 <li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_4_6"><i class="fa fa-check"></i>Geocoding street addresses</a></li>
 </ul></li>
-<li><a href="reading-and-writing-spatial-data-in-r.html#app1_5">Converting from an <code>sf</code> object</a>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_5"><i class="fa fa-check"></i>Converting from an <code>sf</code> object</a>
 <ul>
-<li><a href="reading-and-writing-spatial-data-in-r.html#app1_5_1">Converting an <code>sf</code> object to a <code>Spatial*</code> object (<code>spdep</code>/<code>sp</code>)</a></li>
-<li><a href="reading-and-writing-spatial-data-in-r.html#app1_5_2">Converting an <code>sf</code> polygon object to an <code>owin</code> object</a></li>
-<li><a href="reading-and-writing-spatial-data-in-r.html#app1_5_3">Converting an <code>sf</code> point object to a <code>ppp</code> object</a></li>
-<li><a href="reading-and-writing-spatial-data-in-r.html#app1_5_4">Converting a <code>raster</code> object to an <code>im</code> object (<code>spatstat</code>)</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_5_1"><i class="fa fa-check"></i>Converting an <code>sf</code> object to a <code>Spatial*</code> object (<code>spdep</code>/<code>sp</code>)</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_5_2"><i class="fa fa-check"></i>Converting an <code>sf</code> polygon object to an <code>owin</code> object</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_5_3"><i class="fa fa-check"></i>Converting an <code>sf</code> point object to a <code>ppp</code> object</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_5_4"><i class="fa fa-check"></i>Converting a <code>raster</code> object to an <code>im</code> object (<code>spatstat</code>)</a></li>
 </ul></li>
-<li><a href="reading-and-writing-spatial-data-in-r.html#app1_6">Converting to an <code>sf</code> object</a></li>
-<li><a href="reading-and-writing-spatial-data-in-r.html#app1_7">Dissecting the <code>sf</code> file object</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_6"><i class="fa fa-check"></i>Converting to an <code>sf</code> object</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_7"><i class="fa fa-check"></i>Dissecting the <code>sf</code> file object</a></li>
 <li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_8"><i class="fa fa-check"></i>Exporting to different data file formats</a></li>
 </ul></li>
 <li class="chapter" data-level="B" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html"><i class="fa fa-check"></i><b>B</b> Mapping data in R</a>
 <ul>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#sample-files-for-this-exercise"><i class="fa fa-check"></i>Sample files for this exercise</a></li>
-<li><a href="mapping-data-in-r.html#tmap"><code>tmap</code></a>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#tmap"><i class="fa fa-check"></i><code>tmap</code></a>
 <ul>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#the-basics"><i class="fa fa-check"></i>The basics</a></li>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#combining-layers"><i class="fa fa-check"></i>Combining layers</a></li>
@@ -387,13 +386,13 @@ div.csl-indent {
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#side-by-side-maps"><i class="fa fa-check"></i>Side-by-side maps</a></li>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#splitting-data-by-polygons-or-group-of-polygons"><i class="fa fa-check"></i>Splitting data by polygons or group of polygons</a></li>
 </ul></li>
-<li><a href="mapping-data-in-r.html#ggplot2"><code>ggplot2</code></a>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#ggplot2"><i class="fa fa-check"></i><code>ggplot2</code></a>
 <ul>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#the-basics-1"><i class="fa fa-check"></i>The basics</a></li>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#tweaking-classification-schemes-1"><i class="fa fa-check"></i>Tweaking classification schemes</a></li>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#combining-layers-1"><i class="fa fa-check"></i>Combining layers</a></li>
 </ul></li>
-<li><a href="mapping-data-in-r.html#plot_sf"><code>plot_sf</code></a>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#plot_sf"><i class="fa fa-check"></i><code>plot_sf</code></a>
 <ul>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#the-basics-2"><i class="fa fa-check"></i>The basics</a></li>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#adding-a-graticule"><i class="fa fa-check"></i>Adding a graticule</a></li>
@@ -405,11 +404,11 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#creating-point-sf-objects"><i class="fa fa-check"></i>Creating point ‘sf’ objects</a>
 <ul>
-<li><a href="anatomy-of-simple-feature-objects.html#step-1-create-the-point-geometry-sfg">Step 1: Create the point geometry: <code>sfg</code></a></li>
-<li><a href="anatomy-of-simple-feature-objects.html#step-2-create-a-column-of-simple-feature-geometries-sfc">Step 2: Create a column of simple feature geometries: <code>sfc</code></a></li>
-<li><a href="anatomy-of-simple-feature-objects.html#step-3-create-the-simple-feature-object-sf">Step 3: Create the simple feature object <code>sf</code></a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#step-1-create-the-point-geometry-sfg"><i class="fa fa-check"></i>Step 1: Create the point geometry: <code>sfg</code></a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#step-2-create-a-column-of-simple-feature-geometries-sfc"><i class="fa fa-check"></i>Step 2: Create a column of simple feature geometries: <code>sfc</code></a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#step-3-create-the-simple-feature-object-sf"><i class="fa fa-check"></i>Step 3: Create the simple feature object <code>sf</code></a></li>
 <li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#renaming-the-geometry-column"><i class="fa fa-check"></i>Renaming the geometry column</a></li>
-<li><a href="anatomy-of-simple-feature-objects.html#adding-attributes-to-an-sf-object">Adding attributes to an <code>sf</code> object</a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#adding-attributes-to-an-sf-object"><i class="fa fa-check"></i>Adding attributes to an <code>sf</code> object</a></li>
 <li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#adding-a-geometry-column-to-an-existing-non-spatial-dataframe"><i class="fa fa-check"></i>Adding a geometry column to an existing non-spatial dataframe</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#creating-polyline-sf-objects"><i class="fa fa-check"></i>Creating polyline ‘sf’ objects</a>
@@ -418,10 +417,10 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#creating-polygon-sf-objects"><i class="fa fa-check"></i>Creating polygon ‘sf’ objects</a>
 <ul>
-<li><a href="anatomy-of-simple-feature-objects.html#polygon-simple-feature"><code>POLYGON</code> simple feature</a></li>
-<li><a href="anatomy-of-simple-feature-objects.html#multipolygon-simple-feature-multipart-features"><code>MULTIPOLYGON</code> simple feature: multipart features</a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#polygon-simple-feature"><i class="fa fa-check"></i><code>POLYGON</code> simple feature</a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#multipolygon-simple-feature-multipart-features"><i class="fa fa-check"></i><code>MULTIPOLYGON</code> simple feature: multipart features</a></li>
 </ul></li>
-<li><a href="anatomy-of-simple-feature-objects.html#extracting-geometry-from-an-sf-object">Extracting geometry from an <code>sf</code> object</a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#extracting-geometry-from-an-sf-object"><i class="fa fa-check"></i>Extracting geometry from an <code>sf</code> object</a></li>
 <li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#alternative-syntax"><i class="fa fa-check"></i>Alternative syntax</a></li>
 <li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#additional-resources"><i class="fa fa-check"></i>Additional resources</a></li>
 </ul></li>
@@ -441,7 +440,7 @@ div.csl-indent {
 <li class="chapter" data-level="E" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html"><i class="fa fa-check"></i><b>E</b> Mapping rates in R</a>
 <ul>
 <li class="chapter" data-level="" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html#raw-rates"><i class="fa fa-check"></i>Raw Rates</a></li>
-<li class="chapter" data-level="" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html#standardized-mortality-ratios-relative-risk."><i class="fa fa-check"></i>Standardized mortality ratios (relative risk).</a></li>
+<li class="chapter" data-level="" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html#standardized-mortality-ratios-relative-risk"><i class="fa fa-check"></i>Standardized mortality ratios (relative risk)</a></li>
 <li class="chapter" data-level="" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html#dykes-and-unwins-chi-square-statistic"><i class="fa fa-check"></i>Dykes and Unwin’s chi-square statistic</a></li>
 <li class="chapter" data-level="" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html#unstable-ratios"><i class="fa fa-check"></i>Unstable ratios</a>
 <ul>
@@ -467,9 +466,9 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="G" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html"><i class="fa fa-check"></i><b>G</b> Coordinate Systems in R</a>
 <ul>
-<li><a href="coordinate-systems-in-r.html#a-note-about-the-changes-to-the-proj-environment">A note about the changes to the <code>PROJ</code> environment</a></li>
+<li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#a-note-about-the-changes-to-the-proj-environment"><i class="fa fa-check"></i>A note about the changes to the <code>PROJ</code> environment</a></li>
 <li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#sample-files-for-this-exercise-2"><i class="fa fa-check"></i>Sample files for this exercise</a></li>
-<li><a href="coordinate-systems-in-r.html#loading-the-sf-package">Loading the <code>sf</code> package</a></li>
+<li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#loading-the-sf-package"><i class="fa fa-check"></i>Loading the <code>sf</code> package</a></li>
 <li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#checking-for-a-coordinate-system"><i class="fa fa-check"></i>Checking for a coordinate system</a></li>
 <li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#understanding-the-proj4-coordinate-syntax"><i class="fa fa-check"></i>Understanding the Proj4 coordinate syntax</a></li>
 <li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#assigning-a-coordinate-system"><i class="fa fa-check"></i>Assigning a coordinate system</a></li>
@@ -483,7 +482,7 @@ div.csl-indent {
 <li class="chapter" data-level="H" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html"><i class="fa fa-check"></i><b>H</b> Point pattern analysis in R</a>
 <ul>
 <li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#sample-files-for-this-exercise-3"><i class="fa fa-check"></i>Sample files for this exercise</a></li>
-<li><a href="point-pattern-analysis-in-r.html#getting-external-data-into-a-spatstat-format">Getting external data into a <code>spatstat</code> format</a></li>
+<li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#getting-external-data-into-a-spatstat-format"><i class="fa fa-check"></i>Getting external data into a <code>spatstat</code> format</a></li>
 <li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#prepping-the-data"><i class="fa fa-check"></i>Prepping the data</a></li>
 <li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#density-based-analysis-1"><i class="fa fa-check"></i>Density based analysis</a>
 <ul>
@@ -526,8 +525,8 @@ div.csl-indent {
 <li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#fine-tuning-the-interpolation"><i class="fa fa-check"></i>Fine-tuning the interpolation</a></li>
 <li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#cross-validation"><i class="fa fa-check"></i>Cross-validation</a></li>
 </ul></li>
-<li><a href="interpolation-in-r.html#st-order-polynomial-fit">1<sup>st</sup> order polynomial fit</a></li>
-<li><a href="interpolation-in-r.html#nd-order-polynomial">2<sup>nd</sup> order polynomial</a></li>
+<li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#st-order-polynomial-fit"><i class="fa fa-check"></i>1<sup>st</sup> order polynomial fit</a></li>
+<li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#nd-order-polynomial"><i class="fa fa-check"></i>2<sup>nd</sup> order polynomial</a></li>
 <li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#kriging"><i class="fa fa-check"></i>Kriging</a>
 <ul>
 <li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#fit-the-variogram-model"><i class="fa fa-check"></i>Fit the variogram model</a></li>
@@ -552,8 +551,8 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="raster-operations-in-r" class="section level1" number="21">
-<h1><span class="header-section-number">F</span> Raster operations in R</h1>
+<div id="raster-operations-in-r" class="section level1 hasAnchor" number="21">
+<h1><span class="header-section-number">F</span> Raster operations in R<a href="raster-operations-in-r.html#raster-operations-in-r" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <table class="package_ver_table">
 <tbody>
 <tr>
@@ -637,7 +636,7 @@ rasterVis
               padding-bottom: 1px;
               padding-left: 4px;
               padding-right: 4px;">
-4.1.1
+4.2.1
 </td>
 <td style="text-align:left;color: white !important;background-color: #AAAAAA !important;text-align: center;font-size: 12px !important; 
               margin:5px; 
@@ -647,7 +646,7 @@ rasterVis
               padding-bottom: 1px;
               padding-left: 4px;
               padding-right: 4px;">
-3.4.13
+3.5.29
 </td>
 <td style="text-align:left;color: white !important;background-color: #AAAAAA !important;text-align: center;font-size: 12px !important; 
               margin:5px; 
@@ -657,7 +656,7 @@ rasterVis
               padding-bottom: 1px;
               padding-left: 4px;
               padding-right: 4px;">
-3.3.2
+3.3.3
 </td>
 <td style="text-align:left;color: white !important;background-color: #AAAAAA !important;text-align: center;font-size: 12px !important; 
               margin:5px; 
@@ -667,7 +666,7 @@ rasterVis
               padding-bottom: 1px;
               padding-left: 4px;
               padding-right: 4px;">
-1.0.2
+1.0.8
 </td>
 <td style="text-align:left;color: white !important;background-color: #AAAAAA !important;text-align: center;font-size: 12px !important; 
               margin:5px; 
@@ -687,7 +686,7 @@ rasterVis
               padding-bottom: 1px;
               padding-left: 4px;
               padding-right: 4px;">
-3.3.5
+3.3.6
 </td>
 <td style="text-align:left;color: white !important;background-color: #AAAAAA !important;text-align: center;font-size: 12px !important; 
               margin:5px; 
@@ -697,22 +696,22 @@ rasterVis
               padding-bottom: 1px;
               padding-left: 4px;
               padding-right: 4px;">
-0.50.3
+0.51.2
 </td>
 </tr>
 </tbody>
 </table>
-<div id="sample-files-for-this-exercise-1" class="section level2 unnumbered">
-<h2>Sample files for this exercise</h2>
+<div id="sample-files-for-this-exercise-1" class="section level2 unnumbered hasAnchor">
+<h2>Sample files for this exercise<a href="raster-operations-in-r.html#sample-files-for-this-exercise-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>We’ll first load spatial objects used in this exercise from a remote website: an elevation <code>raster</code> object, a bathymetry <code>raster</code> object and a continents <code>sf</code> vector object</p>
 <div class="sourceCode" id="cb219"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb219-1"><a href="raster-operations-in-r.html#cb219-1" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="fu">url</span>(<span class="st">&quot;https://github.com/mgimond/Spatial/raw/main/Data/raster.RData&quot;</span>))</span></code></pre></div>
 <p>Both rasters cover the entire globe. Elevation below mean sea level are encoded as <code>0</code> in the elevation raster. Likewise, bathymetry values above mean sea level are encoded as <code>0</code>.</p>
 <p>Note that most of the map algebra operations and functions covered in this tutorial are implemented using the <code>raster</code> package. See chapter 10 for a theoretical discussion of map algebra operations.</p>
 </div>
-<div id="local-operations-and-functions-1" class="section level2 unnumbered">
-<h2>Local operations and functions</h2>
-<div id="unary-operations-and-functions-applied-to-single-rasters" class="section level3 unnumbered">
-<h3>Unary operations and functions (applied to single rasters)</h3>
+<div id="local-operations-and-functions-1" class="section level2 unnumbered hasAnchor">
+<h2>Local operations and functions<a href="raster-operations-in-r.html#local-operations-and-functions-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="unary-operations-and-functions-applied-to-single-rasters" class="section level3 unnumbered hasAnchor">
+<h3>Unary operations and functions (applied to single rasters)<a href="raster-operations-in-r.html#unary-operations-and-functions-applied-to-single-rasters" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Most algebraic operations can be applied to rasters as they would with any vector element. For example, to convert all bathymetric values in <code>bath</code> (currently recorded as positive values) to <em>negative</em> values simply multiply the raster by <code>-1</code>.</p>
 <div class="sourceCode" id="cb220"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb220-1"><a href="raster-operations-in-r.html#cb220-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(raster)</span>
 <span id="cb220-2"><a href="raster-operations-in-r.html#cb220-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -772,20 +771,20 @@ rasterVis
 <span id="cb228-2"><a href="raster-operations-in-r.html#cb228-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_legend</span>(<span class="at">outside =</span> <span class="cn">TRUE</span>, <span class="at">text.size =</span> .<span class="dv">8</span>) </span></code></pre></div>
 <p><img src="A06-Raster-Operations_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
 </div>
-<div id="binary-operations-and-functions-where-two-rasters-are-used" class="section level3 unnumbered">
-<h3>Binary operations and functions (where two rasters are used)</h3>
+<div id="binary-operations-and-functions-where-two-rasters-are-used" class="section level3 unnumbered hasAnchor">
+<h3>Binary operations and functions (where two rasters are used)<a href="raster-operations-in-r.html#binary-operations-and-functions-where-two-rasters-are-used" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>In the following example, <code>elev</code> (elevation raster) is added to <code>bath</code> (bathymetry raster) to create a single elevation raster for the globe. Note that the bathymetric raster will need to be multiplied by <code>-1</code> to differentiate above mean sea level elevation from below mean sea level depth.</p>
 <div class="sourceCode" id="cb229"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb229-1"><a href="raster-operations-in-r.html#cb229-1" aria-hidden="true" tabindex="-1"></a>elevation <span class="ot">&lt;-</span> elev <span class="sc">-</span> bath</span></code></pre></div>
-<div class="sourceCode" id="cb230"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb230-1"><a href="raster-operations-in-r.html#cb230-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(elevation) <span class="sc">+</span> <span class="fu">tm_raster</span>(<span class="at">palette=</span><span class="st">&quot;-RdBu&quot;</span>,<span class="at">n=</span><span class="dv">6</span>) <span class="sc">+</span> </span>
+<div class="sourceCode" id="cb230"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb230-1"><a href="raster-operations-in-r.html#cb230-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(elevation) <span class="sc">+</span> <span class="fu">tm_raster</span>(<span class="at">palette=</span><span class="st">&quot;-RdBu&quot;</span>) <span class="sc">+</span> </span>
 <span id="cb230-2"><a href="raster-operations-in-r.html#cb230-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_legend</span>(<span class="at">outside =</span> <span class="cn">TRUE</span>, <span class="at">text.size =</span> .<span class="dv">8</span>) </span></code></pre></div>
 <p><img src="A06-Raster-Operations_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 </div>
 </div>
-<div id="focal-operations-and-functions-1" class="section level2 unnumbered">
-<h2>Focal operations and functions</h2>
+<div id="focal-operations-and-functions-1" class="section level2 unnumbered hasAnchor">
+<h2>Focal operations and functions<a href="raster-operations-in-r.html#focal-operations-and-functions-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Operations or functions applied focally to rasters involve user defined neighboring cells. For example, a cell output value can be the average of all 121 cells–an 11x11 kernel–centered on the cell whose value is being estimated (this is an example of a <em>smoothing function</em>).</p>
 <div class="sourceCode" id="cb231"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb231-1"><a href="raster-operations-in-r.html#cb231-1" aria-hidden="true" tabindex="-1"></a>f1 <span class="ot">&lt;-</span> <span class="fu">focal</span>(elevation, <span class="at">w=</span><span class="fu">matrix</span>(<span class="dv">1</span>,<span class="at">nrow=</span><span class="dv">11</span>,<span class="at">ncol=</span><span class="dv">11</span>)  , <span class="at">fun=</span>mean)</span></code></pre></div>
-<div class="sourceCode" id="cb232"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb232-1"><a href="raster-operations-in-r.html#cb232-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(f1) <span class="sc">+</span> <span class="fu">tm_raster</span>(<span class="at">palette=</span><span class="st">&quot;-RdBu&quot;</span>,<span class="at">n=</span><span class="dv">6</span>) <span class="sc">+</span> </span>
+<div class="sourceCode" id="cb232"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb232-1"><a href="raster-operations-in-r.html#cb232-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(f1) <span class="sc">+</span> <span class="fu">tm_raster</span>(<span class="at">palette=</span><span class="st">&quot;-RdBu&quot;</span>) <span class="sc">+</span> </span>
 <span id="cb232-2"><a href="raster-operations-in-r.html#cb232-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_legend</span>(<span class="at">outside =</span> <span class="cn">TRUE</span>, <span class="at">text.size =</span> .<span class="dv">8</span>) </span></code></pre></div>
 <p><img src="A06-Raster-Operations_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
 <p>By default edge cells are assigned a value of <code>NA</code>. This is because cells outside of the input raster extent have no value but may fall inside the kernel window when edge cells are computed. You can remedy this by passing the parameters <code>na.rm=TRUE</code> and <code>pad=TRUE</code> to the function.</p>
@@ -817,8 +816,8 @@ rasterVis
 <span id="cb237-5"><a href="raster-operations-in-r.html#cb237-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_legend</span>(<span class="at">legend.show =</span> <span class="cn">FALSE</span>) </span></code></pre></div>
 <p><img src="A06-Raster-Operations_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
 </div>
-<div id="zonal-operations-and-functions-1" class="section level2 unnumbered">
-<h2>Zonal operations and functions</h2>
+<div id="zonal-operations-and-functions-1" class="section level2 unnumbered hasAnchor">
+<h2>Zonal operations and functions<a href="raster-operations-in-r.html#zonal-operations-and-functions-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>A common zonal operation is the aggregation of cells. In the following example, raster layer <code>elevation</code> is aggregated to a 5x5 raster layer.</p>
 <div class="sourceCode" id="cb238"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb238-1"><a href="raster-operations-in-r.html#cb238-1" aria-hidden="true" tabindex="-1"></a>z1 <span class="ot">&lt;-</span> <span class="fu">aggregate</span>(elevation, <span class="at">fact=</span><span class="dv">2</span>, <span class="at">fun=</span>mean, <span class="at">expand=</span><span class="cn">TRUE</span>)</span>
 <span id="cb238-2"><a href="raster-operations-in-r.html#cb238-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -859,8 +858,8 @@ rasterVis
 <div class="sourceCode" id="cb249"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb249-1"><a href="raster-operations-in-r.html#cb249-1" aria-hidden="true" tabindex="-1"></a>cont.elev.sp <span class="ot">&lt;-</span> <span class="fu">extract</span>(elevation, cont, <span class="at">fun=</span><span class="cf">function</span>(x,...){<span class="fu">length</span>(x)}, <span class="at">sp=</span><span class="cn">TRUE</span>) </span></code></pre></div>
 <p>The <code>extract</code> function will also work with lines and point spatial objects. If you wish to compute the zonal statistics of a raster using another raster as zones instead of a vector layer, use the <code>zonal()</code> function instead.</p>
 </div>
-<div id="global-operations-and-functions-1" class="section level2 unnumbered">
-<h2>Global operations and functions</h2>
+<div id="global-operations-and-functions-1" class="section level2 unnumbered hasAnchor">
+<h2>Global operations and functions<a href="raster-operations-in-r.html#global-operations-and-functions-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Global operations and functions may make use of all input cells of a grid in the computation of an output cell value.</p>
 <p>An example of a global function is the Euclidean distance function, <code>distance</code>, which computes the shortest distance between a pixel and a source (or destination) location. To demonstrate the <code>distance</code> function, we’ll first create a new raster layer with two non-NA pixels.</p>
 <div class="sourceCode" id="cb250"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb250-1"><a href="raster-operations-in-r.html#cb250-1" aria-hidden="true" tabindex="-1"></a>r1   <span class="ot">&lt;-</span> <span class="fu">raster</span>(<span class="at">ncol=</span><span class="dv">100</span>, <span class="at">nrow=</span><span class="dv">100</span>, <span class="at">xmn=</span><span class="dv">0</span>, <span class="at">xmx=</span><span class="dv">100</span>, <span class="at">ymn=</span><span class="dv">0</span>, <span class="at">ymx=</span><span class="dv">100</span>)</span>
@@ -893,8 +892,8 @@ rasterVis
 <span id="cb256-3"><a href="raster-operations-in-r.html#cb256-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_shape</span>(p1) <span class="sc">+</span> <span class="fu">tm_bubbles</span>(<span class="at">col=</span><span class="st">&quot;red&quot;</span>) </span></code></pre></div>
 <p><img src="A06-Raster-Operations_files/figure-html/unnamed-chunk-35-1.png" width="672" /></p>
 </div>
-<div id="computing-cumulative-distances" class="section level2 unnumbered">
-<h2>Computing cumulative distances</h2>
+<div id="computing-cumulative-distances" class="section level2 unnumbered hasAnchor">
+<h2>Computing cumulative distances<a href="raster-operations-in-r.html#computing-cumulative-distances" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>This exercise demonstrates how to use functions from the <code>gdistance</code> package to generate a cumulative distance raster. One objective will be to demonstrate the influence “adjacency cells” wields in the final results.</p>
 <p>Load the <code>gdistance</code> package.</p>
 <div class="sourceCode" id="cb257"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb257-1"><a href="raster-operations-in-r.html#cb257-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gdistance)</span></code></pre></div>
@@ -942,8 +941,8 @@ rasterVis
 <p><img src="A06-Raster-Operations_files/figure-html/unnamed-chunk-55-1.png" width="576" style="display: block; margin: auto auto auto 0;" /></p>
 <p>It’s obvious that the accuracy of the cumulative distance raster can be greatly influenced by how we define adjacent nodes. The number of red cells (i.e. area identified as being within a 20 units cumulative distance) ranges from 925 to 2749 cells.</p>
 <p><img src="A06-Raster-Operations_files/figure-html/unnamed-chunk-57-1.png" width="672" /></p>
-<div id="working-example" class="section level3 unnumbered">
-<h3>Working example</h3>
+<div id="working-example" class="section level3 unnumbered hasAnchor">
+<h3>Working example<a href="raster-operations-in-r.html#working-example" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>In the following example, we will generate a raster layer with barriers (defined as <code>NA</code> cell values). The goal will be to identify all cells that fall within a 290 km traveling distance from the upper left-hand corner of the raster layer (the green point in the maps). Results between an 8-node and 16-node adjacency definition will be compared.</p>
 <div class="sourceCode" id="cb266"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb266-1"><a href="raster-operations-in-r.html#cb266-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create an empty raster</span></span>
 <span id="cb266-2"><a href="raster-operations-in-r.html#cb266-2" aria-hidden="true" tabindex="-1"></a>r   <span class="ot">&lt;-</span> <span class="fu">raster</span>(<span class="at">nrows=</span><span class="dv">300</span>,<span class="at">ncols=</span><span class="dv">150</span>,<span class="at">xmn=</span><span class="dv">0</span>,<span class="at">ymn=</span><span class="dv">0</span>,<span class="at">xmx=</span><span class="dv">150000</span>, <span class="at">ymx=</span><span class="dv">300000</span>)</span>
@@ -1020,7 +1019,6 @@ FALSE  TRUE
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
-<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
 <script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
@@ -1061,9 +1059,9 @@ gitbook.start({
 "link": null,
 "text": null
 },
-"download": ["_main.pdf", "_main.epub"],
+"download": {},
 "search": {
-"engine": "lunr",
+"engine": "fuse",
 "options": null
 },
 "toc": {
@@ -1080,7 +1078,7 @@ gitbook.start({
     var script = document.createElement("script");
     script.type = "text/javascript";
     var src = "true";
-    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:")
       if (/^https?:/.test(src))
         src = src.replace(/^https?:/, '');
