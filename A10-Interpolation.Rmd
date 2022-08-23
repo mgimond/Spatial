@@ -313,7 +313,7 @@ tm_shape(r.m) +
   tm_legend(legend.outside=TRUE)
 ```
 
-Are more readily interpretable map is the 95% confidence interval map which can be generated from the variance object as follows (the map values should be interpreted as the number of inches above and below the estimated rainfall amount).
+A more readily interpretable map is the 95% confidence interval map which can be generated from the variance object as follows (the map values should be interpreted as the number of inches above and below the estimated rainfall amount).
 
 ```{r results='hide',  fig.height=3.3}
 r   <- sqrt(raster(dat.krg, layer="var1.var")) * 1.96

@@ -1,3 +1,8 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
 # Raster operations in R
 
 ```{r, echo = FALSE}
@@ -93,7 +98,7 @@ elevation <- elev - bath
 ```
 
 ```{r, fig.height=3}
-tm_shape(elevation) + tm_raster(palette="-RdBu",n=6) + 
+tm_shape(elevation) + tm_raster(palette="-RdBu") + 
   tm_legend(outside = TRUE, text.size = .8) 
 ```
 
@@ -106,7 +111,7 @@ f1 <- focal(elevation, w=matrix(1,nrow=11,ncol=11)  , fun=mean)
 ```
 
 ```{r, fig.height=3}
-tm_shape(f1) + tm_raster(palette="-RdBu",n=6) + 
+tm_shape(f1) + tm_raster(palette="-RdBu") + 
   tm_legend(outside = TRUE, text.size = .8) 
 ```
 
@@ -328,10 +333,10 @@ r[] <- rep(1, ncell(r))
 
 
 ```{r echo=FALSE}
-# Code block is ued internally to generate descriptive graphics.
+# Code block is used internally to generate descriptive graphics.
 library(ggplot2)
 library(rasterVis)
-library(reshape2)
+
 # Plot raster subset (with cell values) and adjacency connections
 plotsub = function(r, x1, x2, y1, y2){
   r2 = crop(r, c(x1,x2,y1,y2))
@@ -353,14 +358,14 @@ plotsubconn = function(r, x1, x2, y1, y2, adj){
 
 # Plot raster subset (with cell values)
 gp.text <- function(sg, nr=1, sfmt="%02.0f",x1,x2,y1,y2,src){
-  src = as.data.frame(t(src)); colnames(src)=c("x","y")
-  sg.names = names(sg)
-  sg = crop(sg, c(x1,x2,y1,y2))
-  names(sg) = sg.names # Renaming the layers is necessary if the brick object is cropped
-  r.df = as.data.frame(cbind(xyFromCell(sg,1:ncell(sg)),getValues(sg)))
-  plotData = melt(r.df, id=c("x","y"))
+  src <-as.data.frame(t(src)); colnames(src)=c("x","y")
+  sg.names <- names(sg)
+  sg <- crop(sg, c(x1,x2,y1,y2))
+  names(sg) <- sg.names # Renaming the layers is necessary if the brick object is cropped
+  r.df <- as.data.frame(cbind(xyFromCell(sg,1:ncell(sg)),getValues(sg)))
+  plotData <- tidyr::pivot_longer(r.df, cols = c(-x,-y) )
   ggplot(aes(x = x, y = y), data = plotData, environment = environment()) + 
-    geom_tile(aes(fill = value)) + facet_wrap(~ variable, nrow=nr) +
+    geom_tile(aes(fill = value)) + facet_wrap(~ name, nrow=nr) +
     theme(strip.text.x = element_text(size=16, family="mono", face="bold"), legend.position = "none") +
     geom_point(data = src, mapping=aes(x=x, y=y), size=18, shape=21, colour="yellow") +
     coord_equal() + geom_text(aes(label=sprintf(fmt=sfmt, value)), colour='white',size=2)
@@ -368,14 +373,14 @@ gp.text <- function(sg, nr=1, sfmt="%02.0f",x1,x2,y1,y2,src){
 
 # Plot rasters with extent limit
 gp.notext <- function(sg, nr=1, x1,x2,y1,y2,lim,src){
-  src = as.data.frame(t(src)); colnames(src)=c("x","y")
-  sg.names = names(sg)
-  sg = crop(sg, c(x1,x2,y1,y2))
-  names(sg) = sg.names # Renaming the layers is necessary if the brick object is cropped
-  r.df = as.data.frame(cbind(xyFromCell(sg,1:ncell(sg)),getValues(sg)))
-  plotData = melt(r.df, id=c("x","y"))
+  src <- as.data.frame(t(src)); colnames(src)=c("x","y")
+  sg.names <- names(sg)
+  sg <- crop(sg, c(x1,x2,y1,y2))
+  names(sg) <- sg.names # Renaming the layers is necessary if the brick object is cropped
+  r.df <- as.data.frame(cbind(xyFromCell(sg,1:ncell(sg)),getValues(sg)))
+  plotData <- tidyr::pivot_longer(r.df, cols = c(-x,-y) )
   ggplot(aes(x = x, y = y), data = plotData, environment = environment()) + 
-    geom_tile(aes(fill = value)) + facet_wrap(~ variable, nrow=nr) +
+    geom_tile(aes(fill = value)) + facet_wrap(~ name, nrow=nr) +
     theme(strip.text.x = element_text(size=16, family="mono", face="bold"), legend.position = "none") +
     coord_equal() +
     geom_tile(data = subset(plotData, value <= lim),aes(fill = value),fill="red") +

@@ -98,7 +98,7 @@ ggplot(s1.sf) + geom_sf(aes(fill = med))
 
 Next, we'll dissolve all polygons by the `med` attribute. Any polygons sharing at least one line segment that have the same `med` value will be dissolved into a single polygon.
 
-Two approaches are presented here: one using `sf`'s `aggregate` function, the other using the `dplyr` approach.
+Two approaches are presented here: one using `sf`'s `aggregate` function, the other using the `dplyr` approach adopted in the previous section.
 
 #### Option 1 {-}
 
@@ -107,7 +107,7 @@ ME.inc <- aggregate(s1.sf["med"], by = list(diss = s1.sf$med),
                     FUN = function(x)x[1], do_union = TRUE)
 ```
 
-This option will a new field defined in the `by = ` parameter (`diss` in this working example).
+This option will create a new field defined in the `by = ` parameter (`diss` in this working example).
 
 ```{r}
 st_drop_geometry(ME.inc) # Print the layer's attributes table

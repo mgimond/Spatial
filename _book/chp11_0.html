@@ -6,11 +6,10 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 11 Point Pattern Analysis | Intro to GIS and Spatial Analysis</title>
   <meta name="description" content="This is a compilation of lecture notes that accompany my Intro to GIS and Spatial Analysis course." />
-  <meta name="generator" content="bookdown 0.23 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.28 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 11 Point Pattern Analysis | Intro to GIS and Spatial Analysis" />
   <meta property="og:type" content="book" />
-  
   
   <meta property="og:description" content="This is a compilation of lecture notes that accompany my Intro to GIS and Spatial Analysis course." />
   <meta name="github-repo" content="mgimond/spatial" />
@@ -32,8 +31,8 @@
   
 <link rel="prev" href="chp10_0.html"/>
 <link rel="next" href="hypothesis-testing.html"/>
-<script src="libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -49,19 +48,19 @@
 
 
 
-
-<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
-<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
 <script src="libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
-<script src="libs/htmlwidgets-1.5.3/htmlwidgets.js"></script>
+<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
 <link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet-1.3.1/leaflet.js"></script>
 <link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
 <script src="libs/proj4-2.6.2/proj4.min.js"></script>
 <script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
 <link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
-<script src="libs/leaflet-binding-2.0.4.1/leaflet.js"></script>
+<script src="libs/leaflet-binding-2.1.1/leaflet.js"></script>
 
 
 <style type="text/css">
@@ -359,21 +358,21 @@ div.csl-indent {
 <li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_4_5"><i class="fa fa-check"></i>Creating a spatial object from a data frame</a></li>
 <li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_4_6"><i class="fa fa-check"></i>Geocoding street addresses</a></li>
 </ul></li>
-<li><a href="reading-and-writing-spatial-data-in-r.html#app1_5">Converting from an <code>sf</code> object</a>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_5"><i class="fa fa-check"></i>Converting from an <code>sf</code> object</a>
 <ul>
-<li><a href="reading-and-writing-spatial-data-in-r.html#app1_5_1">Converting an <code>sf</code> object to a <code>Spatial*</code> object (<code>spdep</code>/<code>sp</code>)</a></li>
-<li><a href="reading-and-writing-spatial-data-in-r.html#app1_5_2">Converting an <code>sf</code> polygon object to an <code>owin</code> object</a></li>
-<li><a href="reading-and-writing-spatial-data-in-r.html#app1_5_3">Converting an <code>sf</code> point object to a <code>ppp</code> object</a></li>
-<li><a href="reading-and-writing-spatial-data-in-r.html#app1_5_4">Converting a <code>raster</code> object to an <code>im</code> object (<code>spatstat</code>)</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_5_1"><i class="fa fa-check"></i>Converting an <code>sf</code> object to a <code>Spatial*</code> object (<code>spdep</code>/<code>sp</code>)</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_5_2"><i class="fa fa-check"></i>Converting an <code>sf</code> polygon object to an <code>owin</code> object</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_5_3"><i class="fa fa-check"></i>Converting an <code>sf</code> point object to a <code>ppp</code> object</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_5_4"><i class="fa fa-check"></i>Converting a <code>raster</code> object to an <code>im</code> object (<code>spatstat</code>)</a></li>
 </ul></li>
-<li><a href="reading-and-writing-spatial-data-in-r.html#app1_6">Converting to an <code>sf</code> object</a></li>
-<li><a href="reading-and-writing-spatial-data-in-r.html#app1_7">Dissecting the <code>sf</code> file object</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_6"><i class="fa fa-check"></i>Converting to an <code>sf</code> object</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_7"><i class="fa fa-check"></i>Dissecting the <code>sf</code> file object</a></li>
 <li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_8"><i class="fa fa-check"></i>Exporting to different data file formats</a></li>
 </ul></li>
 <li class="chapter" data-level="B" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html"><i class="fa fa-check"></i><b>B</b> Mapping data in R</a>
 <ul>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#sample-files-for-this-exercise"><i class="fa fa-check"></i>Sample files for this exercise</a></li>
-<li><a href="mapping-data-in-r.html#tmap"><code>tmap</code></a>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#tmap"><i class="fa fa-check"></i><code>tmap</code></a>
 <ul>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#the-basics"><i class="fa fa-check"></i>The basics</a></li>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#combining-layers"><i class="fa fa-check"></i>Combining layers</a></li>
@@ -387,13 +386,13 @@ div.csl-indent {
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#side-by-side-maps"><i class="fa fa-check"></i>Side-by-side maps</a></li>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#splitting-data-by-polygons-or-group-of-polygons"><i class="fa fa-check"></i>Splitting data by polygons or group of polygons</a></li>
 </ul></li>
-<li><a href="mapping-data-in-r.html#ggplot2"><code>ggplot2</code></a>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#ggplot2"><i class="fa fa-check"></i><code>ggplot2</code></a>
 <ul>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#the-basics-1"><i class="fa fa-check"></i>The basics</a></li>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#tweaking-classification-schemes-1"><i class="fa fa-check"></i>Tweaking classification schemes</a></li>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#combining-layers-1"><i class="fa fa-check"></i>Combining layers</a></li>
 </ul></li>
-<li><a href="mapping-data-in-r.html#plot_sf"><code>plot_sf</code></a>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#plot_sf"><i class="fa fa-check"></i><code>plot_sf</code></a>
 <ul>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#the-basics-2"><i class="fa fa-check"></i>The basics</a></li>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#adding-a-graticule"><i class="fa fa-check"></i>Adding a graticule</a></li>
@@ -405,11 +404,11 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#creating-point-sf-objects"><i class="fa fa-check"></i>Creating point ‘sf’ objects</a>
 <ul>
-<li><a href="anatomy-of-simple-feature-objects.html#step-1-create-the-point-geometry-sfg">Step 1: Create the point geometry: <code>sfg</code></a></li>
-<li><a href="anatomy-of-simple-feature-objects.html#step-2-create-a-column-of-simple-feature-geometries-sfc">Step 2: Create a column of simple feature geometries: <code>sfc</code></a></li>
-<li><a href="anatomy-of-simple-feature-objects.html#step-3-create-the-simple-feature-object-sf">Step 3: Create the simple feature object <code>sf</code></a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#step-1-create-the-point-geometry-sfg"><i class="fa fa-check"></i>Step 1: Create the point geometry: <code>sfg</code></a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#step-2-create-a-column-of-simple-feature-geometries-sfc"><i class="fa fa-check"></i>Step 2: Create a column of simple feature geometries: <code>sfc</code></a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#step-3-create-the-simple-feature-object-sf"><i class="fa fa-check"></i>Step 3: Create the simple feature object <code>sf</code></a></li>
 <li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#renaming-the-geometry-column"><i class="fa fa-check"></i>Renaming the geometry column</a></li>
-<li><a href="anatomy-of-simple-feature-objects.html#adding-attributes-to-an-sf-object">Adding attributes to an <code>sf</code> object</a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#adding-attributes-to-an-sf-object"><i class="fa fa-check"></i>Adding attributes to an <code>sf</code> object</a></li>
 <li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#adding-a-geometry-column-to-an-existing-non-spatial-dataframe"><i class="fa fa-check"></i>Adding a geometry column to an existing non-spatial dataframe</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#creating-polyline-sf-objects"><i class="fa fa-check"></i>Creating polyline ‘sf’ objects</a>
@@ -418,10 +417,10 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#creating-polygon-sf-objects"><i class="fa fa-check"></i>Creating polygon ‘sf’ objects</a>
 <ul>
-<li><a href="anatomy-of-simple-feature-objects.html#polygon-simple-feature"><code>POLYGON</code> simple feature</a></li>
-<li><a href="anatomy-of-simple-feature-objects.html#multipolygon-simple-feature-multipart-features"><code>MULTIPOLYGON</code> simple feature: multipart features</a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#polygon-simple-feature"><i class="fa fa-check"></i><code>POLYGON</code> simple feature</a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#multipolygon-simple-feature-multipart-features"><i class="fa fa-check"></i><code>MULTIPOLYGON</code> simple feature: multipart features</a></li>
 </ul></li>
-<li><a href="anatomy-of-simple-feature-objects.html#extracting-geometry-from-an-sf-object">Extracting geometry from an <code>sf</code> object</a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#extracting-geometry-from-an-sf-object"><i class="fa fa-check"></i>Extracting geometry from an <code>sf</code> object</a></li>
 <li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#alternative-syntax"><i class="fa fa-check"></i>Alternative syntax</a></li>
 <li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#additional-resources"><i class="fa fa-check"></i>Additional resources</a></li>
 </ul></li>
@@ -441,7 +440,7 @@ div.csl-indent {
 <li class="chapter" data-level="E" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html"><i class="fa fa-check"></i><b>E</b> Mapping rates in R</a>
 <ul>
 <li class="chapter" data-level="" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html#raw-rates"><i class="fa fa-check"></i>Raw Rates</a></li>
-<li class="chapter" data-level="" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html#standardized-mortality-ratios-relative-risk."><i class="fa fa-check"></i>Standardized mortality ratios (relative risk).</a></li>
+<li class="chapter" data-level="" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html#standardized-mortality-ratios-relative-risk"><i class="fa fa-check"></i>Standardized mortality ratios (relative risk)</a></li>
 <li class="chapter" data-level="" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html#dykes-and-unwins-chi-square-statistic"><i class="fa fa-check"></i>Dykes and Unwin’s chi-square statistic</a></li>
 <li class="chapter" data-level="" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html#unstable-ratios"><i class="fa fa-check"></i>Unstable ratios</a>
 <ul>
@@ -467,9 +466,9 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="G" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html"><i class="fa fa-check"></i><b>G</b> Coordinate Systems in R</a>
 <ul>
-<li><a href="coordinate-systems-in-r.html#a-note-about-the-changes-to-the-proj-environment">A note about the changes to the <code>PROJ</code> environment</a></li>
+<li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#a-note-about-the-changes-to-the-proj-environment"><i class="fa fa-check"></i>A note about the changes to the <code>PROJ</code> environment</a></li>
 <li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#sample-files-for-this-exercise-2"><i class="fa fa-check"></i>Sample files for this exercise</a></li>
-<li><a href="coordinate-systems-in-r.html#loading-the-sf-package">Loading the <code>sf</code> package</a></li>
+<li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#loading-the-sf-package"><i class="fa fa-check"></i>Loading the <code>sf</code> package</a></li>
 <li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#checking-for-a-coordinate-system"><i class="fa fa-check"></i>Checking for a coordinate system</a></li>
 <li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#understanding-the-proj4-coordinate-syntax"><i class="fa fa-check"></i>Understanding the Proj4 coordinate syntax</a></li>
 <li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#assigning-a-coordinate-system"><i class="fa fa-check"></i>Assigning a coordinate system</a></li>
@@ -483,7 +482,7 @@ div.csl-indent {
 <li class="chapter" data-level="H" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html"><i class="fa fa-check"></i><b>H</b> Point pattern analysis in R</a>
 <ul>
 <li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#sample-files-for-this-exercise-3"><i class="fa fa-check"></i>Sample files for this exercise</a></li>
-<li><a href="point-pattern-analysis-in-r.html#getting-external-data-into-a-spatstat-format">Getting external data into a <code>spatstat</code> format</a></li>
+<li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#getting-external-data-into-a-spatstat-format"><i class="fa fa-check"></i>Getting external data into a <code>spatstat</code> format</a></li>
 <li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#prepping-the-data"><i class="fa fa-check"></i>Prepping the data</a></li>
 <li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#density-based-analysis-1"><i class="fa fa-check"></i>Density based analysis</a>
 <ul>
@@ -526,8 +525,8 @@ div.csl-indent {
 <li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#fine-tuning-the-interpolation"><i class="fa fa-check"></i>Fine-tuning the interpolation</a></li>
 <li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#cross-validation"><i class="fa fa-check"></i>Cross-validation</a></li>
 </ul></li>
-<li><a href="interpolation-in-r.html#st-order-polynomial-fit">1<sup>st</sup> order polynomial fit</a></li>
-<li><a href="interpolation-in-r.html#nd-order-polynomial">2<sup>nd</sup> order polynomial</a></li>
+<li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#st-order-polynomial-fit"><i class="fa fa-check"></i>1<sup>st</sup> order polynomial fit</a></li>
+<li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#nd-order-polynomial"><i class="fa fa-check"></i>2<sup>nd</sup> order polynomial</a></li>
 <li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#kriging"><i class="fa fa-check"></i>Kriging</a>
 <ul>
 <li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#fit-the-variogram-model"><i class="fa fa-check"></i>Fit the variogram model</a></li>
@@ -552,26 +551,30 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="chp11_0" class="section level1" number="11">
-<h1><span class="header-section-number">Chapter 11</span> Point Pattern Analysis</h1>
-<div id="centrography" class="section level2" number="11.1">
-<h2><span class="header-section-number">11.1</span> Centrography</h2>
+<div id="chp11_0" class="section level1 hasAnchor" number="11">
+<h1><span class="header-section-number">Chapter 11</span> Point Pattern Analysis<a href="chp11_0.html#chp11_0" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="centrography" class="section level2 hasAnchor" number="11.1">
+<h2><span class="header-section-number">11.1</span> Centrography<a href="chp11_0.html#centrography" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>A very basic form of point pattern analysis involves summary statistics such as the <strong>mean center</strong>, <strong>standard distance</strong> and <strong>standard deviational ellipse</strong>.</p>
 <p><img src="img/centrography.svg" /><!-- --></p>
 <p>These point pattern analysis techniques were popular before computers were ubiquitous since hand calculations are not too involved, but these summary statistics are too concise and hide far more valuable information about the observed pattern. More powerful analysis methods can be used to explore point patterns. These methods can be classified into two groups: <strong>density based</strong> approach and <strong>distance based</strong> approach.</p>
 </div>
-<div id="density-based-analysis" class="section level2" number="11.2">
-<h2><span class="header-section-number">11.2</span> Density based analysis</h2>
+<div id="density-based-analysis" class="section level2 hasAnchor" number="11.2">
+<h2><span class="header-section-number">11.2</span> Density based analysis<a href="chp11_0.html#density-based-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Density based techniques characterize the pattern in terms of its distribution <em>vis-a-vis</em> the study area–a <strong>first-order</strong> property of the pattern.</p>
 <div class="note">
 <p>
-A <em>first order</em> property of a pattern concerns itself with the variation of the observations’ density across a study area. For example, the distribution of oaks will vary across a landscape based on underlying soil characteristics (resulting in areas having dense clusters of oaks and other areas not).
+A <em>first order</em> property of a pattern concerns itself with the
+variation of the observations’ density across a study area. For example,
+the distribution of oaks will vary across a landscape based on
+underlying soil characteristics (resulting in areas having dense
+clusters of oaks and other areas not).
 </p>
 </div>
 <p><br></p>
 <p>In these lecture notes, we’ll make a distinction between the <strong>intensity</strong> of a spatial process and the observed <strong>density</strong> of a pattern under study. A point pattern can be thought of as a “realization” of an underlying process whose intensity <span class="math inline">\(\lambda\)</span> is estimated from the observed point pattern’s density (which is sometimes denoted as <span class="math inline">\(\widehat{\lambda}\)</span> where the caret <span class="math inline">\(\verb!^!\)</span> is referring to the fact that the observed density is an <em>estimate</em> of the underlying process’ intensity). Density measurements can be broken down into two categories: <strong>global</strong> and <strong>local</strong>.</p>
-<div id="global-density" class="section level3" number="11.2.1">
-<h3><span class="header-section-number">11.2.1</span> Global density</h3>
+<div id="global-density" class="section level3 hasAnchor" number="11.2.1">
+<h3><span class="header-section-number">11.2.1</span> Global density<a href="chp11_0.html#global-density" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>A basic measure of a pattern’s density <span class="math inline">\(\widehat{\lambda}\)</span> is its overall, or <strong>global</strong>, density. This is simply the ratio of observed number of points, <span class="math inline">\(n\)</span>, to the study region’s surface area, <span class="math inline">\(a\)</span>, or:</p>
 <p><span class="math inline">\(\begin{equation} \widehat{\lambda} = \frac{n}{a} \label{eq:global-density} \end{equation}\)</span></p>
 <div class="figure"><span style="display:block;" id="fig:f11-gobal-dens"></span>
@@ -581,11 +584,11 @@ Figure 11.1: An example of a point pattern where n = 20 and the study area (defi
 </p>
 </div>
 </div>
-<div id="local-density" class="section level3" number="11.2.2">
-<h3><span class="header-section-number">11.2.2</span> Local density</h3>
+<div id="local-density" class="section level3 hasAnchor" number="11.2.2">
+<h3><span class="header-section-number">11.2.2</span> Local density<a href="chp11_0.html#local-density" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>A point pattern’s density can be measured at different locations within the study area. Such an approach helps us assess if the density–and, by extension, the underlying process’ local (modeled) intensity <span class="math inline">\(\widehat{\lambda}_i\)</span>–is constant across the study area. This can be an important property of the data since it may need to be mitigated for when using the distance based analysis tools covered later in this chapter. Several techniques for measuring local density are available, here we will focus on two such methods: <em>quadrat density</em> and <em>kernel density</em>.</p>
-<div id="quadrat-density" class="section level4" number="11.2.2.1">
-<h4><span class="header-section-number">11.2.2.1</span> Quadrat density</h4>
+<div id="quadrat-density" class="section level4 hasAnchor" number="11.2.2.1">
+<h4><span class="header-section-number">11.2.2.1</span> Quadrat density<a href="chp11_0.html#quadrat-density" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>This technique requires that the study area be divided into sub-regions (aka <em>quadrats</em>). Then, the point density is computed for each quadrat by dividing the number of points in each quadrat by the quadrat’s area. Quadrats can take on many different shapes such as hexagons and triangles, here we use square shaped quadrats to demonstrate the procedure.</p>
 <div class="figure"><span style="display:block;" id="fig:f11-quad01"></span>
 <img src="11-Point-Patterns_files/figure-html/f11-quad01-1.png" alt="An example of a quadrat count where the study area is divided into four equally sized quadrats whose area is 25 square units each. The density in each quadrat can be computed by dividing the number of points in each quadrat by that quadrat's area." width="211.2" />
@@ -597,7 +600,9 @@ Figure 11.2: An example of a quadrat count where the study area is divided into 
 <p>Quadrat regions do not have to take on a uniform pattern across the study area, they can also be defined based on a <strong>covariate</strong>. For example, if it’s believed that the underlying point pattern process is driven by elevation, quadrats can be defined by sub-regions such as different ranges of elevation values (labeled 1 through 4 on the right-hand plot in the following example). This can result in quadrats having non-uniform shape and area.</p>
 <div class="note">
 <p>
-Converting a continuous field into discretized areas is sometimes referred to as <strong>tessellation</strong>. The end product is a <strong>tessellated surface</strong>.
+Converting a continuous field into discretized areas is sometimes
+referred to as <strong>tessellation</strong>. The end product is a
+<strong>tessellated surface</strong>.
 </p>
 </div>
 <p></br></p>
@@ -632,8 +637,8 @@ Figure 11.6: Same analysis as last figure using different sub-regions. Note the 
 <p>While the high density in the western part of the study area remains, the density values to the east are no longer consistent across the other three regions.</p>
 <p>The quadrat analysis approach has its advantages in that it is easy to compute and interpret however, it does suffer from the <a href="https://mgimond.github.io/Spatial/pitfalls-to-avoid.html#maup">modifiable areal unit problem</a> (MAUP) as highlighted in the last two examples. Another density based approach that will be explored next (and that is less susceptible to the MAUP) is the kernel density.</p>
 </div>
-<div id="kernel-density" class="section level4" number="11.2.2.2">
-<h4><span class="header-section-number">11.2.2.2</span> Kernel density</h4>
+<div id="kernel-density" class="section level4 hasAnchor" number="11.2.2.2">
+<h4><span class="header-section-number">11.2.2.2</span> Kernel density<a href="chp11_0.html#kernel-density" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>The kernel density approach is an extension of the quadrat method: Like the quadrat density, the kernel approach computes a localized density for subsets of the study area, but unlike its quadrat density counterpart, the sub-regions overlap one another providing a <em>moving</em> sub-region window. This moving window is defined by a <strong>kernel</strong>. The kernel density approach generates a grid of density values whose cell size is smaller than that of the kernel window. Each cell is assigned the density value computed for the kernel window <em>centered</em> on that cell.</p>
 <p>A kernel not only defines the shape and size of the window, but it can also <em>weight</em> the points following a well defined kernel function. The simplest function is a <strong>basic kernel</strong> where each point in the kernel window is assigned equal weight.</p>
 <div class="figure"><span style="display:block;" id="fig:f11-kernel01"></span>
@@ -650,8 +655,8 @@ Figure 11.8: An example of a kernel function is the 3x3 quartic kernel function 
 </p>
 </div>
 </div>
-<div id="kernel-density-adjusted-for-covariate" class="section level4" number="11.2.2.3">
-<h4><span class="header-section-number">11.2.2.3</span> Kernel Density Adjusted for Covariate</h4>
+<div id="kernel-density-adjusted-for-covariate" class="section level4 hasAnchor" number="11.2.2.3">
+<h4><span class="header-section-number">11.2.2.3</span> Kernel Density Adjusted for Covariate<a href="chp11_0.html#kernel-density-adjusted-for-covariate" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>In the previous section, we learned that we could use a covariate, like elevation, to define the sub-regions (quadrats) within which densities were computed.</p>
 <p>Here, instead of <em>dividing</em> the study region into discrete sub-regions (as was done with quadrat analysis), we create an intensity function that is dependent on the underlying covariate. This function, which we’ll denote as <span class="math inline">\(\rho\)</span>, can be estimated in one of three different ways– by <em>ratio</em>, <em>re-weight</em> and <em>transform</em> methods. We will not delve into the differences between these methods, but note that there is more than one way to estimate <span class="math inline">\(\rho\)</span> in the presence of a covariate.</p>
 <p>In the following example, the elevation raster is used as the covariate in the <span class="math inline">\(\rho\)</span> function using the <em>ratio</em> method. The right-most plot maps the modeled intensity as a function of elevation.</p>
@@ -666,8 +671,8 @@ Figure 11.9: An estimate of <span class="math inline">\(\rho\)</span> using the 
 <p>A red one-to-one diagonal line is added to the plot. While an increase in predicted intensity is accompanied with increasing observed intensity, the relationship is not linear. This can be explained by the small area covered by these high elevation locations which result in fewer observation opportunities and thus higher uncertainty for that corner of the study extent. This uncertainty is very apparent in the <span class="math inline">\(\rho\)</span> vs. elevation plot where the 95% confidence interval envelope widens at higher elevation values (indicating the greater uncertainty in our estimated <span class="math inline">\(\rho\)</span> value at those higher elevation values).</p>
 </div>
 </div>
-<div id="modeling-intensity-as-a-function-of-a-covariate" class="section level3" number="11.2.3">
-<h3><span class="header-section-number">11.2.3</span> Modeling intensity as a function of a covariate</h3>
+<div id="modeling-intensity-as-a-function-of-a-covariate" class="section level3 hasAnchor" number="11.2.3">
+<h3><span class="header-section-number">11.2.3</span> Modeling intensity as a function of a covariate<a href="chp11_0.html#modeling-intensity-as-a-function-of-a-covariate" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>So far, we have learned techniques that <em>describe</em> the distribution of points across a region of interest. But it is often more interesting to <em>model</em> the relationship between the distribution of points and some underlying covariate by defining that relationship mathematically. This can be done by exploring the <em>changes</em> in point density as a function of a covariate, however, unlike techniques explored thus far, this approach makes use of a statistical model. One such model is a <em>Poisson point process</em> model which can take on the form of:</p>
 <p><span class="math display">\[
 \begin{equation}
@@ -678,7 +683,10 @@ Figure 11.9: An estimate of <span class="math inline">\(\rho\)</span> using the 
 <p>where <span class="math inline">\(\lambda(i)\)</span> is the modeled intensity at location <span class="math inline">\(i\)</span>, <span class="math inline">\(e^{\alpha}\)</span> (the exponent of <span class="math inline">\(\alpha\)</span>) is the base intensity when the covariate is <em>zero</em> and <span class="math inline">\(e^{\beta}\)</span> is the multiplier by which the intensity increases (or decreases) for each 1 unit increase in the covariate <span class="math inline">\(Z(i)\)</span>. This is a form of the <em>logistic regression</em> model–popular in the field of statistics. This equation implies that the relationship between the process that lead to the observed point pattern is a <strong>loglinear</strong> function of the underlying covariate (i.e. one where the process’ intensity is exponentially increasing or decreasing as a function of the covariate). Note that taking the log of both sides of the equation yields the more familiar linear regression model where <span class="math inline">\(\alpha + \beta Z(i)\)</span> is the <em>linear predictor</em>.</p>
 <div class="note">
 <p>
-Note: The left-hand side of a logistic regression model is often presented as the <em>probability</em>, <span class="math inline"><span class="math inline">\(P\)</span></span>, of occurrence and is related to <span class="math inline"><span class="math inline">\(\lambda\)</span></span> as <span class="math inline">\(\lambda=P/(1-P)\)</span> which is the <em>ratio of probability of occurrence</em>. Solving for <span class="math inline"><span class="math inline">\(P\)</span></span> gives us <span class="math inline">\(P = \lambda/(1 + \lambda)\)</span> which yields the following equation: <span class="math display"><span class="math display">\[
+Note: The left-hand side of a logistic regression model is often
+presented as the <em>probability</em>, <span class="math inline"><span class="math inline">\(P\)</span></span>, of occurrence and is related to <span class="math inline"><span class="math inline">\(\lambda\)</span></span> as <span class="math inline">\(\lambda=P/(1-P)\)</span> which is the
+<em>ratio of probability of occurrence</em>. Solving for <span class="math inline"><span class="math inline">\(P\)</span></span> gives us <span class="math inline">\(P = \lambda/(1 + \lambda)\)</span>
+which yields the following equation: <span class="math display"><span class="math display">\[
 P(i) = \frac{e^{\alpha + \beta Z(i)}}{1 + e^{\alpha + \beta Z(i)}}
 \]</span></span>
 </p>
@@ -708,18 +716,22 @@ Figure 11.11: Poisson point process model fitted to the relationship between Sta
 </div>
 </div>
 </div>
-<div id="distance-based-analysis" class="section level2" number="11.3">
-<h2><span class="header-section-number">11.3</span> Distance based analysis</h2>
+<div id="distance-based-analysis" class="section level2 hasAnchor" number="11.3">
+<h2><span class="header-section-number">11.3</span> Distance based analysis<a href="chp11_0.html#distance-based-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>An alternative to the density based methods explored thus far are the <strong>distance based methods</strong> for pattern analysis whereby the interest lies in how the points are distributed relative to one another (a second-order property of the point pattern) as opposed to how the points are distributed relative to the study extent</p>
 <div class="note">
 <p>
-A <em>second order</em> property of a pattern concerns itself with the observations’ influence on one another. For example, the distribution of oaks will be influenced by the location of parent trees–where parent oaks are present we would expect dense clusters of oaks to emerge.
+A <em>second order</em> property of a pattern concerns itself with
+the observations’ influence on one another. For example, the
+distribution of oaks will be influenced by the location of parent
+trees–where parent oaks are present we would expect dense clusters of
+oaks to emerge.
 </p>
 </div>
 <p><br></p>
 <p>Three distance based approaches are covered next: The average nearest neighbor (ANN), the K and L functions, and the pair correlation function.</p>
-<div id="average-nearest-neighbor" class="section level3" number="11.3.1">
-<h3><span class="header-section-number">11.3.1</span> Average Nearest Neighbor</h3>
+<div id="average-nearest-neighbor" class="section level3 hasAnchor" number="11.3.1">
+<h3><span class="header-section-number">11.3.1</span> Average Nearest Neighbor<a href="chp11_0.html#average-nearest-neighbor" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>An average nearest neighbor (ANN) analysis measures the average distance from each point in the study area to its nearest point. In the following example, the average nearest neighbor for all points is 1.52 units.</p>
 <div class="figure"><span style="display:block;" id="fig:f11-ppp-dist"></span>
 <img src="11-Point-Patterns_files/figure-html/f11-ppp-dist-1.png" alt="Distance between each point and its closest point. For example, the point closest to point 1 is point 9 which is 2.32 map units away." width="480" />
@@ -757,10 +769,10 @@ Figure 11.16: The same point pattern presented with two different study areas. H
 </div>
 <p>An important assumption that underlies our interpretation of the ANN results is that of stationarity of the underlying point process (i.e. that there is no overall drift or trend in the process’ intensity). If the point is not stationary, then it will be difficult to assess if the results from the ANN analysis are due to interactions between the points or due to changes in some underlying factor that changes as a function of location.</p>
 </div>
-<div id="k-and-l-functions" class="section level3" number="11.3.2">
-<h3><span class="header-section-number">11.3.2</span> K and L functions</h3>
-<div id="k-function" class="section level4" number="11.3.2.1">
-<h4><span class="header-section-number">11.3.2.1</span> K function</h4>
+<div id="k-and-l-functions" class="section level3 hasAnchor" number="11.3.2">
+<h3><span class="header-section-number">11.3.2</span> K and L functions<a href="chp11_0.html#k-and-l-functions" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="k-function" class="section level4 hasAnchor" number="11.3.2.1">
+<h4><span class="header-section-number">11.3.2.1</span> K function<a href="chp11_0.html#k-function" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>The average nearest neighbor (ANN) statistic is one of many distance based point pattern analysis statistics. Another statistic is the K-function which summarizes the distance between points for <em>all</em> distances. The calculation of K is fairly simple: it consists of dividing the mean of the sum of the number of points at different distance lags for each point by the area event density. For example, for point <span class="math inline">\(S1\)</span> we draw circles, each of varying radius <span class="math inline">\(d\)</span>, centered on that point. We then count the number of points (events) inside each circle. We repeat this for point <span class="math inline">\(S2\)</span> and all other points <span class="math inline">\(Si\)</span>. Next, we compute the average number of points in each circle then divide that number by the overall point density <span class="math inline">\(\hat{\lambda}\)</span> (i.e. total number of events per study area).</p>
 <table>
 <td style="width:30%;">
@@ -884,8 +896,8 @@ Figure 11.17: The K-function calculated from the Walmart stores point distributi
 <p><span class="math inline">\(K\)</span> values greater than <span class="math inline">\(K_{expected}\)</span> indicate clustering of points at a given distance band; K values less than <span class="math inline">\(K_{expected}\)</span> indicate dispersion of points at a given distance band. In our example, the stores appear to be more clustered than expected at distances greater than 12 km.</p>
 <p>Note that like the ANN analysis, the <span class="math inline">\(K\)</span>-function assumes stationarity in the underlying point process (i.e. that there is no overall drift or trend in the process’ intensity).</p>
 </div>
-<div id="l-function" class="section level4" number="11.3.2.2">
-<h4><span class="header-section-number">11.3.2.2</span> L function</h4>
+<div id="l-function" class="section level4 hasAnchor" number="11.3.2.2">
+<h4><span class="header-section-number">11.3.2.2</span> L function<a href="chp11_0.html#l-function" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>One problem with the <span class="math inline">\(K\)</span> function is that the shape of the function tends to curve upward making it difficult to see small differences between <span class="math inline">\(K\)</span> and <span class="math inline">\(K_{expected}\)</span>. A workaround is to transform the values in such a way that the expected values, <span class="math inline">\(K_{expected}\)</span>, lie horizontal. The transformation is calculated as follows:</p>
 <p><span class="math display">\[
 \begin{equation}
@@ -903,8 +915,8 @@ Figure 11.18: L-function (a simple transformation of the K-function).
 <p>This graph makes it easier to compare <span class="math inline">\(K\)</span> with <span class="math inline">\(K_{expected}\)</span> at lower distance values. Values greater than <span class="math inline">\(0\)</span> indicate clustering, while values less than <span class="math inline">\(0\)</span> indicate dispersion. It appears that Walmart locations are more dispersed than expected under CSR/IRP up to a distance of 12 km but more clustered at distances greater than 12 km.</p>
 </div>
 </div>
-<div id="the-pair-correlation-function-g" class="section level3" number="11.3.3">
-<h3><span class="header-section-number">11.3.3</span> The Pair Correlation Function <span class="math inline">\(g\)</span></h3>
+<div id="the-pair-correlation-function-g" class="section level3 hasAnchor" number="11.3.3">
+<h3><span class="header-section-number">11.3.3</span> The Pair Correlation Function <span class="math inline">\(g\)</span><a href="chp11_0.html#the-pair-correlation-function-g" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>A shortcoming of the <span class="math inline">\(K\)</span> function (and by extension the <span class="math inline">\(L\)</span> function) is its cumulative nature which makes it difficult to know at exactly which distances a point pattern may stray from <span class="math inline">\(K_{expected}\)</span> since <em>all</em> points up to distance <span class="math inline">\(r\)</span> can contribute to <span class="math inline">\(K(r)\)</span>. The <strong>pair correlation function</strong>, <span class="math inline">\(g\)</span>, is a modified version of the <span class="math inline">\(K\)</span> function where instead of summing <em>all</em> points within a distance <span class="math inline">\(r\)</span>, points falling within a narrow distance <em>band</em> are summed instead.</p>
 <div class="figure"><span style="display:block;" id="fig:f11-k-g"></span>
 <img src="img/K_vs_g_bands.png" alt="Difference in how the $K$ and $g$ functions aggregate points at distance $r$ ($r$ = 30 km in this example). *All* points *up to* $r$ contribute to $K$ whereas just the points in the *annulus band* at $r$ contribute to $g$." width="632" />
@@ -923,8 +935,8 @@ Figure 11.20: <span class="math inline">\(g\)</span>-function of the Massachuset
 <p>Like its <span class="math inline">\(K\)</span> and ANN counterparts, the <span class="math inline">\(g\)</span>-function assumes stationarity in the underlying point process (i.e. that there is no overall drift or trend in the process’ intensity).</p>
 </div>
 </div>
-<div id="first-and-second-order-effects" class="section level2" number="11.4">
-<h2><span class="header-section-number">11.4</span> First and second order effects</h2>
+<div id="first-and-second-order-effects" class="section level2 hasAnchor" number="11.4">
+<h2><span class="header-section-number">11.4</span> First and second order effects<a href="chp11_0.html#first-and-second-order-effects" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The concept of 1<sup>st</sup> order effects and 2<sup>nd</sup> order effects is an important one. It underlies the basic principles of spatial analysis.</p>
 <div class="figure"><span style="display:block;" id="fig:f11-1st-2nd-effects"></span>
 <img src="img/1st_2nd_order_property.png" alt="Tree distribution can be influenced by 1^st^ order effects such as elevation gradient or spatial distribution of soil characteristics; this, in turn, changes the  tree density distribution across the study area. Tree distribution can also be influenced by 2^nd^ order effects such as seed dispersal processes where the process is independent of location and, instead, dependent on the presence of other trees." width="750" />
@@ -947,7 +959,6 @@ Figure 11.21: Tree distribution can be influenced by 1<sup>st</sup> order effect
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
-<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
 <script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
@@ -988,9 +999,9 @@ gitbook.start({
 "link": null,
 "text": null
 },
-"download": ["_main.pdf", "_main.epub"],
+"download": {},
 "search": {
-"engine": "lunr",
+"engine": "fuse",
 "options": null
 },
 "toc": {
@@ -1007,7 +1018,7 @@ gitbook.start({
     var script = document.createElement("script");
     script.type = "text/javascript";
     var src = "true";
-    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:")
       if (/^https?:/.test(src))
         src = src.replace(/^https?:/, '');

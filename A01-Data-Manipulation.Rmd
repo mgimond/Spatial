@@ -278,7 +278,7 @@ If your version of `sf` is built with a version of `PROJ` `6.0` or greater, the 
 st_crs(s.sf)
 ```
 
-The WKT format will usually start with a `PROJCRS[...]` tag for a projected coordinate system, or a `GEOGCRS[...]` tag for a geographic coordinate system. More information on coordinate systems in R can be found in  [the appendix](https://mgimond.github.io/Spatial/A06-Coordinate-Systems.html).
+The WKT format will usually start with a `PROJCRS[...]` tag for a projected coordinate system, or a `GEOGCRS[...]` tag for a geographic coordinate system. More information on coordinate systems in R can be found in  [the coordinate systems appendix](https://mgimond.github.io/Spatial/coordinate-systems-in-r.html).
 
 What remains of the `sf` summary output is the first few records of the attribute table. You can extract the object's table to a dedicated data frame via:
 

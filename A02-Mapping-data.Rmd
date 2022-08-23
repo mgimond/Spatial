@@ -420,7 +420,7 @@ ggplot(data = s.sf, aes(fill = Income)) + geom_sf() +
                     breaks = c(22000, 25000, 27000, 30000))
 ```
 
-You can adopt Brewer's color schemes (see [the section](#app2_2_3) on Brewer's color schemes) by applying one of the `scale_..._fermenter()` functions and specifying the classification type (sequential, `seq`; divergent, `div`; or categorical, `qual`) and the palette name. For example, to adopt a divergent color scheme using the `"PRGn"` colors, type:
+You can adopt Brewer's color schemes by applying one of the `scale_..._fermenter()` functions and specifying the classification type (sequential, `seq`; divergent, `div`; or categorical, `qual`) and the palette name. For example, to adopt a divergent color scheme using the `"PRGn"` colors, type:
 
 ```{r fig.height=2.8, fig.width=3.5}
 ggplot(data = s.sf, aes(fill = Income)) + geom_sf() +

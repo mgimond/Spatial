@@ -69,7 +69,7 @@ print(spplot(auckland, "raw.rate", at = brks2$brks, col.regions = pal1)
 
 Note how our perception of the distribution of infant deaths changes when looking at mapped raw rates vs. counts. A north-south trend in perceived "abnormal" infant deaths is no longer apparent in this map.
 
-##  Standardized mortality ratios (relative risk).  {-}
+##  Standardized mortality ratios (relative risk)  {-}
 
 Another way to re-express the data is to map the Standardized Mortality Ratios (SMR)-a very popular form of representation in the field of epidemiology. Such maps map the ratios of the number of deaths to an *expected* death count.  There are many ways to define an expected death count, many of which can be externally specified.  In the following example, the expected death count $E_i$ is estimated by multiplying the under 5 population count for  each area by the overall death rate for Auckland:
 $$E_i = {n_i}\times{mortality_{Auckland} } $$

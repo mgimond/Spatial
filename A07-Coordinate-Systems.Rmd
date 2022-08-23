@@ -155,8 +155,6 @@ crs(elev.r) <- "+init=EPSG:26919"
 crs(elev.r) 
 ```
 
-Notice how the EPSG code is converted back to a proj4 string.
-
 
 To recreate a CS defined in a software such as ArcGIS, it is best to extract the CS' **WKID/EPSG** code, then use that number to look up the PROJ4 syntax on [http://spatialreference.org/ref/](http://spatialreference.org/ref/). For example, in ArcGIS, the WKID number can be extracted from the coordinate system properties output. 
 

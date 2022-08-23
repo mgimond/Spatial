@@ -10,12 +10,13 @@ biblio-style: apalike
 link-citations: yes
 github-repo: mgimond/spatial
 description: "This is a compilation of lecture notes that accompany my Intro to GIS and Spatial Analysis course."
+always_allow_html: yes
 ---
 
 
 # Preface {-}
 
-::: {style="color: darkorange; background: #EEEEEE; border: 1 px solid grey;border-radius: 10px; padding: 0.5em"}
+::: {style="color: darkred; background: #EEEEEE; border: 1 px solid grey;border-radius: 10px; padding: 0.5em"}
 <u>2021 UPDATE:</u>
  
 This book has been updated for the 2021-2022 academic year. Most changes are in the Appendix and pertain to the `sf` ecosystem. This includes changes in the mapping appendix, and coordinate systems appendix. This also includes a new appendix that describes the simple feature anatomy and step-by-step instructions on creating new geometries from scratch.

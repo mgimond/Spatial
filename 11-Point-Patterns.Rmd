@@ -1,7 +1,8 @@
 # (PART\*) PART 2: Spatial Analysis {-} 
  
 # Point Pattern Analysis {#chp11_0}
-
+ 
+ 
 ## Centrography
 
 A very basic form of point pattern analysis involves summary statistics such as the **mean center**, **standard distance** and **standard deviational ellipse**.

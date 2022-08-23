@@ -6,11 +6,10 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 14 Spatial Interpolation | Intro to GIS and Spatial Analysis</title>
   <meta name="description" content="This is a compilation of lecture notes that accompany my Intro to GIS and Spatial Analysis course." />
-  <meta name="generator" content="bookdown 0.23 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.28 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 14 Spatial Interpolation | Intro to GIS and Spatial Analysis" />
   <meta property="og:type" content="book" />
-  
   
   <meta property="og:description" content="This is a compilation of lecture notes that accompany my Intro to GIS and Spatial Analysis course." />
   <meta name="github-repo" content="mgimond/spatial" />
@@ -32,8 +31,8 @@
   
 <link rel="prev" href="spatial-autocorrelation.html"/>
 <link rel="next" href="references.html"/>
-<script src="libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -49,19 +48,19 @@
 
 
 
-
-<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
-<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
 <script src="libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
-<script src="libs/htmlwidgets-1.5.3/htmlwidgets.js"></script>
+<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
 <link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet-1.3.1/leaflet.js"></script>
 <link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
 <script src="libs/proj4-2.6.2/proj4.min.js"></script>
 <script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
 <link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
-<script src="libs/leaflet-binding-2.0.4.1/leaflet.js"></script>
+<script src="libs/leaflet-binding-2.1.1/leaflet.js"></script>
 
 
 <style type="text/css">
@@ -359,21 +358,21 @@ div.csl-indent {
 <li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_4_5"><i class="fa fa-check"></i>Creating a spatial object from a data frame</a></li>
 <li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_4_6"><i class="fa fa-check"></i>Geocoding street addresses</a></li>
 </ul></li>
-<li><a href="reading-and-writing-spatial-data-in-r.html#app1_5">Converting from an <code>sf</code> object</a>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_5"><i class="fa fa-check"></i>Converting from an <code>sf</code> object</a>
 <ul>
-<li><a href="reading-and-writing-spatial-data-in-r.html#app1_5_1">Converting an <code>sf</code> object to a <code>Spatial*</code> object (<code>spdep</code>/<code>sp</code>)</a></li>
-<li><a href="reading-and-writing-spatial-data-in-r.html#app1_5_2">Converting an <code>sf</code> polygon object to an <code>owin</code> object</a></li>
-<li><a href="reading-and-writing-spatial-data-in-r.html#app1_5_3">Converting an <code>sf</code> point object to a <code>ppp</code> object</a></li>
-<li><a href="reading-and-writing-spatial-data-in-r.html#app1_5_4">Converting a <code>raster</code> object to an <code>im</code> object (<code>spatstat</code>)</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_5_1"><i class="fa fa-check"></i>Converting an <code>sf</code> object to a <code>Spatial*</code> object (<code>spdep</code>/<code>sp</code>)</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_5_2"><i class="fa fa-check"></i>Converting an <code>sf</code> polygon object to an <code>owin</code> object</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_5_3"><i class="fa fa-check"></i>Converting an <code>sf</code> point object to a <code>ppp</code> object</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_5_4"><i class="fa fa-check"></i>Converting a <code>raster</code> object to an <code>im</code> object (<code>spatstat</code>)</a></li>
 </ul></li>
-<li><a href="reading-and-writing-spatial-data-in-r.html#app1_6">Converting to an <code>sf</code> object</a></li>
-<li><a href="reading-and-writing-spatial-data-in-r.html#app1_7">Dissecting the <code>sf</code> file object</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_6"><i class="fa fa-check"></i>Converting to an <code>sf</code> object</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_7"><i class="fa fa-check"></i>Dissecting the <code>sf</code> file object</a></li>
 <li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_8"><i class="fa fa-check"></i>Exporting to different data file formats</a></li>
 </ul></li>
 <li class="chapter" data-level="B" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html"><i class="fa fa-check"></i><b>B</b> Mapping data in R</a>
 <ul>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#sample-files-for-this-exercise"><i class="fa fa-check"></i>Sample files for this exercise</a></li>
-<li><a href="mapping-data-in-r.html#tmap"><code>tmap</code></a>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#tmap"><i class="fa fa-check"></i><code>tmap</code></a>
 <ul>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#the-basics"><i class="fa fa-check"></i>The basics</a></li>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#combining-layers"><i class="fa fa-check"></i>Combining layers</a></li>
@@ -387,13 +386,13 @@ div.csl-indent {
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#side-by-side-maps"><i class="fa fa-check"></i>Side-by-side maps</a></li>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#splitting-data-by-polygons-or-group-of-polygons"><i class="fa fa-check"></i>Splitting data by polygons or group of polygons</a></li>
 </ul></li>
-<li><a href="mapping-data-in-r.html#ggplot2"><code>ggplot2</code></a>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#ggplot2"><i class="fa fa-check"></i><code>ggplot2</code></a>
 <ul>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#the-basics-1"><i class="fa fa-check"></i>The basics</a></li>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#tweaking-classification-schemes-1"><i class="fa fa-check"></i>Tweaking classification schemes</a></li>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#combining-layers-1"><i class="fa fa-check"></i>Combining layers</a></li>
 </ul></li>
-<li><a href="mapping-data-in-r.html#plot_sf"><code>plot_sf</code></a>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#plot_sf"><i class="fa fa-check"></i><code>plot_sf</code></a>
 <ul>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#the-basics-2"><i class="fa fa-check"></i>The basics</a></li>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#adding-a-graticule"><i class="fa fa-check"></i>Adding a graticule</a></li>
@@ -405,11 +404,11 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#creating-point-sf-objects"><i class="fa fa-check"></i>Creating point ‘sf’ objects</a>
 <ul>
-<li><a href="anatomy-of-simple-feature-objects.html#step-1-create-the-point-geometry-sfg">Step 1: Create the point geometry: <code>sfg</code></a></li>
-<li><a href="anatomy-of-simple-feature-objects.html#step-2-create-a-column-of-simple-feature-geometries-sfc">Step 2: Create a column of simple feature geometries: <code>sfc</code></a></li>
-<li><a href="anatomy-of-simple-feature-objects.html#step-3-create-the-simple-feature-object-sf">Step 3: Create the simple feature object <code>sf</code></a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#step-1-create-the-point-geometry-sfg"><i class="fa fa-check"></i>Step 1: Create the point geometry: <code>sfg</code></a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#step-2-create-a-column-of-simple-feature-geometries-sfc"><i class="fa fa-check"></i>Step 2: Create a column of simple feature geometries: <code>sfc</code></a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#step-3-create-the-simple-feature-object-sf"><i class="fa fa-check"></i>Step 3: Create the simple feature object <code>sf</code></a></li>
 <li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#renaming-the-geometry-column"><i class="fa fa-check"></i>Renaming the geometry column</a></li>
-<li><a href="anatomy-of-simple-feature-objects.html#adding-attributes-to-an-sf-object">Adding attributes to an <code>sf</code> object</a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#adding-attributes-to-an-sf-object"><i class="fa fa-check"></i>Adding attributes to an <code>sf</code> object</a></li>
 <li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#adding-a-geometry-column-to-an-existing-non-spatial-dataframe"><i class="fa fa-check"></i>Adding a geometry column to an existing non-spatial dataframe</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#creating-polyline-sf-objects"><i class="fa fa-check"></i>Creating polyline ‘sf’ objects</a>
@@ -418,10 +417,10 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#creating-polygon-sf-objects"><i class="fa fa-check"></i>Creating polygon ‘sf’ objects</a>
 <ul>
-<li><a href="anatomy-of-simple-feature-objects.html#polygon-simple-feature"><code>POLYGON</code> simple feature</a></li>
-<li><a href="anatomy-of-simple-feature-objects.html#multipolygon-simple-feature-multipart-features"><code>MULTIPOLYGON</code> simple feature: multipart features</a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#polygon-simple-feature"><i class="fa fa-check"></i><code>POLYGON</code> simple feature</a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#multipolygon-simple-feature-multipart-features"><i class="fa fa-check"></i><code>MULTIPOLYGON</code> simple feature: multipart features</a></li>
 </ul></li>
-<li><a href="anatomy-of-simple-feature-objects.html#extracting-geometry-from-an-sf-object">Extracting geometry from an <code>sf</code> object</a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#extracting-geometry-from-an-sf-object"><i class="fa fa-check"></i>Extracting geometry from an <code>sf</code> object</a></li>
 <li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#alternative-syntax"><i class="fa fa-check"></i>Alternative syntax</a></li>
 <li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#additional-resources"><i class="fa fa-check"></i>Additional resources</a></li>
 </ul></li>
@@ -441,7 +440,7 @@ div.csl-indent {
 <li class="chapter" data-level="E" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html"><i class="fa fa-check"></i><b>E</b> Mapping rates in R</a>
 <ul>
 <li class="chapter" data-level="" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html#raw-rates"><i class="fa fa-check"></i>Raw Rates</a></li>
-<li class="chapter" data-level="" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html#standardized-mortality-ratios-relative-risk."><i class="fa fa-check"></i>Standardized mortality ratios (relative risk).</a></li>
+<li class="chapter" data-level="" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html#standardized-mortality-ratios-relative-risk"><i class="fa fa-check"></i>Standardized mortality ratios (relative risk)</a></li>
 <li class="chapter" data-level="" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html#dykes-and-unwins-chi-square-statistic"><i class="fa fa-check"></i>Dykes and Unwin’s chi-square statistic</a></li>
 <li class="chapter" data-level="" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html#unstable-ratios"><i class="fa fa-check"></i>Unstable ratios</a>
 <ul>
@@ -467,9 +466,9 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="G" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html"><i class="fa fa-check"></i><b>G</b> Coordinate Systems in R</a>
 <ul>
-<li><a href="coordinate-systems-in-r.html#a-note-about-the-changes-to-the-proj-environment">A note about the changes to the <code>PROJ</code> environment</a></li>
+<li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#a-note-about-the-changes-to-the-proj-environment"><i class="fa fa-check"></i>A note about the changes to the <code>PROJ</code> environment</a></li>
 <li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#sample-files-for-this-exercise-2"><i class="fa fa-check"></i>Sample files for this exercise</a></li>
-<li><a href="coordinate-systems-in-r.html#loading-the-sf-package">Loading the <code>sf</code> package</a></li>
+<li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#loading-the-sf-package"><i class="fa fa-check"></i>Loading the <code>sf</code> package</a></li>
 <li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#checking-for-a-coordinate-system"><i class="fa fa-check"></i>Checking for a coordinate system</a></li>
 <li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#understanding-the-proj4-coordinate-syntax"><i class="fa fa-check"></i>Understanding the Proj4 coordinate syntax</a></li>
 <li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#assigning-a-coordinate-system"><i class="fa fa-check"></i>Assigning a coordinate system</a></li>
@@ -483,7 +482,7 @@ div.csl-indent {
 <li class="chapter" data-level="H" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html"><i class="fa fa-check"></i><b>H</b> Point pattern analysis in R</a>
 <ul>
 <li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#sample-files-for-this-exercise-3"><i class="fa fa-check"></i>Sample files for this exercise</a></li>
-<li><a href="point-pattern-analysis-in-r.html#getting-external-data-into-a-spatstat-format">Getting external data into a <code>spatstat</code> format</a></li>
+<li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#getting-external-data-into-a-spatstat-format"><i class="fa fa-check"></i>Getting external data into a <code>spatstat</code> format</a></li>
 <li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#prepping-the-data"><i class="fa fa-check"></i>Prepping the data</a></li>
 <li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#density-based-analysis-1"><i class="fa fa-check"></i>Density based analysis</a>
 <ul>
@@ -526,8 +525,8 @@ div.csl-indent {
 <li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#fine-tuning-the-interpolation"><i class="fa fa-check"></i>Fine-tuning the interpolation</a></li>
 <li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#cross-validation"><i class="fa fa-check"></i>Cross-validation</a></li>
 </ul></li>
-<li><a href="interpolation-in-r.html#st-order-polynomial-fit">1<sup>st</sup> order polynomial fit</a></li>
-<li><a href="interpolation-in-r.html#nd-order-polynomial">2<sup>nd</sup> order polynomial</a></li>
+<li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#st-order-polynomial-fit"><i class="fa fa-check"></i>1<sup>st</sup> order polynomial fit</a></li>
+<li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#nd-order-polynomial"><i class="fa fa-check"></i>2<sup>nd</sup> order polynomial</a></li>
 <li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#kriging"><i class="fa fa-check"></i>Kriging</a>
 <ul>
 <li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#fit-the-variogram-model"><i class="fa fa-check"></i>Fit the variogram model</a></li>
@@ -552,8 +551,8 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="spatial-interpolation" class="section level1" number="14">
-<h1><span class="header-section-number">Chapter 14</span> Spatial Interpolation</h1>
+<div id="spatial-interpolation" class="section level1 hasAnchor" number="14">
+<h1><span class="header-section-number">Chapter 14</span> Spatial Interpolation<a href="spatial-interpolation.html#spatial-interpolation" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>Given a distribution of point meteorological stations showing precipitation values, how I can I estimate the precipitation values where data were not observed?</p>
 <div class="figure"><span style="display:block;" id="fig:f14-precip-map"></span>
 <img src="14-Spatial-Interpolation_files/figure-html/f14-precip-map-1.png" alt="Average yearly precipitation (reported in inches) for several meteorological sites in Texas." width="672" />
@@ -561,13 +560,13 @@ div.csl-indent {
 Figure 14.1: Average yearly precipitation (reported in inches) for several meteorological sites in Texas.
 </p>
 </div>
-<p>To help answer this question, we need to clearly define the nature of our point dataset. We’ve already encountered point data earlier in the course where our interest was in creating point density maps using different kernel windows. However, the point data used represented a complete enumeration of discrete events or observations–i.e. the entity of interest only occurred a discrete locations within a study area and therefore could only be <em>measured</em> at those locations. Here, our point data represents <strong>sampled</strong> observations of an entity that can be measured <em>anywhere</em> within our study area. So creating a point density raster from this data would only make sense if we were addressing the questions like “<em>where are the meteorological stations concentrated within the state of Texas?</em>”</p>
+<p>To help answer this question, we need to clearly define the nature of our point dataset. We’ve already encountered point data earlier in the course where our interest was in creating point density maps using different kernel windows. However, the point data used represented a complete enumeration of discrete events or observations–i.e. the entity of interest only occurred a discrete locations within a study area and therefore could only be <em>measured</em> at those locations. Here, our point data represents <strong>sampled</strong> observations of an entity that can be measured <em>anywhere</em> within our study area. So creating a point density raster from this data would only make sense if we were addressing the questions like “<em>where are the meteorological stations concentrated within the state of Texas?</em>”.</p>
 <p>Another class of techniques used with points that represent samples of a <strong>continuous field</strong> are <strong>interpolation</strong> methods. There are many interpolation tools available, but these tools can usually be grouped into two categories: <strong>deterministic</strong> and <strong>statistical</strong> interpolation methods.</p>
-<div id="deterministic-approach-to-interpolation" class="section level2" number="14.1">
-<h2><span class="header-section-number">14.1</span> Deterministic Approach to Interpolation</h2>
+<div id="deterministic-approach-to-interpolation" class="section level2 hasAnchor" number="14.1">
+<h2><span class="header-section-number">14.1</span> Deterministic Approach to Interpolation<a href="spatial-interpolation.html#deterministic-approach-to-interpolation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>We will explore two deterministic methods: <strong>proximity</strong> (aka <strong>Thiessen</strong>) techniques and <strong>inverse distance weighted</strong> techniques (<strong>IDW</strong> for short).</p>
-<div id="proximity-interpolation" class="section level3" number="14.1.1">
-<h3><span class="header-section-number">14.1.1</span> Proximity interpolation</h3>
+<div id="proximity-interpolation" class="section level3 hasAnchor" number="14.1.1">
+<h3><span class="header-section-number">14.1.1</span> Proximity interpolation<a href="spatial-interpolation.html#proximity-interpolation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>This is probably the simplest (and possibly one of the oldest) interpolation method. It was introduced by Alfred H. Thiessen more than a century ago. The goal is simple: Assign to all unsampled locations the value of the closest sampled location. This generates a <em>tessellated</em> surface whereby lines that split the midpoint between each sampled location are connected thus enclosing an area. Each area ends up enclosing a sample point whose value it inherits.</p>
 <div class="figure"><span style="display:block;" id="fig:f14-proximity"></span>
 <img src="14-Spatial-Interpolation_files/figure-html/f14-proximity-1.png" alt="Tessellated surface generated from discrete point samples. This is also known as a *Thiessen interpolation*." width="672" />
@@ -578,8 +577,8 @@ Figure 14.2: Tessellated surface generated from discrete point samples. This is 
 <p>One problem with this approach is that the surface values change abruptly across the tessellated boundaries. This is not representative of most surfaces in nature.</p>
 <p>Thiessen’s method was very practical in his days when computers did not exist. But today, computers afford us more advanced methods of interpolation as we will see next.</p>
 </div>
-<div id="inverse-distance-weighted-idw" class="section level3" number="14.1.2">
-<h3><span class="header-section-number">14.1.2</span> Inverse Distance Weighted (IDW)</h3>
+<div id="inverse-distance-weighted-idw" class="section level3 hasAnchor" number="14.1.2">
+<h3><span class="header-section-number">14.1.2</span> Inverse Distance Weighted (IDW)<a href="spatial-interpolation.html#inverse-distance-weighted-idw" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The IDW technique computes an average value for unsampled locations using values from nearby weighted locations. The weights are proportional to the proximity of the sampled points to the unsampled location and can be specified by the IDW power coefficient. The larger the power coefficient, the stronger the weight of nearby points as can be gleaned from the following equation that estimates the value <span class="math inline">\(z\)</span> at an unsampled location <span class="math inline">\(j\)</span>:</p>
 <p><span class="math display">\[
 \hat{Z_j} = \frac{\sum_i{Z_i/d^n_{ij}}}{\sum_i{1/d^n_{ij}}}
@@ -600,8 +599,8 @@ Figure 14.4: An IDW interpolation of the average yearly precipitation (reported 
 </p>
 </div>
 </div>
-<div id="fine-tuning-the-interpolation-parameters" class="section level3" number="14.1.3">
-<h3><span class="header-section-number">14.1.3</span> Fine tuning the interpolation parameters</h3>
+<div id="fine-tuning-the-interpolation-parameters" class="section level3 hasAnchor" number="14.1.3">
+<h3><span class="header-section-number">14.1.3</span> Fine tuning the interpolation parameters<a href="spatial-interpolation.html#fine-tuning-the-interpolation-parameters" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Finding the best set of input parameters to create an interpolated surface can be a subjective proposition. Other than <em>eyeballing</em> the results, how can you quantify the <em>accuracy</em> of the estimated values? One option is to split the points into two sets: the points used in the interpolation operation and the points used to validate the results. While this method is easily implemented (even via a pen and paper adoption) it does suffer from significant loss in power–i.e. we are using just half of the information to estimate the unsampled locations.</p>
 <p>A better approach (and one easily implemented in a computing environment) is to remove one data point from the dataset and interpolate its value using <em>all other</em> points in the dataset then repeating this process for each point in that dataset (while making sure that the interpolator parameters remain constant across each interpolation). The interpolated values are then compared with the actual values from the omitted point. This method is sometimes referred to as <strong>jackknifing</strong> or <strong>leave-one-out cross-validation</strong>.</p>
 <p>The performance of the interpolator can be summarized by computing the root-mean of squared residuals (RMSE) from the errors as follows:</p>
@@ -626,14 +625,14 @@ Figure 14.6: In this example an IDW power coefficient of 2 was used and the sear
 <p>IDW interpolation is probably one of the most widely used interpolators because of its simplicity. In many cases, it can do an adequate job. However, the choice of power remains subjective. There is another class of interpolators that makes use of the information provided to us by the sample points–more specifically, information pertaining to 1st and 2nd order behavior. These interpolators are covered next.</p>
 </div>
 </div>
-<div id="statistical-approach-to-interpolation" class="section level2" number="14.2">
-<h2><span class="header-section-number">14.2</span> Statistical Approach to Interpolation</h2>
+<div id="statistical-approach-to-interpolation" class="section level2 hasAnchor" number="14.2">
+<h2><span class="header-section-number">14.2</span> Statistical Approach to Interpolation<a href="spatial-interpolation.html#statistical-approach-to-interpolation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The statistical interpolation methods include <strong>surface trend</strong> and <strong>Kriging</strong>.</p>
-<div id="trend-surfaces" class="section level3" number="14.2.1">
-<h3><span class="header-section-number">14.2.1</span> Trend Surfaces</h3>
+<div id="trend-surfaces" class="section level3 hasAnchor" number="14.2.1">
+<h3><span class="header-section-number">14.2.1</span> Trend Surfaces<a href="spatial-interpolation.html#trend-surfaces" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>It may help to think of trend surface modeling as a regression on spatial coordinates where the coefficients apply to those coordinate values and (for more complicated surface trends) to the interplay of the coordinate values. We will explore a 0th order, 1st order and 2nd order surface trend in the following sub-sections.</p>
-<div id="th-order-trend-surface" class="section level4" number="14.2.1.1">
-<h4><span class="header-section-number">14.2.1.1</span> 0<sup>th</sup> Order Trend Surface</h4>
+<div id="th-order-trend-surface" class="section level4 hasAnchor" number="14.2.1.1">
+<h4><span class="header-section-number">14.2.1.1</span> 0<sup>th</sup> Order Trend Surface<a href="spatial-interpolation.html#th-order-trend-surface" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>The first model (and simplest model), is the 0<sup>th</sup> order model which takes on the following expression: <code>Z = a</code> where the intercept <code>a</code> is the mean precipitation value of all sample points (27.1 in our working example). This is simply a level (horizontal) surface whose cell values all equal 27.1.</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:f13-poly0"></span>
 <img src="14-Spatial-Interpolation_files/figure-html/f13-poly0-1.png" alt="The simplest model where all interpolated surface values are equal to the mean precipitation." width="672" />
@@ -643,8 +642,8 @@ Figure 14.7: The simplest model where all interpolated surface values are equal 
 </div>
 <p>This makes for an uninformative map. A more interesting surface trend map is one where the surface trend has a slope other than 0 as highlighted in the next subsection.</p>
 </div>
-<div id="st-order-trend-surface" class="section level4" number="14.2.1.2">
-<h4><span class="header-section-number">14.2.1.2</span> 1<sup>st</sup> Order Trend Surface</h4>
+<div id="st-order-trend-surface" class="section level4 hasAnchor" number="14.2.1.2">
+<h4><span class="header-section-number">14.2.1.2</span> 1<sup>st</sup> Order Trend Surface<a href="spatial-interpolation.html#st-order-trend-surface" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>The first order surface polynomial is a slanted flat plane whose formula is given by: <code>Z = a + bX + cY</code> where <code>X</code> and <code>Y</code> are the coordinate pairs.</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:f13-poly1"></span>
 <img src="14-Spatial-Interpolation_files/figure-html/f13-poly1-1.png" alt="Result of a first order interpolation." width="672" />
@@ -654,8 +653,8 @@ Figure 14.8: Result of a first order interpolation.
 </div>
 <p>The 1st order surface trend does a good job in highlighting the prominent east-west trend. But is the trend truly uniform along the X axis? Let’s explore a more complicated surface: the quadratic polynomial.</p>
 </div>
-<div id="nd-order-trend-surface" class="section level4" number="14.2.1.3">
-<h4><span class="header-section-number">14.2.1.3</span> 2<sup>nd</sup> Order Trend Surface</h4>
+<div id="nd-order-trend-surface" class="section level4 hasAnchor" number="14.2.1.3">
+<h4><span class="header-section-number">14.2.1.3</span> 2<sup>nd</sup> Order Trend Surface<a href="spatial-interpolation.html#nd-order-trend-surface" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>The second order surface polynomial (aka quadratic polynomial) is a parabolic surface whose formula is given by: <span class="math inline">\(Z = a + bX + cY + dX^2 + eY^2 + fXY\)</span></p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:f13-poly2"></span>
 <img src="14-Spatial-Interpolation_files/figure-html/f13-poly2-1.png" alt="Result of a second order interpolation" width="672" />
@@ -666,8 +665,8 @@ Figure 14.9: Result of a second order interpolation
 <p>This interpolation picks up a slight curvature in the east-west trend. But it’s not a significant improvement over the 1st order trend.</p>
 </div>
 </div>
-<div id="ordinary-kriging" class="section level3" number="14.2.2">
-<h3><span class="header-section-number">14.2.2</span> Ordinary Kriging</h3>
+<div id="ordinary-kriging" class="section level3 hasAnchor" number="14.2.2">
+<h3><span class="header-section-number">14.2.2</span> Ordinary Kriging<a href="spatial-interpolation.html#ordinary-kriging" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Several forms of kriging interpolators exist: ordinary, universal and simple just to name a few. This section will focus on <strong>ordinary kriging</strong> (<strong>OK</strong>) interpolation. This form of kriging usually involves four steps:</p>
 <ul>
 <li>Removing any <strong>spatial trend</strong> in the data (if present).</li>
@@ -677,8 +676,8 @@ Figure 14.9: Result of a second order interpolation
 <li>Adding the kriged interpolated surface to the trend interpolated surface to produce the final output.</li>
 </ul>
 <p>These steps our outlined in the following subsections.</p>
-<div id="de-trending-the-data" class="section level4" number="14.2.2.1">
-<h4><span class="header-section-number">14.2.2.1</span> De-trending the data</h4>
+<div id="de-trending-the-data" class="section level4 hasAnchor" number="14.2.2.1">
+<h4><span class="header-section-number">14.2.2.1</span> De-trending the data<a href="spatial-interpolation.html#de-trending-the-data" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>One assumption that needs to be met in ordinary kriging is that the mean and the variation in the entity being studied is constant across the study area. In other words, there should be no global trend in the data (the term <em>drift</em> is sometimes used to describe the trend in other texts). This assumption is clearly not met with our Texas precipitation dataset where a prominent east-west gradient is observed. This requires that we remove the trend from the data before proceeding with the kriging operations.</p>
 <p>Many pieces of software will accept a trend model (usually a first, second or third order polynomial). In the steps that follow, we will use the first order fit computed earlier to de-trend our point values (recall that the second order fit provided very little improvement over the first order fit).</p>
 <p>Removing the trend leaves us with the residuals that will be used in kriging interpolation. Note that the modeled trend will be added to the kriged interpolated surface at the end of the workflow.</p>
@@ -689,8 +688,8 @@ Figure 14.10: Map showing de-trended precipitation values (aka residuals). These
 </p>
 </div>
 </div>
-<div id="experimental-variogram" class="section level4" number="14.2.2.2">
-<h4><span class="header-section-number">14.2.2.2</span> Experimental Variogram</h4>
+<div id="experimental-variogram" class="section level4 hasAnchor" number="14.2.2.2">
+<h4><span class="header-section-number">14.2.2.2</span> Experimental Variogram<a href="spatial-interpolation.html#experimental-variogram" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>In Kriging interpolation, we focus on the spatial relationship between location attribute values. More specifically, we are interested in how these attribute values (precipitation residuals in our working example) vary as the distance between location point pairs increases. We can compute the difference, <span class="math inline">\(\gamma\)</span>, in precipitation values by squaring their differences then dividing by 2.</p>
 <p>For example, if we take two meteorological stations (one whose de-trended precipitation value is -1.2 and the other whose value is 1.6),</p>
 <div class="figure"><span style="display:block;" id="fig:f13-two-sites"></span>
@@ -713,8 +712,8 @@ Figure 14.12: Experimental variogram plot of precipitation residual values.
 <p>The red point in the plot is the value computed in the above example. The distance separating those two points is about 209 km. This value is mapped in <a href="spatial-interpolation.html#fig:f14-variogram">14.12</a> as a red dot.</p>
 <p>The above plot is called an <strong>experimental semivariogram</strong> cloud plot (also referred to as an experimental <strong>variogram</strong> cloud plot). The terms semivariogram and variogram are often used interchangeably in geostatistics (we’ll use the term variogram henceforth since this seems to be the term of choice in current literature). Also note that the word <em>experimental</em> is sometimes dropped when describing these plots, but its use in our terminology is an important reminder that the points we are working with are just samples of some continuous field whose spatial variation we are attempting to model.</p>
 </div>
-<div id="sample-experimental-variogram" class="section level4" number="14.2.2.3">
-<h4><span class="header-section-number">14.2.2.3</span> Sample Experimental Variogram</h4>
+<div id="sample-experimental-variogram" class="section level4 hasAnchor" number="14.2.2.3">
+<h4><span class="header-section-number">14.2.2.3</span> Sample Experimental Variogram<a href="spatial-interpolation.html#sample-experimental-variogram" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>Cloud points can be difficult to interpret due to the sheer number of point pairs (we have 465 point pairs from just 50 sample points, and this just for 1/3 of the maximum distance lag!). A common approach to resolving this issue is to “bin” the cloud points into intervals called <strong>lags</strong> and to summarize the points within each interval. In the following plot, we split the data into 15 bins then compute the average point value for each bin (displayed as red points in the plot). The red points that summarize the cloud are the <strong>sample experimental variogram estimates</strong> for each of the 15 distance bands and the plot is referred to as the <strong>sample experimental variogram</strong> plot.</p>
 <div class="figure"><span style="display:block;" id="fig:f14-sample-variogram"></span>
 <img src="14-Spatial-Interpolation_files/figure-html/f14-sample-variogram-1.png" alt="Sample experimental variogram plot of precipitation residual values." width="672" />
@@ -723,8 +722,8 @@ Figure 14.13: Sample experimental variogram plot of precipitation residual value
 </p>
 </div>
 </div>
-<div id="experimental-variogram-model" class="section level4" number="14.2.2.4">
-<h4><span class="header-section-number">14.2.2.4</span> Experimental Variogram Model</h4>
+<div id="experimental-variogram-model" class="section level4 hasAnchor" number="14.2.2.4">
+<h4><span class="header-section-number">14.2.2.4</span> Experimental Variogram Model<a href="spatial-interpolation.html#experimental-variogram-model" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>The next step is to fit a mathematical model to our <em>sample experimental variogram</em>. Different mathematical models can be used; their availability is software dependent. Examples of mathematical models are shown below:</p>
 <div class="figure"><span style="display:block;" id="fig:f14-variogram-models"></span>
 <img src="14-Spatial-Interpolation_files/figure-html/f14-variogram-models-1.png" alt="A subset of variogram models available in R's `gstat` package." width="672" />
@@ -747,8 +746,8 @@ Figure 14.16: A spherical model fit to our residual variogram.
 </p>
 </div>
 </div>
-<div id="kriging-interpolation" class="section level4" number="14.2.2.5">
-<h4><span class="header-section-number">14.2.2.5</span> Kriging Interpolation</h4>
+<div id="kriging-interpolation" class="section level4 hasAnchor" number="14.2.2.5">
+<h4><span class="header-section-number">14.2.2.5</span> Kriging Interpolation<a href="spatial-interpolation.html#kriging-interpolation" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>The variogram model is used by the kriging interpolator to provide <em>localized</em> weighting parameters. Recall that with the IDW, the interpolated value at an unsampled site is determined by summarizing weighted neighboring points where the weighting parameter (the power parameter) is defined by the user and is applied uniformly to the entire study extent. Kriging uses the variogram model to compute the weights of neighboring points based on the distribution of those values–in essence, kriging is letting the localized pattern produced by the sample points define the weights (in a systematic way). The exact mathematical implementation will not be covered here (it’s quite involved), but the resulting output is shown in the following figure:</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:f14-krige01"></span>
 <img src="14-Spatial-Interpolation_files/figure-html/f14-krige01-1.png" alt="Krige interpolation of the residual (detrended) precipitation values." width="672" />
@@ -785,7 +784,6 @@ Figure 14.19: Variance map resulting from the Kriging analysis.
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
-<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
 <script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
@@ -826,9 +824,9 @@ gitbook.start({
 "link": null,
 "text": null
 },
-"download": ["_main.pdf", "_main.epub"],
+"download": {},
 "search": {
-"engine": "lunr",
+"engine": "fuse",
 "options": null
 },
 "toc": {
@@ -845,7 +843,7 @@ gitbook.start({
     var script = document.createElement("script");
     script.type = "text/javascript";
     var src = "true";
-    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:")
       if (/^https?:/.test(src))
         src = src.replace(/^https?:/, '');

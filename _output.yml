@@ -12,7 +12,7 @@ bookdown::gitbook:
       weibo: no
       instapper: no
       all: no
-    download: ["pdf", "epub"]
+    download: []
 bookdown::pdf_book:
   includes:
     in_header: preamble.tex

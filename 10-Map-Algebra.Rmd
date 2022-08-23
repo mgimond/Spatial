@@ -1,3 +1,8 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
 # Map Algebra {#chp10_0}
 
  **Dana Tomlin** [@DTomlin] is credited with defining a framework for the analysis of field data stored as gridded values (i.e. rasters). He coined this framework *map algebra*. Though gridded data can be stored in a vector format, map algebra is usually performed on raster data. Map algebra operations and functions are broken down into four groups: **local**, **focal**, **zonal** and **global**. Each is explored in the following
@@ -10,11 +15,9 @@ library(rasterVis)
 gp <- function(sg, nr=1, sfmt="%02.0f", fnts = 2.1){
   library(ggplot2)
   library(scales)
-  library(reshape2) 
-  r.df = as.data.frame(cbind(xyFromCell(sg,1:ncell(sg)),getValues(sg)))
-  plotData = melt(r.df, id=c("x","y"))
-  ggplot(aes(x = x, y = y), data = plotData, environment = environment()) + 
-    geom_tile(aes(fill = value)) + facet_wrap(~ variable, nrow=nr) +
+  r.df <- as.data.frame(cbind(xyFromCell(sg,1:ncell(sg)),getValues(sg)))
+  plotData = tidyr::pivot_longer(r.df, cols = c(-x,-y) )
+  ggplot(aes(x = x, y = y), data = plotData, environment = environment()) +     geom_tile(aes(fill = value)) + facet_wrap(~ name, nrow=nr) +
     scale_colour_brewer(palette="Blues") +  
     theme(strip.text.x = element_text(size=9, family="mono", face="bold"), 
           legend.position = "none",

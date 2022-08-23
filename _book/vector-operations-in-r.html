@@ -6,11 +6,10 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>D Vector operations in R | Intro to GIS and Spatial Analysis</title>
   <meta name="description" content="This is a compilation of lecture notes that accompany my Intro to GIS and Spatial Analysis course." />
-  <meta name="generator" content="bookdown 0.23 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.28 and GitBook 2.6.7" />
 
   <meta property="og:title" content="D Vector operations in R | Intro to GIS and Spatial Analysis" />
   <meta property="og:type" content="book" />
-  
   
   <meta property="og:description" content="This is a compilation of lecture notes that accompany my Intro to GIS and Spatial Analysis course." />
   <meta name="github-repo" content="mgimond/spatial" />
@@ -32,8 +31,8 @@
   
 <link rel="prev" href="anatomy-of-simple-feature-objects.html"/>
 <link rel="next" href="mapping-rates-in-r.html"/>
-<script src="libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -49,19 +48,19 @@
 
 
 
-
-<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
-<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
 <script src="libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
-<script src="libs/htmlwidgets-1.5.3/htmlwidgets.js"></script>
+<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
 <link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet-1.3.1/leaflet.js"></script>
 <link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
 <script src="libs/proj4-2.6.2/proj4.min.js"></script>
 <script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
 <link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
-<script src="libs/leaflet-binding-2.0.4.1/leaflet.js"></script>
+<script src="libs/leaflet-binding-2.1.1/leaflet.js"></script>
 
 
 <style type="text/css">
@@ -359,21 +358,21 @@ div.csl-indent {
 <li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_4_5"><i class="fa fa-check"></i>Creating a spatial object from a data frame</a></li>
 <li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_4_6"><i class="fa fa-check"></i>Geocoding street addresses</a></li>
 </ul></li>
-<li><a href="reading-and-writing-spatial-data-in-r.html#app1_5">Converting from an <code>sf</code> object</a>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_5"><i class="fa fa-check"></i>Converting from an <code>sf</code> object</a>
 <ul>
-<li><a href="reading-and-writing-spatial-data-in-r.html#app1_5_1">Converting an <code>sf</code> object to a <code>Spatial*</code> object (<code>spdep</code>/<code>sp</code>)</a></li>
-<li><a href="reading-and-writing-spatial-data-in-r.html#app1_5_2">Converting an <code>sf</code> polygon object to an <code>owin</code> object</a></li>
-<li><a href="reading-and-writing-spatial-data-in-r.html#app1_5_3">Converting an <code>sf</code> point object to a <code>ppp</code> object</a></li>
-<li><a href="reading-and-writing-spatial-data-in-r.html#app1_5_4">Converting a <code>raster</code> object to an <code>im</code> object (<code>spatstat</code>)</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_5_1"><i class="fa fa-check"></i>Converting an <code>sf</code> object to a <code>Spatial*</code> object (<code>spdep</code>/<code>sp</code>)</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_5_2"><i class="fa fa-check"></i>Converting an <code>sf</code> polygon object to an <code>owin</code> object</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_5_3"><i class="fa fa-check"></i>Converting an <code>sf</code> point object to a <code>ppp</code> object</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_5_4"><i class="fa fa-check"></i>Converting a <code>raster</code> object to an <code>im</code> object (<code>spatstat</code>)</a></li>
 </ul></li>
-<li><a href="reading-and-writing-spatial-data-in-r.html#app1_6">Converting to an <code>sf</code> object</a></li>
-<li><a href="reading-and-writing-spatial-data-in-r.html#app1_7">Dissecting the <code>sf</code> file object</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_6"><i class="fa fa-check"></i>Converting to an <code>sf</code> object</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_7"><i class="fa fa-check"></i>Dissecting the <code>sf</code> file object</a></li>
 <li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_8"><i class="fa fa-check"></i>Exporting to different data file formats</a></li>
 </ul></li>
 <li class="chapter" data-level="B" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html"><i class="fa fa-check"></i><b>B</b> Mapping data in R</a>
 <ul>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#sample-files-for-this-exercise"><i class="fa fa-check"></i>Sample files for this exercise</a></li>
-<li><a href="mapping-data-in-r.html#tmap"><code>tmap</code></a>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#tmap"><i class="fa fa-check"></i><code>tmap</code></a>
 <ul>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#the-basics"><i class="fa fa-check"></i>The basics</a></li>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#combining-layers"><i class="fa fa-check"></i>Combining layers</a></li>
@@ -387,13 +386,13 @@ div.csl-indent {
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#side-by-side-maps"><i class="fa fa-check"></i>Side-by-side maps</a></li>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#splitting-data-by-polygons-or-group-of-polygons"><i class="fa fa-check"></i>Splitting data by polygons or group of polygons</a></li>
 </ul></li>
-<li><a href="mapping-data-in-r.html#ggplot2"><code>ggplot2</code></a>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#ggplot2"><i class="fa fa-check"></i><code>ggplot2</code></a>
 <ul>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#the-basics-1"><i class="fa fa-check"></i>The basics</a></li>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#tweaking-classification-schemes-1"><i class="fa fa-check"></i>Tweaking classification schemes</a></li>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#combining-layers-1"><i class="fa fa-check"></i>Combining layers</a></li>
 </ul></li>
-<li><a href="mapping-data-in-r.html#plot_sf"><code>plot_sf</code></a>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#plot_sf"><i class="fa fa-check"></i><code>plot_sf</code></a>
 <ul>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#the-basics-2"><i class="fa fa-check"></i>The basics</a></li>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#adding-a-graticule"><i class="fa fa-check"></i>Adding a graticule</a></li>
@@ -405,11 +404,11 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#creating-point-sf-objects"><i class="fa fa-check"></i>Creating point ‘sf’ objects</a>
 <ul>
-<li><a href="anatomy-of-simple-feature-objects.html#step-1-create-the-point-geometry-sfg">Step 1: Create the point geometry: <code>sfg</code></a></li>
-<li><a href="anatomy-of-simple-feature-objects.html#step-2-create-a-column-of-simple-feature-geometries-sfc">Step 2: Create a column of simple feature geometries: <code>sfc</code></a></li>
-<li><a href="anatomy-of-simple-feature-objects.html#step-3-create-the-simple-feature-object-sf">Step 3: Create the simple feature object <code>sf</code></a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#step-1-create-the-point-geometry-sfg"><i class="fa fa-check"></i>Step 1: Create the point geometry: <code>sfg</code></a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#step-2-create-a-column-of-simple-feature-geometries-sfc"><i class="fa fa-check"></i>Step 2: Create a column of simple feature geometries: <code>sfc</code></a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#step-3-create-the-simple-feature-object-sf"><i class="fa fa-check"></i>Step 3: Create the simple feature object <code>sf</code></a></li>
 <li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#renaming-the-geometry-column"><i class="fa fa-check"></i>Renaming the geometry column</a></li>
-<li><a href="anatomy-of-simple-feature-objects.html#adding-attributes-to-an-sf-object">Adding attributes to an <code>sf</code> object</a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#adding-attributes-to-an-sf-object"><i class="fa fa-check"></i>Adding attributes to an <code>sf</code> object</a></li>
 <li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#adding-a-geometry-column-to-an-existing-non-spatial-dataframe"><i class="fa fa-check"></i>Adding a geometry column to an existing non-spatial dataframe</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#creating-polyline-sf-objects"><i class="fa fa-check"></i>Creating polyline ‘sf’ objects</a>
@@ -418,10 +417,10 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#creating-polygon-sf-objects"><i class="fa fa-check"></i>Creating polygon ‘sf’ objects</a>
 <ul>
-<li><a href="anatomy-of-simple-feature-objects.html#polygon-simple-feature"><code>POLYGON</code> simple feature</a></li>
-<li><a href="anatomy-of-simple-feature-objects.html#multipolygon-simple-feature-multipart-features"><code>MULTIPOLYGON</code> simple feature: multipart features</a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#polygon-simple-feature"><i class="fa fa-check"></i><code>POLYGON</code> simple feature</a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#multipolygon-simple-feature-multipart-features"><i class="fa fa-check"></i><code>MULTIPOLYGON</code> simple feature: multipart features</a></li>
 </ul></li>
-<li><a href="anatomy-of-simple-feature-objects.html#extracting-geometry-from-an-sf-object">Extracting geometry from an <code>sf</code> object</a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#extracting-geometry-from-an-sf-object"><i class="fa fa-check"></i>Extracting geometry from an <code>sf</code> object</a></li>
 <li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#alternative-syntax"><i class="fa fa-check"></i>Alternative syntax</a></li>
 <li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#additional-resources"><i class="fa fa-check"></i>Additional resources</a></li>
 </ul></li>
@@ -441,7 +440,7 @@ div.csl-indent {
 <li class="chapter" data-level="E" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html"><i class="fa fa-check"></i><b>E</b> Mapping rates in R</a>
 <ul>
 <li class="chapter" data-level="" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html#raw-rates"><i class="fa fa-check"></i>Raw Rates</a></li>
-<li class="chapter" data-level="" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html#standardized-mortality-ratios-relative-risk."><i class="fa fa-check"></i>Standardized mortality ratios (relative risk).</a></li>
+<li class="chapter" data-level="" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html#standardized-mortality-ratios-relative-risk"><i class="fa fa-check"></i>Standardized mortality ratios (relative risk)</a></li>
 <li class="chapter" data-level="" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html#dykes-and-unwins-chi-square-statistic"><i class="fa fa-check"></i>Dykes and Unwin’s chi-square statistic</a></li>
 <li class="chapter" data-level="" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html#unstable-ratios"><i class="fa fa-check"></i>Unstable ratios</a>
 <ul>
@@ -467,9 +466,9 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="G" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html"><i class="fa fa-check"></i><b>G</b> Coordinate Systems in R</a>
 <ul>
-<li><a href="coordinate-systems-in-r.html#a-note-about-the-changes-to-the-proj-environment">A note about the changes to the <code>PROJ</code> environment</a></li>
+<li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#a-note-about-the-changes-to-the-proj-environment"><i class="fa fa-check"></i>A note about the changes to the <code>PROJ</code> environment</a></li>
 <li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#sample-files-for-this-exercise-2"><i class="fa fa-check"></i>Sample files for this exercise</a></li>
-<li><a href="coordinate-systems-in-r.html#loading-the-sf-package">Loading the <code>sf</code> package</a></li>
+<li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#loading-the-sf-package"><i class="fa fa-check"></i>Loading the <code>sf</code> package</a></li>
 <li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#checking-for-a-coordinate-system"><i class="fa fa-check"></i>Checking for a coordinate system</a></li>
 <li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#understanding-the-proj4-coordinate-syntax"><i class="fa fa-check"></i>Understanding the Proj4 coordinate syntax</a></li>
 <li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#assigning-a-coordinate-system"><i class="fa fa-check"></i>Assigning a coordinate system</a></li>
@@ -483,7 +482,7 @@ div.csl-indent {
 <li class="chapter" data-level="H" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html"><i class="fa fa-check"></i><b>H</b> Point pattern analysis in R</a>
 <ul>
 <li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#sample-files-for-this-exercise-3"><i class="fa fa-check"></i>Sample files for this exercise</a></li>
-<li><a href="point-pattern-analysis-in-r.html#getting-external-data-into-a-spatstat-format">Getting external data into a <code>spatstat</code> format</a></li>
+<li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#getting-external-data-into-a-spatstat-format"><i class="fa fa-check"></i>Getting external data into a <code>spatstat</code> format</a></li>
 <li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#prepping-the-data"><i class="fa fa-check"></i>Prepping the data</a></li>
 <li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#density-based-analysis-1"><i class="fa fa-check"></i>Density based analysis</a>
 <ul>
@@ -526,8 +525,8 @@ div.csl-indent {
 <li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#fine-tuning-the-interpolation"><i class="fa fa-check"></i>Fine-tuning the interpolation</a></li>
 <li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#cross-validation"><i class="fa fa-check"></i>Cross-validation</a></li>
 </ul></li>
-<li><a href="interpolation-in-r.html#st-order-polynomial-fit">1<sup>st</sup> order polynomial fit</a></li>
-<li><a href="interpolation-in-r.html#nd-order-polynomial">2<sup>nd</sup> order polynomial</a></li>
+<li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#st-order-polynomial-fit"><i class="fa fa-check"></i>1<sup>st</sup> order polynomial fit</a></li>
+<li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#nd-order-polynomial"><i class="fa fa-check"></i>2<sup>nd</sup> order polynomial</a></li>
 <li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#kriging"><i class="fa fa-check"></i>Kriging</a>
 <ul>
 <li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#fit-the-variogram-model"><i class="fa fa-check"></i>Fit the variogram model</a></li>
@@ -552,8 +551,8 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="vector-operations-in-r" class="section level1" number="19">
-<h1><span class="header-section-number">D</span> Vector operations in R</h1>
+<div id="vector-operations-in-r" class="section level1 hasAnchor" number="19">
+<h1><span class="header-section-number">D</span> Vector operations in R<a href="vector-operations-in-r.html#vector-operations-in-r" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <table class="package_ver_table">
 <tbody>
 <tr>
@@ -597,7 +596,7 @@ ggplot2
               padding-bottom: 1px;
               padding-left: 4px;
               padding-right: 4px;">
-4.1.1
+4.2.1
 </td>
 <td style="text-align:left;color: white !important;background-color: #AAAAAA !important;text-align: center;font-size: 12px !important; 
               margin:5px; 
@@ -607,7 +606,7 @@ ggplot2
               padding-bottom: 1px;
               padding-left: 4px;
               padding-right: 4px;">
-1.0.2
+1.0.8
 </td>
 <td style="text-align:left;color: white !important;background-color: #AAAAAA !important;text-align: center;font-size: 12px !important; 
               margin:5px; 
@@ -617,7 +616,7 @@ ggplot2
               padding-bottom: 1px;
               padding-left: 4px;
               padding-right: 4px;">
-3.3.5
+3.3.6
 </td>
 </tr>
 </tbody>
@@ -656,13 +655,13 @@ ggplot2
 Figure 2.6: Attribute tables for the Maine spatial object, <code>s1.sf</code>, (left table) and the distance to Augusta spatial object, <code>s2.sf</code> (right table).
 </p>
 </div>
-<div id="dissolving-geometries" class="section level2 unnumbered">
-<h2>Dissolving geometries</h2>
-<div id="dissolving-by-contiguous-shape" class="section level3 unnumbered">
-<h3>Dissolving by contiguous shape</h3>
+<div id="dissolving-geometries" class="section level2 unnumbered hasAnchor">
+<h2>Dissolving geometries<a href="vector-operations-in-r.html#dissolving-geometries" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="dissolving-by-contiguous-shape" class="section level3 unnumbered hasAnchor">
+<h3>Dissolving by contiguous shape<a href="vector-operations-in-r.html#dissolving-by-contiguous-shape" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>There are two different ways to dissolve geometries that share a common boundary. Both are presented next.</p>
-<div id="option-1" class="section level4 unnumbered">
-<h4>Option 1</h4>
+<div id="option-1" class="section level4 unnumbered hasAnchor">
+<h4>Option 1<a href="vector-operations-in-r.html#option-1" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>To dissolve all polygons that share at least one line segment, simply pass the object name to <code>sf</code>’s <code>st_union</code> function while making sure that the <code>by_feature</code> option is set to <code>FALSE</code>. In this example, we dissolve all polygons to create a single outline of the state of Maine.</p>
 <div class="sourceCode" id="cb176"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb176-1"><a href="vector-operations-in-r.html#cb176-1" aria-hidden="true" tabindex="-1"></a>ME <span class="ot">&lt;-</span> <span class="fu">st_union</span>(s1.sf, <span class="at">by_feature =</span> <span class="cn">FALSE</span>)</span>
 <span id="cb176-2"><a href="vector-operations-in-r.html#cb176-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -670,8 +669,8 @@ Figure 2.6: Attribute tables for the Maine spatial object, <code>s1.sf</code>, (
 <p><img src="A04-Vector-Operations_files/figure-html/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto auto auto 0;" /></p>
 <p>Note that the dissolving process removed all attributes from the original spatial object. You’ll also note that <code>st_union</code> returns an <code>sfc</code> object even though the input object is <code>sf</code>. You can convert the output to an <code>sf</code> object using the <code>st_sf()</code> function as in <code>st_sf(ME)</code>.</p>
 </div>
-<div id="option-2" class="section level4 unnumbered">
-<h4>Option 2</h4>
+<div id="option-2" class="section level4 unnumbered hasAnchor">
+<h4>Option 2<a href="vector-operations-in-r.html#option-2" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>Another approach is to make use of the <code>dplyr</code> package and its <code>group_by</code>/<code>summarise</code> functions.</p>
 <div class="sourceCode" id="cb177"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb177-1"><a href="vector-operations-in-r.html#cb177-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
 <span id="cb177-2"><a href="vector-operations-in-r.html#cb177-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -684,33 +683,33 @@ Figure 2.6: Attribute tables for the Maine spatial object, <code>s1.sf</code>, (
 <p>Note that this option will also remove any attributes associated with the input spatial object, however, the output remains an <code>sf</code> object (this differs from the <code>st_union</code> output).</p>
 </div>
 </div>
-<div id="dissolving-by-attribute" class="section level3 unnumbered">
-<h3>Dissolving by attribute</h3>
+<div id="dissolving-by-attribute" class="section level3 unnumbered hasAnchor">
+<h3>Dissolving by attribute<a href="vector-operations-in-r.html#dissolving-by-attribute" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>You can also choose to dissolve based on an attribute’s values. First, we’ll create a new column whose value will be binary (TRUE/FALSE) depending on whether or not the county income is below the counties’ median income value.</p>
 <div class="sourceCode" id="cb178"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb178-1"><a href="vector-operations-in-r.html#cb178-1" aria-hidden="true" tabindex="-1"></a>s1.sf<span class="sc">$</span>med <span class="ot">&lt;-</span> s1.sf<span class="sc">$</span>Income <span class="sc">&gt;</span> <span class="fu">median</span>(s1.sf<span class="sc">$</span>Income)</span>
 <span id="cb178-2"><a href="vector-operations-in-r.html#cb178-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb178-3"><a href="vector-operations-in-r.html#cb178-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(s1.sf) <span class="sc">+</span> <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">fill =</span> med))</span></code></pre></div>
 <p><img src="A04-Vector-Operations_files/figure-html/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto auto auto 0;" /></p>
 <p>Next, we’ll dissolve all polygons by the <code>med</code> attribute. Any polygons sharing at least one line segment that have the same <code>med</code> value will be dissolved into a single polygon.</p>
-<p>Two approaches are presented here: one using <code>sf</code>’s <code>aggregate</code> function, the other using the <code>dplyr</code> approach.</p>
-<div id="option-1-1" class="section level4 unnumbered">
-<h4>Option 1</h4>
+<p>Two approaches are presented here: one using <code>sf</code>’s <code>aggregate</code> function, the other using the <code>dplyr</code> approach adopted in the previous section.</p>
+<div id="option-1-1" class="section level4 unnumbered hasAnchor">
+<h4>Option 1<a href="vector-operations-in-r.html#option-1-1" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <div class="sourceCode" id="cb179"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb179-1"><a href="vector-operations-in-r.html#cb179-1" aria-hidden="true" tabindex="-1"></a>ME.inc <span class="ot">&lt;-</span> <span class="fu">aggregate</span>(s1.sf[<span class="st">&quot;med&quot;</span>], <span class="at">by =</span> <span class="fu">list</span>(<span class="at">diss =</span> s1.sf<span class="sc">$</span>med), </span>
 <span id="cb179-2"><a href="vector-operations-in-r.html#cb179-2" aria-hidden="true" tabindex="-1"></a>                    <span class="at">FUN =</span> <span class="cf">function</span>(x)x[<span class="dv">1</span>], <span class="at">do_union =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
-<p>This option will a new field defined in the <code>by =</code> parameter (<code>diss</code> in this working example).</p>
+<p>This option will create a new field defined in the <code>by =</code> parameter (<code>diss</code> in this working example).</p>
 <div class="sourceCode" id="cb180"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb180-1"><a href="vector-operations-in-r.html#cb180-1" aria-hidden="true" tabindex="-1"></a><span class="fu">st_drop_geometry</span>(ME.inc) <span class="co"># Print the layer&#39;s attributes table</span></span></code></pre></div>
 <pre><code>   diss   med
 1 FALSE FALSE
 2  TRUE  TRUE</code></pre>
 </div>
-<div id="option-2-1" class="section level4 unnumbered">
-<h4>Option 2</h4>
+<div id="option-2-1" class="section level4 unnumbered hasAnchor">
+<h4>Option 2<a href="vector-operations-in-r.html#option-2-1" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <div class="sourceCode" id="cb182"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb182-1"><a href="vector-operations-in-r.html#cb182-1" aria-hidden="true" tabindex="-1"></a>ME.inc <span class="ot">&lt;-</span> s1.sf <span class="sc">%&gt;%</span> </span>
 <span id="cb182-2"><a href="vector-operations-in-r.html#cb182-2" aria-hidden="true" tabindex="-1"></a>     <span class="fu">group_by</span>(med) <span class="sc">%&gt;%</span> </span>
 <span id="cb182-3"><a href="vector-operations-in-r.html#cb182-3" aria-hidden="true" tabindex="-1"></a>     <span class="fu">summarise</span>() </span></code></pre></div>
 <p>This option will limit the attributes to that/those listed in the <code>group_by</code> function.</p>
 <div class="sourceCode" id="cb183"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb183-1"><a href="vector-operations-in-r.html#cb183-1" aria-hidden="true" tabindex="-1"></a><span class="fu">st_drop_geometry</span>(ME.inc)</span></code></pre></div>
-<pre><code># A tibble: 2 x 1
+<pre><code># A tibble: 2 × 1
   med  
 * &lt;lgl&gt;
 1 FALSE
@@ -727,7 +726,7 @@ Figure 2.6: Attribute tables for the Maine spatial object, <code>s1.sf</code>, (
 <p><img src="A04-Vector-Operations_files/figure-html/unnamed-chunk-14-1.png" width="672" style="display: block; margin: auto auto auto 0;" /></p>
 <p>To view the attributes table with both the aggregate variable, <code>med</code>, and the median income variable, <code>Income</code>, type:</p>
 <div class="sourceCode" id="cb187"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb187-1"><a href="vector-operations-in-r.html#cb187-1" aria-hidden="true" tabindex="-1"></a><span class="fu">st_drop_geometry</span>(ME.inc)</span></code></pre></div>
-<pre><code># A tibble: 2 x 2
+<pre><code># A tibble: 2 × 2
   med   medinc
 * &lt;lgl&gt;  &lt;dbl&gt;
 1 FALSE  21518
@@ -735,8 +734,8 @@ Figure 2.6: Attribute tables for the Maine spatial object, <code>s1.sf</code>, (
 </div>
 </div>
 </div>
-<div id="subsetting-by-attribute" class="section level2 unnumbered">
-<h2>Subsetting by attribute</h2>
+<div id="subsetting-by-attribute" class="section level2 unnumbered hasAnchor">
+<h2>Subsetting by attribute<a href="vector-operations-in-r.html#subsetting-by-attribute" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>You can use conventional R dataframe manipulation operations to subset by attribute values. For example, to subset by county name (e.g. <code>Kennebec</code> county), type:</p>
 <div class="sourceCode" id="cb189"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb189-1"><a href="vector-operations-in-r.html#cb189-1" aria-hidden="true" tabindex="-1"></a>ME.ken <span class="ot">&lt;-</span> s1.sf[s1.sf<span class="sc">$</span>NAME <span class="sc">==</span> <span class="st">&quot;Kennebec&quot;</span>,]</span></code></pre></div>
 <p>You can, of course, use piping operations to perform the same task as follows:</p>
@@ -751,8 +750,8 @@ Figure 2.6: Attribute tables for the Maine spatial object, <code>s1.sf</code>, (
 <span id="cb192-4"><a href="vector-operations-in-r.html#cb192-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(ME.inc2) <span class="sc">+</span> <span class="fu">geom_sf</span>()</span></code></pre></div>
 <p><img src="A04-Vector-Operations_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
 </div>
-<div id="intersecting-layers" class="section level2 unnumbered">
-<h2>Intersecting layers</h2>
+<div id="intersecting-layers" class="section level2 unnumbered hasAnchor">
+<h2>Intersecting layers<a href="vector-operations-in-r.html#intersecting-layers" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>To intersect two polygon objects, use <code>sf</code>’s <code>st_intersection</code> function.</p>
 <div class="sourceCode" id="cb193"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb193-1"><a href="vector-operations-in-r.html#cb193-1" aria-hidden="true" tabindex="-1"></a>clp1 <span class="ot">&lt;-</span> <span class="fu">st_intersection</span>(s1.sf, s2.sf)</span>
 <span id="cb193-2"><a href="vector-operations-in-r.html#cb193-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -796,9 +795,9 @@ Figure 2.6: Attribute tables for the Maine spatial object, <code>s1.sf</code>, (
 13.2   Cumberland  32549 0.00494917 0.000683236  346.061  TRUE      120
 15           York  28496 0.00529228 0.000737195  332.121  TRUE      120</code></pre>
 </div>
-<div id="clipping-spatial-objects-using-other-spatial-objects" class="section level2 unnumbered">
-<h2>Clipping spatial objects using other spatial objects</h2>
-<p>The <code>st_intersection</code> can also be used to clip an input layer using another layer’s outer geometry boundaries as the “cookie cutter.” But note that the latter must be limited to its outer boundaries which may require that it be run through a dissolving operation (shown earlier in this tutorial) to dissolve internal boundaries.</p>
+<div id="clipping-spatial-objects-using-other-spatial-objects" class="section level2 unnumbered hasAnchor">
+<h2>Clipping spatial objects using other spatial objects<a href="vector-operations-in-r.html#clipping-spatial-objects-using-other-spatial-objects" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The <code>st_intersection</code> can also be used to clip an input layer using another layer’s outer geometry boundaries as the “cookie cutter”. But note that the latter must be limited to its outer boundaries which may require that it be run through a dissolving operation (shown earlier in this tutorial) to dissolve internal boundaries.</p>
 <p>To clip <code>s2.sf</code> using the outline of <code>s1.sf</code>, type:</p>
 <div class="sourceCode" id="cb196"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb196-1"><a href="vector-operations-in-r.html#cb196-1" aria-hidden="true" tabindex="-1"></a>clp2 <span class="ot">&lt;-</span> <span class="fu">st_intersection</span>(s2.sf, <span class="fu">st_union</span>(s1.sf)) </span>
 <span id="cb196-2"><a href="vector-operations-in-r.html#cb196-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -817,8 +816,8 @@ Figure 2.6: Attribute tables for the Maine spatial object, <code>s1.sf</code>, (
 <span id="cb199-3"><a href="vector-operations-in-r.html#cb199-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> <span class="fu">st_union</span>(s2.sf), <span class="at">col =</span> <span class="st">&quot;red&quot;</span>, <span class="at">fill =</span> <span class="cn">NA</span> )</span></code></pre></div>
 <p><img src="A04-Vector-Operations_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
 </div>
-<div id="unioning-layers" class="section level2 unnumbered">
-<h2>Unioning layers</h2>
+<div id="unioning-layers" class="section level2 unnumbered hasAnchor">
+<h2>Unioning layers<a href="vector-operations-in-r.html#unioning-layers" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>To union two polygon objects, use <code>sf</code>’s <code>st_union</code> function. For example,</p>
 <div class="sourceCode" id="cb200"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb200-1"><a href="vector-operations-in-r.html#cb200-1" aria-hidden="true" tabindex="-1"></a>un1  <span class="ot">&lt;-</span> <span class="fu">st_union</span>(s2.sf,s1.sf)</span>
 <span id="cb200-2"><a href="vector-operations-in-r.html#cb200-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -911,8 +910,8 @@ CRS:           +proj=utm +zone=19 +datum=NAD83 +units=m +no_defs +ellps=GRS80 +t
 4 MULTIPOLYGON (((438980 5028...</code></pre>
 <p>The union operation creates all possible pairs of geometries between both input objects (i.e. 4 circle geometries from <code>s2.sf</code> times 16 county geometries from <code>s1.sf</code> for a total of 64 geometries).</p>
 </div>
-<div id="buffering-geometries" class="section level2 unnumbered">
-<h2>Buffering geometries</h2>
+<div id="buffering-geometries" class="section level2 unnumbered hasAnchor">
+<h2>Buffering geometries<a href="vector-operations-in-r.html#buffering-geometries" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>To buffer point, line or polygon geometries, use <code>sf</code>’s <code>st_buffer</code> function. For example, the following code chunk generates a 10 km (10,000 m) buffer around the polyline segments.</p>
 <div class="sourceCode" id="cb204"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb204-1"><a href="vector-operations-in-r.html#cb204-1" aria-hidden="true" tabindex="-1"></a>l1.sf.buf <span class="ot">&lt;-</span> <span class="fu">st_buffer</span>(l1.sf, <span class="at">dist =</span> <span class="dv">10000</span>)</span>
 <span id="cb204-2"><a href="vector-operations-in-r.html#cb204-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -945,7 +944,6 @@ CRS:           +proj=utm +zone=19 +datum=NAD83 +units=m +no_defs +ellps=GRS80 +t
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
-<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
 <script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
@@ -986,9 +984,9 @@ gitbook.start({
 "link": null,
 "text": null
 },
-"download": ["_main.pdf", "_main.epub"],
+"download": {},
 "search": {
-"engine": "lunr",
+"engine": "fuse",
 "options": null
 },
 "toc": {
@@ -1005,7 +1003,7 @@ gitbook.start({
     var script = document.createElement("script");
     script.type = "text/javascript";
     var src = "true";
-    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:")
       if (/^https?:/.test(src))
         src = src.replace(/^https?:/, '');

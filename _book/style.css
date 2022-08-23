@@ -61,4 +61,11 @@ table.package_ver_table
   width:auto !important;
 }
 
-
+.header-section-number {
+    FONT-WEIGHT: 100;
+    padding-right: .1em;
+    padding-left: .1em;
+    color: white;
+    background-color: #94a5bc;
+    border-radius: 5px;
+}

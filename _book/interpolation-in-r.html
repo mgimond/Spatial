@@ -6,11 +6,10 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>J Interpolation in R | Intro to GIS and Spatial Analysis</title>
   <meta name="description" content="This is a compilation of lecture notes that accompany my Intro to GIS and Spatial Analysis course." />
-  <meta name="generator" content="bookdown 0.23 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.28 and GitBook 2.6.7" />
 
   <meta property="og:title" content="J Interpolation in R | Intro to GIS and Spatial Analysis" />
   <meta property="og:type" content="book" />
-  
   
   <meta property="og:description" content="This is a compilation of lecture notes that accompany my Intro to GIS and Spatial Analysis course." />
   <meta name="github-repo" content="mgimond/spatial" />
@@ -32,8 +31,8 @@
   
 <link rel="prev" href="spatial-autocorrelation-in-r.html"/>
 
-<script src="libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -49,19 +48,19 @@
 
 
 
-
-<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
-<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
 <script src="libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
-<script src="libs/htmlwidgets-1.5.3/htmlwidgets.js"></script>
+<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
 <link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet-1.3.1/leaflet.js"></script>
 <link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
 <script src="libs/proj4-2.6.2/proj4.min.js"></script>
 <script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
 <link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
-<script src="libs/leaflet-binding-2.0.4.1/leaflet.js"></script>
+<script src="libs/leaflet-binding-2.1.1/leaflet.js"></script>
 
 
 <style type="text/css">
@@ -359,21 +358,21 @@ div.csl-indent {
 <li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_4_5"><i class="fa fa-check"></i>Creating a spatial object from a data frame</a></li>
 <li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_4_6"><i class="fa fa-check"></i>Geocoding street addresses</a></li>
 </ul></li>
-<li><a href="reading-and-writing-spatial-data-in-r.html#app1_5">Converting from an <code>sf</code> object</a>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_5"><i class="fa fa-check"></i>Converting from an <code>sf</code> object</a>
 <ul>
-<li><a href="reading-and-writing-spatial-data-in-r.html#app1_5_1">Converting an <code>sf</code> object to a <code>Spatial*</code> object (<code>spdep</code>/<code>sp</code>)</a></li>
-<li><a href="reading-and-writing-spatial-data-in-r.html#app1_5_2">Converting an <code>sf</code> polygon object to an <code>owin</code> object</a></li>
-<li><a href="reading-and-writing-spatial-data-in-r.html#app1_5_3">Converting an <code>sf</code> point object to a <code>ppp</code> object</a></li>
-<li><a href="reading-and-writing-spatial-data-in-r.html#app1_5_4">Converting a <code>raster</code> object to an <code>im</code> object (<code>spatstat</code>)</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_5_1"><i class="fa fa-check"></i>Converting an <code>sf</code> object to a <code>Spatial*</code> object (<code>spdep</code>/<code>sp</code>)</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_5_2"><i class="fa fa-check"></i>Converting an <code>sf</code> polygon object to an <code>owin</code> object</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_5_3"><i class="fa fa-check"></i>Converting an <code>sf</code> point object to a <code>ppp</code> object</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_5_4"><i class="fa fa-check"></i>Converting a <code>raster</code> object to an <code>im</code> object (<code>spatstat</code>)</a></li>
 </ul></li>
-<li><a href="reading-and-writing-spatial-data-in-r.html#app1_6">Converting to an <code>sf</code> object</a></li>
-<li><a href="reading-and-writing-spatial-data-in-r.html#app1_7">Dissecting the <code>sf</code> file object</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_6"><i class="fa fa-check"></i>Converting to an <code>sf</code> object</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_7"><i class="fa fa-check"></i>Dissecting the <code>sf</code> file object</a></li>
 <li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_8"><i class="fa fa-check"></i>Exporting to different data file formats</a></li>
 </ul></li>
 <li class="chapter" data-level="B" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html"><i class="fa fa-check"></i><b>B</b> Mapping data in R</a>
 <ul>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#sample-files-for-this-exercise"><i class="fa fa-check"></i>Sample files for this exercise</a></li>
-<li><a href="mapping-data-in-r.html#tmap"><code>tmap</code></a>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#tmap"><i class="fa fa-check"></i><code>tmap</code></a>
 <ul>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#the-basics"><i class="fa fa-check"></i>The basics</a></li>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#combining-layers"><i class="fa fa-check"></i>Combining layers</a></li>
@@ -387,13 +386,13 @@ div.csl-indent {
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#side-by-side-maps"><i class="fa fa-check"></i>Side-by-side maps</a></li>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#splitting-data-by-polygons-or-group-of-polygons"><i class="fa fa-check"></i>Splitting data by polygons or group of polygons</a></li>
 </ul></li>
-<li><a href="mapping-data-in-r.html#ggplot2"><code>ggplot2</code></a>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#ggplot2"><i class="fa fa-check"></i><code>ggplot2</code></a>
 <ul>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#the-basics-1"><i class="fa fa-check"></i>The basics</a></li>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#tweaking-classification-schemes-1"><i class="fa fa-check"></i>Tweaking classification schemes</a></li>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#combining-layers-1"><i class="fa fa-check"></i>Combining layers</a></li>
 </ul></li>
-<li><a href="mapping-data-in-r.html#plot_sf"><code>plot_sf</code></a>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#plot_sf"><i class="fa fa-check"></i><code>plot_sf</code></a>
 <ul>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#the-basics-2"><i class="fa fa-check"></i>The basics</a></li>
 <li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#adding-a-graticule"><i class="fa fa-check"></i>Adding a graticule</a></li>
@@ -405,11 +404,11 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#creating-point-sf-objects"><i class="fa fa-check"></i>Creating point ‘sf’ objects</a>
 <ul>
-<li><a href="anatomy-of-simple-feature-objects.html#step-1-create-the-point-geometry-sfg">Step 1: Create the point geometry: <code>sfg</code></a></li>
-<li><a href="anatomy-of-simple-feature-objects.html#step-2-create-a-column-of-simple-feature-geometries-sfc">Step 2: Create a column of simple feature geometries: <code>sfc</code></a></li>
-<li><a href="anatomy-of-simple-feature-objects.html#step-3-create-the-simple-feature-object-sf">Step 3: Create the simple feature object <code>sf</code></a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#step-1-create-the-point-geometry-sfg"><i class="fa fa-check"></i>Step 1: Create the point geometry: <code>sfg</code></a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#step-2-create-a-column-of-simple-feature-geometries-sfc"><i class="fa fa-check"></i>Step 2: Create a column of simple feature geometries: <code>sfc</code></a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#step-3-create-the-simple-feature-object-sf"><i class="fa fa-check"></i>Step 3: Create the simple feature object <code>sf</code></a></li>
 <li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#renaming-the-geometry-column"><i class="fa fa-check"></i>Renaming the geometry column</a></li>
-<li><a href="anatomy-of-simple-feature-objects.html#adding-attributes-to-an-sf-object">Adding attributes to an <code>sf</code> object</a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#adding-attributes-to-an-sf-object"><i class="fa fa-check"></i>Adding attributes to an <code>sf</code> object</a></li>
 <li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#adding-a-geometry-column-to-an-existing-non-spatial-dataframe"><i class="fa fa-check"></i>Adding a geometry column to an existing non-spatial dataframe</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#creating-polyline-sf-objects"><i class="fa fa-check"></i>Creating polyline ‘sf’ objects</a>
@@ -418,10 +417,10 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#creating-polygon-sf-objects"><i class="fa fa-check"></i>Creating polygon ‘sf’ objects</a>
 <ul>
-<li><a href="anatomy-of-simple-feature-objects.html#polygon-simple-feature"><code>POLYGON</code> simple feature</a></li>
-<li><a href="anatomy-of-simple-feature-objects.html#multipolygon-simple-feature-multipart-features"><code>MULTIPOLYGON</code> simple feature: multipart features</a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#polygon-simple-feature"><i class="fa fa-check"></i><code>POLYGON</code> simple feature</a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#multipolygon-simple-feature-multipart-features"><i class="fa fa-check"></i><code>MULTIPOLYGON</code> simple feature: multipart features</a></li>
 </ul></li>
-<li><a href="anatomy-of-simple-feature-objects.html#extracting-geometry-from-an-sf-object">Extracting geometry from an <code>sf</code> object</a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#extracting-geometry-from-an-sf-object"><i class="fa fa-check"></i>Extracting geometry from an <code>sf</code> object</a></li>
 <li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#alternative-syntax"><i class="fa fa-check"></i>Alternative syntax</a></li>
 <li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#additional-resources"><i class="fa fa-check"></i>Additional resources</a></li>
 </ul></li>
@@ -441,7 +440,7 @@ div.csl-indent {
 <li class="chapter" data-level="E" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html"><i class="fa fa-check"></i><b>E</b> Mapping rates in R</a>
 <ul>
 <li class="chapter" data-level="" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html#raw-rates"><i class="fa fa-check"></i>Raw Rates</a></li>
-<li class="chapter" data-level="" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html#standardized-mortality-ratios-relative-risk."><i class="fa fa-check"></i>Standardized mortality ratios (relative risk).</a></li>
+<li class="chapter" data-level="" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html#standardized-mortality-ratios-relative-risk"><i class="fa fa-check"></i>Standardized mortality ratios (relative risk)</a></li>
 <li class="chapter" data-level="" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html#dykes-and-unwins-chi-square-statistic"><i class="fa fa-check"></i>Dykes and Unwin’s chi-square statistic</a></li>
 <li class="chapter" data-level="" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html#unstable-ratios"><i class="fa fa-check"></i>Unstable ratios</a>
 <ul>
@@ -467,9 +466,9 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="G" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html"><i class="fa fa-check"></i><b>G</b> Coordinate Systems in R</a>
 <ul>
-<li><a href="coordinate-systems-in-r.html#a-note-about-the-changes-to-the-proj-environment">A note about the changes to the <code>PROJ</code> environment</a></li>
+<li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#a-note-about-the-changes-to-the-proj-environment"><i class="fa fa-check"></i>A note about the changes to the <code>PROJ</code> environment</a></li>
 <li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#sample-files-for-this-exercise-2"><i class="fa fa-check"></i>Sample files for this exercise</a></li>
-<li><a href="coordinate-systems-in-r.html#loading-the-sf-package">Loading the <code>sf</code> package</a></li>
+<li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#loading-the-sf-package"><i class="fa fa-check"></i>Loading the <code>sf</code> package</a></li>
 <li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#checking-for-a-coordinate-system"><i class="fa fa-check"></i>Checking for a coordinate system</a></li>
 <li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#understanding-the-proj4-coordinate-syntax"><i class="fa fa-check"></i>Understanding the Proj4 coordinate syntax</a></li>
 <li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#assigning-a-coordinate-system"><i class="fa fa-check"></i>Assigning a coordinate system</a></li>
@@ -483,7 +482,7 @@ div.csl-indent {
 <li class="chapter" data-level="H" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html"><i class="fa fa-check"></i><b>H</b> Point pattern analysis in R</a>
 <ul>
 <li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#sample-files-for-this-exercise-3"><i class="fa fa-check"></i>Sample files for this exercise</a></li>
-<li><a href="point-pattern-analysis-in-r.html#getting-external-data-into-a-spatstat-format">Getting external data into a <code>spatstat</code> format</a></li>
+<li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#getting-external-data-into-a-spatstat-format"><i class="fa fa-check"></i>Getting external data into a <code>spatstat</code> format</a></li>
 <li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#prepping-the-data"><i class="fa fa-check"></i>Prepping the data</a></li>
 <li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#density-based-analysis-1"><i class="fa fa-check"></i>Density based analysis</a>
 <ul>
@@ -526,8 +525,8 @@ div.csl-indent {
 <li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#fine-tuning-the-interpolation"><i class="fa fa-check"></i>Fine-tuning the interpolation</a></li>
 <li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#cross-validation"><i class="fa fa-check"></i>Cross-validation</a></li>
 </ul></li>
-<li><a href="interpolation-in-r.html#st-order-polynomial-fit">1<sup>st</sup> order polynomial fit</a></li>
-<li><a href="interpolation-in-r.html#nd-order-polynomial">2<sup>nd</sup> order polynomial</a></li>
+<li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#st-order-polynomial-fit"><i class="fa fa-check"></i>1<sup>st</sup> order polynomial fit</a></li>
+<li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#nd-order-polynomial"><i class="fa fa-check"></i>2<sup>nd</sup> order polynomial</a></li>
 <li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#kriging"><i class="fa fa-check"></i>Kriging</a>
 <ul>
 <li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#fit-the-variogram-model"><i class="fa fa-check"></i>Fit the variogram model</a></li>
@@ -552,8 +551,8 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="interpolation-in-r" class="section level1" number="25">
-<h1><span class="header-section-number">J</span> Interpolation in R</h1>
+<div id="interpolation-in-r" class="section level1 hasAnchor" number="25">
+<h1><span class="header-section-number">J</span> Interpolation in R<a href="interpolation-in-r.html#interpolation-in-r" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <table class="package_ver_table">
 <tbody>
 <tr>
@@ -647,7 +646,7 @@ sp
               padding-bottom: 1px;
               padding-left: 4px;
               padding-right: 4px;">
-4.1.1
+4.2.1
 </td>
 <td style="text-align:left;color: white !important;background-color: #AAAAAA !important;text-align: center;font-size: 12px !important; 
               margin:5px; 
@@ -657,7 +656,7 @@ sp
               padding-bottom: 1px;
               padding-left: 4px;
               padding-right: 4px;">
-1.5.23
+1.5.32
 </td>
 <td style="text-align:left;color: white !important;background-color: #AAAAAA !important;text-align: center;font-size: 12px !important; 
               margin:5px; 
@@ -667,7 +666,7 @@ sp
               padding-bottom: 1px;
               padding-left: 4px;
               padding-right: 4px;">
-3.3.2
+3.3.3
 </td>
 <td style="text-align:left;color: white !important;background-color: #AAAAAA !important;text-align: center;font-size: 12px !important; 
               margin:5px; 
@@ -677,7 +676,7 @@ sp
               padding-bottom: 1px;
               padding-left: 4px;
               padding-right: 4px;">
-2.2.0
+2.3.4
 </td>
 <td style="text-align:left;color: white !important;background-color: #AAAAAA !important;text-align: center;font-size: 12px !important; 
               margin:5px; 
@@ -687,7 +686,7 @@ sp
               padding-bottom: 1px;
               padding-left: 4px;
               padding-right: 4px;">
-1.1.1
+1.1.4
 </td>
 <td style="text-align:left;color: white !important;background-color: #AAAAAA !important;text-align: center;font-size: 12px !important; 
               margin:5px; 
@@ -697,7 +696,7 @@ sp
               padding-bottom: 1px;
               padding-left: 4px;
               padding-right: 4px;">
-3.4.13
+3.5.29
 </td>
 <td style="text-align:left;color: white !important;background-color: #AAAAAA !important;text-align: center;font-size: 12px !important; 
               margin:5px; 
@@ -707,7 +706,7 @@ sp
               padding-bottom: 1px;
               padding-left: 4px;
               padding-right: 4px;">
-2.0.7
+2.0.9
 </td>
 <td style="text-align:left;color: white !important;background-color: #AAAAAA !important;text-align: center;font-size: 12px !important; 
               margin:5px; 
@@ -717,7 +716,7 @@ sp
               padding-bottom: 1px;
               padding-left: 4px;
               padding-right: 4px;">
-1.4.5
+1.5.0
 </td>
 </tr>
 </tbody>
@@ -745,8 +744,8 @@ sp
 <span id="cb429-20"><a href="interpolation-in-r.html#cb429-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_legend</span>(<span class="at">legend.outside=</span><span class="cn">TRUE</span>)</span></code></pre></div>
 <p><img src="A10-Interpolation_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
 <p>You’ll note the line <code>P@bbox &lt;- W@bbox</code> which forces the rectangular extent of the Texas map onto the point data object. This is an important step if the interpolation of the points are to cover the entire extent of Texas. Had this step been omitted, most of the interpolated layers would have been limited to the smallest rectangular extent enclosing the point object.</p>
-<div id="thiessen-polygons" class="section level2 unnumbered">
-<h2>Thiessen polygons</h2>
+<div id="thiessen-polygons" class="section level2 unnumbered hasAnchor">
+<h2>Thiessen polygons<a href="interpolation-in-r.html#thiessen-polygons" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The Thiessen polygons (or proximity interpolation) can be created using <code>spatstat</code>’s <code>dirichlet</code> function.</p>
 <div class="sourceCode" id="cb430"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb430-1"><a href="interpolation-in-r.html#cb430-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(spatstat)  <span class="co"># Used for the dirichlet tessellation function</span></span>
 <span id="cb430-2"><a href="interpolation-in-r.html#cb430-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(maptools)  <span class="co"># Used for conversion from SPDF to ppp</span></span>
@@ -778,16 +777,24 @@ sp
 <p><img src="A10-Interpolation_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
 <div class="warning">
 <p>
-Many packages share the same function names. This can be a problem when these packages are loaded in a same R session. For example, the <code>intersect</code> function is available in the <code>base</code>, <code>spatstat</code> and <code>raster</code> packages–all of which are loaded in this current session. To ensure that the proper function is selected, it’s a good idea to preface the function name with the package name as in <code>raster::intersect()</code>.
+Many packages share the same function names. This can be a problem
+when these packages are loaded in a same R session. For example, the
+<code>intersect</code> function is available in the <code>base</code>,
+<code>spatstat</code> and <code>raster</code> packages–all of which are
+loaded in this current session. To ensure that the proper function is
+selected, it’s a good idea to preface the function name with the package
+name as in <code>raster::intersect()</code>.
 </p>
 <p>
-This tip will be used in the next chunk of code when calling the <code>idw</code> function which is available in both <code>spatstat</code> and <code>gstat</code>.
+This tip will be used in the next chunk of code when calling the
+<code>idw</code> function which is available in both
+<code>spatstat</code> and <code>gstat</code>.
 </p>
 </div>
 <p>Note that the <code>dirichlet</code> function (like most functions in the <code>spatsat</code> package) require that the point object be in a <code>ppp</code> format hence the inline <code>as.ppp(P)</code> syntax.</p>
 </div>
-<div id="idw" class="section level2 unnumbered">
-<h2>IDW</h2>
+<div id="idw" class="section level2 unnumbered hasAnchor">
+<h2>IDW<a href="interpolation-in-r.html#idw" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The IDW output is a raster. This requires that we first create an empty raster grid, then interpolate the precipitation values to each unsampled grid cell. An IDW power value of 2 (<code>idp=2.0</code>) will be used.</p>
 <div class="sourceCode" id="cb431"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb431-1"><a href="interpolation-in-r.html#cb431-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gstat) <span class="co"># Use gstat&#39;s idw routine</span></span>
 <span id="cb431-2"><a href="interpolation-in-r.html#cb431-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sp)    <span class="co"># Used for the spsample function</span></span>
@@ -817,8 +824,8 @@ This tip will be used in the next chunk of code when calling the <code>idw</code
 <span id="cb431-26"><a href="interpolation-in-r.html#cb431-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_shape</span>(P) <span class="sc">+</span> <span class="fu">tm_dots</span>(<span class="at">size=</span><span class="fl">0.2</span>) <span class="sc">+</span></span>
 <span id="cb431-27"><a href="interpolation-in-r.html#cb431-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_legend</span>(<span class="at">legend.outside=</span><span class="cn">TRUE</span>)</span></code></pre></div>
 <p><img src="A10-Interpolation_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
-<div id="fine-tuning-the-interpolation" class="section level3 unnumbered">
-<h3>Fine-tuning the interpolation</h3>
+<div id="fine-tuning-the-interpolation" class="section level3 unnumbered hasAnchor">
+<h3>Fine-tuning the interpolation<a href="interpolation-in-r.html#fine-tuning-the-interpolation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The choice of power function can be subjective. To fine-tune the choice of the power parameter, you can perform a <em>leave-one-out</em> validation routine to measure the error in the interpolated values.</p>
 <div class="sourceCode" id="cb432"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb432-1"><a href="interpolation-in-r.html#cb432-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Leave-one-out validation routine</span></span>
 <span id="cb432-2"><a href="interpolation-in-r.html#cb432-2" aria-hidden="true" tabindex="-1"></a>IDW.out <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="at">length =</span> <span class="fu">length</span>(P))</span>
@@ -839,8 +846,8 @@ This tip will be used in the next chunk of code when calling the <code>idw</code
 <span id="cb433-2"><a href="interpolation-in-r.html#cb433-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>( <span class="fu">sum</span>((IDW.out <span class="sc">-</span> P<span class="sc">$</span>Precip_in)<span class="sc">^</span><span class="dv">2</span>) <span class="sc">/</span> <span class="fu">length</span>(P))</span></code></pre></div>
 <pre><code>[1] 6.989294</code></pre>
 </div>
-<div id="cross-validation" class="section level3 unnumbered">
-<h3>Cross-validation</h3>
+<div id="cross-validation" class="section level3 unnumbered hasAnchor">
+<h3>Cross-validation<a href="interpolation-in-r.html#cross-validation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>In addition to generating an interpolated surface, you can create a 95% confidence interval map of the interpolation model. Here we’ll create a 95% CI map from an IDW interpolation that uses a power parameter of 2 (<code>idp=2.0</code>).</p>
 <div class="sourceCode" id="cb435"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb435-1"><a href="interpolation-in-r.html#cb435-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Implementation of a jackknife technique to estimate </span></span>
 <span id="cb435-2"><a href="interpolation-in-r.html#cb435-2" aria-hidden="true" tabindex="-1"></a><span class="co"># a confidence interval at each unsampled point.</span></span>
@@ -884,8 +891,8 @@ This tip will be used in the next chunk of code when calling the <code>idw</code
 <p><img src="A10-Interpolation_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 </div>
 </div>
-<div id="st-order-polynomial-fit" class="section level2 unnumbered">
-<h2>1<sup>st</sup> order polynomial fit</h2>
+<div id="st-order-polynomial-fit" class="section level2 unnumbered hasAnchor">
+<h2>1<sup>st</sup> order polynomial fit<a href="interpolation-in-r.html#st-order-polynomial-fit" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>To fit a first order polynomial model of the form <span class="math inline">\(precip = intercept + aX + bY\)</span> to the data,</p>
 <div class="sourceCode" id="cb436"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb436-1"><a href="interpolation-in-r.html#cb436-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the 1st order polynomial equation</span></span>
 <span id="cb436-2"><a href="interpolation-in-r.html#cb436-2" aria-hidden="true" tabindex="-1"></a>f<span class="fl">.1</span> <span class="ot">&lt;-</span> <span class="fu">as.formula</span>(Precip_in <span class="sc">~</span> X <span class="sc">+</span> Y) </span>
@@ -912,8 +919,8 @@ This tip will be used in the next chunk of code when calling the <code>idw</code
 <span id="cb436-23"><a href="interpolation-in-r.html#cb436-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_legend</span>(<span class="at">legend.outside=</span><span class="cn">TRUE</span>)</span></code></pre></div>
 <p><img src="A10-Interpolation_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
 </div>
-<div id="nd-order-polynomial" class="section level2 unnumbered">
-<h2>2<sup>nd</sup> order polynomial</h2>
+<div id="nd-order-polynomial" class="section level2 unnumbered hasAnchor">
+<h2>2<sup>nd</sup> order polynomial<a href="interpolation-in-r.html#nd-order-polynomial" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>To fit a second order polynomial model of the form <span class="math inline">\(precip = intercept + aX + bY + dX^2 + eY^2 +fXY\)</span> to the data,</p>
 <div class="sourceCode" id="cb437"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb437-1"><a href="interpolation-in-r.html#cb437-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the 2nd order polynomial equation</span></span>
 <span id="cb437-2"><a href="interpolation-in-r.html#cb437-2" aria-hidden="true" tabindex="-1"></a>f<span class="fl">.2</span> <span class="ot">&lt;-</span> <span class="fu">as.formula</span>(Precip_in <span class="sc">~</span> X <span class="sc">+</span> Y <span class="sc">+</span> <span class="fu">I</span>(X<span class="sc">*</span>X)<span class="sc">+</span><span class="fu">I</span>(Y<span class="sc">*</span>Y) <span class="sc">+</span> <span class="fu">I</span>(X<span class="sc">*</span>Y))</span>
@@ -940,10 +947,10 @@ This tip will be used in the next chunk of code when calling the <code>idw</code
 <span id="cb437-23"><a href="interpolation-in-r.html#cb437-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_legend</span>(<span class="at">legend.outside=</span><span class="cn">TRUE</span>)</span></code></pre></div>
 <p><img src="A10-Interpolation_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
 </div>
-<div id="kriging" class="section level2 unnumbered">
-<h2>Kriging</h2>
-<div id="fit-the-variogram-model" class="section level3 unnumbered">
-<h3>Fit the variogram model</h3>
+<div id="kriging" class="section level2 unnumbered hasAnchor">
+<h2>Kriging<a href="interpolation-in-r.html#kriging" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="fit-the-variogram-model" class="section level3 unnumbered hasAnchor">
+<h3>Fit the variogram model<a href="interpolation-in-r.html#fit-the-variogram-model" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>First, we need to create a variogram model. Note that the variogram model is computed on the <strong>de-trended</strong> data. This is implemented in the following chunk of code by passing the 1<sup>st</sup> order trend model (defined in an earlier code chunk as formula object <code>f.1</code>) to the <code>variogram</code> function.</p>
 <div class="sourceCode" id="cb438"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb438-1"><a href="interpolation-in-r.html#cb438-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the 1st order polynomial equation</span></span>
 <span id="cb438-2"><a href="interpolation-in-r.html#cb438-2" aria-hidden="true" tabindex="-1"></a>f<span class="fl">.1</span> <span class="ot">&lt;-</span> <span class="fu">as.formula</span>(Precip_in <span class="sc">~</span> X <span class="sc">+</span> Y) </span>
@@ -962,8 +969,8 @@ This tip will be used in the next chunk of code when calling the <code>idw</code
 <span id="cb438-15"><a href="interpolation-in-r.html#cb438-15" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(var.smpl, dat.fit, <span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1000000</span>))</span></code></pre></div>
 <p><img src="A10-Interpolation_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 </div>
-<div id="generate-kriged-surface" class="section level3 unnumbered">
-<h3>Generate Kriged surface</h3>
+<div id="generate-kriged-surface" class="section level3 unnumbered hasAnchor">
+<h3>Generate Kriged surface<a href="interpolation-in-r.html#generate-kriged-surface" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Next, use the variogram model <code>dat.fit</code> to generate a kriged interpolated surface. The <code>krige</code> function allows us to include the trend model thus saving us from having to de-trend the data, krige the residuals, then combine the two rasters. Instead, all we need to do is pass <code>krige</code> the trend formula <code>f.1</code>.</p>
 <div class="sourceCode" id="cb439"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb439-1"><a href="interpolation-in-r.html#cb439-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the trend model</span></span>
 <span id="cb439-2"><a href="interpolation-in-r.html#cb439-2" aria-hidden="true" tabindex="-1"></a>f<span class="fl">.1</span> <span class="ot">&lt;-</span> <span class="fu">as.formula</span>(Precip_in <span class="sc">~</span> X <span class="sc">+</span> Y) </span>
@@ -984,8 +991,8 @@ This tip will be used in the next chunk of code when calling the <code>idw</code
 <span id="cb439-17"><a href="interpolation-in-r.html#cb439-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_legend</span>(<span class="at">legend.outside=</span><span class="cn">TRUE</span>)</span></code></pre></div>
 <p><img src="A10-Interpolation_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 </div>
-<div id="generate-the-variance-and-confidence-interval-maps" class="section level3 unnumbered">
-<h3>Generate the variance and confidence interval maps</h3>
+<div id="generate-the-variance-and-confidence-interval-maps" class="section level3 unnumbered hasAnchor">
+<h3>Generate the variance and confidence interval maps<a href="interpolation-in-r.html#generate-the-variance-and-confidence-interval-maps" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The <code>dat.krg</code> object stores not just the interpolated values, but the variance values as well. These can be passed to the raster object for mapping as follows:</p>
 <div class="sourceCode" id="cb440"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb440-1"><a href="interpolation-in-r.html#cb440-1" aria-hidden="true" tabindex="-1"></a>r   <span class="ot">&lt;-</span> <span class="fu">raster</span>(dat.krg, <span class="at">layer=</span><span class="st">&quot;var1.var&quot;</span>)</span>
 <span id="cb440-2"><a href="interpolation-in-r.html#cb440-2" aria-hidden="true" tabindex="-1"></a>r.m <span class="ot">&lt;-</span> <span class="fu">mask</span>(r, W)</span>
@@ -995,7 +1002,7 @@ This tip will be used in the next chunk of code when calling the <code>idw</code
 <span id="cb440-6"><a href="interpolation-in-r.html#cb440-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">title=</span><span class="st">&quot;Variance map </span><span class="sc">\n</span><span class="st">(in squared inches)&quot;</span>) <span class="sc">+</span><span class="fu">tm_shape</span>(P) <span class="sc">+</span> <span class="fu">tm_dots</span>(<span class="at">size=</span><span class="fl">0.2</span>) <span class="sc">+</span></span>
 <span id="cb440-7"><a href="interpolation-in-r.html#cb440-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_legend</span>(<span class="at">legend.outside=</span><span class="cn">TRUE</span>)</span></code></pre></div>
 <p><img src="A10-Interpolation_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
-<p>Are more readily interpretable map is the 95% confidence interval map which can be generated from the variance object as follows (the map values should be interpreted as the number of inches above and below the estimated rainfall amount).</p>
+<p>A more readily interpretable map is the 95% confidence interval map which can be generated from the variance object as follows (the map values should be interpreted as the number of inches above and below the estimated rainfall amount).</p>
 <div class="sourceCode" id="cb441"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb441-1"><a href="interpolation-in-r.html#cb441-1" aria-hidden="true" tabindex="-1"></a>r   <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">raster</span>(dat.krg, <span class="at">layer=</span><span class="st">&quot;var1.var&quot;</span>)) <span class="sc">*</span> <span class="fl">1.96</span></span>
 <span id="cb441-2"><a href="interpolation-in-r.html#cb441-2" aria-hidden="true" tabindex="-1"></a>r.m <span class="ot">&lt;-</span> <span class="fu">mask</span>(r, W)</span>
 <span id="cb441-3"><a href="interpolation-in-r.html#cb441-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1025,7 +1032,6 @@ This tip will be used in the next chunk of code when calling the <code>idw</code
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
-<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
 <script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
@@ -1066,9 +1072,9 @@ gitbook.start({
 "link": null,
 "text": null
 },
-"download": ["_main.pdf", "_main.epub"],
+"download": {},
 "search": {
-"engine": "lunr",
+"engine": "fuse",
 "options": null
 },
 "toc": {
@@ -1085,7 +1091,7 @@ gitbook.start({
     var script = document.createElement("script");
     script.type = "text/javascript";
     var src = "true";
-    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:")
       if (/^https?:/.test(src))
         src = src.replace(/^https?:/, '');
