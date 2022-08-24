@@ -173,11 +173,24 @@ p.sf
 
 ### Geocoding street addresses {-#app1_4_6}
 
-The `ggmap` package offers a geocoding function called `mutate_geocode` which will take a table with physical addresses and create a new table with latitude and longitude values for those addresses. However, as of Spring 2019, `ggmap` will only access Google's API  which requires that a key be created on the Google Cloud (the latter will also require that a paid account be created with Google Cloud). The Data Science Toolkit, a previously free API alternative, has (as of May 2019) terminated its mapping services.
+The `tidygeocoder` package will convert street addresses to latitude/longitude coordinate pairs using a wide range of geocoding services such as the US census and Google. Some of these geocoding services will require an API key, others will not. Click [here](https://jessecambon.github.io/tidygeocoder/articles/geocoder_services.html) to see the list of geocoding services supported by `tidygeocoder` and their geocoding limitations. In the example that follows, the `osm` geocoding service is used by default.
 
-The Google API option will not be covered here, instead, the reader is encouraged to read the detailed instructions on `ggmap`'s [Github page](https://github.com/dkahle/ggmap).
+```{r}
+library(tidygeocoder)
 
-For a free (but manual) alternative, you can use the US Census Bureau's [geocoding service](https://geocoding.geo.census.gov/geocoder/locations/addressbatch?form) for creating lat/lon values from US street addresses. This needs to be completed via their web interface and the resulting data table (a CSV file) would then need to be loaded into R as a data frame.
+options(pillar.sigfig = 7) # Increase significant digits in displayed output
+
+dat <- data.frame(
+  name = c("Colby College", "Bates College", "Bowdoin College"),
+  address = c("4000 Mayflower drive, Waterville, ME , 04901",
+              "275 College st, Lewiston, ME 04240",
+              "255 Maine St, Brunswick, ME 04011"))
+
+geocode(.tbl = dat, address = address, method = "osm")           
+
+```
+
+Another free (but manual) alternative, is to use the US Census Bureau's web [geocoding service](https://geocoding.geo.census.gov/geocoder/locations/addressbatch?form) for creating lat/lon values from a file of US street addresses. This needs to be completed via their web interface and the resulting data table (a CSV file) would then need to be loaded into R as a data frame.
 
 ## Converting from an `sf` object {-#app1_5}
 
