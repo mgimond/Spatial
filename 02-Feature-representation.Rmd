@@ -175,7 +175,8 @@ brks   <- seq(0.5,1.0, .1)
 brks[6] <- 1.00001 
 clr     <- brewer.pal(5,"Greens")
 coords <- st_coordinates(st_centroid(eire))
-tm_shape(eire) + tm_polygons("x", style = "fixed", breaks = round(brks,1), pal = clr) +
+tm_shape(eire) + tm_polygons("x", style = "fixed", breaks = round(brks,1), 
+                             pal = clr, title = "Original value") +
   tm_legend(outside = T) +
   tm_text(text = "x", size = 0.6)
 ```
@@ -183,7 +184,8 @@ tm_shape(eire) + tm_polygons("x", style = "fixed", breaks = round(brks,1), pal =
 
 ```{r echo=FALSE, fig.cap = "Map of same data represented as integers instead of float.", fig.height=3}
 eire$x.int <- round(eire$x) 
-tm_shape(eire) + tm_polygons("x.int", style = "fixed", breaks = round(brks,1), pal = clr) +
+tm_shape(eire) + tm_polygons("x.int", style = "fixed", breaks = round(brks,1), 
+                             pal = clr, title = "Rounded value") +
   tm_legend(outside = T) +
   tm_text(text = "x.int", size = 0.6)
 
