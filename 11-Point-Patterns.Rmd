@@ -35,13 +35,13 @@ $\begin{equation}
 \end{equation}$
 
 
-```{r f11-gobal-dens,  fig.cap="An example of a point pattern where n = 20 and the study area (defined by a square boundary) is 10 units squared. The point density is thus 20/100 = 0.2 points per unit area.", fig.height=2.5, fig.width=2.5, echo=FALSE}
+```{r f11-gobal-dens,  fig.cap="An example of a point pattern where n = 31 and the study area (defined by a square boundary) is 10 units squared. The point density is thus 31/100 = 0.31 points per unit area.", fig.height=2.5, fig.width=2.5, echo=FALSE}
 
 library(spatstat) 
 library(ggplot2)
 cell <- 10
 win  <- owin(xrange=c(0,cell),yrange=c(0,cell))
-set.seed(342)
+set.seed(3452)
 P    <- rMatClust(0.5, 1, 0.5,win=win)
 ggplot(aes(x = x, y = y), data = as.data.frame(P)) + theme(legend.position = "none") +   
        geom_point(data = as.data.frame(P), mapping=aes(x=x, y=y), size=1.5, shape=16, colour="grey20") +   
@@ -85,7 +85,7 @@ OP <- par(mfrow = c(1,2), mar=c(0,0,0,3))
 plot.im(elev, col=grey(50:0/50), main=NULL, las=2)
 plot(P, col=rgb(0,0,0,.7), add=T, pch=20)
 
-brk  <- c( 150, 175, 200, 220 , 250)
+brk  <- c( 260, 286, 301, 318 , 370)
 Zcut <- cut(elev, breaks=brk, labels=1:4) 
   V  <- tess(image=Zcut)
 plot(V$image, main="", las=2, col=colorRampPalette(c("grey90","grey20"))(V$n))
@@ -99,7 +99,8 @@ If the local intensity changes across the tessellated covariate, then there is e
 
 ```{r f11-quad03, fig.cap="Figure on the left displays the number of points in each elevation sub-region (sub-regions are coded as values ranging from 1 to 4). Figure on the right shows the density of points (number of points divided by the area of the sub-region).", fig.height=2, fig.width=6.0, echo=FALSE}
 
-cl <-  interp.colours(c("lightyellow", "orange" ,"red"), 40)
+cl <-  colourmap(c("#FFFFDA", "#FFDF5F", "#FF9100", "#FF0400"),
+                  breaks=c(0, 0.31, 0.35, 0.4,  0.4222))
 Q2 <- quadratcount(P, tess = V)
 
 OP <- par(mfrow = c(1,2), mar=c(0,0,0,3))
@@ -121,14 +122,13 @@ ggplot() + aes(y=as.numeric(Q2i), x=1:4)  + geom_point() + geom_line() +xlab("El
 
 ```
 
-Though there is a steep increase in density at the highest elevation range, this increase is not monotonic across all ranges of increasing elevation suggesting that density may not be explained by elevation alone.
-
-It's important to note that how one _chooses_ to tessellate a surface can have an influence on the resulting density distribution. For example, dividing the elevation into *equal area* sub-regions produces the following density values.
+It's important to note that how one _chooses_ to tessellate a surface can have an influence on the resulting density distribution. For example, dividing the elevation into seven sub-regions produces the following density values.
 
 ```{r f11-quad05, fig.cap="Same analysis as last figure using different sub-regions. Note the difference in density values.", fig.height=2, fig.width=6.0, echo=FALSE}
 
-brk  <- quantile(elev, probs=(0:4)/4, type=2)
-Zcut <- cut(elev, breaks=brk, labels=1:4) 
+n_cut <- 7
+brk  <- quantile(elev, probs=(0:n_cut)/n_cut, type=2)
+Zcut <- cut(elev, breaks=brk, labels=1:n_cut) 
   V  <- tess(image=Zcut)
 
 OP <- par(mfrow = c(1,2), mar=c(0,0,0,3))
@@ -138,6 +138,8 @@ plot(Q2, show.tiles=FALSE, add=TRUE)
 plot(P, pch=20, add=T)
 Q2i <- intensity(Q2)
 int <- round(data.frame(Q2i)$Freq, 3)
+cl <-  colourmap(interp.colours(c("lightyellow", "orange" ,"red"), n_cut),
+                 breaks=c(0,sort(intensity(Q2))) )
 plot(intensity(Q2, image=TRUE), col = cl, las=2, main=NULL)
 plot(Q2, add=T, show.tiles = FALSE, entries= int)
 par(OP)
@@ -156,8 +158,9 @@ A kernel not only defines the shape and size of the window, but it can also *wei
 
 ```{r f11-kernel01, fig.cap="An example of a basic 3x3 kernel density map (ArcGIS calls this a point density map) where each point is assigned an equal weight. For example, the second cell from the top and left (i.e. centered at location x=1.5 and y =8.5) has one point within a 3x3 unit (pixel) region and thus has a local density of 1/9 = 0.11.", fig.height=3.5, echo=FALSE}
 
-library(raster)
-library(maptools)
+#library(raster)
+library(terra)
+#library(maptools)
 library(grid)
 
 gp.text <- function(sg, nr=1, sfmt="%02.0f",x1,x2,y1,y2,src){
@@ -165,7 +168,8 @@ gp.text <- function(sg, nr=1, sfmt="%02.0f",x1,x2,y1,y2,src){
   sg.names  = names(sg)
   sg        = crop(sg, c(x1,x2,y1,y2))
   names(sg) = sg.names # Renaming the layers is necessary if the brick object is cropped
-  r.df      = as.data.frame(cbind(xyFromCell(sg,1:ncell(sg)),getValues(sg)))
+  r.df      = as.data.frame(cbind(xyFromCell(sg,1:ncell(sg))))
+  r.df      = cbind(r.df, as.data.frame(sg))
   ggplot(aes(x = x, y = y), data = r.df, environment = environment()) + 
     geom_tile(aes(fill = Point.density)) + 
     scale_fill_gradient(low = "#F0F9E8",high = "#08589E", name="Basic \nKernel") +
@@ -193,17 +197,18 @@ fesri <- function(sigma, n=5) {
   m / sum(m)
 }
 
-P.s = as.SpatialPoints.ppp(P)
-r = raster(nrows=cell,ncols=cell,xmn=0,xmx=cell,ymn=0,ymx=cell)
+r = rast(nrows=cell,ncols=cell,xmin=0,xmax=cell,ymin=0,ymax=cell)
 r[] = 0
-P.r = rasterize(P.s,r,field=1,fun=sum) # Cell value is assigned number of points
+Psf <- st_as_sf(P)[-1,]
+P.r = rasterize(Psf, r, field=1, fun=sum) # Cell value is assigned number of points
 P.r[is.na(P.r[])] = 0
 
 # Point density
 d.p = focal(P.r, w=matrix(1,nrow=3,ncol=3), fun=sum, na.rm=T, pad=T, padValue=0)
 d.p[] = d.p[] / 9  # Divide by kernel area
 
-sg = brick(d.p)
+#sg = brick(d.p)
+sg = d.p
 names(sg) = c("Point.density")
 gp.text(sg, nr=1, sfmt="%0.2f", x1=0,x2=cell,y1=0,y2=cell,src=P)
 
@@ -213,8 +218,9 @@ Some of the most popular **kernel functions** assign weights to points that are 
 
 ```{r f11-kernel02, fig.cap="An example of a kernel function is the 3x3 quartic kernel function where each point in the kernel window is weighted based on its proximity to the kernel's center cell (typically, closer points are weighted more heavily). Kernel functions, like the quartic, tend to generate smoother surfaces.", fig.height=3.5, echo=FALSE}
 
-library(raster)
-library(maptools)
+#library(raster)
+library(terra)
+#library(maptools)
 library(grid)
 
 gp.text <- function(sg, nr=1, sfmt="%02.0f",x1,x2,y1,y2,src){
@@ -222,7 +228,8 @@ gp.text <- function(sg, nr=1, sfmt="%02.0f",x1,x2,y1,y2,src){
   sg.names  = names(sg)
   sg        = crop(sg, c(x1,x2,y1,y2))
   names(sg) = sg.names # Renaming the layers is necessary if the brick object is cropped
-  r.df       = as.data.frame(cbind(xyFromCell(sg,1:ncell(sg)),getValues(sg)))
+  r.df      = as.data.frame(cbind(xyFromCell(sg,1:ncell(sg))))
+  r.df      = cbind(r.df, as.data.frame(sg))
   ggplot(aes(x = x, y = y), data = r.df, environment = environment()) + 
     geom_tile(aes(fill = Kernel.function)) + 
     scale_fill_gradient(low = "#F0F9E8",high = "#08589E", name="Kernel \nFunction") +
@@ -250,17 +257,18 @@ fesri <- function(sigma, n=5) {
   m / sum(m)
 }
 
-P.s = as.SpatialPoints.ppp(P)
-r = raster(nrows=cell,ncols=cell,xmn=0,xmx=cell,ymn=0,ymx=cell)
+r = rast(nrows=cell,ncols=cell,xmin=0,xmax=cell,ymin=0,ymax=cell)
 r[] = 0
-P.r = rasterize(P.s,r,field=1,fun=sum) # Cell value is assigned number of points
+Psf <- st_as_sf(P)[-1,]
+P.r = rasterize(Psf, r, field=1, fun=sum) # Cell value is assigned number of points
 P.r[is.na(P.r[])] = 0
 
 # Kernel function
 ff=fesri(1.52,n=5)  # An approximation of ESRI's kernel density function
 d.k = focal(P.r, w=ff, na.rm=T, pad=T, padValue=0)
 
-sg = brick(d.k)
+#sg = brick(d.k)
+sg = d.k
 names(sg) = c("Kernel.function")
 gp.text(sg, nr=1, sfmt="%0.2f", x1=0,x2=cell,y1=0,y2=cell,src=P)
 
@@ -281,10 +289,10 @@ rho  <- rhohat(P, elev, method="ratio")
 pred <- predict(rho)
 cl <-  interp.colours(c("lightyellow", "orange" ,"red"), 100)
 OP <- par(mfrow=c(1,3), mar=c(2.5,3.5,0.2,4), pty="s" )
-plot(raster(elev), col=grey(50:0/50), main=NULL, las=1,cex.axis=0.9,mgp=c(1.5,0.5,0))
+plot(rast(elev), col=grey(50:0/50), main="", las=1,cex.axis=0.9,mgp=c(1.5,0.5,0))
 plot(P, col=rgb(0,0,0,.7), add=T, pch=20)
 plot(rho, main=NULL, las=1, legend=FALSE, do.rug=FALSE, cex.lab=1.2, cex.axis=0.9, mgp=c(1.5,0.5,0))
-plot(raster(pred), col=cl, las=1, main=NULL, ribargs=list(cex.axis=1), cex.lab=1.5, cex.axis=0.9,mgp=c(1.5,0.5,0))
+plot(rast(pred), col=cl, las=1, main="",  cex.lab=1.5, cex.axis=0.9,mgp=c(1.5,0.5,0))
 par(OP)
 ```
 
@@ -330,23 +338,17 @@ $$
 Let's work with the point distribution of Starbucks cafes in the state of Massachusetts. The point pattern clearly exhibits a non-random distribution. It might be helpful to compare this distribution to some underlying covariate such as the population density distribution.
 
 ```{r f11-starbucks, fig.cap="Location of Starbucks relative to population density. Note that the classification scheme follows a log scale to more easily differentiate population density values.", message=FALSE, fig.height=3, fig.width=7, echo=FALSE, results='hide'}
-library(spatstat)
-library(maptools)
-library(rgdal)
 
 # Load Starbucks point locations
-S  <- readShapePoints("./Data/Starbucks.shp")
-SP <- as(S, "SpatialPoints")
-P2  <- as(SP, "ppp")
+S  <- st_read("./Data/Starbucks.shp")
 
 # Load population density raster layer
-r   <- readGDAL("./Data/pop_sqmile.img")
-pop <- as.im(r)  # Convert r object to an im object
+r   <- rast("./Data/pop_sqmile.img")
+pop <- r  
 
 # Display data
-rasterVis::levelplot(raster::raster(pop), scales=list(draw=FALSE), 
-                     zscaleLog=TRUE, margin=FALSE, border="transparent") +
-  latticeExtra::layer(sp.points(SP, pch=20, col=rgb(0,0,0,0.5),cex=1.3))
+plot(log(pop ), grid = FALSE, axes = FALSE)
+plot(S$geometry, add = TRUE, pch=20, col=rgb(0,0,0,0.5), cex=1.3)
 ```
 
 We can fit a poisson point process model to these data where the modeled intensity takes on the form:
