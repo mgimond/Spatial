@@ -1,3 +1,8 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
 # (PART\*) PART 1: Working with spatial data {-}
 
 # Feature Representation {#chp02_0}
@@ -158,25 +163,28 @@ While storing an integer value as a float may not have dire consequences, the sa
 
 ```{r echo=FALSE, fig.cap = "Map of data represented as decimal (float) values.",  fig.height=3}
 
-library(spdep)
-library(maptools)
+library(sf)
+#library(spdep)
+library(tmap)
 library(RColorBrewer)
 fn     <- system.file("etc/shapes/eire.shp", package = "spdep")[1] 
-prj    <- CRS("+proj=utm +zone=30 +units=km") 
-eire   <- readShapeSpatial(fn, ID = "names", proj4string = prj) 
-eire$x <- log(eire$INCOME) / max(log(eire$INCOME)) 
+eire   <- st_read(fn) 
+st_crs(eire) <- st_crs("+proj=utm +zone=30 +units=km") 
+eire$x <- round(log(eire$INCOME) / max(log(eire$INCOME)),2)
 brks   <- seq(0.5,1.0, .1) 
 brks[6] <- 1.00001 
 clr     <- brewer.pal(5,"Greens")
-l1 <- list(sp.text, coordinates(eire), as.character(round(eire$x,2)), cex=0.5 ) 
-spplot(eire, z="x", at= brks, col.regions =clr, col="white", sp.layout=l1)
-
+coords <- st_coordinates(st_centroid(eire))
+tm_shape(eire) + tm_polygons("x", style = "fixed", breaks = round(brks,1), pal = clr) +
+  tm_legend(outside = T) +
+  tm_text(text = "x", size = 0.6)
 ```
 
 
 ```{r echo=FALSE, fig.cap = "Map of same data represented as integers instead of float.", fig.height=3}
 eire$x.int <- round(eire$x) 
-l2 <- list(sp.text, coordinates(eire), as.character(round(eire$x.int,2)), cex=0.5 ) 
-spplot(eire, z="x.int", at= brks, col.regions =clr, col="white", sp.layout=l2)
+tm_shape(eire) + tm_polygons("x.int", style = "fixed", breaks = round(brks,1), pal = clr) +
+  tm_legend(outside = T) +
+  tm_text(text = "x.int", size = 0.6)
 
 ```
