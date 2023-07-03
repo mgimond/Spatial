@@ -3,12 +3,13 @@
 Given a distribution of point meteorological stations showing precipitation values, how I can I estimate the precipitation values where data were not observed?  
 
 ```{r f14-precip-map, echo=FALSE, results='hide', fig.height=3, fig.cap="Average yearly precipitation (reported in inches) for several meteorological sites in Texas."}
-library(rgdal)
+library(terra)
 library(tmap)
 
 # Load precipitation point data
 z <- gzcon(url("https://github.com/mgimond/Spatial/raw/main/Data/precip.rds"))
 P <- readRDS(z)
+P_crs <- crs(P)
 
 # Load extent data
 z <- gzcon(url("https://github.com/mgimond/Spatial/raw/main/Data/texas.rds"))
@@ -41,16 +42,17 @@ This is probably the simplest (and possibly one of the oldest) interpolation met
 ```{r f14-proximity, echo=FALSE, message=FALSE, results='hide',  fig.height=3.3, results='hold', fig.cap="Tessellated surface generated from discrete point samples. This is also known as a *Thiessen interpolation*."}
 
 library(spatstat)  # Used for the dirichlet tesselation function
-library(maptools)  # Used for conversion from SPDF to ppp
-library(raster)    # Used to clip out thiessen polygons
+library(sf)
+library(sp)
 
-
-# Create a tessilated surface
-th    <-   as(dirichlet(as.ppp(P)), "SpatialPolygons")
-proj4string(th) <- proj4string(P)
-th.z  <- over(th, P, fn=mean)
-th.spdf  <-  SpatialPolygonsDataFrame(th, th.z)
-th.clp <- raster::intersect(W,th.spdf)
+# Create a tessellated surface
+P.ppp <- st_as_sf(P) |> st_geometry() |> as.ppp()
+Window(P.ppp) <- as.owin(st_geometry(st_as_sf(W)))
+th <- dirichlet(P.ppp) |> st_as_sfc()
+st_crs(th) <- P_crs
+th.z  <- over(as_Spatial(th), P, fn=mean, na.rm = TRUE)
+th.spdf  <-  SpatialPolygonsDataFrame(as_Spatial(th), th.z)
+th.clp <- terra::intersect(W,th.spdf)
 
 tm_shape(th.clp) + tm_polygons(col="Precip_in", palette="RdBu", auto.palette.mapping=FALSE) +
   tm_legend(legend.outside=TRUE)
@@ -75,24 +77,23 @@ In the following figure, the sampled points and values are superimposed on top o
 ```{r f14-idw1,echo=FALSE, message=FALSE, results='hide',  fig.height=3.3,  cache=FALSE, fig.cap="An IDW interpolation of the average yearly precipitation (reported in inches) for several meteorological sites in Texas. An IDW power coefficient of 2 was used in this example."}
 library(gstat) # Use gstat's idw routine
 library(sp)    # Used for the spsample function
-library(raster)
-library(tmap)
+library(terra)
 
 # Create an empty grid where n is the total number of cells
-grd              <- as.data.frame(spsample(P, "regular", n=50000))
+grd              <- as.data.frame(spsample(W, "regular", n=50000))
 names(grd)       <- c("X", "Y")
 coordinates(grd) <- c("X", "Y")
 gridded(grd)     <- TRUE  # Create SpatialPixel object
 fullgrid(grd)    <- TRUE  # Create SpatialGrid object
-proj4string(P)   <- proj4string(P)  # Temp fix to until proj is updated to new std
-proj4string(grd) <- proj4string(P)
+crs(grd) <- P_crs
 
 # Interpolate the surface using a power value of 2 (idp=2.0)
-P.idw <- gstat::idw(Precip_in ~ 1,P,newdata=grd,idp=2.0)
+P.idw <- gstat::idw(Precip_in ~ 1, P, newdata=grd,idp=2.0)
+P.idw@data <- P.idw@data[1] # Remove variance layer
 
 # Convert to raster object then clip to Texas
-r       <- raster(P.idw)
-r.m     <- mask(r, W)
+r   <- rast(P.idw)
+r.m <- mask(r, st_as_sf(W))
 
 # Plot
 tm_shape(r.m) + tm_raster(n=10, palette="RdBu", auto.palette.mapping=FALSE, title="Predicted precip") +
@@ -105,19 +106,20 @@ In the following example, an $n$ value of `15` is used to interpolate precipitat
 ```{r f14-idw2, echo=FALSE, message=FALSE, results='hide',  fig.height=3.3,  cache=FALSE, fig.cap="An IDW interpolation of the average yearly precipitation (reported in inches) for several meteorological sites in Texas. An IDW power coefficient of 15 was used in this example."}
 
 # Create an empty grid where n is the total number of cells
-grd              <- as.data.frame(spsample(P, "regular", n=50000))
+grd              <- as.data.frame(spsample(W, "regular", n=50000))
 names(grd)       <- c("X", "Y")
 coordinates(grd) <- c("X", "Y")
 gridded(grd)     <- TRUE  # Create SpatialPixel object
 fullgrid(grd)    <- TRUE  # Create SpatialGrid object
-proj4string(grd) <- proj4string(P)
+crs(grd) <- P_crs
 
 # Interpolate the surface using a power value of 15 (idp=15)
-P.idw <- gstat::idw(Precip_in ~ 1,P,newdata=grd,idp=15)
+P.idw <- gstat::idw(Precip_in ~ 1, P, newdata=grd, idp=15)
+P.idw@data <- P.idw@data[1] # Remove variance layer
 
 # Convert to raster object then clip to Texas
-r       <- raster(P.idw)
-r.m     <- mask(r, W)
+r       <- rast(P.idw)
+r.m     <- mask(r, st_as_sf(W))
 
 # Plot
 tm_shape(r.m) + tm_raster(n=10, palette="RdBu", auto.palette.mapping=FALSE, title="Predicted precip") +
@@ -176,10 +178,12 @@ n   <- length(P)
 Zi  <- matrix(nrow = length(img$var1.pred), ncol = n)
 
 # Remove a point then interpolate (do this n times for each point)
-st <- stack()
+#st <- stack()
+st <- rast()
 for (i in 1:n){
   Z1 <- gstat::idw(Precip_in~1, P[-i,], newdata=grd, idp=2.0,nmax=15)
-  st <- addLayer(st,raster(Z1,layer=1))
+  #st <- addLayer(st,raster(Z1,layer=1))
+  st <- c(st, rast(Z1)$var1.pred  )
   # Calculated pseudo-value Z at j
   Zi[,i] <- n * img$var1.pred - (n-1) * Z1$var1.pred
 }
@@ -199,8 +203,8 @@ img.sig   <- img
 img.sig$v <- CI /img$var1.pred 
 
 # Plot the data
-r <- raster(img.sig, layer="v")
-r.m <- mask(r, W)
+r <- rast(img.sig)$v
+r.m <- mask(r, st_as_sf(W))
 
 tm_shape(r.m) + tm_raster(n=7, title="95% confidence interval (in inches)") +tm_shape(P) + tm_dots(size=0.2) +
   tm_legend(legend.outside=TRUE)
@@ -234,8 +238,8 @@ dat.0th <- SpatialGridDataFrame(grd, data.frame(var1.pred = predict(lm.0, newdat
 
 # Convert to raster object to take advantage of rasterVis' imaging
 # environment
-r   <- raster(dat.0th)
-r.m <- mask(r, W)
+r   <- rast(dat.0th)
+r.m <- mask(r, st_as_sf(W))
 
 tm_shape(r.m) + tm_raster( title="Predicted precip") +tm_shape(P) + tm_dots(size=0.2) +
   tm_legend(legend.outside=TRUE)
@@ -262,8 +266,8 @@ lm.1 <- lm( f.1, data=P)
 # Use the regression model output to interpolate the surface
 dat.1st <- SpatialGridDataFrame(grd, data.frame(var1.pred = predict(lm.1, newdata=grd))) 
 
-r   <- raster(dat.1st)
-r.m <- mask(r, W)
+r   <- rast(dat.1st)
+r.m <- mask(r, st_as_sf(W))
 
 tm_shape(r.m) + tm_raster(n=10, palette="RdBu", auto.palette.mapping=FALSE,title="Predicted precip") +tm_shape(P) + tm_dots(size=0.2) +
   tm_legend(legend.outside=TRUE)
@@ -286,8 +290,8 @@ lm.2 <- lm( f.2, data=P)
 # Use the regression model output to interpolate the surface
 dat.2nd <- SpatialGridDataFrame(grd, data.frame(var1.pred = predict(lm.2, newdata=grd))) 
 
-r   <- raster(dat.2nd)
-r.m <- mask(r, W)
+r   <- rast(dat.2nd)
+r.m <- mask(r, st_as_sf(W))
 
 tm_shape(r.m) + tm_raster(n=10, palette="RdBu", auto.palette.mapping=FALSE, title="Predicted precip") +tm_shape(P) + tm_dots(size=0.2) +
   tm_legend(legend.outside=TRUE)
@@ -363,7 +367,7 @@ We can compute $\gamma$ for *all* point pairs then plot these values as a functi
 
 ```{r f14-variogram, echo=FALSE, fig.show='hold', fig.height=3.3, results='hide', cache=TRUE, fig.cap="Experimental variogram plot of precipitation residual values."}
 
-var.cld  <- variogram(res ~ 1, P, cloud = TRUE, cutoff=1000000)
+var.cld  <- gstat::variogram(res ~ 1, P, cloud = TRUE, cutoff=1000000)
 var.df  <- as.data.frame(var.cld)
 index1  <- which(with(var.df, left==21 & right==2))
 
@@ -385,7 +389,7 @@ Cloud points can be difficult to interpret due to the sheer number of point pair
 
 ```{r f14-sample-variogram, echo=FALSE, fig.show='hold', fig.height=3.3, results='hide', cache=TRUE, fig.cap="Sample experimental variogram plot of precipitation residual values."}
 # Compute the sample experimental variogram
-var.smpl <- variogram(f.1, P, cloud = FALSE, cutoff=1000000, width=89900)
+var.smpl <- gstat::variogram(f.1, P, cloud = FALSE, cutoff=1000000, width=89900)
 
 bins.ct <- c(0, var.smpl$dist , max(var.cld$dist) )
 bins <- vector()
@@ -413,9 +417,9 @@ The next step is to fit a mathematical model to our *sample experimental variogr
 
 library(stringr)
 library(lattice)
-kk <- str_extract_all(vgm()$long, "\\([^()]+\\)")
+kk <- str_extract_all(gstat::vgm()$long, "\\([^()]+\\)")
 kk <- substring(kk, 2, nchar(kk)-1)
-show.vgms(strip=strip.custom(factor.levels=kk))
+gstat::show.vgms(strip=strip.custom(factor.levels=kk))
 ```
 
 The goal is to apply the model that best fits our sample experimental variogram. This requires picking the proper model, then tweaking the **partial sill**, **range**, and **nugget** parameters (where appropriate). The following figure illustrates a nonzero intercept where the *nugget* is the distance between the $0$ variance on the $y$ axis and the variogram's model intercept with the $y$ axis. The *partial sill* is the vertical distance between the nugget and the part of the curve that levels off. If the variogram approaches $0$ on the $y$-axis, then the nugget is $0$ and the *partial sill* is simply referred to as the **sill**. The distance along the $x$ axis where the curve levels off is referred to as the *range*.
@@ -424,6 +428,7 @@ The goal is to apply the model that best fits our sample experimental variogram.
 
 # Following plot is a modified version of Bivand et al.'s fig. 8.6
 library(lattice)
+library(gstat)
 ccol <- 'blue' 
 data(meuse)
 coordinates(meuse) <- c("x","y")
@@ -473,8 +478,8 @@ The variogram model is used by the kriging interpolator to provide *localized* w
 ```{r f14-krige01, echo=FALSE,  results='hide',  fig.height=3.3, cache=TRUE, fig.cap="Krige interpolation of the residual (detrended) precipitation values.", fig.align='center'}
 dat.krg <- krige( res~1, P, grd, dat.fit)
 
-r <- raster(dat.krg)
-r.m <- mask(r, W)
+r <- rast(dat.krg)$var1.pred
+r.m <- mask(r, st_as_sf(W))
 
 # Plot the raster and the sampled points
 tm_shape(r.m) + tm_raster(n=10, palette="RdBu", auto.palette.mapping=FALSE,title="Predicted residual \nprecip") +tm_shape(P) + tm_dots(size=0.2) +
@@ -498,8 +503,8 @@ f.1 <- as.formula(Precip_in ~ X + Y)
 dat.krg <- krige( f.1, P, grd, dat.fit)
 
 # Convert kriged surface to a raster object
-r <- raster(dat.krg)
-r.m <- mask(r, W)
+r <- rast(dat.krg)$var1.pred
+r.m <- mask(r, st_as_sf(W))
 
 tm_shape(r.m) + tm_raster(n=10, palette="RdBu", auto.palette.mapping=FALSE, title="Predicted precip") +tm_shape(P) + tm_dots(size=0.2) +
   tm_legend(legend.outside=TRUE)
@@ -512,8 +517,8 @@ A valuable by-product of the kriging operation is the variance map which gives u
 # The dat.krg object stores not just the interpolated values, but the 
 # variance values as well. These can be passed to the raster object
 # instead of the interpolated values as follows
-r <- raster(dat.krg, layer="var1.var")
-r.m <- mask(r, W)
+r <- rast(dat.krg)$var1.var
+r.m <- mask(r, st_as_sf(W))
 
 tm_shape(r.m) + tm_raster(n=7, palette ="Reds", ,title="Variance map \n(in squared inches)") +tm_shape(P) + tm_dots(size=0.2) +
   tm_legend(legend.outside=TRUE)

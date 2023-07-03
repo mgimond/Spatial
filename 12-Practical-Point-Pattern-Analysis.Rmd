@@ -198,24 +198,30 @@ For example, we may want to assess if the Poisson point process model that pits 
 
 ```{r echo=FALSE, message=FALSE, results='hide'}
 library(spatstat)
-library(maptools)
-library(rgdal)
+library(terra)
+library(sf)
+# library(maptools)
+# library(rgdal)
 
 # Load Starbucks point locations
-S  <- readShapePoints("./Data/Walmarts.shp")
-SP <- as(S, "SpatialPoints")
-P  <- as(SP, "ppp")
+S  <- st_read("./Data/Walmarts.shp")
+P <- as.ppp(S)
+marks(P) <- NULL
 
 # Load the extent
 W <- readRDS("./Data/ma.rds")
-W  <- as(W, "owin")
+W <- as.owin(st_geometry(st_as_sf(W))) # Create Owin object
 
 # Define point extent
 Window(P) <- W
 
 # Load population density raster layer
-r   <- readGDAL("./Data/pop_sqmile.img")
-pop <- as.im(r)  # Convert r object to an im object
+r   <- rast("./Data/pop_sqmile.img")
+pop_xy <- xyFromCell(r, cel = 1:prod(dim(r)))
+pop_z <- r[]
+pop_df <- as.data.frame(cbind(pop_xy, pop_z))
+names(pop_df) <- c("x","y","z")
+pop <- as.im(pop_df)
 
 # Fit the model that assumes that density is a function 
 # of population (the alternative hypothesis)
@@ -226,7 +232,7 @@ PPM1 <- ppm(P ~ pop)
 PPM0 <- ppm(P ~ 1)
 ```
 
-A Poisson point process model (of the the Walmart point pattern) implemented in a statisitcal software such as R produces the following output for the null model:
+A Poisson point process model (of the the Walmart point pattern) implemented in a statistical software such as R produces the following output for the null model:
 
 ```{r echo=FALSE}
 PPM0

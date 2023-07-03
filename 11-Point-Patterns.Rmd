@@ -99,18 +99,26 @@ If the local intensity changes across the tessellated covariate, then there is e
 
 ```{r f11-quad03, fig.cap="Figure on the left displays the number of points in each elevation sub-region (sub-regions are coded as values ranging from 1 to 4). Figure on the right shows the density of points (number of points divided by the area of the sub-region).", fig.height=2, fig.width=6.0, echo=FALSE}
 
+# Extract centroids
+library(sf)
+V_stars <- stars::st_as_stars(as.im(V))
+V_poly <- st_as_sf(V_stars, merge = TRUE)
+V_coord <- st_coordinates(st_centroid(V_poly[ order(V_poly$v), ]))
+
+#cl <-  interp.colours(c("lightyellow", "orange" ,"red"), 40)
 cl <-  colourmap(c("#FFFFDA", "#FFDF5F", "#FF9100", "#FF0400"),
-                  breaks=c(0, 0.31, 0.35, 0.4,  0.4222))
+                 breaks=c(0, 0.31, 0.35, 0.4,  0.4222))
 Q2 <- quadratcount(P, tess = V)
 
 OP <- par(mfrow = c(1,2), mar=c(0,0,0,3))
 plot(V$image, main="", las=2, col=colorRampPalette(c("grey90","grey20"))(V$n))
-plot(Q2, show.tiles=FALSE, add=TRUE)
 plot(P, pch=20, add=T)
+text(V_coord, labels=Q2, col = "darkorange")
 Q2i <- intensity(Q2)
 int <- round(data.frame(Q2i)$Freq, 3)
 plot(intensity(Q2, image=TRUE), col = cl, las=2, main=NULL)
-plot(Q2, add=T, show.tiles = FALSE, entries= int)
+text(V_coord, labels=int, cex = 0.8)
+#plot(Q2, add=T, show.tiles = FALSE, entries= int, pos = 1, labelPts=T)
 par(OP)
 
 ```
@@ -124,24 +132,32 @@ ggplot() + aes(y=as.numeric(Q2i), x=1:4)  + geom_point() + geom_line() +xlab("El
 
 It's important to note that how one _chooses_ to tessellate a surface can have an influence on the resulting density distribution. For example, dividing the elevation into seven sub-regions produces the following density values.
 
-```{r f11-quad05, fig.cap="Same analysis as last figure using different sub-regions. Note the difference in density values.", fig.height=2, fig.width=6.0, echo=FALSE}
+```{r f11-quad05, fig.cap="Same analysis as last figure using different sub-regions. Note the difference in density distribution.", fig.height=2, fig.width=6.0, echo=FALSE}
 
 n_cut <- 7
 brk  <- quantile(elev, probs=(0:n_cut)/n_cut, type=2)
 Zcut <- cut(elev, breaks=brk, labels=1:n_cut) 
   V  <- tess(image=Zcut)
 
+# Extract centroids
+V_stars <- stars::st_as_stars(as.im(V))
+V_poly <- st_as_sf(V_stars, merge = TRUE)
+V_coord <- st_coordinates(st_centroid(V_poly[ order(V_poly$v), ]))  
+
+# Generate plots  
 OP <- par(mfrow = c(1,2), mar=c(0,0,0,3))
 Q2 <- quadratcount(P, tess = V)
 plot(V$image, main="", las=2, col=colorRampPalette(c("grey90","grey20"))(V$n))
-plot(Q2, show.tiles=FALSE, add=TRUE)
+#plot(Q2, show.tiles=FALSE, add=TRUE)
 plot(P, pch=20, add=T)
+text(V_coord, labels=Q2, col = "darkorange")
 Q2i <- intensity(Q2)
 int <- round(data.frame(Q2i)$Freq, 3)
 cl <-  colourmap(interp.colours(c("lightyellow", "orange" ,"red"), n_cut),
                  breaks=c(0,sort(intensity(Q2))) )
 plot(intensity(Q2, image=TRUE), col = cl, las=2, main=NULL)
-plot(Q2, add=T, show.tiles = FALSE, entries= int)
+text(V_coord, labels=int, cex = 0.8, srt=45)
+#plot(Q2, add=T, show.tiles = FALSE, entries= int)
 par(OP)
 ```
 
@@ -160,7 +176,6 @@ A kernel not only defines the shape and size of the window, but it can also *wei
 
 #library(raster)
 library(terra)
-#library(maptools)
 library(grid)
 
 gp.text <- function(sg, nr=1, sfmt="%02.0f",x1,x2,y1,y2,src){
@@ -365,7 +380,14 @@ The parameters $\alpha$ and $\beta$ are estimated from a method called *maximum 
 
 ```{r echo=FALSE}
 #options(digits=10)
-PPM1 <- ppm(P2 ~ pop)
+pop_xy <- xyFromCell(pop, cel = 1:prod(dim(pop)))
+pop_z <- pop[]
+pop_df <- as.data.frame(cbind(pop_xy, pop_z))
+names(pop_df) <- c("x","y","z")
+pop_im <- as.im(pop_df)
+P2 <- as.ppp(S)
+marks(P2) <- NULL
+PPM1 <- ppm(P2 ~ pop_im)
 a <- round(PPM1$coef[1] , 3)
 b <- round(PPM1$coef[2] , 5)
 ```
@@ -375,11 +397,11 @@ The estimated value for $\alpha$ in our example is `r a`. This is interpreted as
 If we are to plot the relationship between density and population, we  get:
 
 ```{r f11-pppm01,fig.cap="Poisson point process model fitted to the relationship between Starbucks store locations and population density. The model assumes a loglinear relationship. Note that the density is reported in number of stores per map unit area (the map units are in meters).", message=FALSE, fig.height=2.5, fig.width=3.6, echo=FALSE, results='hide'}
-PPM1 <- ppm(P2 ~ pop)
+PPM1 <- ppm(P2 ~ pop_im)
 PPM0 <- ppm(P2 ~ 1)
 
 OP <- par(mar=c(4,4,0,0))
-plot(effectfun(PPM1, "pop", se.fit=TRUE), main=NULL, cex.axis=0.8,cex.lab=0.8, mgp=c(1.5,0.5,0),
+plot(effectfun(PPM1, "pop_im", se.fit=TRUE), main=NULL, cex.axis=0.8,cex.lab=0.8, mgp=c(1.5,0.5,0),
      legend=FALSE)
 par(OP)
 #anova(PPM0, PPM1, test="LR")
@@ -508,7 +530,7 @@ OP <- par(mfrow=c(1,2), mar=c(1,1,1,0))
 par(OP)
 ```
 
-An important assumption that underlies our interpretation of the ANN results is that of stationarity of the underlying point process (i.e. that there is no overall drift or trend in the process’ intensity). If the point is not stationary, then it will be difficult to assess if the results from the ANN analysis are due to interactions between the points or due to changes in some underlying factor that changes as a function of location.
+An important assumption that underlies our interpretation of the ANN results is that of stationarity of the underlying point process (i.e. that there is no overall drift or trend in the process’ intensity). If the point pattern is not stationary, then it will be difficult to assess if the results from the ANN analysis are due to interactions between the points or due to changes in some underlying factor that changes as a function of location.
 
 
 ### K and L functions
