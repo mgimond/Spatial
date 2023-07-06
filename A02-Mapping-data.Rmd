@@ -14,8 +14,18 @@ Data used in the following exercises can be loaded into your current R session b
 
 ```{r}
 library(sf)
+library(terra)
 
-load(url("https://github.com/mgimond/Spatial/raw/main/Data/Sample1.RData"))
+z <- gzcon(url("https://github.com/mgimond/Spatial/raw/main/Data/elev.RDS"))
+elev.r <- unwrap(readRDS(z))
+z <- gzcon(url("https://github.com/mgimond/Spatial/raw/main/Data/inter_sf.RDS"))
+inter.sf <- readRDS(z)
+z <- gzcon(url("https://github.com/mgimond/Spatial/raw/main/Data/rail_sf.RDS"))
+rail.sf <- readRDS(z)
+z <- gzcon(url("https://github.com/mgimond/Spatial/raw/main/Data/s_sf.RDS"))
+s.sf <- readRDS(z)
+z <- gzcon(url("https://github.com/mgimond/Spatial/raw/main/Data/p_sf.RDS"))
+p.sf <- readRDS(z)
 ```
 
 The data objects consist of five layers: an elevation raster (`elev.r`), an interstate polyline layer (`inter.sf`), a point cities layer (p.sf), a railroad polyline layer (`rail.sf`) and a Maine counties polygon layer (`s.sf`). All vector layers are `sf` objects. All layers are in a UTM/NAD83 projection (Zone 19N) except `p.sf` which is in a WGS 1984 geographic coordinate system.
@@ -463,14 +473,12 @@ ggplot() +
 
 Note that ggplot will convert coordinate systems on-the-fly as needed. Here, `p.sf` is in a coordinate system different from the other layers.
 
-You can also add raster layers to the map. However, the raster layer must be in a dataframe format with `x`, `y` and `z` columns. The `elev.r` raster is in a `RasterLayer` format and will need to be converted to a dataframe using the `as.data.frame` function from the `raster` package. This function has a special method for raster layers, as such, it adds parameters unique to this method. These include `xy = TRUE` which instructs the function to create x and y coordinate columns from the data, and `na.rm = TRUE` which removes blank cells (this will help reduce the size of our dataframe given that `elev.r` does not fill its extent's rectangular outline).
+You can also add raster layers to the map. However, the raster layer must be in a dataframe format with `x`, `y` and `z` columns. The `elev.r` raster is in a `SpatRaster` format and will need to be converted to a dataframe using the `as.data.frame` function from the `raster` package. This function has a special method for raster layers, as such, it adds parameters unique to this method. These include `xy = TRUE` which instructs the function to create x and y coordinate columns from the data, and `na.rm = TRUE` which removes blank cells (this will help reduce the size of our dataframe given that `elev.r` does not fill its extent's rectangular outline).
 
-Since the layers are drawn in the order listed, we will move the `rail.sf` vector layer to the bottom of the stack. Note that we also need to load the `raster` package to take advantage of its `as.data.frame` method.
+Since the layers are drawn in the order listed, we will move the `rail.sf` vector layer to the bottom of the stack. 
 
 
 ```{r fig.height=2.8, fig.width=3.5}
-library(raster) # Used to coerce raster to dataframe
-
 ggplot() + 
   geom_raster(data = as.data.frame(elev.r, xy=TRUE, na.rm = TRUE), 
               aes(x = x, y = y, fill = elev)) +
