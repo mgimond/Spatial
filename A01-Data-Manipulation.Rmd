@@ -47,8 +47,9 @@ There are several different R spatial formats to choose from. Your choice of for
 ```{r echo=FALSE}
 my_tbl <- tibble::tribble(
   ~`Data format`, ~`Used with...`, ~`Used in package...`,  ~`Used for...`, ~Comment,
-  "\`sf\`", "vector",  "\`sf\`, others", "visualizing, manipulating, querying", "This is likely to become the new spatial standard in R. Will also read from spatially enabled databases such as postgresSQL.",
-   "\`raster\`",  "raster", "\`raster\`, others", "visualizing, manipulating, spatial statistics", "This is the most versatile raster format",
+  "\`sf\`", "vector",  "\`sf\`, others", "visualizing, manipulating, querying", "This is the new spatial standard in R. Will also read from spatially enabled databases such as postgresSQL.",
+   "\`raster\`",  "raster", "\`raster\`, others", "visualizing, manipulating, spatial statistics", "This has been the most popular raster format fo rmany years. But, it is gradually being supplanted by `terra`",
+  "\`SpatRaster\`",  "terra", "\`terra\`, others", "visualizing, manipulating, spatial statistics", "This is gradually replacing `raster`",
    "\`SpatialPoints*\` \n \`SpatialPolygons*\` \n \`SpatialLines*\` \n \`SpatialGrid*\`\n",  "vector and raster",  "\`sp\`, \`spdep\`",  "Visualizing, spatial statistics", "These are legacy formats. \`spdep\` now accepts  `sf` objects",
     "\`ppp\` \`owin\`",   "vector",   "\`spatstat\`", "Point pattern analysis/statistics", NA,
      "\`im\`",   "raster",   "\`spatstat\`", "Point pattern analysis/statistics", NA
@@ -117,16 +118,29 @@ rail.sf  <- st_read("rail_inters.gpkg", layer="Rail")
 
 ### Reading a raster {-#app1_4_3}
 
-The `raster` package will read many different raster file formats such as geoTiff, Imagine and HDF5 just to name a few. To see a list of supported raster file formats simply run `rgdal::gdalDrivers()` at a command prompt. The `rgdal` package is normally installed with your installation of `raster`.
+> In earlier versions of this tutorial, the `raster` package was used to read raster files. This is being supplanted by `terra` which will be the package used in this and in subsequent exercises. 
 
-In the following example, an _Imagine_ raster file is read into R.
+`terra` will read many different raster file formats such as geoTiff, Imagine and HDF5 just to name a few. To see a list of supported raster file formats on your computer simply run:
 
-```{r}
-library(raster)
-elev.r <- raster("elev.img")
+```{r eval = FALSE}
+terra::gdal(drivers = TRUE) |> subset(type == "raster")
 ```
 
-What sets a `raster` object apart from other R data file objects is its storage. By default, data files are loaded into memory but `raster` objects are not. This can be convenient when working with raster files too large for memory. But this comes at a performance cost. If your RAM is large enough to handle your raster file, it's best to load the entire dataset into memory.
+In the following example, an _Imagine_ raster file is read into R using the `rast` function.
+
+```{r}
+library(terra)
+elev.r <- rast("elev.img")
+```
+
+The object class is of type `SpatRaster`.
+
+```{r}
+class(elev.r)
+```
+
+
+What sets a `SpatRaster` object apart from other R data file objects is its storage. By default, data files are loaded into memory, but `SpatRaster` objects are not. This can be convenient when working with raster files too large for memory. But this comes at a performance cost. If your RAM is large enough to handle your raster file, it's best to load the entire dataset into memory.
 
 To check if the `elev.r` object is loaded into memory, run:
 
@@ -134,10 +148,10 @@ To check if the `elev.r` object is loaded into memory, run:
 inMemory(elev.r)
 ```
 
-To force the raster into memory use `readAll()`:
+An output of `FALSE` indicates that it is not. To force the raster into memory use `set.values`:
 
 ```{r}
-elev.r <- readAll(raster("elev.img"))
+set.values(elev.r)
 ```
 
 Let's check that the raster is indeed loaded into memory:
@@ -194,60 +208,57 @@ Another free (but manual) alternative, is to use the US Census Bureau's web [geo
 
 ## Converting from an `sf` object {-#app1_5}
 
-Packages such as `spdep` and `spatsat` currently do not support `sf` objects. The following sections demonstrate methods to convert from `sf` to other formats.
+Packages such as `spdep` (older versions only) and `spatsat` do not support `sf` objects. The following sections demonstrate methods to convert from `sf` to other formats.
 
 ### Converting an `sf` object to a `Spatial*` object (`spdep`/`sp`) {-#app1_5_1}
 
 The following code will convert point, polyline or polygon features to a `spatial*` object. While the current version of `spdep` will now accept `sf` objects, converting to `spatial*` objects will be necessary with legacy `spdep` packages. In this example, an `sf` polygon feature is converted to a `SpatialPolygonsDataFrame` object.
 
 ```{r}
-s.sp <- as(s.sf, "Spatial")
+s.sp <- as_Spatial(s.sf)
 class(s.sp)
 ```
 
-Note that if you wish to create a `Spatial*` object directly from a shapefile (and bypass the `sf` object creation), you could run the `maptools` function `readShapeSpatial("Income_schooling.shp")` or `rgdal`'s `readORG(".","Income_schooling.shp")`. However, this former _strips_ the coordinate system information from the spatial object.
-
 ### Converting an `sf` polygon object to an `owin` object {-#app1_5_2}
 
-The `spatstat` package is normally used to analyze point patterns however, in most cases, the study extent needs to be explicitly defined by a polygon object. The polygon should be of class `owin`. Conversion from `sf` to `owin` requires the use of the `maptools` package.
-
-Note that the attribute table gets stripped from the polygon data. This is usually fine given that the only reason for converting a polygon to an `owin` format is for delineating the study boundary.
+The `spatstat` package is used to analyze point patterns however, in most cases, the study extent needs to be explicitly defined by a polygon object. The polygon should be of class `owin`. 
 
 ```{r}
-library(maptools)
-s.owin <- as(s.sp, "owin")
+library(spatstat)
+s.owin <- as.owin(s.sf)
 class(s.owin)
 ```
 
+Note the loading of the package `spatstat`. This is required to access the `as.owin.sf` method for `sf`.
+Note too that the attribute table gets stripped from the polygon data. This is usually fine given that the only reason for converting a polygon to an `owin` format is for delineating the study boundary.
+
 ### Converting an `sf` point object to a `ppp` object {-#app1_5_3}
 
-As of this writing, it seems that you need to first convert the `sf` object to a `SpatialPoints*` before creating a `ppp` object as shown in the following code chunk. Note that the `maptools` package is required for this step.
+The `spatstat` package is currently designed to work with projected (planar) coordinate system. If you attempt to convert a point object that is in a geographic coordinate system, you will get the following error message:
 
 ```{r error=TRUE}
-p.sp  <- as(p.sf, "Spatial")  # Create Spatial* object
-p.ppp <- as(p.sp, "ppp")      # Create ppp object
+p.ppp <- as.ppp(p.sf)
 ```
 
+The error message reminds us that a geographic coordinate system (i.e. one that uses angular measurements such as latitude/longitude) cannot be used with this package. If you encounter this error, you will need to project the point object to a projected coordinate system.
 
-A `ppp` object is associated with the `spatstat` package which is designed to work off of a projected (cartesian) coordinate system. The error message reminds us that a geographic coordinate system (i.e. one that uses angular measurements such as latitude/longitude) cannot be used with this package. If you encounter this error, you will need to project the `p.sp` or `ps.f` layer to a projected coordinate system.
-
-In this example, we'll project the `p.sf` object to a UTM coordinate system (`epsg=32619`). Coordinate systems in R are treated in a separate appendix. 
+In this example, we'll project the `p.sf` object to a UTM coordinate system (`epsg=32619`). Coordinate systems in R are treated in a later appendix. 
 
 ```{r}
 p.sf.utm <- st_transform(p.sf, 32619) # project from geographic to UTM
-p.sp  <- as(p.sf.utm, "Spatial")      # Create Spatial* object
-p.ppp <- as(p.sp, "ppp")              # Create ppp object
+p.ppp <- as.ppp(p.sf.utm)             # Create ppp object
 class(p.ppp)
 ```
 
-Note that if the point layer has an attribute table, its attributes will be converted to `ppp` _marks_.
+Note that if the point layer has an attribute table, its attributes will be converted to `ppp` _marks_. These attribute values can be accessed via `marks(p.ppp)`.
 
-### Converting a `raster` object to an `im` object (`spatstat`) {-#app1_5_4}
+### Converting a `SpatRaster` object to an `im` object {-#app1_5_4}
 
-The `maptools` package will readily convert a `raster` object to an `im` object using the `as.im.RasterLayer()` function.
+To create a `spatstat` `im` raster object from a `SpatRaster` object, you will need to first create a three column dataframe from the `SpatRaster` objects with the first two columns defining the X and Y coordinate values of each cell, and the third column defining the cell values
 
 ```{r}
-elev.im <- as.im.RasterLayer(elev.r) # From the maptools package
+df <- as.data.frame(elev.r,xy=TRUE)
+elev.im <- as.im(df)
 class(elev.im)
 ```
 
@@ -268,7 +279,7 @@ head(s.sf,3)
 
 The first line of output gives us the geometry type, `MULTIPOLYGON`,  a multi-polygon data type. This is also referred to as a multipart polygon. A single-part `sf` polygon object will adopt the `POLYGON` geometry.
 
-The next few lines of output give us the layer's bounding extent in the layer's native coordinate system units. You can extract the extent via the `extent()` function as in `extent(s.sf)`.
+The next few lines of output give us the layer's bounding extent in the layer's native coordinate system units. You can extract the extent via the `st_bbox()` function as in `st_bbox(s.sf)`.
 
 The following code chunk can be used to extract addition coordinate information from the data. 
 
@@ -320,39 +331,34 @@ head(s.nogeom.df, 5)
 You can export an `sf` object to many different spatial file formats such as a shapefile or a geopackage.
 
 ```{r eval=FALSE}
-st_write(s.sf, "shapefile_out.shp", driver="ESRI Shapefile")  # create to a shapefile 
-st_write(s.sf, " s.gpkg", driver="GPKG")  # Create a geopackage file
+st_write(s.sf, "shapefile_out.shp", driver = "ESRI Shapefile")  # create to a shapefile 
+st_write(s.sf, "s.gpkg", driver = "GPKG")  # Create a geopackage file
 ```
 
-You can see a list of writable vector formats via a call to `subset(rgdal::ogrDrivers(), write == TRUE)`. Only as subset of the output is shown in the following example. Note that supported file formats will differ from platform to platform.
+If the file you are writing to already exists, the above will throw an error. To force an overwrite, simply add the `delete_layer = TRUE` argument to the `st_write` function.
 
-```{r echo=2}
-tail(head(
-  subset(rgdal::ogrDrivers(), write == TRUE)
-, 16), 7)
+You can see a list of writable vector formats via:
 
+```{r eval = FALSE}
+gdal(drivers = TRUE) |> subset(can %in% c("write", "read/write" ) & type == "vector")
 ```
 
+The value in the `name` column is the driver name to pass to the `driver =` argument in the `st_write()` function.
 
-The value in the `name` column is the driver name used in the `st_write()` function.
-
-To export a raster to a data file, use `writeRaster()` from the `raster` package.
+To export a raster to a data file, use `writeRaster()` function.
 
 ```{r eval=FALSE}
-writeRaster(elev.r, "elev_out.tif", format="GTiff" ) # Create a geoTiff file
-writeRaster(elev.r, "elev_out.img", format="HFA" )  # Create an Imagine raster file
+writeRaster(elev.r, "elev_out.tif", gdal = "GTiff" ) # Create a geoTiff file
+writeRaster(elev.r, "elev_out.img", gdal = "HFA" )  # Create an Imagine raster file
 ```
 
-You can see a list of writable raster formats via a call to `subset(rgdal::gdalDrivers(), create == TRUE)`. 
+You can see a list of writable raster formats via:
 
-```{r echo=2}
-tail(head(
-  subset(rgdal::gdalDrivers(), create == TRUE)
-, 16), 7)
-
+```{r eval = FALSE}
+gdal(drivers = TRUE) |> subset(can %in% c("write", "read/write" ) & type == "raster")
 ```
 
-The value in the `name` column is the format parameter name used in the `writeRaster()` function.
+The value in the `name` column is the driver name to pass to the `gdal =` argument in the `writeRaster()` function.
 
 ```{r remove_temp_files, echo = FALSE, results='hide', message=FALSE}
 files.rm <- dir(".", "Income_schooling.*") 
@@ -362,4 +368,5 @@ file.remove(file.path(".", "elev.img" ))
 
 file.remove(file.path(".", "rail_inters.gpkg" ))
 ```
+
 
