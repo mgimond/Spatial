@@ -1,8 +1,3 @@
----
-output: html_document
-editor_options: 
-  chunk_output_type: console
----
 # Raster operations in R
 
 ```{r, echo = FALSE}
@@ -12,15 +7,23 @@ get.pckg.info("A06-Raster-Operations.Rmd")
 
 ## Sample files for this exercise {-}
 
-We'll first load spatial objects used in this exercise from a remote website: an elevation `raster` object, a bathymetry `raster` object and a continents `sf` vector object 
+We'll first load spatial objects used in this exercise from a remote website: an elevation `SpatRaster` object, a bathymetry `SpatRaster` object and a continents `sf` vector object 
 
 ```{r}
-load(url("https://github.com/mgimond/Spatial/raw/main/Data/raster.RData"))
+library(terra)
+library(sf)
+
+z <- gzcon(url("https://github.com/mgimond/Spatial/raw/main/Data/elev_world.RDS"))
+elev <- unwrap(readRDS(z))
+z <- gzcon(url("https://github.com/mgimond/Spatial/raw/main/Data/bath_world.RDS"))
+bath <- unwrap(readRDS(z))
+z <- gzcon(url("https://github.com/mgimond/Spatial/raw/main/Data/continent_global.RDS"))
+cont <- readRDS(z)
 ```
 
 Both rasters cover the entire globe. Elevation below mean sea level are encoded as `0` in the elevation raster. Likewise, bathymetry values above mean sea level are encoded as `0`.
 
-Note that most of the map algebra operations and functions covered in this tutorial are implemented using the `raster` package. See chapter 10 for a theoretical discussion of map algebra operations.
+Note that most of the map algebra operations and functions covered in this tutorial are implemented using the `terra` package. See chapter 10 for a theoretical discussion of map algebra operations.
 
 ## Local operations and functions {-}
 
@@ -29,8 +32,6 @@ Note that most of the map algebra operations and functions covered in this tutor
 Most algebraic operations can be applied to rasters as they would with any vector element. For example, to convert all bathymetric values in `bath` (currently recorded as positive values)  to *negative* values simply multiply the raster by `-1`.
 
 ```{r message=FALSE}
-library(raster)
-
 bath2 <- bath * (-1)
 ```
 
@@ -48,7 +49,7 @@ tm_shape(bath3) + tm_raster(palette = "Greys") +
   tm_legend(outside = TRUE, text.size = .8) 
 ```
 
-If a more elaborate form of reclassification is desired, you can use the `reclassify` function. In the following example, the raster object `bath` is reclassified to 4 unique values: 100, 500, 1000 and 11000 as follows:
+If a more elaborate form of reclassification is desired, you can use the `classify` function. In the following example, the raster object `bath` is reclassified to 4 unique values: 100, 500, 1000 and 11000 as follows:
 
 Original depth values | Reclassified values
 --------------------- | -------------------
@@ -67,7 +68,7 @@ m
 ```
 
 ```{r}
-bath3 <- reclassify(bath, m, right = T)
+bath3 <- classify(bath, m, right = T)
 ```
 
 The `right=T` parameter indicates that the intervals should be closed to the right (i.e. the second column of the reclassification matrix is inclusive).
@@ -104,10 +105,18 @@ tm_shape(elevation) + tm_raster(palette="-RdBu") +
 
 ## Focal operations and functions {-}
 
-Operations or functions applied focally to rasters involve user defined neighboring cells. For example, a cell output value can be the average of all 121 cells--an 11x11 kernel--centered on the cell whose value is being estimated (this is an example of a _smoothing function_).
+Operations or functions applied focally to rasters involve user defined neighboring cells. Focal operations can be performed using the `focal` function. For example, to *smooth* out the elevation raster by computing the mean cell values over a 11 by 11 cells window, type:
 
 ```{r}
-f1 <- focal(elevation, w=matrix(1,nrow=11,ncol=11)  , fun=mean)
+f1 <- focal(elevation, w = 11  , fun = mean)
+```
+
+The `w` argument defines the focal window. If it's given a single number (as is the case in the above code chunk), that number will define the width and height (in cell counts) of the focal window with each cell assigned equal weight. 
+
+`w` can also be passed a matrix with each element in that matrix defining the weight for each cell.  The following code chunk will generate the same output as the previous code chunk:
+
+```{r}
+f1 <- focal(elevation, w = matrix(1, nrow = 11, ncol = 11), fun = mean)
 ```
 
 ```{r, fig.height=3}
@@ -115,39 +124,20 @@ tm_shape(f1) + tm_raster(palette="-RdBu") +
   tm_legend(outside = TRUE, text.size = .8) 
 ```
 
-By default edge cells are assigned a value of `NA`. This is because cells outside of the input raster extent have no value but may fall inside the kernel window when edge cells are computed. You can remedy this by passing the parameters `na.rm=TRUE` and `pad=TRUE` to the function.
+By default edge cells are assigned a value of `NA`. This is because cells outside of the input raster extent have no value, so when the average value is computed for a cell along the raster's edge, the kernel will include the NA values outside the raster's extent. To see an example of this, we will first smooth the raster using a 3 by 3 focal window, then we'll zoom in on a 3 by 3 portion of the `elevation` raster in the above left-hand corner of its extent.
 
 ```{r}
-f1 <- focal(elevation, w=matrix(1,nrow=11,ncol=11)  , 
-            fun=mean, pad=TRUE,  na.rm = TRUE)
+# Run a 3x3 smooth on the raster
+f_mean <- focal(elevation, w = 3  , fun = mean)
 ```
 
-```{r, fig.height=3}
-tm_shape(f1) + tm_raster(palette="-RdBu",n=6) + 
-  tm_legend(outside = TRUE, text.size = .8) 
-```
-
-But, you must be careful when making use of the `na.rm=TRUE`/`pad=TRUE` combination. In the above example, we are passing the values from the kernel window as *a vector element* to the `mean` function.  So the number of valid (non NA) values being passed to the `mean` function does not matter since the function will sort out the weights based on the number of input values.
-
-If, however, the smoothing function makes use of explicitly defined weights, then setting `pad=TRUE` will be problematic since the edge pixels will succumb to unbalanced weights. In the following example, we'll compare the output of three 3x3 smoothing operations as follows: 
-
-```{r}
-# Using the mean function
-f_mean     <- focal(elevation, w=matrix(1,nrow=3,ncol=3), fun=mean, na.rm=TRUE, pad=TRUE)
-
-# Using explicitly defined weights
-f_wt_nopad <- focal(elevation, w=matrix(1/9,nrow=3,ncol=3), na.rm=TRUE, pad=FALSE)
-f_wt_pad   <- focal(elevation, w=matrix(1/9,nrow=3,ncol=3), na.rm=TRUE, pad=TRUE)
-```
-
-The following images are zoomed in on the upper left-hand set of pixels of each raster output. The `elevation` raster is the input raster.
-
-```{r echo=FALSE, fig.width = 8, fig.height=1.5}
-zoom1 <- extent(-180, -179, 89,90)
-OP <- par(pty="s",  mfrow=c(1,4), mar=c(0,0,3,0), bty="n")
+```{r echo = FALSE, fig.width = 6, fig.height=1.5}
+# Plot the upper left hand corner
+zoom1 <- ext(-180, -179, 89,90)
+OP <- par(pty="s",  mfrow=c(1,3), mar=c(0,0,3,0), bty="n")
 plot(crop(elevation, zoom1), colNA="bisque", asp=1, axes=FALSE, legend=FALSE,
      zlim=c(-4150, -2700), col=grey(1:9/12))
-title("Elevation", line=1)
+title("elev", line=1)
 text(crop(elevation, zoom1), col="yellow")  
 grid(nx=3, ny=3, lty=1)
 plot(crop(f_mean, zoom1), colNA="bisque", asp=1, axes=FALSE, legend=FALSE,
@@ -155,24 +145,123 @@ plot(crop(f_mean, zoom1), colNA="bisque", asp=1, axes=FALSE, legend=FALSE,
 title("f_mean", line=1)
 text(crop(f_mean, zoom1), col="yellow")  
 grid(nx=3, ny=3, lty=1)
-plot(crop(f_wt_nopad, zoom1), colNA="bisque", asp=1, axes=FALSE,  legend=FALSE,
-     zlim=c(-4150, -2700), col=grey(1:9/12))
-title("f_wt_nopad", line=1)
-text(crop(f_wt_nopad, zoom1), col="yellow")             
-grid(nx=3, ny=3, lty=1)
-plot(crop(f_wt_pad, zoom1), colNA="bisque", asp=1, axes=FALSE, legend=FALSE,
-     zlim=c(-4150, -2700), col=grey(1:9/12))
-title("f_wt_nopad", line=1)
-text(crop(f_wt_pad, zoom1), col="yellow")             
-grid(nx=3, ny=3, lty=1)
 par(OP)
-
 ```
 
-The left-most image shows the original upper left-hand corner elevation pixel values. The second image shows the output using the mean function with the `pad=TRUE` option. The third image shows the output using the weighted kernel window with the `pad=FALSE` option (note the upper row of `NA` pixels highlighted in *bisque* color). The last image shows the output from the same weighted kernel window using the `pad=TRUE` option. This last outcome is not desirable. For example, the middle top pixel is computed from `1/9(-4113 -4113 -4112 -4107 -4104 -4103)`, which results in dividing the sum of *six* values by *nine*--hence the unbalanced weight effect. Note that we do not have that problem using the mean function. 
+Note the `NA` values in the upper row (shown in `bisque` color). 
 
 You might have noticed the lack of edge effect issues along the western edge of the raster outputs. This is because the `focal` function will wrap the eastern edge of the raster to the western edge of that same raster if the input raster layer spans the entire globe (i.e from -180 &deg; to +180 &deg;).
 
+To have the `focal` function ignore missing values, simply add the `na.rm = TRUE` option.
+
+```{r}
+# Run a 3x3 smooth on the raster
+f_mean_no_na <- focal(elevation, w = 3  , fun = mean, na.rm = TRUE)
+```
+
+```{r echo = FALSE, fig.width = 6, fig.height=1.5, fig.cap="Upper left-hand corner of elevation raster"}
+# Plot the upper left hand corner
+zoom1 <- ext(-180, -179, 89,90)
+OP <- par(pty="s",  mfrow=c(1,3), mar=c(0,0,3,0), bty="n")
+plot(crop(elevation, zoom1), colNA="bisque", asp=1, axes=FALSE, legend=FALSE,
+     zlim=c(-4150, -2700), col=grey(1:9/12))
+title("elev", line=1)
+text(crop(elevation, zoom1), col="yellow")  
+grid(nx=3, ny=3, lty=1)
+plot(crop(f_mean_no_na, zoom1), colNA="bisque", asp=1, axes=FALSE, legend=FALSE,
+     zlim=c(-4150, -2700), col=grey(1:9/12))
+title("f_mean_no_na", line=1)
+text(crop(f_mean_no_na, zoom1), col="yellow")  
+grid(nx=3, ny=3, lty=1)
+par(OP)
+```
+
+In essence, the above row of values are computed using just 6 values instead of 9 values (the corner values still make use of the across-180&deg; values).
+
+Another option is to *expand* the row edge beyond its extent by replicating the edge values. This can be done by setting `exapnd` to true. For example:
+
+```{r}
+# Run a 3x3 smooth on the raster
+f_mean_expand <- focal(elevation, w = 3, fun = mean, expand = TRUE)
+```
+
+```{r echo = FALSE, fig.width = 6, fig.height=1.5, fig.cap="Upper left-hand corner of elevation raster"}
+# Plot the upper left hand corner
+zoom1 <- ext(-180, -179, 89,90)
+OP <- par(pty="s",  mfrow=c(1,3), mar=c(0,0,3,0), bty="n")
+plot(crop(elevation, zoom1), colNA="bisque", asp=1, axes=FALSE, legend=FALSE,
+     zlim=c(-4150, -2700), col=grey(1:9/12))
+title("elev", line=1)
+text(crop(elevation, zoom1), col="yellow")  
+grid(nx=3, ny=3, lty=1)
+plot(crop(f_mean_no_na, zoom1), colNA="bisque", asp=1, axes=FALSE, legend=FALSE,
+     zlim=c(-4150, -2700), col=grey(1:9/12))
+title("f_mean_no_na", line=1)
+text(crop(f_mean_no_na, zoom1), col="yellow")  
+grid(nx=3, ny=3, lty=1)
+plot(crop(f_mean_expand, zoom1), colNA="bisque", asp=1, axes=FALSE, legend=FALSE,
+     zlim=c(-4150, -2700), col=grey(1:9/12))
+title("f_mean_expand", line=1)
+text(crop(f_mean_expand, zoom1), col="yellow")  
+grid(nx=3, ny=3, lty=1)
+par(OP)
+```
+
+Note that if `expand` is set to `TRUE`, the `na.rm` argument is ignored. 
+
+But, you must be careful in making use of the `na.rm = TRUE` if you are using a matrix to define the weights as opposed to using the `fun` functions. For example, the `mean` function can be replicated  using the matrix operation as follows:
+
+```{r}
+f_mean <- focal(elevation, w = 3, fun = mean)
+f_mat  <- focal(elevation, w = matrix(1/9, nrow = 3, ncol = 3))
+```
+
+Note that if `fun` is not defined, it will default to summing the weighted pixel values.
+
+```{r echo = FALSE, fig.width = 6, fig.height=1.5, fig.cap="Upper left-hand corner of elevation raster"}
+# Plot the upper left hand corner
+zoom1 <- ext(-180, -179, 89,90)
+OP <- par(pty="s",  mfrow=c(1,3), mar=c(0,0,3,0), bty="n")
+plot(crop(f_mean, zoom1), colNA="bisque", asp=1, axes=FALSE, legend=FALSE,
+     zlim=c(-4150, -2700), col=grey(1:9/12))
+title("f_mean", line=1)
+text(crop(f_mean, zoom1), col="yellow")  
+grid(nx=3, ny=3, lty=1)
+plot(crop(f_mat, zoom1), colNA="bisque", asp=1, axes=FALSE, legend=FALSE,
+     zlim=c(-4150, -2700), col=grey(1:9/12))
+title("f_mat", line=1)
+text(crop(f_mat, zoom1), col="yellow")  
+grid(nx=3, ny=3, lty=1)
+par(OP)
+```
+
+Note the similar output.
+
+Now, if we set `na.rm` to `TRUE` to both functions, we get:
+
+```{r}
+f_mean <- focal(elevation, w = 3, fun = mean, na.rm = TRUE)
+f_mat  <- focal(elevation, w = matrix(1/9, nrow = 3, ncol = 3), na.rm = TRUE)
+```
+
+```{r echo = FALSE, fig.width = 6, fig.height=1.5, fig.cap="Upper left-hand corner of elevation raster"}
+# Plot the upper left hand corner
+zoom1 <- ext(-180, -179, 89,90)
+OP <- par(pty="s",  mfrow=c(1,3), mar=c(0,0,3,0), bty="n")
+plot(crop(f_mean, zoom1), colNA="bisque", asp=1, axes=FALSE, legend=FALSE,
+     zlim=c(-4150, -2700), col=grey(1:9/12))
+title("f_mean", line=1)
+text(crop(f_mean, zoom1), col="yellow")  
+grid(nx=3, ny=3, lty=1)
+plot(crop(f_mat, zoom1), colNA="bisque", asp=1, axes=FALSE, legend=FALSE,
+     zlim=c(-4150, -2700), col=grey(1:9/12))
+title("f_mat", line=1)
+text(crop(f_mat, zoom1), col="yellow")  
+grid(nx=3, ny=3, lty=1)
+par(OP)
+```
+
+Note the smaller edge values from the matrix defined weights raster. This is because the matrix is assigning 1/9^th^ the weight for each pixel regardless of the number of pixels used to compute the output pixel values. So the upper edge pixels are summing values from just 6 weighted pixels as opposed to eight. For example, the middle top pixel is computed from `1/9(-4113 -4113 -4112 -4107 -4104 -4103)`, which results in dividing the sum of *six* values by *nine*--hence the unbalanced weight effect. Note that we do not have that problem using the mean function.
 
 The _neighbors_ matrix (or _kernel_) that defines the moving window can be customized. For example if we wanted to compute the average of all 8 neighboring cells _excluding_ the central cell we could define the matrix as follows:
 
@@ -216,46 +305,35 @@ Zonal operations can often involve two layers, one with the values to be aggrega
 The following chunk computes the mean elevation value for each unique polygon in `cont`,
 
 ```{r}
-cont.elev.sp <- extract(elevation, cont, fun=mean, sp=TRUE) 
+cont.elev <- extract(elevation, cont, fun=mean, bind = TRUE) 
 ```
 
-The `sp=TRUE` parameter instructs the function to output a `SpatialPolygonsDataFrame` object (same as the input zonal object) instead of a standalone table (matrix). The output spatial object inherits the original attributes and adds a column called `layer` with the computed mean elevation values.
-
-We can convert the `SpatialPolygonsDataFrame` object to an `sf` vector object for flexibility.
+The output is a `SpatVector`. If you want to output a dataframe, set `bind` to `FALSE`. `cont.elev` can be converted back to an `sf` object as follows:
 
 ```{r}
-library(sf)
-cont.elev <- st_as_sf(cont.elev.sp)
-```
-
-The average elevation can be extracted from the `sf` object as follows:
-
-```{r}
-st_drop_geometry(cont.elev)
+cont.elev.sf <- st_as_sf(cont.elev)
 ``` 
  
-If you are working off of the original `SpatialPolygonsDataFrame` vector object, use the `cont.elev.sp@data` syntax to extract the dataframe.
-
-We can now map the average elevation by continent.
+The column of interest is automatically named `band1`. We can now map the average elevation by continent.
 
 ```{r, fig.height=3}
-tm_shape(cont.elev) + tm_polygons(col="layer") + 
+tm_shape(cont.elev.sf) + tm_polygons(col="band1") + 
   tm_legend(outside = TRUE, text.size = .8)
 ```
 
 Many custom functions can be applied to `extract`. For example, to extract the maximum elevation value by continent, type:
 
 ```{r}
-cont.elev.sp <- extract(elevation, cont, fun=max, sp=TRUE) 
+cont.elev <- extract(elevation, cont, fun=max, bind = TRUE) 
 ```
 
 As another example, we may wish to extract the number of pixels in each polygon using a customized function. 
 
 ```{r}
-cont.elev.sp <- extract(elevation, cont, fun=function(x,...){length(x)}, sp=TRUE) 
+cont.elev <- extract(elevation, cont, fun=function(x,...){length(x)},  bind = TRUE) 
 ```
 
-The `extract` function will also work with lines and point spatial objects. If you wish to compute the zonal statistics of a raster using another raster as zones instead of a vector layer, use the `zonal()` function instead.
+
 
 ## Global operations and functions {-}
 
@@ -316,18 +394,18 @@ tm_shape(r2.d) + tm_raster(palette = "Greens", style="order") +
 
 ## Computing cumulative distances {-}
 
-This exercise demonstrates how to use functions from the `gdistance` package to generate a cumulative distance raster. One objective will be to demonstrate the influence "adjacency cells" wields in the final results.
-
-Load the `gdistance` package.
-
+This exercise demonstrates how to use functions from the `gdistance` package to generate a cumulative distance raster. This package does not yet recognize `terra` raster opbjects. As such, we will also need to load the `raster` libray to convert `terra` raster objects to a format recognized by `gdistance` functions. 
 ```{r}
 library(gdistance)
+library(raster)
 ```
+
+One objective will be to demonstrate the influence "adjacency cells" wields in the final results.
 
 First, we'll create a 100x100 raster and assign a value of `1` to each cell. The pixel value defines the cost (other than distance) in traversing that pixel. In this example, we'll assume that the cost is uniform across the entire extent. 
 
 ```{r message=FALSE, warning=FALSE, tidy=F}
-r   <- raster(nrows=100,ncols=100,xmn=0,ymn=0,xmx=100,ymx=100)
+r   <- rast(nrows=100,ncols=100,xmin=0,ymin=0,xmax=100,ymax=100)
 r[] <- rep(1, ncell(r))
 ```
 
@@ -390,7 +468,7 @@ gp.notext <- function(sg, nr=1, x1,x2,y1,y2,lim,src){
 
 
 ```{r echo=FALSE}
-r   <- raster(nrows=100,ncols=100,xmn=0,ymn=0,xmx=100,ymx=100)
+r   <- rast(nrows=100,ncols=100,xmin=0,ymin=0,xmax=100,ymax=100)
 r[] <- rep(1, ncell(r))
 
 # Define adjacency parameters (used only for visualizing neighbors)
@@ -420,7 +498,7 @@ plotsubconn(r,48,53,47,52,rook)
 ```
 
 ```{r message=FALSE, warning=FALSE, tidy=F}
-h4   <- transition(r, transitionFunction = function(x){1}, directions = 4)
+h4   <- transition(raster(r), transitionFunction = function(x){1}, directions = 4)
 ```
 
 In this example, adjacency is defined as an **eight node** connection (i.e. a single cell "queen" move).
@@ -430,7 +508,7 @@ plotsubconn(r,48,53,47,52,queen)
 ```
 
 ```{r message=FALSE, warning=FALSE, tidy=F}
-h8   <- transition(r, transitionFunction = function(x){1}, directions = 8)
+h8   <- transition(raster(r), transitionFunction = function(x){1}, directions = 8)
 ```
 
 In this example, adjacency is defined as a  **sixteen node** connection (i.e. a single cell "queen" move combined with a "knight" move).
@@ -440,7 +518,7 @@ plotsubconn(r,48,53,47,52,queenknight)
 ```
 
 ```{r message=FALSE, warning=FALSE, tidy=F}
-h16  <- transition(r, transitionFunction=function(x){1},16,symm=FALSE)
+h16  <- transition(raster(r), transitionFunction=function(x){1},16,symm=FALSE)
 ```
 
 In this example, adjacency is defined as a **four node diagonal** connection (i.e. a single cell "bishop" move).
@@ -450,7 +528,7 @@ plotsubconn(r,48,53,47,52,bishop)
 ```
 
 ```{r message=FALSE, warning=FALSE, tidy=F}
-hb   <- transition(r, transitionFunction=function(x){1},"bishop",symm=FALSE)
+hb   <- transition(raster(r), transitionFunction=function(x){1},"bishop",symm=FALSE)
 ```
 
 The `transition` function treats all adjacent cells as being at an equal distance from the source cell across the entire raster.  `geoCorrection` corrects for 'true' local distance. In essence, it's adding an additional cost to traversing from one cell to an adjacent cell (the original cost being defined using the `transition` function). The importance of applying this correction will be shown later. 
@@ -540,10 +618,10 @@ In the following example, we will generate a raster layer with barriers (defined
 
 ```{r fig.height=4, fig.align='left'}
 # create an empty raster
-r   <- raster(nrows=300,ncols=150,xmn=0,ymn=0,xmx=150000, ymx=300000)
+r   <- rast(nrows=300,ncols=150,xmin=0,ymin=0,xmax=150000, ymax=300000)
 
 # Define a UTM projection (this sets map units to meters)
-projection(r) = "+proj=utm +zone=19 +datum=NAD83" 
+crs(r) = "+proj=utm +zone=19 +datum=NAD83" 
 
 # Each cell is assigned a value of 1
 r[] <- rep(1, ncell(r)) 
@@ -562,8 +640,8 @@ tm_shape(r) + tm_raster(colorNA="red") +
   tm_legend(legend.show=FALSE)
 
 # Next, generate a transition matrix for the 8-node case and the 16-node case
-h8   <- transition(r, transitionFunction = function(x){1}, directions = 8)
-h16  <- transition(r, transitionFunction = function(x){1}, directions = 16)
+h8   <- transition(raster(r), transitionFunction = function(x){1}, directions = 8)
+h16  <- transition(raster(r), transitionFunction = function(x){1}, directions = 16)
 
 # Now assign distance cost to the matrices. 
 h8   <- geoCorrection(h8)
@@ -611,4 +689,3 @@ The number of cells identified as being within a 290 km cumulative distance of p
 
 [1]: http://en.wikipedia.org/wiki/Dana_Tomlin
 [2]: http://en.wikipedia.org/wiki/Sobel_operator
-
