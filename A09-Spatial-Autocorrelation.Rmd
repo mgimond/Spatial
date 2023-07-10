@@ -12,12 +12,11 @@ For a basic theoretical treatise on spatial autocorrelation the reader is encour
 Data used in the following exercises can be loaded into your current R session by running the following chunk of code.
 
 ```{r}
-load(url("https://github.com/mgimond/Spatial/raw/main/Data/moransI.RData"))
+z <- gzcon(url("https://github.com/mgimond/Spatial/raw/main/Data/s_sf.RDS"))
+s.sf <- readRDS(z)
 ```
 
-The data object consists of a `SpatialPolygonsDataFrame` vector layer, `s1`, representing income and education data aggregated at the county level for the state of Maine.
-
-The `spdep` [@spdep] package used in this exercise makes use of `sp` objects including `SpatialPoints*` and `SpatialPolygons*` classes. For more information on converting to/from this format revert back to the [Reading and writing spatial data in R](./reading-and-writing-spatial-data-in-r.html) Appendix section.
+The data object consists of an `sf` vector layer representing income and education data aggregated at the county level for the state of Maine.
 
 ## Introduction {-#app8_2}
 
@@ -25,8 +24,7 @@ The spatial object `s1` has five attributes. The one of interest for this exerci
 
 ```{r echo=FALSE, results='asis', out.width=500}
 library(gridExtra)
-library(spdep)
-tb.me  <- tableGrob( data.frame(s1),  theme = ttheme_default(base_size = 11))
+tb.me  <- tableGrob( data.frame(s1)[,1:5],  theme = ttheme_default(base_size = 11))
 grid.arrange(tb.me)
 ```
 
@@ -194,7 +192,7 @@ In this section, we will explore spatial autocorrelation as a function of distan
 Instead of defining neighbors as contiguous polygons, we will define neighbors based on distances to polygon centers. We therefore need to extract the center of each polygon.
 
 ```{r}
-coo <- coordinates(s1)
+coo <- st_centroid(s1)
 ```
 
 The object `coo` stores all sixteen pairs of coordinate values. 
