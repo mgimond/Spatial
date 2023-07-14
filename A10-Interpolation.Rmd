@@ -5,60 +5,55 @@ source("package_list.R")
 get.pckg.info("A10-Interpolation.Rmd") 
 ```
 
-First, let's load the data from the website. The data are stored as `SpatialPointsDataFrame` and `SpatialPointsDataFrame` objects. Most of the functions used in this exercise work off of these classes. The one exception is the `direchlet` function which requires a conversion to a `ppp` object.
+First, let's load the data from the website. The data are vector layers stored as `sf` objects. 
 
 ```{r results='hide', fig.height=3.3}
-library(rgdal)
+library(sf)
 library(tmap)
 
 # Load precipitation data
 z <- gzcon(url("https://github.com/mgimond/Spatial/raw/main/Data/precip.rds"))
 P <- readRDS(z)
-
+p <- st_as_sf(P)
 # Load Texas boudary map
 z <- gzcon(url("https://github.com/mgimond/Spatial/raw/main/Data/texas.rds"))
 W <- readRDS(z)
+w <- st_as_sf(W)
 
-# Replace point boundary extent with that of Texas
-P@bbox <- W@bbox
+# # Replace point boundary extent with that of Texas
 
-tm_shape(W) + tm_polygons() +
-  tm_shape(P) +
+tm_shape(w) + tm_polygons() +
+  tm_shape(p) +
   tm_dots(col="Precip_in", palette = "RdBu", auto.palette.mapping = FALSE,
              title="Sampled precipitation \n(in inches)", size=0.7) +
   tm_text("Precip_in", just="left", xmod=.5, size = 0.7) +
   tm_legend(legend.outside=TRUE)
 ```
 
-You'll note the line `P@bbox <- W@bbox` which forces the rectangular extent of the Texas map onto the point data object. This is an important step if the interpolation of the points are to cover the entire extent of Texas. Had this step been omitted, most of the interpolated layers would have been limited to the smallest rectangular extent enclosing the point object.
+The `p` point layer defines the sampled precipitation values. These points will be used to predict values at unsampled locations.
+
+The `w` polygon layer defines the boundary of Texas. This will be the extent for which we will interpolate precipitation data.
 
 ## Thiessen polygons {-}
 
-The Thiessen polygons (or proximity interpolation) can be created using `spatstat`'s `dirichlet` function. 
+The Thiessen polygons (or proximity interpolation) can be created using `spatstat`'s `dirichlet` function. Note that this function will require that the input point layer be converted to a `spatstat` `ppp` object--hence the use of the inline `as.ppp(P)` syntax in the following code chunk.
 
 ```{r results='hide',  fig.height=3.3, results='hold'}
-
 library(spatstat)  # Used for the dirichlet tessellation function
-library(maptools)  # Used for conversion from SPDF to ppp
-library(raster)    # Used to clip out thiessen polygons
 
 # Create a tessellated surface
-th  <-  as(dirichlet(as.ppp(P)), "SpatialPolygons")
+th  <- dirichlet(as.ppp(p)) |> st_as_sfc() |> st_as_sf()
 
 # The dirichlet function does not carry over projection information
 # requiring that this information be added manually
-proj4string(th) <- proj4string(P)
+st_crs(th) <- st_crs(p)
 
 # The tessellated surface does not store attribute information
-# from the point data layer. We'll use the over() function (from the sp
-# package) to join the point attributes to the tesselated surface via
-# a spatial join. The over() function creates a dataframe that will need to
-# be added to the `th` object thus creating a SpatialPolygonsDataFrame object
-th.z     <- over(th, P, fn=mean)
-th.spdf  <-  SpatialPolygonsDataFrame(th, th.z)
+# from the point data layer. We'll join the point attributes to the polygons
+th2     <- st_join(th, p, fn=mean)
 
 # Finally, we'll clip the tessellated  surface to the Texas boundaries
-th.clp   <- raster::intersect(W,th.spdf)
+th.clp   <- st_intersection(th2, w)
 
 # Map the data
 tm_shape(th.clp) + 
@@ -69,21 +64,19 @@ tm_shape(th.clp) +
 ```
 
  
-```{block type="warning"}
-Many packages share the same function names. This can be a problem when these packages are loaded in a same R session. For example, the `intersect` function is available in the `base`, `spatstat` and `raster` packages--all of which are loaded in this current session. To ensure that the proper function is selected, it's a good idea to preface the function name with the package name as in `raster::intersect()`.
-
-This tip will be used in the next chunk of code when calling the `idw` function which is available in both `spatstat` and `gstat`.
-```
- 
-Note that the `dirichlet` function (like most functions in the `spatsat` package) require that the point object be in a `ppp` format hence the inline `as.ppp(P)` syntax.
-
 ## IDW {-}
 
-The IDW output is a raster. This requires that we first create an empty raster grid, then interpolate the precipitation values to each unsampled grid cell. An IDW power value of 2 (`idp=2.0`) will be used.
+Unlike the Thiessen method shown in the previous section, the IDW interpolation will output a raster. This requires that we first create an empty raster grid, then interpolate the precipitation values to each unsampled grid cell. An IDW power value of 2 (`idp=2.0`) will be used in this example.
+
+```{block type="warning"}
+Many packages share the same function names. This can be a problem when these packages are loaded in a same R session. For example, the `idw` function is available in both `spatstat.explore` and `gstat`. Here, we make use of `gstat`'s `idw` function. This requires that we either detach the `spatstat.explore` package (this package was automatically installed when we installed `spatstat`) or that we explicitly identify the package by typing `gstat::idw`. Here, we opted for the former approach.
+```
 
 ```{r results='hide',  fig.height=3.3}
-library(gstat) # Use gstat's idw routine
-library(sp)    # Used for the spsample function
+detach("package:spatstat.explore", unload = TRUE, force=TRUE) 
+library(gstat) 
+library(terra)
+library(sp) 
 
 # Create an empty grid where n is the total number of cells
 grd              <- as.data.frame(spsample(P, "regular", n=50000))
@@ -97,14 +90,14 @@ proj4string(P) <- proj4string(P) # Temp fix until new proj env is adopted
 proj4string(grd) <- proj4string(P)
 
 # Interpolate the grid cells using a power value of 2 (idp=2.0)
-P.idw <- gstat::idw(Precip_in ~ 1, P, newdata=grd, idp=2.0)
+P.idw <- idw(Precip_in ~ 1, P, newdata=grd, idp = 2.0)
 
 # Convert to raster object then clip to Texas
-r       <- raster(P.idw)
-r.m     <- mask(r, W)
+r       <- rast(P.idw)
+r.m     <- mask(r, st_as_sf(W))
 
 # Plot
-tm_shape(r.m) + 
+tm_shape(r.m["var1.pred"]) + 
   tm_raster(n=10,palette = "RdBu", auto.palette.mapping = FALSE,
             title="Predicted precipitation \n(in inches)") + 
   tm_shape(P) + tm_dots(size=0.2) +
@@ -143,19 +136,16 @@ sqrt( sum((IDW.out - P$Precip_in)^2) / length(P))
 In addition to generating an interpolated surface, you can create a 95% confidence interval map of the interpolation model. Here we'll create a 95% CI map from an IDW interpolation that uses a power parameter of 2 (`idp=2.0`).
 
 ```{r results='hide',  fig.height=3.3, cache=TRUE}
-# Implementation of a jackknife technique to estimate 
-# a confidence interval at each unsampled point.
-
-# Create the interpolated surface
-img <- gstat::idw(Precip_in~1, P, newdata=grd, idp=2.0)
+# Create the interpolated surface (using gstat's idw function)
+img <- idw(Precip_in~1, P, newdata=grd, idp=2.0)
 n   <- length(P)
 Zi  <- matrix(nrow = length(img$var1.pred), ncol = n)
 
 # Remove a point then interpolate (do this n times for each point)
-st <- stack()
+st <- rast()
 for (i in 1:n){
   Z1 <- gstat::idw(Precip_in~1, P[-i,], newdata=grd, idp=2.0)
-  st <- addLayer(st,raster(Z1,layer=1))
+  st <- c(st,rast(Z1))
   # Calculated pseudo-value Z at j
   Zi[,i] <- n * img$var1.pred - (n-1) * Z1$var1.pred
 }
@@ -175,11 +165,11 @@ img.sig   <- img
 img.sig$v <- CI /img$var1.pred 
 
 # Clip the confidence raster to Texas
-r <- raster(img.sig, layer="v")
-r.m <- mask(r, W)
+r <- rast(img.sig, layer="v")
+r.m <- mask(r, st_as_sf(W))
 
 # Plot the map
-tm_shape(r.m) + tm_raster(n=7,title="95% confidence interval \n(in inches)") +
+tm_shape(r.m["var1.pred"]) + tm_raster(n=7,title="95% confidence interval \n(in inches)") +
   tm_shape(P) + tm_dots(size=0.2) +
   tm_legend(legend.outside=TRUE)
 
@@ -204,8 +194,8 @@ lm.1 <- lm( f.1, data=P)
 dat.1st <- SpatialGridDataFrame(grd, data.frame(var1.pred = predict(lm.1, newdata=grd))) 
 
 # Clip the interpolated raster to Texas
-r   <- raster(dat.1st)
-r.m <- mask(r, W)
+r   <- rast(dat.1st)
+r.m <- mask(r, st_as_sf(W))
 
 # Plot the map
 tm_shape(r.m) + 
@@ -235,8 +225,8 @@ lm.2 <- lm( f.2, data=P)
 dat.2nd <- SpatialGridDataFrame(grd, data.frame(var1.pred = predict(lm.2, newdata=grd))) 
 
 # Clip the interpolated raster to Texas
-r   <- raster(dat.2nd)
-r.m <- mask(r, W)
+r   <- rast(dat.2nd)
+r.m <- mask(r, st_as_sf(W))
 
 # Plot the map
 tm_shape(r.m) + 
@@ -287,27 +277,24 @@ f.1 <- as.formula(Precip_in ~ X + Y)
 dat.krg <- krige( f.1, P, grd, dat.fit)
 
 # Convert kriged surface to a raster object for clipping
-r <- raster(dat.krg)
-r.m <- mask(r, W)
+r <- rast(dat.krg)
+r.m <- mask(r, st_as_sf(W))
 
 # Plot the map
-tm_shape(r.m) + 
+tm_shape(r.m["var1.pred"]) + 
   tm_raster(n=10, palette="RdBu", auto.palette.mapping=FALSE, 
             title="Predicted precipitation \n(in inches)") +
   tm_shape(P) + tm_dots(size=0.2) +
   tm_legend(legend.outside=TRUE)
-
 ```
 
 ### Generate the variance and confidence interval maps {-}
 
-The `dat.krg` object stores not just the interpolated values, but the variance values as well. These can be passed to the raster object for mapping as follows:
+The `dat.krg` object stores not just the interpolated values, but the variance values as well. These are also passed to the raster object for mapping as follows:
+
 
 ```{r results='hide',  fig.height=3.3}
-r   <- raster(dat.krg, layer="var1.var")
-r.m <- mask(r, W)
-
-tm_shape(r.m) + 
+tm_shape(r.m["var1.var"]) + 
   tm_raster(n=7, palette ="Reds",
             title="Variance map \n(in squared inches)") +tm_shape(P) + tm_dots(size=0.2) +
   tm_legend(legend.outside=TRUE)
@@ -316,8 +303,8 @@ tm_shape(r.m) +
 A more readily interpretable map is the 95% confidence interval map which can be generated from the variance object as follows (the map values should be interpreted as the number of inches above and below the estimated rainfall amount).
 
 ```{r results='hide',  fig.height=3.3}
-r   <- sqrt(raster(dat.krg, layer="var1.var")) * 1.96
-r.m <- mask(r, W)
+r   <- rast(dat.krg)
+r.m <- mask(sqrt(r["var1.var"])* 1.96, st_as_sf(W))
 
 tm_shape(r.m) + 
   tm_raster(n=7, palette ="Reds",
