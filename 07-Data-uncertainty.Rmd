@@ -66,7 +66,7 @@ lbs = s1$NAME[order(s1$Income)]
 
 # Plot the estimate along with the MoE
 OP <- par(mar=c(3,7,0,1))
-plotCI(Y,1:16, ui= Y+(1.645*YSE), li=(Y-1.645*YSE),pch=16, lwd=2, barcol="red",sfrac=.005, err="x", col="grey50",
+plotCI(Y,1:16, ui= Y+(1.645*YSE), li=(Y-1.645*YSE),pch=16, lwd=1, barcol="red",sfrac=.005, err="x", col="grey50",
        ylab = "", xlab="", axes=FALSE, gap=0.5)
 axis(1, cex.axis=0.8)
 axis(2, at=1:16, labels=lbs,las=2,cex.axis=0.8)
@@ -153,12 +153,12 @@ There is no single solution to effectively convey both estimates *and* associate
 
 # Plot the estimate along with the MoE
 OP <- par(mar=c(3,6,0,1))
-plotCI(Y,1:16, ui= Y+(1.645*YSE), li=(Y-1.645*YSE),pch=16, lwd=2, barcol="red",
+plotCI(Y,1:16, ui= Y+(1.645*YSE), li=(Y-1.645*YSE),pch=16, lwd=1, barcol="red",
        sfrac=.005, err="x", col="grey50", ylab = "", xlab="", axes=FALSE, gap=0.5)
 axis(1, cex.axis=0.8)
 axis(2, at=1:16, labels=lbs,las=2,cex.axis=0.8)
 mtext("Income ($)", side= 1,line=2)
-abline(v=brks, col=rgb(0,.6,0))
+abline(v=brks, col=rgb(0,.6,0), lty = 3)
 par(OP)
 ```
 
