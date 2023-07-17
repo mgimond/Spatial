@@ -107,7 +107,7 @@ tm_shape(elevation) + tm_raster(palette="-RdBu") +
 
 Operations or functions applied focally to rasters involve user defined neighboring cells. Focal operations can be performed using the `focal` function. For example, to *smooth* out the elevation raster by computing the mean cell values over a 11 by 11 cells window, type:
 
-```{r}
+```{r error=FALSE}
 f1 <- focal(elevation, w = 11  , fun = mean)
 ```
 
@@ -115,7 +115,7 @@ The `w` argument defines the focal window. If it's given a single number (as is 
 
 `w` can also be passed a matrix with each element in that matrix defining the weight for each cell.  The following code chunk will generate the same output as the previous code chunk:
 
-```{r}
+```{r error=FALSE}
 f1 <- focal(elevation, w = matrix(1, nrow = 11, ncol = 11), fun = mean)
 ```
 
@@ -126,7 +126,7 @@ tm_shape(f1) + tm_raster(palette="-RdBu") +
 
 By default edge cells are assigned a value of `NA`. This is because cells outside of the input raster extent have no value, so when the average value is computed for a cell along the raster's edge, the kernel will include the NA values outside the raster's extent. To see an example of this, we will first smooth the raster using a 3 by 3 focal window, then we'll zoom in on a 3 by 3 portion of the `elevation` raster in the above left-hand corner of its extent.
 
-```{r}
+```{r error=FALSE}
 # Run a 3x3 smooth on the raster
 f_mean <- focal(elevation, w = 3  , fun = mean)
 ```
@@ -342,7 +342,7 @@ Global operations and functions may make use of all input cells of a grid in the
 An example of a global function is the Euclidean distance function, `distance`,  which computes the shortest distance between a pixel and a source (or destination) location. To demonstrate the `distance` function, we'll first create a new raster layer with two non-NA pixels.
 
 ```{r}
-r1   <- raster(ncol=100, nrow=100, xmn=0, xmx=100, ymn=0, ymx=100)
+r1   <- rast(ncols=100, nrows=100, xmin=0, xmax=100, ymin=0, ymax=100)
 r1[] <- NA              # Assign NoData values to all pixels
 r1[c(850, 5650)] <- 1   # Change the pixels #850 and #5650  to 1
 crs(r1) <- "+proj=ortho"  # Assign an arbitrary coordinate system (needed for mapping with tmap)
@@ -365,23 +365,20 @@ tm_shape(r1.d) + tm_raster(palette = "Greens", style="order", title="Distance") 
   tm_shape(r1) + tm_raster(palette="red", title="Points") 
 ```
 
-You can also compute a distance raster using `SpatialPoints` objects or a simple x,y data table. In the following example, distances to points (25,30) and (87,80) are computed for each output cell. However, since we are working off of point objects (and not an existing raster as was the case in the previous example), we will need to create a blank raster layer which will define the extent of the Euclidean distance raster output. 
+You can also compute a distance raster using `sf` point objects. In the following example, distances to points (25,30) and (87,80) are computed for each output cell. However, since we are working off of point objects (and not an existing raster as was the case in the previous example), we will need to create a blank raster layer which will define the extent of the Euclidean distance raster output. 
 
 ```{r}
-# Create a blank raster
-r2 <- raster(ncol=100, nrow=100, xmn=0, xmx=100, ymn=0, ymx=100)
+r2 <- rast(ncols=100, nrows=100, xmin=0, xmax=100, ymin=0, ymax=100)
 crs(r2) <- "+proj=ortho"  # Assign an arbitrary coordinate system 
 
 # Create a point layer
-xy <- matrix(c(25,30,87,80),nrow=2, byrow=T) 
-p1 <- SpatialPoints(xy)
-crs(p1) <- "+proj=ortho"  # Assign an arbitrary coordinate system 
+p1 <- st_as_sf(st_as_sfc("MULTIPOINT(25 30, 87 80)", crs = "+proj=ortho"))
 ```
 
-Now let's compute the Euclidean distance to these points using the `distanceFromPoints` function.
+Now let's compute the Euclidean distance to these points using the `distance` function.
 
 ```{r}
-r2.d <- distanceFromPoints(r2, p1)
+r2.d <- distance(r2, p1)
 ```
 
 Let's plot the resulting output.
@@ -394,13 +391,13 @@ tm_shape(r2.d) + tm_raster(palette = "Greens", style="order") +
 
 ## Computing cumulative distances {-}
 
-This exercise demonstrates how to use functions from the `gdistance` package to generate a cumulative distance raster. This package does not yet recognize `terra` raster opbjects. As such, we will also need to load the `raster` libray to convert `terra` raster objects to a format recognized by `gdistance` functions. 
+This exercise demonstrates how to use functions from the `gdistance` package to generate a cumulative distance raster. One objective will be to demonstrate the influence "adjacency cells" wields in the final results.
+
+Load the `gdistance` package.
+
 ```{r}
 library(gdistance)
-library(raster)
 ```
-
-One objective will be to demonstrate the influence "adjacency cells" wields in the final results.
 
 First, we'll create a 100x100 raster and assign a value of `1` to each cell. The pixel value defines the cost (other than distance) in traversing that pixel. In this example, we'll assume that the cost is uniform across the entire extent. 
 

@@ -116,7 +116,7 @@ One problem with the various techniques used thus far is their sensitivity (henc
 ```{r message=FALSE, warning=FALSE, tidy=FALSE, fig.height=4, fig.width=4}
 brks <- classIntervals(auckland$Und5_81, n = 6, style = "equal")
 plot(auckland["Und5_81"], breaks = brks$brks,  at = brks$brks, pal = pal1,
-     key.pos = 4, las = 1))
+     key.pos = 4, las = 1)
 ```
 
 Note the variability in population count with some areas encompassing fewer than 50 infants. If there is just one death in that census unit, the death rate would be reported as $1/50 * 1000$ or 20 per thousand infants--far more than then the `r sprintf("%3.2f",auck.rate * 1000)` per thousand rate for our Auckland data set. Interestingly, the three highest raw rates in Auckland (`r auckland$raw.rate[auckland$raw.rate > 9]` deaths per 1000) are associated with some of the smallest underlying population counts (`r auckland$Und5_81[auckland$raw.rate > 9]` infants under 5). 

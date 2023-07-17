@@ -1,4 +1,6 @@
 bookdown::gitbook:
+  includes:
+    in_header:  analytics.html
   highlight: haddock
   css: style.css
   config:
@@ -13,10 +15,3 @@ bookdown::gitbook:
       instapper: no
       all: no
     download: []
-bookdown::pdf_book:
-  includes:
-    in_header: preamble.tex
-  latex_engine: xelatex
-  citation_package: natbib
-  keep_tex: yes
-bookdown::epub_book: default

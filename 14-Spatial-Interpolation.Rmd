@@ -5,6 +5,7 @@ Given a distribution of point meteorological stations showing precipitation valu
 ```{r f14-precip-map, echo=FALSE, results='hide', fig.height=3, fig.cap="Average yearly precipitation (reported in inches) for several meteorological sites in Texas."}
 library(terra)
 library(tmap)
+library(sf)
 
 # Load precipitation point data
 z <- gzcon(url("https://github.com/mgimond/Spatial/raw/main/Data/precip.rds"))
@@ -78,6 +79,8 @@ In the following figure, the sampled points and values are superimposed on top o
 library(gstat) # Use gstat's idw routine
 library(sp)    # Used for the spsample function
 library(terra)
+library(sf)
+library(tmap)
 
 # Create an empty grid where n is the total number of cells
 grd              <- as.data.frame(spsample(W, "regular", n=50000))
@@ -85,7 +88,10 @@ names(grd)       <- c("X", "Y")
 coordinates(grd) <- c("X", "Y")
 gridded(grd)     <- TRUE  # Create SpatialPixel object
 fullgrid(grd)    <- TRUE  # Create SpatialGrid object
-crs(grd) <- P_crs
+
+# Add P's projection information to the empty grid
+proj4string(P) <- proj4string(P) # Temp fix until new proj env is adopted
+proj4string(grd) <- proj4string(P)
 
 # Interpolate the surface using a power value of 2 (idp=2.0)
 P.idw <- gstat::idw(Precip_in ~ 1, P, newdata=grd,idp=2.0)
@@ -96,7 +102,8 @@ r   <- rast(P.idw)
 r.m <- mask(r, st_as_sf(W))
 
 # Plot
-tm_shape(r.m) + tm_raster(n=10, palette="RdBu", auto.palette.mapping=FALSE, title="Predicted precip") +
+tm_shape(r.m) + 
+  tm_raster(n=10, palette="RdBu", auto.palette.mapping=FALSE, title="Predicted precip") +
   tm_shape(P) + tm_dots(size=0.2) +
   tm_legend(legend.outside=TRUE)
 ```
@@ -111,7 +118,10 @@ names(grd)       <- c("X", "Y")
 coordinates(grd) <- c("X", "Y")
 gridded(grd)     <- TRUE  # Create SpatialPixel object
 fullgrid(grd)    <- TRUE  # Create SpatialGrid object
-crs(grd) <- P_crs
+
+# Add P's projection information to the empty grid
+proj4string(P) <- proj4string(P) # Temp fix until new proj env is adopted
+proj4string(grd) <- proj4string(P)
 
 # Interpolate the surface using a power value of 15 (idp=15)
 P.idw <- gstat::idw(Precip_in ~ 1, P, newdata=grd, idp=15)

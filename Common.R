@@ -2,7 +2,7 @@ knitr::opts_chunk$set(
   comment = "",
   message = FALSE,
   tidy = FALSE,
-  cache = TRUE,
+  cache = FALSE,
   warning = FALSE,
   encoding = "UTF-8",
   fig.show='hold')

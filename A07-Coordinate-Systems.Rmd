@@ -208,8 +208,8 @@ st_crs(elev.r.gcs)
 If an EPSG code is to be used, adopt the `"+init=EPSG: ..."` syntax used earlier in this tutorial.
 
 ```{r}
-elev.r.gcs <- projectRaster(elev.r, crs="+init=EPSG:4326")
-crs(elev.r.gcs)
+elev.r.gcs <- project(elev.r, y="+init=EPSG:4326")
+st_crs(elev.r.gcs)
 ```
 
 A geographic coordinate system is often desired when overlapping a layer with a web based mapping service such as Google, Bing or OpenStreetMap (even though these web based services end up projecting to a projected coordinate system--most likely a Web Mercator projection). To check that `s.sf.gcs` was properly transformed, we'll overlay it on top of an OpenStreetMap using the `leaflet` package.
