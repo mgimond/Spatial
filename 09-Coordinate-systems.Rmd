@@ -30,7 +30,7 @@ knitr::include_graphics("img/Ellipsoid.svg")
 The reason the earth has a slightly ellipsoidal shape has to do with its rotation which induces a centripetal force along the equator. This results in an equatorial axis that is roughly 21 km longer than the polar axis.
 
 ```{r f09-sphere-ellipse, echo=FALSE, fig.cap = "The earth can be mathematically modeled as a simple sphere (left) or an ellipsoid (right)."}
-knitr::include_graphics(c("img/globe_0_0_center.svg","img/globe_0_0_center_wide.svg" ))
+knitr::include_graphics(c("img/globe_0_0_center.png","img/globe_0_0_center_wide.png" ))
 ```
 
 Our estimate of these radii is quite precise thanks to satellite and computational capabilities. The semi-major axis is 6,378,137 meters and the semi-minor axis is 6,356,752 meters.
