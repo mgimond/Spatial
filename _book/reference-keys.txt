@@ -73,6 +73,7 @@ fig:f09-sphere-slice
 fig:f09-sphere-ellipse
 fig:f09-dist-diff
 fig:f09-geoid
+fig:f09-datum
 fig:f09-datum-local
 fig:f09-datum-geocentric
 fig:f09-GCS-offsets
@@ -153,6 +154,7 @@ fig:f14-spherical-model
 fig:f14-krige01
 fig:f14-krige02
 fig:f14-krige03
+fig:unnamed-chunk-17
 fig:unnamed-chunk-19
 fig:unnamed-chunk-21
 fig:unnamed-chunk-23
@@ -314,4 +316,3 @@ coordinate-systems-in-r
 point-pattern-analysis-in-r
 spatial-autocorrelation-in-r
 interpolation-in-r
-fig:unnamed-chunk-17

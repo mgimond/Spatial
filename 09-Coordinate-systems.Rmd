@@ -45,8 +45,8 @@ knitr::include_graphics(c("img/Ellipsoid_vs_sphere_distances.svg"))
 
 Representing the earth's true shape, the *geoid*, as a mathematical model is crucial for a GIS environment. However, the earth's shape is not a perfectly smooth surface. It has undulations resulting from changes in gravitational pull across its surface. These undulations may not be visible with the naked eye, but they are measurable and can influence locational measurements. Note that we are not including mountains and ocean bottoms in our discussion, instead we are focusing solely on the earth's gravitational potential which can be best visualized by imagining the earth's surface completely immersed in water and measuring the distance from the earth's center to the water surface over the entire earth surface.
 
-```{r f09-geoid, echo=FALSE, fig.cap = "Earth's geoid with gravitational field shown in rainbow colors. The ondulations depicted in the graphics are exaggerated for visual effects. (source: NASA)", out.width=300}
-knitr::include_graphics("img/Geoids_sm_NASA.jpg" )
+```{r f09-geoid, echo=FALSE, fig.cap = "Earth's EGM 2008 geoid. The ondulations depicted in the graphics are exaggerated x4000.", out.width=250}
+knitr::include_graphics("img/geoid.png" )
 ```
 
 The earth's gravitational field is dynamic and is tied to the flow of the earth's hot and fluid core. Hence its geoid is constantly changing, albeit at a large temporal scale.The measurement and representation of the earth's shape is at the heart of geodesy--a branch of applied mathematics.
@@ -54,6 +54,10 @@ The earth's gravitational field is dynamic and is tied to the flow of the earth'
 ### Datum
 
 So how are we to reconcile our need to work with a (simple) mathematical model of the earth's shape with the ondulating nature of the earth's surface (i.e. its geoid)? The solution is to align the geoid with the ellipsoid (or sphere) representation of the earth and to map the earth's surface features onto this ellipsoid/sphere. The alignment can be local where the ellipsoid surface is closely fit to the geoid at a particular location on the earth's surface (such as the state of Kansas) or **geocentric** where the ellipsoid is aligned with the center of the earth. How one chooses to align the ellipsoid to the geoid defines a **datum**. 
+
+```{r f09-datum, echo=FALSE, out.width=750, fig.cap="Alignment of a geoid with a spheroid or ellipsoid help define a datum."}
+knitr::include_graphics("img/datum.png" )
+```
 
 #### Local Datum
 
@@ -85,9 +89,9 @@ World Geodetic System 1984 | WGS84 | Global | Developed by the Department of Def
 
 ### Building the Geographic Coordinate System
 
-A Geographic Coordinate System (GCS) is defined by the ellipsoid model and by the way this ellipsoid is aligned with the geoid (defining the datum). It is important to know which GCS is associated with a GIS file or a map document reference system. This is particularly true when the overlapping layers are tied to different datums (and therefore GCS'). This is because a location on the earth's surface can take on different coordinate values. For example, a location recorded in an NAD 1927 GCS having a coordinate pair of 44.56698&deg; north and 69.65939&deg; west will register a coordinate value of 44.56704&deg; north and 69.65888&deg; west in a NAD83 GCS and a coordinate value of 44.37465&deg; north and -69.65888&deg; west in a sphere based WGS84 GCS. If the coordinate systems for these point coordinate values were not properly defined, then they could be misplaced on a map.  This is analogous to recording temperature using different units of measure (degrees Celsius, Fahrenheit and Kelvin)--each unit of measure will produce a different numeric value. 
+A Geographic Coordinate System (GCS) is defined by the ellipsoid model and by the way this ellipsoid is aligned with the geoid (thus defining the datum). It is important to know which GCS is associated with a GIS file or a map document reference system. This is particularly true when the overlapping layers are tied to different datums (and therefore GCS'). This is because a location on the earth's surface can take on different coordinate values. For example, a location recorded in an NAD 1927 GCS having a coordinate pair of 44.56698&deg; north and 69.65939&deg; west will register a coordinate value of 44.56704&deg; north and 69.65888&deg; west in a NAD83 GCS and a coordinate value of 44.37465&deg; north and -69.65888&deg; west in a sphere based WGS84 GCS. If the coordinate systems for these point coordinate values were not properly defined, then they could be misplaced on a map.  This is analogous to recording temperature using different units of measure (degrees Celsius, Fahrenheit and Kelvin)--each unit of measure will produce a different numeric value. 
 
-```{r f09-GCS-offsets, echo=FALSE, fig.cap="Map of the Colby flagpole in two different geographic coordinate systems (*GCS NAD 1983* on the left and *GCS NAD 1927* on the right). Note the offset in the 44.5639&deg; line of latitude relative to the flagpole. Also note the 0.0005&deg; longitudinal offset between both reference systems.",  out.width=440}
+```{r f09-GCS-offsets, echo=FALSE, fig.cap="Map of the Colby flagpole in two different geographic coordinate systems (*GCS NAD 1983* on the left and *GCS NAD 1927* on the right). Note the offset in the 44.5639&deg; line of latitude relative to the flagpole. Also note the 0.0005&deg; longitudinal offset between both reference systems.",  out.width=540}
 knitr::include_graphics("img/GCS_diff_coord_values.png" )
 ```
 
