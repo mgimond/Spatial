@@ -589,7 +589,7 @@ Figure 9.2: A slice of earth showing the latitude and longitude measurements.
 <p><img src="img/Ellipsoid.svg" /><!-- --></p>
 <p>The reason the earth has a slightly ellipsoidal shape has to do with its rotation which induces a centripetal force along the equator. This results in an equatorial axis that is roughly 21 km longer than the polar axis.</p>
 <div class="figure"><span style="display:block;" id="fig:f09-sphere-ellipse"></span>
-<img src="img/globe_0_0_center.svg" alt="The earth can be mathematically modeled as a simple sphere (left) or an ellipsoid (right)."  /><img src="img/globe_0_0_center_wide.svg" alt="The earth can be mathematically modeled as a simple sphere (left) or an ellipsoid (right)."  />
+<img src="img/globe_0_0_center.png" alt="The earth can be mathematically modeled as a simple sphere (left) or an ellipsoid (right)." width="116" /><img src="img/globe_0_0_center_wide.png" alt="The earth can be mathematically modeled as a simple sphere (left) or an ellipsoid (right)." width="143" />
 <p class="caption">
 Figure 9.3: The earth can be mathematically modeled as a simple sphere (left) or an ellipsoid (right).
 </p>
@@ -607,9 +607,9 @@ Figure 9.4: Differences in distance measurements between the surface of a sphere
 <h3><span class="header-section-number">9.1.2</span> Geoid<a href="chp09_0.html#geoid" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Representing the earth’s true shape, the <em>geoid</em>, as a mathematical model is crucial for a GIS environment. However, the earth’s shape is not a perfectly smooth surface. It has undulations resulting from changes in gravitational pull across its surface. These undulations may not be visible with the naked eye, but they are measurable and can influence locational measurements. Note that we are not including mountains and ocean bottoms in our discussion, instead we are focusing solely on the earth’s gravitational potential which can be best visualized by imagining the earth’s surface completely immersed in water and measuring the distance from the earth’s center to the water surface over the entire earth surface.</p>
 <div class="figure"><span style="display:block;" id="fig:f09-geoid"></span>
-<img src="img/Geoids_sm_NASA.jpg" alt="Earth's geoid with gravitational field shown in rainbow colors. The ondulations depicted in the graphics are exaggerated for visual effects. (source: NASA)" width="300" />
+<img src="img/geoid.png" alt="Earth's EGM 2008 geoid. The ondulations depicted in the graphics are exaggerated x4000." width="250" />
 <p class="caption">
-Figure 9.5: Earth’s geoid with gravitational field shown in rainbow colors. The ondulations depicted in the graphics are exaggerated for visual effects. (source: NASA)
+Figure 9.5: Earth’s EGM 2008 geoid. The ondulations depicted in the graphics are exaggerated x4000.
 </p>
 </div>
 <p>The earth’s gravitational field is dynamic and is tied to the flow of the earth’s hot and fluid core. Hence its geoid is constantly changing, albeit at a large temporal scale.The measurement and representation of the earth’s shape is at the heart of geodesy–a branch of applied mathematics.</p>
@@ -617,12 +617,18 @@ Figure 9.5: Earth’s geoid with gravitational field shown in rainbow colors. Th
 <div id="datum" class="section level3 hasAnchor" number="9.1.3">
 <h3><span class="header-section-number">9.1.3</span> Datum<a href="chp09_0.html#datum" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>So how are we to reconcile our need to work with a (simple) mathematical model of the earth’s shape with the ondulating nature of the earth’s surface (i.e. its geoid)? The solution is to align the geoid with the ellipsoid (or sphere) representation of the earth and to map the earth’s surface features onto this ellipsoid/sphere. The alignment can be local where the ellipsoid surface is closely fit to the geoid at a particular location on the earth’s surface (such as the state of Kansas) or <strong>geocentric</strong> where the ellipsoid is aligned with the center of the earth. How one chooses to align the ellipsoid to the geoid defines a <strong>datum</strong>.</p>
+<div class="figure"><span style="display:block;" id="fig:f09-datum"></span>
+<img src="img/datum.png" alt="Alignment of a geoid with a spheroid or ellipsoid help define a datum." width="750" />
+<p class="caption">
+Figure 9.6: Alignment of a geoid with a spheroid or ellipsoid help define a datum.
+</p>
+</div>
 <div id="local-datum" class="section level4 hasAnchor" number="9.1.3.1">
 <h4><span class="header-section-number">9.1.3.1</span> Local Datum<a href="chp09_0.html#local-datum" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <div class="figure"><span style="display:block;" id="fig:f09-datum-local"></span>
 <img src="img/Datum_local.svg" alt="A local datum couples a geoid with the ellipsoid at a location on each element's surface." width="250" />
 <p class="caption">
-Figure 9.6: A local datum couples a geoid with the ellipsoid at a location on each element’s surface.
+Figure 9.7: A local datum couples a geoid with the ellipsoid at a location on each element’s surface.
 </p>
 </div>
 <p>There are many local datums to choose from, some are old while others are more recently defined. The choice of datum is largely driven by the location of interest. For example, when working in the US, a popular local datum to choose from is the North American Datum of 1927 (or NAD27 for short). NAD27 works well for the US but it’s not well suited for other parts of the world. For example, a far better local datum for Europe is the European Datum of 1950 (ED50 for short). Examples of common local datums are shown in the following table:</p>
@@ -668,7 +674,7 @@ Figure 9.6: A local datum couples a geoid with the ellipsoid at a location on ea
 <div class="figure"><span style="display:block;" id="fig:f09-datum-geocentric"></span>
 <img src="img/Datum_geocentric.svg" alt="A geocentric  datum couples a geoid with the ellipsoid at each element's center of mass." width="250" />
 <p class="caption">
-Figure 9.7: A geocentric datum couples a geoid with the ellipsoid at each element’s center of mass.
+Figure 9.8: A geocentric datum couples a geoid with the ellipsoid at each element’s center of mass.
 </p>
 </div>
 <p>Many of the modern datums use a geocentric alignment. These include the popular World Geodetic Survey for 1984 (WGS84) and the North American Datums of 1983 (NAD83). Most of the popular geocentric datums use the WGS84 ellipsoid or the GRS80 ellipsoid. These two ellipsoids share nearly identical semi-major and semi-minor axes: 6,378,137 meters and 6,356,752 meters respectively. Examples of popular geocentric datums are shown in the following table:</p>
@@ -712,11 +718,11 @@ Figure 9.7: A geocentric datum couples a geoid with the ellipsoid at each elemen
 </div>
 <div id="building-the-geographic-coordinate-system" class="section level3 hasAnchor" number="9.1.4">
 <h3><span class="header-section-number">9.1.4</span> Building the Geographic Coordinate System<a href="chp09_0.html#building-the-geographic-coordinate-system" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>A Geographic Coordinate System (GCS) is defined by the ellipsoid model and by the way this ellipsoid is aligned with the geoid (defining the datum). It is important to know which GCS is associated with a GIS file or a map document reference system. This is particularly true when the overlapping layers are tied to different datums (and therefore GCS’). This is because a location on the earth’s surface can take on different coordinate values. For example, a location recorded in an NAD 1927 GCS having a coordinate pair of 44.56698° north and 69.65939° west will register a coordinate value of 44.56704° north and 69.65888° west in a NAD83 GCS and a coordinate value of 44.37465° north and -69.65888° west in a sphere based WGS84 GCS. If the coordinate systems for these point coordinate values were not properly defined, then they could be misplaced on a map. This is analogous to recording temperature using different units of measure (degrees Celsius, Fahrenheit and Kelvin)–each unit of measure will produce a different numeric value.</p>
+<p>A Geographic Coordinate System (GCS) is defined by the ellipsoid model and by the way this ellipsoid is aligned with the geoid (thus defining the datum). It is important to know which GCS is associated with a GIS file or a map document reference system. This is particularly true when the overlapping layers are tied to different datums (and therefore GCS’). This is because a location on the earth’s surface can take on different coordinate values. For example, a location recorded in an NAD 1927 GCS having a coordinate pair of 44.56698° north and 69.65939° west will register a coordinate value of 44.56704° north and 69.65888° west in a NAD83 GCS and a coordinate value of 44.37465° north and -69.65888° west in a sphere based WGS84 GCS. If the coordinate systems for these point coordinate values were not properly defined, then they could be misplaced on a map. This is analogous to recording temperature using different units of measure (degrees Celsius, Fahrenheit and Kelvin)–each unit of measure will produce a different numeric value.</p>
 <div class="figure"><span style="display:block;" id="fig:f09-GCS-offsets"></span>
-<img src="img/GCS_diff_coord_values.png" alt="Map of the Colby flagpole in two different geographic coordinate systems (*GCS NAD 1983* on the left and *GCS NAD 1927* on the right). Note the offset in the 44.5639&amp;deg; line of latitude relative to the flagpole. Also note the 0.0005&amp;deg; longitudinal offset between both reference systems." width="440" />
+<img src="img/GCS_diff_coord_values.png" alt="Map of the Colby flagpole in two different geographic coordinate systems (*GCS NAD 1983* on the left and *GCS NAD 1927* on the right). Note the offset in the 44.5639&amp;deg; line of latitude relative to the flagpole. Also note the 0.0005&amp;deg; longitudinal offset between both reference systems." width="540" />
 <p class="caption">
-Figure 9.8: Map of the Colby flagpole in two different geographic coordinate systems (<em>GCS NAD 1983</em> on the left and <em>GCS NAD 1927</em> on the right). Note the offset in the 44.5639° line of latitude relative to the flagpole. Also note the 0.0005° longitudinal offset between both reference systems.
+Figure 9.9: Map of the Colby flagpole in two different geographic coordinate systems (<em>GCS NAD 1983</em> on the left and <em>GCS NAD 1927</em> on the right). Note the offset in the 44.5639° line of latitude relative to the flagpole. Also note the 0.0005° longitudinal offset between both reference systems.
 </p>
 </div>
 </div>
@@ -734,7 +740,7 @@ Figure 9.8: Map of the Colby flagpole in two different geographic coordinate sys
 <div class="figure"><span style="display:block;" id="fig:f09-planar-examples"></span>
 <img src="img/Planar_Examples.svg" alt="Examples of three planar projections: orthographic (left), gnomonic (center) and equidistant (right). Each covers a different spatial range (with the latter covering both northern and southern hemispheres) and each preserves a unique set of spatial properties." width="600" />
 <p class="caption">
-Figure 9.9: Examples of three planar projections: orthographic (left), gnomonic (center) and equidistant (right). Each covers a different spatial range (with the latter covering both northern and southern hemispheres) and each preserves a unique set of spatial properties.
+Figure 9.10: Examples of three planar projections: orthographic (left), gnomonic (center) and equidistant (right). Each covers a different spatial range (with the latter covering both northern and southern hemispheres) and each preserves a unique set of spatial properties.
 </p>
 </div>
 </div>
@@ -749,7 +755,7 @@ Figure 9.9: Examples of three planar projections: orthographic (left), gnomonic 
 <div class="figure"><span style="display:block;" id="fig:f09-cylindrical-examples"></span>
 <img src="img/Cylindrical_Examples.svg" alt="Examples of two cylindrical projections: Mercator (preserves shape but distortes area and distance) and equa-area (preserves area but distorts shape)." width="600" />
 <p class="caption">
-Figure 9.10: Examples of two cylindrical projections: Mercator (preserves shape but distortes area and distance) and equa-area (preserves area but distorts shape).
+Figure 9.11: Examples of two cylindrical projections: Mercator (preserves shape but distortes area and distance) and equa-area (preserves area but distorts shape).
 </p>
 </div>
 </div>
@@ -764,7 +770,7 @@ Figure 9.10: Examples of two cylindrical projections: Mercator (preserves shape 
 <div class="figure"><span style="display:block;" id="fig:f09-conical-examples"></span>
 <img src="img/Conical_Examples.svg" alt="Examples of three conical projections: Albers equal area (preserves area), equidistant (preserves distance) and conformal (preserves shape)." width="600" />
 <p class="caption">
-Figure 9.11: Examples of three conical projections: Albers equal area (preserves area), equidistant (preserves distance) and conformal (preserves shape).
+Figure 9.12: Examples of three conical projections: Albers equal area (preserves area), equidistant (preserves distance) and conformal (preserves shape).
 </p>
 </div>
 </div>
