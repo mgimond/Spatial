@@ -107,7 +107,7 @@ tm_shape(elevation) + tm_raster(palette="-RdBu") +
 
 Operations or functions applied focally to rasters involve user defined neighboring cells. Focal operations can be performed using the `focal` function. For example, to *smooth* out the elevation raster by computing the mean cell values over a 11 by 11 cells window, type:
 
-```{r error=FALSE}
+```{r error=FALSE, message=FALSE}
 f1 <- focal(elevation, w = 11  , fun = mean)
 ```
 
@@ -126,12 +126,12 @@ tm_shape(f1) + tm_raster(palette="-RdBu") +
 
 By default edge cells are assigned a value of `NA`. This is because cells outside of the input raster extent have no value, so when the average value is computed for a cell along the raster's edge, the kernel will include the NA values outside the raster's extent. To see an example of this, we will first smooth the raster using a 3 by 3 focal window, then we'll zoom in on a 3 by 3 portion of the `elevation` raster in the above left-hand corner of its extent.
 
-```{r error=FALSE}
+```{r error=FALSE, message=FALSE}
 # Run a 3x3 smooth on the raster
 f_mean <- focal(elevation, w = 3  , fun = mean)
 ```
 
-```{r echo = FALSE, fig.width = 6, fig.height=1.5}
+```{r echo = FALSE, fig.width = 6, fig.height=1.5, error=FALSE, results='hide', fig.cap="Upper left-hand corner of elevation raster",}
 # Plot the upper left hand corner
 zoom1 <- ext(-180, -179, 89,90)
 OP <- par(pty="s",  mfrow=c(1,3), mar=c(0,0,3,0), bty="n")
@@ -154,12 +154,12 @@ You might have noticed the lack of edge effect issues along the western edge of 
 
 To have the `focal` function ignore missing values, simply add the `na.rm = TRUE` option.
 
-```{r}
+```{r, results='hide'}
 # Run a 3x3 smooth on the raster
 f_mean_no_na <- focal(elevation, w = 3  , fun = mean, na.rm = TRUE)
 ```
 
-```{r echo = FALSE, fig.width = 6, fig.height=1.5, fig.cap="Upper left-hand corner of elevation raster"}
+```{r echo = FALSE, fig.width = 6, fig.height=1.5, fig.cap="Upper left-hand corner of elevation raster. Border edge ignored.", results='hide'}
 # Plot the upper left hand corner
 zoom1 <- ext(-180, -179, 89,90)
 OP <- par(pty="s",  mfrow=c(1,3), mar=c(0,0,3,0), bty="n")
@@ -185,7 +185,7 @@ Another option is to *expand* the row edge beyond its extent by replicating the 
 f_mean_expand <- focal(elevation, w = 3, fun = mean, expand = TRUE)
 ```
 
-```{r echo = FALSE, fig.width = 6, fig.height=1.5, fig.cap="Upper left-hand corner of elevation raster"}
+```{r echo = FALSE, fig.width = 6, fig.height=1.5, fig.cap="Upper left-hand corner of elevation raster", results='hide'}
 # Plot the upper left hand corner
 zoom1 <- ext(-180, -179, 89,90)
 OP <- par(pty="s",  mfrow=c(1,3), mar=c(0,0,3,0), bty="n")
@@ -218,7 +218,7 @@ f_mat  <- focal(elevation, w = matrix(1/9, nrow = 3, ncol = 3))
 
 Note that if `fun` is not defined, it will default to summing the weighted pixel values.
 
-```{r echo = FALSE, fig.width = 6, fig.height=1.5, fig.cap="Upper left-hand corner of elevation raster"}
+```{r echo = FALSE, fig.width = 6, fig.height=1.5, fig.cap="Upper left-hand corner of elevation raster", results='hide'}
 # Plot the upper left hand corner
 zoom1 <- ext(-180, -179, 89,90)
 OP <- par(pty="s",  mfrow=c(1,3), mar=c(0,0,3,0), bty="n")
@@ -244,7 +244,7 @@ f_mean <- focal(elevation, w = 3, fun = mean, na.rm = TRUE)
 f_mat  <- focal(elevation, w = matrix(1/9, nrow = 3, ncol = 3), na.rm = TRUE)
 ```
 
-```{r echo = FALSE, fig.width = 6, fig.height=1.5, fig.cap="Upper left-hand corner of elevation raster"}
+```{r echo = FALSE, fig.width = 6, fig.height=1.5, fig.cap="Upper left-hand corner of elevation raster", results='hide'}
 # Plot the upper left hand corner
 zoom1 <- ext(-180, -179, 89,90)
 OP <- par(pty="s",  mfrow=c(1,3), mar=c(0,0,3,0), bty="n")

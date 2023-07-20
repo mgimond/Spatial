@@ -130,7 +130,7 @@ print(P2, split=c(2, 1, 2, 1), more=FALSE)
 
 A few more simulated samples (using the 90% confidence interval) are shown below:
 
-```{r f07-5sim-maps, message=FALSE,warning=FALSE,echo=FALSE,fig.width = 10, fig.height = 3.1, fig.fullwidth = TRUE, fig.cap = "Original income estimate (left) and realizations from simulated samples (R1 through R5)."}
+```{r f07-5sim-maps, message=FALSE,warning=FALSE,echo=FALSE,fig.width = 10, fig.height = 3.1, fig.fullwidth = TRUE, fig.cap = "Original income estimate (left) and realizations from simulated samples (R2 through R5)."}
 
 set.seed(421); s1$R2 <- rnorml(Y, YSE, 1.645)
 set.seed(1231); s1$R3 <- rnorml(Y, YSE, 1.645)

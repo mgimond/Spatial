@@ -314,3 +314,4 @@ coordinate-systems-in-r
 point-pattern-analysis-in-r
 spatial-autocorrelation-in-r
 interpolation-in-r
+fig:unnamed-chunk-17
