@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>E Mapping rates in R | Intro to GIS and Spatial Analysis</title>
   <meta name="description" content="This is a compilation of lecture notes that accompany my Intro to GIS and Spatial Analysis course." />
-  <meta name="generator" content="bookdown 0.32 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
 
   <meta property="og:title" content="E Mapping rates in R | Intro to GIS and Spatial Analysis" />
   <meta property="og:type" content="book" />
@@ -53,14 +53,23 @@
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
 <script src="libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
-<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<script src="libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
 <link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet-1.3.1/leaflet.js"></script>
 <link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
 <script src="libs/proj4-2.6.2/proj4.min.js"></script>
 <script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
 <link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
-<script src="libs/leaflet-binding-2.1.1/leaflet.js"></script>
+<script src="libs/leaflet-binding-2.1.2/leaflet.js"></script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-71085TV4MB"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-71085TV4MB');
+</script>
 
 
 <style type="text/css">
@@ -123,6 +132,10 @@ code span.vs { color: #008080; } /* VerbatimString */
 code span.wa { color: #008000; font-weight: bold; } /* Warning */
 </style>
 
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
 <style type="text/css">
 /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
 div.csl-bib-body { }
@@ -363,7 +376,7 @@ div.csl-indent {
 <li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_5_1"><i class="fa fa-check"></i>Converting an <code>sf</code> object to a <code>Spatial*</code> object (<code>spdep</code>/<code>sp</code>)</a></li>
 <li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_5_2"><i class="fa fa-check"></i>Converting an <code>sf</code> polygon object to an <code>owin</code> object</a></li>
 <li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_5_3"><i class="fa fa-check"></i>Converting an <code>sf</code> point object to a <code>ppp</code> object</a></li>
-<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_5_4"><i class="fa fa-check"></i>Converting a <code>raster</code> object to an <code>im</code> object (<code>spatstat</code>)</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_5_4"><i class="fa fa-check"></i>Converting a <code>SpatRaster</code> object to an <code>im</code> object</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_6"><i class="fa fa-check"></i>Converting to an <code>sf</code> object</a></li>
 <li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_7"><i class="fa fa-check"></i>Dissecting the <code>sf</code> file object</a></li>
@@ -474,7 +487,7 @@ div.csl-indent {
 <li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#assigning-a-coordinate-system"><i class="fa fa-check"></i>Assigning a coordinate system</a></li>
 <li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#transforming-coordinate-systems"><i class="fa fa-check"></i>Transforming coordinate systems</a>
 <ul>
-<li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#example-of-a-failed-transformation"><i class="fa fa-check"></i>Example of a failed transformation</a></li>
+<li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#reprojecting-to-a-new-meridian-center"><i class="fa fa-check"></i>Reprojecting to a new meridian center</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#a-note-about-containment"><i class="fa fa-check"></i>A note about containment</a></li>
 <li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#creating-tissot-indicatrix-circles"><i class="fa fa-check"></i>Creating Tissot indicatrix circles</a></li>
@@ -603,7 +616,17 @@ RColorBrewer
               padding-bottom: 1px;
               padding-left: 4px;
               padding-right: 4px;">
-rgdal
+sf
+</td>
+<td style="text-align:left;color: black !important;background-color: #ffc178 !important;text-align: center;font-size: 12px !important; 
+              margin:5px; 
+              border-radius: 8px;
+              border: 2px solid white;
+              padding-top: 1px;
+              padding-bottom: 1px;
+              padding-left: 4px;
+              padding-right: 4px;">
+sp
 </td>
 </tr>
 <tr>
@@ -615,7 +638,7 @@ rgdal
               padding-bottom: 1px;
               padding-left: 4px;
               padding-right: 4px;">
-4.2.1
+4.3.1
 </td>
 <td style="text-align:left;color: white !important;background-color: #AAAAAA !important;text-align: center;font-size: 12px !important; 
               margin:5px; 
@@ -625,7 +648,7 @@ rgdal
               padding-bottom: 1px;
               padding-left: 4px;
               padding-right: 4px;">
-1.2.5
+1.2.8
 </td>
 <td style="text-align:left;color: white !important;background-color: #AAAAAA !important;text-align: center;font-size: 12px !important; 
               margin:5px; 
@@ -635,7 +658,7 @@ rgdal
               padding-bottom: 1px;
               padding-left: 4px;
               padding-right: 4px;">
-0.4.7
+0.4.9
 </td>
 <td style="text-align:left;color: white !important;background-color: #AAAAAA !important;text-align: center;font-size: 12px !important; 
               margin:5px; 
@@ -655,52 +678,68 @@ rgdal
               padding-bottom: 1px;
               padding-left: 4px;
               padding-right: 4px;">
-1.5.32
+1.0.14
+</td>
+<td style="text-align:left;color: white !important;background-color: #AAAAAA !important;text-align: center;font-size: 12px !important; 
+              margin:5px; 
+              border-radius: 8px;
+              border: 2px solid white;
+              padding-top: 1px;
+              padding-bottom: 1px;
+              padding-left: 4px;
+              padding-right: 4px;">
+2.0.0
 </td>
 </tr>
 </tbody>
 </table>
-<p>In this exercise, we’ll make use of <code>sp</code>’s <code>plot</code> method instead of <code>tmap</code> to take advantage of <code>sp</code>’s <em>scaled</em> keys which will prove insightful when exploring rate mapping techniques that adopt none uniform classification schemes.</p>
+<p>In this exercise, we’ll make use of <code>sf</code>’s <code>plot</code> method instead of <code>tmap</code> to take advantage of <code>sf</code>’s <em>scaled</em> keys which will prove insightful when exploring rate mapping techniques that adopt none uniform classification schemes.</p>
 <p>The following libraries are used in the examples that follow.</p>
-<div class="sourceCode" id="cb209"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb209-1"><a href="mapping-rates-in-r.html#cb209-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(spdep)</span>
-<span id="cb209-2"><a href="mapping-rates-in-r.html#cb209-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(classInt)</span>
-<span id="cb209-3"><a href="mapping-rates-in-r.html#cb209-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(RColorBrewer)</span>
-<span id="cb209-4"><a href="mapping-rates-in-r.html#cb209-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rgdal)</span></code></pre></div>
+<div class="sourceCode" id="cb213"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb213-1"><a href="mapping-rates-in-r.html#cb213-1" tabindex="-1"></a><span class="fu">library</span>(spdep)</span>
+<span id="cb213-2"><a href="mapping-rates-in-r.html#cb213-2" tabindex="-1"></a><span class="fu">library</span>(classInt)</span>
+<span id="cb213-3"><a href="mapping-rates-in-r.html#cb213-3" tabindex="-1"></a><span class="fu">library</span>(RColorBrewer)</span>
+<span id="cb213-4"><a href="mapping-rates-in-r.html#cb213-4" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
+<span id="cb213-5"><a href="mapping-rates-in-r.html#cb213-5" tabindex="-1"></a><span class="fu">library</span>(sp)</span></code></pre></div>
 <p>Next, we’ll initialize some color palettes.</p>
-<div class="sourceCode" id="cb210"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb210-1"><a href="mapping-rates-in-r.html#cb210-1" aria-hidden="true" tabindex="-1"></a>pal1 <span class="ot">&lt;-</span> <span class="fu">brewer.pal</span>(<span class="dv">6</span>,<span class="st">&quot;Greys&quot;</span>)</span>
-<span id="cb210-2"><a href="mapping-rates-in-r.html#cb210-2" aria-hidden="true" tabindex="-1"></a>pal2 <span class="ot">&lt;-</span> <span class="fu">brewer.pal</span>(<span class="dv">8</span>,<span class="st">&quot;RdYlGn&quot;</span>)</span>
-<span id="cb210-3"><a href="mapping-rates-in-r.html#cb210-3" aria-hidden="true" tabindex="-1"></a>pal3 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">brewer.pal</span>(<span class="dv">9</span>,<span class="st">&quot;Greys&quot;</span>), <span class="st">&quot;#FF0000&quot;</span>)</span></code></pre></div>
-<p>The Auckland dataset from the <code>spdep</code> package will be used throughout this exercise. Some of the graphics that follow are R reproductions of Bailey and Gatrell’s book, <em>Interactive Spatial Data Analysis</em> <span class="citation">(<a href="#ref-BaileyGatrell" role="doc-biblioref">Bailey and Gatrell 1995</a>)</span>.</p>
-<div class="sourceCode" id="cb211"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb211-1"><a href="mapping-rates-in-r.html#cb211-1" aria-hidden="true" tabindex="-1"></a>auckland <span class="ot">&lt;-</span> <span class="fu">readOGR</span>(<span class="fu">system.file</span>(<span class="st">&quot;shapes/auckland.shp&quot;</span>, <span class="at">package=</span><span class="st">&quot;spData&quot;</span>)[<span class="dv">1</span>])</span></code></pre></div>
-<pre><code>OGR data source with driver: ESRI Shapefile 
-Source: &quot;C:\Users\mgimond\AppData\Local\R\win-library\4.2\spData\shapes\auckland.shp&quot;, layer: &quot;auckland&quot;
-with 167 features
-It has 4 fields</code></pre>
+<div class="sourceCode" id="cb214"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb214-1"><a href="mapping-rates-in-r.html#cb214-1" tabindex="-1"></a>pal1 <span class="ot">&lt;-</span> <span class="fu">brewer.pal</span>(<span class="dv">6</span>,<span class="st">&quot;Greys&quot;</span>)</span>
+<span id="cb214-2"><a href="mapping-rates-in-r.html#cb214-2" tabindex="-1"></a>pal2 <span class="ot">&lt;-</span> <span class="fu">brewer.pal</span>(<span class="dv">8</span>,<span class="st">&quot;RdYlGn&quot;</span>)</span>
+<span id="cb214-3"><a href="mapping-rates-in-r.html#cb214-3" tabindex="-1"></a>pal3 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">brewer.pal</span>(<span class="dv">9</span>,<span class="st">&quot;Greys&quot;</span>), <span class="st">&quot;#FF0000&quot;</span>)</span></code></pre></div>
+<p>The Auckland dataset from the <code>spdep</code> package will be used throughout this exercise. Some of the graphics that follow are R reproductions of Bailey and Gatrell’s book, <em>Interactive Spatial Data Analysis</em> <span class="citation">(<a href="#ref-BaileyGatrell">Bailey and Gatrell 1995</a>)</span>.</p>
+<div class="sourceCode" id="cb215"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb215-1"><a href="mapping-rates-in-r.html#cb215-1" tabindex="-1"></a>auckland <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="fu">system.file</span>(<span class="st">&quot;shapes/auckland.shp&quot;</span>, <span class="at">package=</span><span class="st">&quot;spData&quot;</span>)[<span class="dv">1</span>])</span></code></pre></div>
+<pre><code>Reading layer `auckland&#39; from data source 
+  `C:\Users\mgimond\AppData\Local\R\win-library\4.3\spData\shapes\auckland.shp&#39; 
+  using driver `ESRI Shapefile&#39;
+Simple feature collection with 167 features and 4 fields
+Geometry type: POLYGON
+Dimension:     XY
+Bounding box:  xmin: 7.6 ymin: -4.3 xmax: 91.5 ymax: 99.3
+CRS:           NA</code></pre>
 <p>The Auckland data represents total infant deaths (under the age of five) for Auckland, New Zealand, spanning the years 1977 through 1985 for different census area units. The following block of code maps these counts by area. Both equal interval and quantile classification schemes of the same data are mapped.</p>
-<div class="sourceCode" id="cb213"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb213-1"><a href="mapping-rates-in-r.html#cb213-1" aria-hidden="true" tabindex="-1"></a>brks1 <span class="ot">&lt;-</span> <span class="fu">classIntervals</span>(auckland<span class="sc">$</span>M77_85, <span class="at">n =</span> <span class="dv">6</span>, <span class="at">style =</span> <span class="st">&quot;equal&quot;</span>)</span>
-<span id="cb213-2"><a href="mapping-rates-in-r.html#cb213-2" aria-hidden="true" tabindex="-1"></a>brks2 <span class="ot">&lt;-</span> <span class="fu">classIntervals</span>(auckland<span class="sc">$</span>M77_85, <span class="at">n =</span> <span class="dv">6</span>, <span class="at">style =</span> <span class="st">&quot;quantile&quot;</span>)</span>
-<span id="cb213-3"><a href="mapping-rates-in-r.html#cb213-3" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">spplot</span>(auckland, <span class="st">&quot;M77_85&quot;</span>, <span class="at">at =</span> brks1<span class="sc">$</span>brks, <span class="at">col.regions =</span> pal1)</span>
-<span id="cb213-4"><a href="mapping-rates-in-r.html#cb213-4" aria-hidden="true" tabindex="-1"></a>      ,<span class="at">position=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,.<span class="dv">5</span>,<span class="dv">1</span>),<span class="at">more=</span>T)</span>
-<span id="cb213-5"><a href="mapping-rates-in-r.html#cb213-5" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">spplot</span>(auckland, <span class="st">&quot;M77_85&quot;</span>, <span class="at">at =</span> brks2<span class="sc">$</span>brks, <span class="at">col.regions =</span> pal1)</span>
-<span id="cb213-6"><a href="mapping-rates-in-r.html#cb213-6" aria-hidden="true" tabindex="-1"></a>      ,<span class="at">position=</span><span class="fu">c</span>(<span class="fl">0.5</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">1</span>),<span class="at">more=</span>T)</span></code></pre></div>
-<p><img src="A05-Mapping-rates_files/figure-html/unnamed-chunk-5-1.png" width="864" /></p>
+<div class="sourceCode" id="cb217"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb217-1"><a href="mapping-rates-in-r.html#cb217-1" tabindex="-1"></a>brks1 <span class="ot">&lt;-</span> <span class="fu">classIntervals</span>(auckland<span class="sc">$</span>M77_85, <span class="at">n =</span> <span class="dv">6</span>, <span class="at">style =</span> <span class="st">&quot;equal&quot;</span>)</span>
+<span id="cb217-2"><a href="mapping-rates-in-r.html#cb217-2" tabindex="-1"></a>brks2 <span class="ot">&lt;-</span> <span class="fu">classIntervals</span>(auckland<span class="sc">$</span>M77_85, <span class="at">n =</span> <span class="dv">6</span>, <span class="at">style =</span> <span class="st">&quot;quantile&quot;</span>)</span>
+<span id="cb217-3"><a href="mapping-rates-in-r.html#cb217-3" tabindex="-1"></a></span>
+<span id="cb217-4"><a href="mapping-rates-in-r.html#cb217-4" tabindex="-1"></a><span class="fu">plot</span>(auckland[<span class="st">&quot;M77_85&quot;</span>], <span class="at">breaks =</span> brks1<span class="sc">$</span>brks, <span class="at">pal =</span> pal1, <span class="at">at =</span> <span class="fu">round</span>(brks1<span class="sc">$</span>brks,<span class="dv">2</span>),</span>
+<span id="cb217-5"><a href="mapping-rates-in-r.html#cb217-5" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">&quot;Equal interval breaks&quot;</span>, <span class="at">key.pos =</span> <span class="dv">4</span>, <span class="at">las =</span> <span class="dv">1</span>)</span>
+<span id="cb217-6"><a href="mapping-rates-in-r.html#cb217-6" tabindex="-1"></a><span class="fu">plot</span>(auckland[<span class="st">&quot;M77_85&quot;</span>], <span class="at">breaks =</span> brks2<span class="sc">$</span>brks, <span class="at">pal =</span> pal1, <span class="at">at =</span> brks2<span class="sc">$</span>brks,</span>
+<span id="cb217-7"><a href="mapping-rates-in-r.html#cb217-7" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">&quot;Quantile breaks&quot;</span>, <span class="at">key.pos =</span> <span class="dv">4</span>, <span class="at">las =</span> <span class="dv">1</span>)</span></code></pre></div>
+<p><img src="A05-Mapping-rates_files/figure-html/unnamed-chunk-5-1.png" width="480" /><img src="A05-Mapping-rates_files/figure-html/unnamed-chunk-5-2.png" width="480" /></p>
 <p>These are examples of <strong>choropleth</strong> maps (<em>choro</em> = area and <em>pleth</em> = value) where some attribute (an enumeration of child deaths in this working example) is aggregated over a defined area (e.g. census area units) and displayed using two different classification schemes.</p>
-<p>Since the area units used to map death counts are not uniform in <em>shape</em> and <em>area</em> across Auckland, there is a tendency to assign more “visual weight” to polygons having larger areas than those having smaller areas. In our example, census units in the southern end of Auckland appear to have an “abnormally” large infant death count. Another <em>perceptual</em> interpretation of the map is one that flags those southern units as being “problematic” or of “great concern”. However, as we shall see in the following sections, this perception may not reflect reality. We therefore seek to produce <strong>perceptually tenable</strong> maps. Dykes and Unwin <span class="citation">(<a href="#ref-DykeUnwin2001" role="doc-biblioref">Dykes and Unwin 2001</a>)</span> define a similar concept called <strong>map stability</strong> which seeks to produce maps that convey <em>real effects</em>.</p>
+<p>Since the area units used to map death counts are not uniform in <em>shape</em> and <em>area</em> across Auckland, there is a tendency to assign more “visual weight” to polygons having larger areas than those having smaller areas. In our example, census units in the southern end of Auckland appear to have an “abnormally” large infant death count. Another <em>perceptual</em> interpretation of the map is one that flags those southern units as being “problematic” or of “great concern”. However, as we shall see in the following sections, this perception may not reflect reality. We therefore seek to produce <strong>perceptually tenable</strong> maps. Dykes and Unwin <span class="citation">(<a href="#ref-DykeUnwin2001">Dykes and Unwin 2001</a>)</span> define a similar concept called <strong>map stability</strong> which seeks to produce maps that convey <em>real effects</em>.</p>
 <div id="raw-rates" class="section level2 unnumbered hasAnchor">
 <h2>Raw Rates<a href="mapping-rates-in-r.html#raw-rates" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>A popular approach for correcting for biased visual weights (due, for instance, to different unit area sizes) is to normalize the count data by <em>area</em> thus giving a <em>count per unit area</em>. Though this may make sense for population count data, it does not make a whole lot sense when applied to mortality counts; we are usually interested in the number of deaths per <em>population</em> count and not in the number of deaths per unit area.</p>
 <p>In the next chunk of code we extract population count under the age of 5 from the Auckland data set and assign this value to the variable <code>pop</code>. Likewise, we extract the under 5 mortality count and assign this value to the variable <code>mor</code>. Bear in mind that the mortality count spans a 9 year period. Since mortality rates are usually presented in rates <em>per year</em>, we need to multiply the population value (which is for the year 1981) by nine. This will be important in the subsequent code when we compute mortality rates.</p>
-<div class="sourceCode" id="cb214"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb214-1"><a href="mapping-rates-in-r.html#cb214-1" aria-hidden="true" tabindex="-1"></a>pop <span class="ot">&lt;-</span> auckland<span class="sc">$</span>Und5_81 <span class="sc">*</span> <span class="dv">9</span></span>
-<span id="cb214-2"><a href="mapping-rates-in-r.html#cb214-2" aria-hidden="true" tabindex="-1"></a>mor <span class="ot">&lt;-</span> auckland<span class="sc">$</span>M77_85</span></code></pre></div>
+<div class="sourceCode" id="cb218"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb218-1"><a href="mapping-rates-in-r.html#cb218-1" tabindex="-1"></a>pop <span class="ot">&lt;-</span> auckland<span class="sc">$</span>Und5_81 <span class="sc">*</span> <span class="dv">9</span></span>
+<span id="cb218-2"><a href="mapping-rates-in-r.html#cb218-2" tabindex="-1"></a>mor <span class="ot">&lt;-</span> auckland<span class="sc">$</span>M77_85</span></code></pre></div>
 <p>Next, we will compute the raw rates (infant deaths per 1000 individuals per year) and map this rate by census unit area. Both quantile and equal interval classification schemes of the same data are mapped.</p>
-<div class="sourceCode" id="cb215"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb215-1"><a href="mapping-rates-in-r.html#cb215-1" aria-hidden="true" tabindex="-1"></a>auckland<span class="sc">$</span>raw.rate <span class="ot">&lt;-</span> mor <span class="sc">/</span> pop <span class="sc">*</span> <span class="dv">1000</span></span>
-<span id="cb215-2"><a href="mapping-rates-in-r.html#cb215-2" aria-hidden="true" tabindex="-1"></a>brks1 <span class="ot">&lt;-</span> <span class="fu">classIntervals</span>(auckland<span class="sc">$</span>raw.rate, <span class="at">n =</span> <span class="dv">6</span>, <span class="at">style =</span> <span class="st">&quot;equal&quot;</span>)</span>
-<span id="cb215-3"><a href="mapping-rates-in-r.html#cb215-3" aria-hidden="true" tabindex="-1"></a>brks2 <span class="ot">&lt;-</span> <span class="fu">classIntervals</span>(auckland<span class="sc">$</span>raw.rate, <span class="at">n =</span> <span class="dv">6</span>, <span class="at">style =</span> <span class="st">&quot;quantile&quot;</span>)</span>
-<span id="cb215-4"><a href="mapping-rates-in-r.html#cb215-4" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">spplot</span>(auckland, <span class="st">&quot;raw.rate&quot;</span>, <span class="at">at =</span> brks1<span class="sc">$</span>brks, <span class="at">col.regions =</span> pal1)</span>
-<span id="cb215-5"><a href="mapping-rates-in-r.html#cb215-5" aria-hidden="true" tabindex="-1"></a>      ,<span class="at">position=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,.<span class="dv">5</span>,<span class="dv">1</span>),<span class="at">more=</span>T)</span>
-<span id="cb215-6"><a href="mapping-rates-in-r.html#cb215-6" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">spplot</span>(auckland, <span class="st">&quot;raw.rate&quot;</span>, <span class="at">at =</span> brks2<span class="sc">$</span>brks, <span class="at">col.regions =</span> pal1)</span>
-<span id="cb215-7"><a href="mapping-rates-in-r.html#cb215-7" aria-hidden="true" tabindex="-1"></a>      ,<span class="at">position=</span><span class="fu">c</span>(<span class="fl">0.5</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">1</span>),<span class="at">more=</span>T)</span></code></pre></div>
-<p><img src="A05-Mapping-rates_files/figure-html/unnamed-chunk-7-1.png" width="864" /></p>
+<div class="sourceCode" id="cb219"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb219-1"><a href="mapping-rates-in-r.html#cb219-1" tabindex="-1"></a>auckland<span class="sc">$</span>raw.rate <span class="ot">&lt;-</span> mor <span class="sc">/</span> pop <span class="sc">*</span> <span class="dv">1000</span></span>
+<span id="cb219-2"><a href="mapping-rates-in-r.html#cb219-2" tabindex="-1"></a>brks1 <span class="ot">&lt;-</span> <span class="fu">classIntervals</span>(auckland<span class="sc">$</span>raw.rate, <span class="at">n =</span> <span class="dv">6</span>, <span class="at">style =</span> <span class="st">&quot;equal&quot;</span>)</span>
+<span id="cb219-3"><a href="mapping-rates-in-r.html#cb219-3" tabindex="-1"></a>brks2 <span class="ot">&lt;-</span> <span class="fu">classIntervals</span>(auckland<span class="sc">$</span>raw.rate, <span class="at">n =</span> <span class="dv">6</span>, <span class="at">style =</span> <span class="st">&quot;quantile&quot;</span>)</span>
+<span id="cb219-4"><a href="mapping-rates-in-r.html#cb219-4" tabindex="-1"></a><span class="fu">plot</span>(auckland[<span class="st">&quot;raw.rate&quot;</span>], <span class="at">breaks =</span> brks1<span class="sc">$</span>brks, <span class="at">pal =</span> pal1, <span class="at">at =</span> <span class="fu">round</span>(brks1<span class="sc">$</span>brks,<span class="dv">2</span>),</span>
+<span id="cb219-5"><a href="mapping-rates-in-r.html#cb219-5" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">&quot;Equal interval breaks&quot;</span>, <span class="at">key.pos =</span> <span class="dv">4</span>, <span class="at">las =</span> <span class="dv">1</span>)</span>
+<span id="cb219-6"><a href="mapping-rates-in-r.html#cb219-6" tabindex="-1"></a><span class="fu">plot</span>(auckland[<span class="st">&quot;raw.rate&quot;</span>], <span class="at">breaks =</span> brks2<span class="sc">$</span>brks, <span class="at">pal =</span> pal1, <span class="at">at =</span> <span class="fu">round</span>(brks2<span class="sc">$</span>brks,<span class="dv">2</span>),</span>
+<span id="cb219-7"><a href="mapping-rates-in-r.html#cb219-7" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">&quot;Quantile breaks&quot;</span>, <span class="at">key.pos =</span> <span class="dv">4</span>, <span class="at">las =</span> <span class="dv">1</span>)</span></code></pre></div>
+<p><img src="A05-Mapping-rates_files/figure-html/unnamed-chunk-7-1.png" width="480" /><img src="A05-Mapping-rates_files/figure-html/unnamed-chunk-7-2.png" width="480" /></p>
 <p>Note how our perception of the distribution of infant deaths changes when looking at mapped raw rates vs. counts. A north-south trend in perceived “abnormal” infant deaths is no longer apparent in this map.</p>
 </div>
 <div id="standardized-mortality-ratios-relative-risk" class="section level2 unnumbered hasAnchor">
@@ -709,30 +748,33 @@ It has 4 fields</code></pre>
 <span class="math display">\[E_i = {n_i}\times{mortality_{Auckland} } \]</span>
 where <span class="math inline">\(n_i\)</span> is the population count within census unit area <span class="math inline">\(i\)</span> and <span class="math inline">\(mortality_{Auckland}\)</span> is the overall death rate computed from <span class="math inline">\(mortality_{Auckland} = \sum_{i=1}^j O_i / \sum_{i=1}^j n_i\)</span> where <span class="math inline">\(O_i\)</span> is the observed death count for census unit <span class="math inline">\(i\)</span>.</p>
 <p>This chunk of code replicates Bailey and Gatrell’s figure 8.1 with the one exception that the color scheme is reversed (Bailey and Gatrell assign lighter hues to higher numbers).</p>
-<div class="sourceCode" id="cb216"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb216-1"><a href="mapping-rates-in-r.html#cb216-1" aria-hidden="true" tabindex="-1"></a>auck.rate <span class="ot">&lt;-</span> <span class="fu">sum</span>(mor) <span class="sc">/</span> <span class="fu">sum</span>(pop)</span>
-<span id="cb216-2"><a href="mapping-rates-in-r.html#cb216-2" aria-hidden="true" tabindex="-1"></a>mor.exp   <span class="ot">&lt;-</span> pop <span class="sc">*</span> auck.rate  <span class="co"># Expected count over a nine year period</span></span>
-<span id="cb216-3"><a href="mapping-rates-in-r.html#cb216-3" aria-hidden="true" tabindex="-1"></a>auckland<span class="sc">$</span>rel.rate <span class="ot">&lt;-</span> <span class="dv">100</span> <span class="sc">*</span> mor <span class="sc">/</span> mor.exp</span>
-<span id="cb216-4"><a href="mapping-rates-in-r.html#cb216-4" aria-hidden="true" tabindex="-1"></a>brks <span class="ot">&lt;-</span> <span class="fu">classIntervals</span>(auckland<span class="sc">$</span>rel.rate, <span class="at">n =</span> <span class="dv">6</span>, <span class="at">style =</span> <span class="st">&quot;fixed&quot;</span>, </span>
-<span id="cb216-5"><a href="mapping-rates-in-r.html#cb216-5" aria-hidden="true" tabindex="-1"></a>                     <span class="at">fixedBreaks =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">47</span>, <span class="dv">83</span>, <span class="dv">118</span>, <span class="dv">154</span>, <span class="dv">190</span>, <span class="dv">704</span>))</span>
-<span id="cb216-6"><a href="mapping-rates-in-r.html#cb216-6" aria-hidden="true" tabindex="-1"></a><span class="fu">spplot</span>(auckland, <span class="st">&quot;rel.rate&quot;</span>, <span class="at">at =</span> brks<span class="sc">$</span>brks,<span class="at">col.regions=</span>pal1)</span></code></pre></div>
-<p><img src="A05-Mapping-rates_files/figure-html/unnamed-chunk-8-1.png" width="384" /></p>
+<div class="sourceCode" id="cb220"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb220-1"><a href="mapping-rates-in-r.html#cb220-1" tabindex="-1"></a>auck.rate <span class="ot">&lt;-</span> <span class="fu">sum</span>(mor) <span class="sc">/</span> <span class="fu">sum</span>(pop)</span>
+<span id="cb220-2"><a href="mapping-rates-in-r.html#cb220-2" tabindex="-1"></a>mor.exp   <span class="ot">&lt;-</span> pop <span class="sc">*</span> auck.rate  <span class="co"># Expected count over a nine year period</span></span>
+<span id="cb220-3"><a href="mapping-rates-in-r.html#cb220-3" tabindex="-1"></a>auckland<span class="sc">$</span>rel.rate <span class="ot">&lt;-</span> <span class="dv">100</span> <span class="sc">*</span> mor <span class="sc">/</span> mor.exp</span>
+<span id="cb220-4"><a href="mapping-rates-in-r.html#cb220-4" tabindex="-1"></a>brks <span class="ot">&lt;-</span> <span class="fu">classIntervals</span>(auckland<span class="sc">$</span>rel.rate, <span class="at">n =</span> <span class="dv">6</span>, <span class="at">style =</span> <span class="st">&quot;fixed&quot;</span>, </span>
+<span id="cb220-5"><a href="mapping-rates-in-r.html#cb220-5" tabindex="-1"></a>                     <span class="at">fixedBreaks =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">47</span>, <span class="dv">83</span>, <span class="dv">118</span>, <span class="dv">154</span>, <span class="dv">190</span>, <span class="dv">704</span>))</span>
+<span id="cb220-6"><a href="mapping-rates-in-r.html#cb220-6" tabindex="-1"></a><span class="fu">plot</span>(auckland[<span class="st">&quot;rel.rate&quot;</span>], <span class="at">breaks =</span>  brks<span class="sc">$</span>brks, <span class="at">at =</span> brks<span class="sc">$</span>brks, <span class="at">pal =</span> pal1,</span>
+<span id="cb220-7"><a href="mapping-rates-in-r.html#cb220-7" tabindex="-1"></a>     <span class="at">key.pos =</span> <span class="dv">4</span>, <span class="at">las =</span> <span class="dv">1</span>)</span></code></pre></div>
+<p><img src="A05-Mapping-rates_files/figure-html/unnamed-chunk-8-1.png" width="480" /></p>
 </div>
 <div id="dykes-and-unwins-chi-square-statistic" class="section level2 unnumbered hasAnchor">
 <h2>Dykes and Unwin’s chi-square statistic<a href="mapping-rates-in-r.html#dykes-and-unwins-chi-square-statistic" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Dykes and Unwin <span class="citation">(<a href="#ref-DykeUnwin2001" role="doc-biblioref">Dykes and Unwin 2001</a>)</span> propose a similar technique whereby the rates are standardized following:</p>
+<p>Dykes and Unwin <span class="citation">(<a href="#ref-DykeUnwin2001">Dykes and Unwin 2001</a>)</span> propose a similar technique whereby the rates are standardized following:</p>
 <p><span class="math display">\[\frac{O_i - E_i}{\sqrt{E_i}} \]</span></p>
 <p>This has the effect of creating a distribution of values closer to normal (as opposed to a Poisson distribution of rates and counts encountered thus far). We can therefore apply a diverging color scheme where green hues represent less than expected rates and red hues represent greater than expected rates.</p>
-<div class="sourceCode" id="cb217"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb217-1"><a href="mapping-rates-in-r.html#cb217-1" aria-hidden="true" tabindex="-1"></a>auckland<span class="sc">$</span>chi.squ <span class="ot">=</span> (mor <span class="sc">-</span> mor.exp) <span class="sc">/</span> <span class="fu">sqrt</span>(mor.exp)</span>
-<span id="cb217-2"><a href="mapping-rates-in-r.html#cb217-2" aria-hidden="true" tabindex="-1"></a>brks <span class="ot">&lt;-</span> <span class="fu">classIntervals</span>(auckland<span class="sc">$</span>chi.squ, <span class="at">n =</span> <span class="dv">6</span>, <span class="at">style =</span> <span class="st">&quot;fixed&quot;</span>, </span>
-<span id="cb217-3"><a href="mapping-rates-in-r.html#cb217-3" aria-hidden="true" tabindex="-1"></a>                      <span class="at">fixedBreaks =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">5</span>,<span class="sc">-</span><span class="dv">3</span>, <span class="sc">-</span><span class="dv">1</span>, <span class="sc">-</span><span class="dv">2</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">5</span>))</span>
-<span id="cb217-4"><a href="mapping-rates-in-r.html#cb217-4" aria-hidden="true" tabindex="-1"></a><span class="fu">spplot</span>(auckland, <span class="st">&quot;chi.squ&quot;</span>, <span class="at">at =</span> brks<span class="sc">$</span>brks,<span class="at">col.regions=</span><span class="fu">rev</span>(pal2))</span></code></pre></div>
-<p><img src="A05-Mapping-rates_files/figure-html/unnamed-chunk-9-1.png" width="384" /></p>
+<div class="sourceCode" id="cb221"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb221-1"><a href="mapping-rates-in-r.html#cb221-1" tabindex="-1"></a>auckland<span class="sc">$</span>chi.squ <span class="ot">=</span> (mor <span class="sc">-</span> mor.exp) <span class="sc">/</span> <span class="fu">sqrt</span>(mor.exp)</span>
+<span id="cb221-2"><a href="mapping-rates-in-r.html#cb221-2" tabindex="-1"></a>brks <span class="ot">&lt;-</span> <span class="fu">classIntervals</span>(auckland<span class="sc">$</span>chi.squ, <span class="at">n =</span> <span class="dv">6</span>, <span class="at">style =</span> <span class="st">&quot;fixed&quot;</span>, </span>
+<span id="cb221-3"><a href="mapping-rates-in-r.html#cb221-3" tabindex="-1"></a>                      <span class="at">fixedBreaks =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">5</span>,<span class="sc">-</span><span class="dv">3</span>, <span class="sc">-</span><span class="dv">1</span>, <span class="sc">-</span><span class="dv">2</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">5</span>))</span>
+<span id="cb221-4"><a href="mapping-rates-in-r.html#cb221-4" tabindex="-1"></a><span class="fu">plot</span>(auckland[<span class="st">&quot;chi.squ&quot;</span>], <span class="at">breaks =</span> brks<span class="sc">$</span>brks, <span class="at">at =</span> brks<span class="sc">$</span>brks, <span class="at">pal=</span><span class="fu">rev</span>(pal2),</span>
+<span id="cb221-5"><a href="mapping-rates-in-r.html#cb221-5" tabindex="-1"></a>     <span class="at">key.pos =</span> <span class="dv">4</span>, <span class="at">las =</span> <span class="dv">1</span>)</span></code></pre></div>
+<p><img src="A05-Mapping-rates_files/figure-html/unnamed-chunk-9-1.png" width="480" /></p>
 </div>
 <div id="unstable-ratios" class="section level2 unnumbered hasAnchor">
 <h2>Unstable ratios<a href="mapping-rates-in-r.html#unstable-ratios" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>One problem with the various techniques used thus far is their sensitivity (hence instability) to small underlying population counts (i.e. unstable ratios). This next chunk of code maps the under 5 population count by census area unit.</p>
-<div class="sourceCode" id="cb218"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb218-1"><a href="mapping-rates-in-r.html#cb218-1" aria-hidden="true" tabindex="-1"></a>brks <span class="ot">&lt;-</span> <span class="fu">classIntervals</span>(auckland<span class="sc">$</span>Und5_81, <span class="at">n =</span> <span class="dv">6</span>, <span class="at">style =</span> <span class="st">&quot;equal&quot;</span>)</span>
-<span id="cb218-2"><a href="mapping-rates-in-r.html#cb218-2" aria-hidden="true" tabindex="-1"></a><span class="fu">spplot</span>(auckland, <span class="st">&quot;Und5_81&quot;</span>, <span class="at">at =</span> brks<span class="sc">$</span>brks,<span class="at">col.regions=</span>pal1)</span></code></pre></div>
+<div class="sourceCode" id="cb222"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb222-1"><a href="mapping-rates-in-r.html#cb222-1" tabindex="-1"></a>brks <span class="ot">&lt;-</span> <span class="fu">classIntervals</span>(auckland<span class="sc">$</span>Und5_81, <span class="at">n =</span> <span class="dv">6</span>, <span class="at">style =</span> <span class="st">&quot;equal&quot;</span>)</span>
+<span id="cb222-2"><a href="mapping-rates-in-r.html#cb222-2" tabindex="-1"></a><span class="fu">plot</span>(auckland[<span class="st">&quot;Und5_81&quot;</span>], <span class="at">breaks =</span> brks<span class="sc">$</span>brks,  <span class="at">at =</span> brks<span class="sc">$</span>brks, <span class="at">pal =</span> pal1,</span>
+<span id="cb222-3"><a href="mapping-rates-in-r.html#cb222-3" tabindex="-1"></a>     <span class="at">key.pos =</span> <span class="dv">4</span>, <span class="at">las =</span> <span class="dv">1</span>)</span></code></pre></div>
 <p><img src="A05-Mapping-rates_files/figure-html/unnamed-chunk-10-1.png" width="384" /></p>
 <p>Note the variability in population count with some areas encompassing fewer than 50 infants. If there is just one death in that census unit, the death rate would be reported as <span class="math inline">\(1/50 * 1000\)</span> or 20 per thousand infants–far more than then the 2.63 per thousand rate for our Auckland data set. Interestingly, the three highest raw rates in Auckland (14.2450142, 18.5185185, 10.5820106 deaths per 1000) are associated with some of the smallest underlying population counts (39, 6, 21 infants under 5).</p>
 <p><img src="A05-Mapping-rates_files/figure-html/unnamed-chunk-11-1.png" width="480" /></p>
@@ -741,15 +783,15 @@ where <span class="math inline">\(n_i\)</span> is the population count within ce
 <h3>Global Empirical Bayes (EB) rate estimate<a href="mapping-rates-in-r.html#global-empirical-bayes-eb-rate-estimate" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The idea behind Bayesian approach is to compare the value in some area <span class="math inline">\(i\)</span> to some <em>a priori</em> estimate of the value and to “stabilize” the values due to unstable ratios (e.g. where area populations are small). The <em>a priori</em> estimate can be based on some global mean. An example of the use on a global EB infant mortality rate map is shown below. The EB map is shown side-by-side with the raw rates map for comparison.</p>
 <p><em>aka Global moment estimator of infant mortality per 1000 per year</em></p>
-<div class="sourceCode" id="cb219"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb219-1"><a href="mapping-rates-in-r.html#cb219-1" aria-hidden="true" tabindex="-1"></a>EB.est         <span class="ot">&lt;-</span> <span class="fu">EBest</span>(auckland<span class="sc">$</span>M77_85, auckland<span class="sc">$</span>Und5_81 <span class="sc">*</span> <span class="dv">9</span> )</span>
-<span id="cb219-2"><a href="mapping-rates-in-r.html#cb219-2" aria-hidden="true" tabindex="-1"></a>auckland<span class="sc">$</span>EBest <span class="ot">&lt;-</span> EB.est<span class="sc">$</span>estmm <span class="sc">*</span> <span class="dv">1000</span></span>
-<span id="cb219-3"><a href="mapping-rates-in-r.html#cb219-3" aria-hidden="true" tabindex="-1"></a>brks1          <span class="ot">&lt;-</span> <span class="fu">classIntervals</span>(auckland<span class="sc">$</span>EBest, <span class="at">n =</span> <span class="dv">10</span>, <span class="at">style =</span> <span class="st">&quot;quantile&quot;</span>)</span>
-<span id="cb219-4"><a href="mapping-rates-in-r.html#cb219-4" aria-hidden="true" tabindex="-1"></a>brks2          <span class="ot">&lt;-</span> <span class="fu">classIntervals</span>(auckland<span class="sc">$</span>raw.rate, <span class="at">n =</span> <span class="dv">10</span>, <span class="at">style =</span> <span class="st">&quot;quantile&quot;</span>)</span>
-<span id="cb219-5"><a href="mapping-rates-in-r.html#cb219-5" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">spplot</span>(auckland, <span class="st">&quot;EBest&quot;</span>, <span class="at">at =</span> brks1<span class="sc">$</span>brks, <span class="at">col.regions =</span> pal3, </span>
-<span id="cb219-6"><a href="mapping-rates-in-r.html#cb219-6" aria-hidden="true" tabindex="-1"></a>             <span class="at">main=</span><span class="st">&quot;EB rates&quot;</span>) ,<span class="at">position=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,.<span class="dv">5</span>,<span class="dv">1</span>),<span class="at">more=</span>T)</span>
-<span id="cb219-7"><a href="mapping-rates-in-r.html#cb219-7" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">spplot</span>(auckland, <span class="st">&quot;raw.rate&quot;</span>, <span class="at">at =</span> brks2<span class="sc">$</span>brks, <span class="at">col.regions =</span> pal3, </span>
-<span id="cb219-8"><a href="mapping-rates-in-r.html#cb219-8" aria-hidden="true" tabindex="-1"></a>             <span class="at">main=</span><span class="st">&quot;Raw Rates&quot;</span>) ,<span class="at">position=</span><span class="fu">c</span>(<span class="fl">0.5</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">1</span>),<span class="at">more=</span>T)</span></code></pre></div>
-<p><img src="A05-Mapping-rates_files/figure-html/unnamed-chunk-12-1.png" width="864" /></p>
+<div class="sourceCode" id="cb223"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb223-1"><a href="mapping-rates-in-r.html#cb223-1" tabindex="-1"></a>EB.est         <span class="ot">&lt;-</span> <span class="fu">EBest</span>(auckland<span class="sc">$</span>M77_85, auckland<span class="sc">$</span>Und5_81 <span class="sc">*</span> <span class="dv">9</span> )</span>
+<span id="cb223-2"><a href="mapping-rates-in-r.html#cb223-2" tabindex="-1"></a>auckland<span class="sc">$</span>EBest <span class="ot">&lt;-</span> EB.est<span class="sc">$</span>estmm <span class="sc">*</span> <span class="dv">1000</span></span>
+<span id="cb223-3"><a href="mapping-rates-in-r.html#cb223-3" tabindex="-1"></a>brks1          <span class="ot">&lt;-</span> <span class="fu">classIntervals</span>(auckland<span class="sc">$</span>EBest, <span class="at">n =</span> <span class="dv">10</span>, <span class="at">style =</span> <span class="st">&quot;quantile&quot;</span>)</span>
+<span id="cb223-4"><a href="mapping-rates-in-r.html#cb223-4" tabindex="-1"></a>brks2          <span class="ot">&lt;-</span> <span class="fu">classIntervals</span>(auckland<span class="sc">$</span>raw.rate, <span class="at">n =</span> <span class="dv">10</span>, <span class="at">style =</span> <span class="st">&quot;quantile&quot;</span>)</span>
+<span id="cb223-5"><a href="mapping-rates-in-r.html#cb223-5" tabindex="-1"></a><span class="fu">plot</span>(auckland[<span class="st">&quot;EBest&quot;</span>], <span class="at">breaks =</span> brks1<span class="sc">$</span>brks, <span class="at">at =</span> <span class="fu">round</span>(brks1<span class="sc">$</span>brks, <span class="dv">2</span>), <span class="at">pal =</span> pal3, </span>
+<span id="cb223-6"><a href="mapping-rates-in-r.html#cb223-6" tabindex="-1"></a>             <span class="at">main=</span><span class="st">&quot;EB rates&quot;</span>, <span class="at">key.pos =</span> <span class="dv">4</span>, <span class="at">las =</span> <span class="dv">1</span>) </span>
+<span id="cb223-7"><a href="mapping-rates-in-r.html#cb223-7" tabindex="-1"></a><span class="fu">plot</span>(auckland[<span class="st">&quot;raw.rate&quot;</span>], <span class="at">breaks =</span> brks2<span class="sc">$</span>brks, <span class="at">at =</span> <span class="fu">round</span>(brks2<span class="sc">$</span>brks, <span class="dv">2</span>), <span class="at">pal =</span> pal3,</span>
+<span id="cb223-8"><a href="mapping-rates-in-r.html#cb223-8" tabindex="-1"></a>             <span class="at">main=</span><span class="st">&quot;Raw Rates&quot;</span>, <span class="at">key.pos =</span> <span class="dv">4</span>, <span class="at">las =</span> <span class="dv">1</span>) </span></code></pre></div>
+<p><img src="A05-Mapping-rates_files/figure-html/unnamed-chunk-12-1.png" width="480" /><img src="A05-Mapping-rates_files/figure-html/unnamed-chunk-12-2.png" width="480" /></p>
 <p>The census units with the top 10% rates are highlighted in red.</p>
 <p>Unstable rates (i.e. those associated with smaller population counts) are assigned lower weights to reduce their “prominence” in the mapped data. Notice how the three high raw rates highlighted in the last section are reduced from 14.2450142, 18.5185185, 10.5820106 <em>counts per thousand</em> to 3.6610133, 2.8672132, 3.0283279 <em>counts per thousand</em>. The “remapping” of these values along with others can be shown on the following plot:</p>
 <p><img src="A05-Mapping-rates_files/figure-html/unnamed-chunk-13-1.png" width="480" /></p>
@@ -757,16 +799,16 @@ where <span class="math inline">\(n_i\)</span> is the population count within ce
 <div id="local-empirical-bayes-eb-rate-estimate" class="section level3 unnumbered hasAnchor">
 <h3>Local Empirical Bayes (EB) rate estimate<a href="mapping-rates-in-r.html#local-empirical-bayes-eb-rate-estimate" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The <em>a priori</em> mean and variance need not be aspatial (i.e. the <em>prior</em> distribution being the same for the entire Auckland study area). The adjusted estimated rates can be shrunk towards a <em>local</em> mean instead. Such technique is referred to as <em>local</em> empirical Bayes rate estimates. In the following example, we define <em>local</em> as consisting of all first order adjacent census unit areas.</p>
-<div class="sourceCode" id="cb220"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb220-1"><a href="mapping-rates-in-r.html#cb220-1" aria-hidden="true" tabindex="-1"></a>nb      <span class="ot">&lt;-</span> <span class="fu">poly2nb</span>(auckland) </span>
-<span id="cb220-2"><a href="mapping-rates-in-r.html#cb220-2" aria-hidden="true" tabindex="-1"></a>EBL.est <span class="ot">&lt;-</span> <span class="fu">EBlocal</span>(auckland<span class="sc">$</span>M77_85, <span class="dv">9</span><span class="sc">*</span>auckland<span class="sc">$</span>Und5_81, nb)</span>
-<span id="cb220-3"><a href="mapping-rates-in-r.html#cb220-3" aria-hidden="true" tabindex="-1"></a>auckland<span class="sc">$</span>EBLest <span class="ot">&lt;-</span> EBL.est<span class="sc">$</span>est <span class="sc">*</span> <span class="dv">1000</span></span>
-<span id="cb220-4"><a href="mapping-rates-in-r.html#cb220-4" aria-hidden="true" tabindex="-1"></a>brks1           <span class="ot">&lt;-</span> <span class="fu">classIntervals</span>(auckland<span class="sc">$</span>EBLest, <span class="at">n =</span> <span class="dv">10</span>, <span class="at">style =</span> <span class="st">&quot;quantile&quot;</span>)</span>
-<span id="cb220-5"><a href="mapping-rates-in-r.html#cb220-5" aria-hidden="true" tabindex="-1"></a>brks2           <span class="ot">&lt;-</span> <span class="fu">classIntervals</span>(auckland<span class="sc">$</span>raw.rate, <span class="at">n =</span> <span class="dv">10</span>, <span class="at">style =</span> <span class="st">&quot;quantile&quot;</span>)</span>
-<span id="cb220-6"><a href="mapping-rates-in-r.html#cb220-6" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">spplot</span>(auckland, <span class="st">&quot;EBLest&quot;</span>, <span class="at">at =</span> brks1<span class="sc">$</span>brks, <span class="at">col.regions =</span> pal3, </span>
-<span id="cb220-7"><a href="mapping-rates-in-r.html#cb220-7" aria-hidden="true" tabindex="-1"></a>             <span class="at">main=</span><span class="st">&quot;Local EB rates&quot;</span>) ,<span class="at">position=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,.<span class="dv">5</span>,<span class="dv">1</span>),<span class="at">more=</span>T)</span>
-<span id="cb220-8"><a href="mapping-rates-in-r.html#cb220-8" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">spplot</span>(auckland, <span class="st">&quot;raw.rate&quot;</span>, <span class="at">at =</span> brks2<span class="sc">$</span>brks, <span class="at">col.regions =</span> pal3, </span>
-<span id="cb220-9"><a href="mapping-rates-in-r.html#cb220-9" aria-hidden="true" tabindex="-1"></a>             <span class="at">main=</span><span class="st">&quot;Raw Rates&quot;</span>) ,<span class="at">position=</span><span class="fu">c</span>(<span class="fl">0.5</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">1</span>),<span class="at">more=</span>T)</span></code></pre></div>
-<p><img src="A05-Mapping-rates_files/figure-html/unnamed-chunk-14-1.png" width="864" /></p>
+<div class="sourceCode" id="cb224"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb224-1"><a href="mapping-rates-in-r.html#cb224-1" tabindex="-1"></a>nb      <span class="ot">&lt;-</span> <span class="fu">poly2nb</span>(auckland) </span>
+<span id="cb224-2"><a href="mapping-rates-in-r.html#cb224-2" tabindex="-1"></a>EBL.est <span class="ot">&lt;-</span> <span class="fu">EBlocal</span>(auckland<span class="sc">$</span>M77_85, <span class="dv">9</span><span class="sc">*</span>auckland<span class="sc">$</span>Und5_81, nb)</span>
+<span id="cb224-3"><a href="mapping-rates-in-r.html#cb224-3" tabindex="-1"></a>auckland<span class="sc">$</span>EBLest <span class="ot">&lt;-</span> EBL.est<span class="sc">$</span>est <span class="sc">*</span> <span class="dv">1000</span></span>
+<span id="cb224-4"><a href="mapping-rates-in-r.html#cb224-4" tabindex="-1"></a>brks1           <span class="ot">&lt;-</span> <span class="fu">classIntervals</span>(auckland<span class="sc">$</span>EBLest, <span class="at">n =</span> <span class="dv">10</span>, <span class="at">style =</span> <span class="st">&quot;quantile&quot;</span>)</span>
+<span id="cb224-5"><a href="mapping-rates-in-r.html#cb224-5" tabindex="-1"></a>brks2           <span class="ot">&lt;-</span> <span class="fu">classIntervals</span>(auckland<span class="sc">$</span>raw.rate, <span class="at">n =</span> <span class="dv">10</span>, <span class="at">style =</span> <span class="st">&quot;quantile&quot;</span>)</span>
+<span id="cb224-6"><a href="mapping-rates-in-r.html#cb224-6" tabindex="-1"></a><span class="fu">plot</span>(auckland[<span class="st">&quot;EBLest&quot;</span>], <span class="at">breaks =</span>  brks1<span class="sc">$</span>brks, <span class="at">at =</span> <span class="fu">round</span>(brks1<span class="sc">$</span>brks,<span class="dv">2</span>), <span class="at">pal =</span> pal3, </span>
+<span id="cb224-7"><a href="mapping-rates-in-r.html#cb224-7" tabindex="-1"></a>           <span class="at">main =</span> <span class="st">&quot;Local EB rates&quot;</span>, <span class="at">key.pos =</span> <span class="dv">4</span>, <span class="at">las =</span> <span class="dv">1</span>)</span>
+<span id="cb224-8"><a href="mapping-rates-in-r.html#cb224-8" tabindex="-1"></a><span class="fu">plot</span>(auckland[<span class="st">&quot;raw.rate&quot;</span>], <span class="at">breaks =</span>  brks2<span class="sc">$</span>brks, <span class="at">at =</span> <span class="fu">round</span>(brks2<span class="sc">$</span>brks,<span class="dv">2</span>), <span class="at">pal =</span> pal3, </span>
+<span id="cb224-9"><a href="mapping-rates-in-r.html#cb224-9" tabindex="-1"></a>             <span class="at">main =</span> <span class="st">&quot;Raw Rates&quot;</span>, <span class="at">key.pos =</span> <span class="dv">4</span>, <span class="at">las =</span> <span class="dv">1</span>)</span></code></pre></div>
+<p><img src="A05-Mapping-rates_files/figure-html/unnamed-chunk-14-1.png" width="480" /><img src="A05-Mapping-rates_files/figure-html/unnamed-chunk-14-2.png" width="480" /></p>
 <p>The census units with the top 10% rates are highlighted in red.</p>
 
 </div>

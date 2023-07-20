@@ -1,6 +1,6 @@
 bookdown::gitbook:
   includes:
-    in_header:  analytics.html
+    in_header:  analytics_header.html
   highlight: haddock
   css: style.css
   config:

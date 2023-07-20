@@ -153,6 +153,10 @@ fig:f14-spherical-model
 fig:f14-krige01
 fig:f14-krige02
 fig:f14-krige03
+fig:unnamed-chunk-19
+fig:unnamed-chunk-21
+fig:unnamed-chunk-23
+fig:unnamed-chunk-25
 fig:fA2-arcgis
 fig:fA2-epsg
 introGIS
