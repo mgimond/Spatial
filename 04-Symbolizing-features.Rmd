@@ -211,6 +211,7 @@ par(OP)
 
 ```
 
+Most maps created in this course will be generated from polygon layers where *continuous* values will be assigned discrete color swatches. Such maps are referred to as **choropleth** maps. The choice of classification schemes for choropleth maps are shown next.
 
 ### Sequential color scheme
 
