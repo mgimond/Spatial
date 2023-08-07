@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 6 Good Map Making Tips | Intro to GIS and Spatial Analysis</title>
+  <title>Chapter 7 Good Map Making Tips | Intro to GIS and Spatial Analysis</title>
   <meta name="description" content="This is a compilation of lecture notes that accompany my Intro to GIS and Spatial Analysis course." />
   <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 6 Good Map Making Tips | Intro to GIS and Spatial Analysis" />
+  <meta property="og:title" content="Chapter 7 Good Map Making Tips | Intro to GIS and Spatial Analysis" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="This is a compilation of lecture notes that accompany my Intro to GIS and Spatial Analysis course." />
   <meta name="github-repo" content="mgimond/spatial" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 6 Good Map Making Tips | Intro to GIS and Spatial Analysis" />
+  <meta name="twitter:title" content="Chapter 7 Good Map Making Tips | Intro to GIS and Spatial Analysis" />
   
   <meta name="twitter:description" content="This is a compilation of lecture notes that accompany my Intro to GIS and Spatial Analysis course." />
   
@@ -30,7 +30,7 @@
   
   
 <link rel="prev" href="pitfalls-to-avoid.html"/>
-<link rel="next" href="uncertainty-in-census-data.html"/>
+<link rel="next" href="spatial-operations-and-vector-overlays.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -234,27 +234,36 @@ div.csl-indent {
 <li class="chapter" data-level="4.5.1" data-path="symbolizing-features.html"><a href="symbolizing-features.html#an-interactive-example"><i class="fa fa-check"></i><b>4.5.1</b> An Interactive Example</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="pitfalls-to-avoid.html"><a href="pitfalls-to-avoid.html"><i class="fa fa-check"></i><b>5</b> Pitfalls to avoid</a>
+<li class="chapter" data-level="5" data-path="statistical-maps.html"><a href="statistical-maps.html"><i class="fa fa-check"></i><b>5</b> Statistical maps</a>
 <ul>
-<li class="chapter" data-level="5.1" data-path="pitfalls-to-avoid.html"><a href="pitfalls-to-avoid.html#representing-count"><i class="fa fa-check"></i><b>5.1</b> Representing Count</a></li>
-<li class="chapter" data-level="5.2" data-path="pitfalls-to-avoid.html"><a href="pitfalls-to-avoid.html#maup"><i class="fa fa-check"></i><b>5.2</b> MAUP</a></li>
-<li class="chapter" data-level="5.3" data-path="pitfalls-to-avoid.html"><a href="pitfalls-to-avoid.html#ecological-fallacy"><i class="fa fa-check"></i><b>5.3</b> Ecological Fallacy</a></li>
-<li class="chapter" data-level="5.4" data-path="pitfalls-to-avoid.html"><a href="pitfalls-to-avoid.html#mapping-rates"><i class="fa fa-check"></i><b>5.4</b> Mapping rates</a></li>
-<li class="chapter" data-level="5.5" data-path="pitfalls-to-avoid.html"><a href="pitfalls-to-avoid.html#coping-with-unstable-rates"><i class="fa fa-check"></i><b>5.5</b> Coping with Unstable Rates</a></li>
+<li class="chapter" data-level="5.1" data-path="statistical-maps.html"><a href="statistical-maps.html#statistical-distribution-maps"><i class="fa fa-check"></i><b>5.1</b> Statistical distribution maps</a>
+<ul>
+<li class="chapter" data-level="5.1.1" data-path="statistical-maps.html"><a href="statistical-maps.html#quantile-map"><i class="fa fa-check"></i><b>5.1.1</b> Quantile map</a></li>
+<li class="chapter" data-level="5.1.2" data-path="statistical-maps.html"><a href="statistical-maps.html#boxplot-map"><i class="fa fa-check"></i><b>5.1.2</b> Boxplot map</a></li>
+<li class="chapter" data-level="5.1.3" data-path="statistical-maps.html"><a href="statistical-maps.html#iqr-map"><i class="fa fa-check"></i><b>5.1.3</b> IQR map</a></li>
+<li class="chapter" data-level="5.1.4" data-path="statistical-maps.html"><a href="statistical-maps.html#standard-deviation-map"><i class="fa fa-check"></i><b>5.1.4</b> Standard deviation map</a></li>
+<li class="chapter" data-level="5.1.5" data-path="statistical-maps.html"><a href="statistical-maps.html#outlier-maps"><i class="fa fa-check"></i><b>5.1.5</b> Outlier maps</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="good-map-making-tips.html"><a href="good-map-making-tips.html"><i class="fa fa-check"></i><b>6</b> Good Map Making Tips</a>
+<li class="chapter" data-level="5.2" data-path="statistical-maps.html"><a href="statistical-maps.html#mapping-uncertainty"><i class="fa fa-check"></i><b>5.2</b> Mapping uncertainty</a>
 <ul>
-<li class="chapter" data-level="6.1" data-path="good-map-making-tips.html"><a href="good-map-making-tips.html#elements-of-a-map"><i class="fa fa-check"></i><b>6.1</b> Elements of a map</a></li>
-<li class="chapter" data-level="6.2" data-path="good-map-making-tips.html"><a href="good-map-making-tips.html#how-to-create-a-good-map"><i class="fa fa-check"></i><b>6.2</b> How to create a <em>good</em> map</a></li>
-<li class="chapter" data-level="6.3" data-path="good-map-making-tips.html"><a href="good-map-making-tips.html#typefaces-and-fonts"><i class="fa fa-check"></i><b>6.3</b> Typefaces and Fonts</a></li>
+<li class="chapter" data-level="5.2.1" data-path="statistical-maps.html"><a href="statistical-maps.html#problems-in-mapping-uncertainty"><i class="fa fa-check"></i><b>5.2.1</b> Problems in mapping uncertainty</a></li>
+<li class="chapter" data-level="5.2.2" data-path="statistical-maps.html"><a href="statistical-maps.html#class-comparison-maps"><i class="fa fa-check"></i><b>5.2.2</b> Class comparison maps</a></li>
+<li class="chapter" data-level="5.2.3" data-path="statistical-maps.html"><a href="statistical-maps.html#problem-when-performing-bivariate-analysis"><i class="fa fa-check"></i><b>5.2.3</b> Problem when performing bivariate analysis</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="uncertainty-in-census-data.html"><a href="uncertainty-in-census-data.html"><i class="fa fa-check"></i><b>7</b> Uncertainty in Census Data</a>
+</ul></li>
+<li class="chapter" data-level="6" data-path="pitfalls-to-avoid.html"><a href="pitfalls-to-avoid.html"><i class="fa fa-check"></i><b>6</b> Pitfalls to avoid</a>
 <ul>
-<li class="chapter" data-level="7.1" data-path="uncertainty-in-census-data.html"><a href="uncertainty-in-census-data.html#introduction"><i class="fa fa-check"></i><b>7.1</b> Introduction</a></li>
-<li class="chapter" data-level="7.2" data-path="uncertainty-in-census-data.html"><a href="uncertainty-in-census-data.html#mapping-uncertainty"><i class="fa fa-check"></i><b>7.2</b> Mapping uncertainty</a></li>
-<li class="chapter" data-level="7.3" data-path="uncertainty-in-census-data.html"><a href="uncertainty-in-census-data.html#problems-in-mapping-uncertainty"><i class="fa fa-check"></i><b>7.3</b> Problems in mapping uncertainty</a></li>
-<li class="chapter" data-level="7.4" data-path="uncertainty-in-census-data.html"><a href="uncertainty-in-census-data.html#class-comparison-maps"><i class="fa fa-check"></i><b>7.4</b> Class comparison maps</a></li>
-<li class="chapter" data-level="7.5" data-path="uncertainty-in-census-data.html"><a href="uncertainty-in-census-data.html#problem-when-performing-bivariate-analysis"><i class="fa fa-check"></i><b>7.5</b> Problem when performing bivariate analysis</a></li>
+<li class="chapter" data-level="6.1" data-path="pitfalls-to-avoid.html"><a href="pitfalls-to-avoid.html#representing-count"><i class="fa fa-check"></i><b>6.1</b> Representing Count</a></li>
+<li class="chapter" data-level="6.2" data-path="pitfalls-to-avoid.html"><a href="pitfalls-to-avoid.html#maup"><i class="fa fa-check"></i><b>6.2</b> MAUP</a></li>
+<li class="chapter" data-level="6.3" data-path="pitfalls-to-avoid.html"><a href="pitfalls-to-avoid.html#ecological-fallacy"><i class="fa fa-check"></i><b>6.3</b> Ecological Fallacy</a></li>
+<li class="chapter" data-level="6.4" data-path="pitfalls-to-avoid.html"><a href="pitfalls-to-avoid.html#mapping-rates"><i class="fa fa-check"></i><b>6.4</b> Mapping rates</a></li>
+<li class="chapter" data-level="6.5" data-path="pitfalls-to-avoid.html"><a href="pitfalls-to-avoid.html#coping-with-unstable-rates"><i class="fa fa-check"></i><b>6.5</b> Coping with Unstable Rates</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="good-map-making-tips.html"><a href="good-map-making-tips.html"><i class="fa fa-check"></i><b>7</b> Good Map Making Tips</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="good-map-making-tips.html"><a href="good-map-making-tips.html#elements-of-a-map"><i class="fa fa-check"></i><b>7.1</b> Elements of a map</a></li>
+<li class="chapter" data-level="7.2" data-path="good-map-making-tips.html"><a href="good-map-making-tips.html#how-to-create-a-good-map"><i class="fa fa-check"></i><b>7.2</b> How to create a <em>good</em> map</a></li>
+<li class="chapter" data-level="7.3" data-path="good-map-making-tips.html"><a href="good-map-making-tips.html#typefaces-and-fonts"><i class="fa fa-check"></i><b>7.3</b> Typefaces and Fonts</a></li>
 </ul></li>
 <li class="chapter" data-level="8" data-path="spatial-operations-and-vector-overlays.html"><a href="spatial-operations-and-vector-overlays.html"><i class="fa fa-check"></i><b>8</b> Spatial Operations and Vector Overlays</a>
 <ul>
@@ -563,10 +572,10 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="good-map-making-tips" class="section level1 hasAnchor" number="6">
-<h1><span class="header-section-number">Chapter 6</span> Good Map Making Tips<a href="good-map-making-tips.html#good-map-making-tips" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<div id="elements-of-a-map" class="section level2 hasAnchor" number="6.1">
-<h2><span class="header-section-number">6.1</span> Elements of a map<a href="good-map-making-tips.html#elements-of-a-map" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="good-map-making-tips" class="section level1 hasAnchor" number="7">
+<h1><span class="header-section-number">Chapter 7</span> Good Map Making Tips<a href="good-map-making-tips.html#good-map-making-tips" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="elements-of-a-map" class="section level2 hasAnchor" number="7.1">
+<h2><span class="header-section-number">7.1</span> Elements of a map<a href="good-map-making-tips.html#elements-of-a-map" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>A map can be composed of many different map elements. They may include: Main map body, legend, title, scale indicator, orientation indicator, inset map and source and ancillary information.</p>
 <p>Not all elements need to be present in a map. In fact, in some cases they may not be appropriate at all. A scale bar, for instance, may not be appropriate if the coordinate system used does not preserve distance across the map’s extent.</p>
 <p>Knowing why and for whom a map is being made will dictate its layout. If it’s to be included in a paper as a figure, then parsimony should be the guiding principle. If it’s intended to be a standalone map, then additional map elements may be required.</p>
@@ -574,28 +583,28 @@ div.csl-indent {
 <div class="figure"><span style="display:block;" id="fig:f06-map"></span>
 <img src="img/Map_elements.png" alt="Map elements. Note that not all elements are needed, nor are they appropriate in some cases. Can you identify at least one element that does not belong in the map (hint, note the orientation of the longitudinal lines; are they parallel to one another? What implication does this have on the North direction and the placement of the North arrow?)"  />
 <p class="caption">
-Figure 6.1: Map elements. Note that not all elements are needed, nor are they appropriate in some cases. Can you identify at least one element that does not belong in the map (hint, note the orientation of the longitudinal lines; are they parallel to one another? What implication does this have on the North direction and the placement of the North arrow?)
+Figure 7.1: Map elements. Note that not all elements are needed, nor are they appropriate in some cases. Can you identify at least one element that does not belong in the map (hint, note the orientation of the longitudinal lines; are they parallel to one another? What implication does this have on the North direction and the placement of the North arrow?)
 </p>
 </div>
 </div>
-<div id="how-to-create-a-good-map" class="section level2 hasAnchor" number="6.2">
-<h2><span class="header-section-number">6.2</span> How to create a <em>good</em> map<a href="good-map-making-tips.html#how-to-create-a-good-map" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="how-to-create-a-good-map" class="section level2 hasAnchor" number="7.2">
+<h2><span class="header-section-number">7.2</span> How to create a <em>good</em> map<a href="good-map-making-tips.html#how-to-create-a-good-map" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Here’s an example of a map layout that showcases several bad practices.</p>
 <div class="figure"><span style="display:block;" id="fig:Bad-map"></span>
 <img src="img/Bad_map.jpg" alt="Example of a *bad* map. Can you identify the problematic elements in this map? " width="528" />
 <p class="caption">
-Figure 6.2: Example of a <em>bad</em> map. Can you identify the problematic elements in this map?
+Figure 7.2: Example of a <em>bad</em> map. Can you identify the problematic elements in this map?
 </p>
 </div>
 <ul>
 <li><p>A good map establishes a <strong>visual hierarchy</strong> that ensures that the most important elements are at the top of this hierarchy and the least important are at the bottom. Typically, the top elements should consist of the main map body, the title (if this is a standalone map) and a legend (when appropriate).</p></li>
 <li><p>When showcasing Choropleth maps, it’s best to limit the <strong>color swatches</strong> to less than a dozen–it becomes difficult for the viewer to tie too many different colors in a map to a color swatch element in the legend. Also, classification breaks should not be chosen at random but should be chosen carefully; for example adopting a quantile classifications scheme to maximize the inclusion of the different color swatches in the map; or a classification system designed based on logical breaks (or easy to interpret breaks) when dictated by theory or cultural predisposition.</p></li>
-<li><p><strong>Scale bars</strong> and <strong>north arrows</strong> should be used judiciously and need <em>not</em> be present in <em>every</em> map. These elements are used to measure orientation and distances. Such elements are critical in reference maps such as USGS Topo maps and navigation maps but serve little purpose in a thematic map where the goal is to highlight <em>differences</em> between aerial units. If, however, these elements are to be placed in a thematic map, reduce their visual prominence (see Figure <a href="good-map-making-tips.html#fig:ScaleBar">6.3</a> for examples of scale bars). The same principle applies to the selection of an orientation indicator (north arrow) element. Use a small north arrow design if it is to be placed low in the hierarchy, larger if it is to be used as a reference (such as a nautical chart).</p></li>
+<li><p><strong>Scale bars</strong> and <strong>north arrows</strong> should be used judiciously and need <em>not</em> be present in <em>every</em> map. These elements are used to measure orientation and distances. Such elements are critical in reference maps such as USGS Topo maps and navigation maps but serve little purpose in a thematic map where the goal is to highlight <em>differences</em> between aerial units. If, however, these elements are to be placed in a thematic map, reduce their visual prominence (see Figure <a href="good-map-making-tips.html#fig:ScaleBar">7.3</a> for examples of scale bars). The same principle applies to the selection of an orientation indicator (north arrow) element. Use a small north arrow design if it is to be placed low in the hierarchy, larger if it is to be used as a reference (such as a nautical chart).</p></li>
 </ul>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:ScaleBar"></span>
 <img src="img/ScaleBar.svg" alt="Scale bar designs from simplest (top) to more complex (bottom). Use the simpler design if it's to be placed low in the visual hierarchy."  />
 <p class="caption">
-Figure 6.3: Scale bar designs from simplest (top) to more complex (bottom). Use the simpler design if it’s to be placed low in the visual hierarchy.
+Figure 7.3: Scale bar designs from simplest (top) to more complex (bottom). Use the simpler design if it’s to be placed low in the visual hierarchy.
 </p>
 </div>
 <ul>
@@ -605,17 +614,17 @@ Figure 6.3: Scale bar designs from simplest (top) to more complex (bottom). Use 
 <div class="figure"><span style="display:block;" id="fig:Good-map"></span>
 <img src="img/Good_map.jpg" alt="Example of an *improved* map." width="528" />
 <p class="caption">
-Figure 6.4: Example of an <em>improved</em> map.
+Figure 7.4: Example of an <em>improved</em> map.
 </p>
 </div>
 </div>
-<div id="typefaces-and-fonts" class="section level2 hasAnchor" number="6.3">
-<h2><span class="header-section-number">6.3</span> Typefaces and Fonts<a href="good-map-making-tips.html#typefaces-and-fonts" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="typefaces-and-fonts" class="section level2 hasAnchor" number="7.3">
+<h2><span class="header-section-number">7.3</span> Typefaces and Fonts<a href="good-map-making-tips.html#typefaces-and-fonts" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Maps may include text elements such as labels and ancillary text blocks. The choice of typeface (font family) and font (size, weight and style of a typeface) can impact the legibility of the map. A rule of thumb is to limit the number of fonts to two: a <strong>serif</strong> and a <strong>sans serif</strong> font.</p>
 <div class="figure"><span style="display:block;" id="fig:f06-serif"></span>
 <img src="img/Fonts.svg" alt="Serif fonts are characterized by brush strokes at the letter tips (circled in red in the figure). Sans Serif fonts are devoid of brush strokes."  />
 <p class="caption">
-Figure 6.5: Serif fonts are characterized by brush strokes at the letter tips (circled in red in the figure). Sans Serif fonts are devoid of brush strokes.
+Figure 7.5: Serif fonts are characterized by brush strokes at the letter tips (circled in red in the figure). Sans Serif fonts are devoid of brush strokes.
 </p>
 </div>
 <p>Serif fonts are generally used to label natural features such as mountain ridges and water body names. Sans serif fonts are usually used to label anthropogenic features such as roads, cities and countries.</p>
@@ -623,7 +632,7 @@ Figure 6.5: Serif fonts are characterized by brush strokes at the letter tips (c
 <div class="figure"><span style="display:block;" id="fig:f06-typeset"></span>
 <img src="img/labels.svg" alt="The lack of typeset differences makes the map on the left difficult to differentiate county names from lake/river names. The judicious use of font colors and style on the right facilitate the separation of features." width="600" />
 <p class="caption">
-Figure 6.6: The lack of typeset differences makes the map on the left difficult to differentiate county names from lake/river names. The judicious use of font colors and style on the right facilitate the separation of features.
+Figure 7.6: The lack of typeset differences makes the map on the left difficult to differentiate county names from lake/river names. The judicious use of font colors and style on the right facilitate the separation of features.
 </p>
 </div>
 
@@ -635,7 +644,7 @@ Figure 6.6: The lack of typeset differences makes the map on the left difficult 
         </div>
       </div>
 <a href="pitfalls-to-avoid.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="uncertainty-in-census-data.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="spatial-operations-and-vector-overlays.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
