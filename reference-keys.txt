@@ -71,7 +71,6 @@ fig:f06-typeset
 fig:f08-sel1
 fig:f08-sel2
 fig:f08-sel1-result
-fig:f08-sel3
 fig:f08-loc1
 fig:f08-loc1-map
 fig:f08-clip

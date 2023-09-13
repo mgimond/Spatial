@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 8 Spatial Operations and Vector Overlays | Intro to GIS and Spatial Analysis</title>
   <meta name="description" content="This is a compilation of lecture notes that accompany my Intro to GIS and Spatial Analysis course." />
-  <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.35 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 8 Spatial Operations and Vector Overlays | Intro to GIS and Spatial Analysis" />
   <meta property="og:type" content="book" />
@@ -60,7 +60,7 @@
 <script src="libs/proj4-2.6.2/proj4.min.js"></script>
 <script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
 <link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
-<script src="libs/leaflet-binding-2.1.2/leaflet.js"></script>
+<script src="libs/leaflet-binding-2.2.0/leaflet.js"></script>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-71085TV4MB"></script>
 <script>
@@ -620,10 +620,8 @@ Figure 8.3: Selected cities meeting the criterion are shown in cyan color in Arc
 <li><code>not</code> (condition <em>must not</em> be met).</li>
 </ul>
 <p>Following up with the last example, let’s now select cities having a population greater than 50000 and that are in the US (and not Canada or Mexico). Assuming that the country field is labeled <code>FIPS_CNTRY</code> we could setup the expression as <code>"POP" &gt; 50000 AND "FIPS_CNTRY" = US</code>. Note that a value need not be numeric. In this example we are asking that an attribute value equal a specific string value (i.e. that it equal the string <code>'US'</code>).</p>
-<div class="figure"><span style="display:block;" id="fig:f08-sel3"></span>
-<img src="img/Select_cities_2.svg" alt="Selected cities meeting `POP &gt; 50000` AND `FIPS_CNTRY == US` criteria are shown in cyan color."  />
-<p class="caption">
-Figure 8.4: Selected cities meeting <code>POP &gt; 50000</code> AND <code>FIPS_CNTRY == US</code> criteria are shown in cyan color.
+<div class="figure">
+<img src="img/Select_cities_2.svg" alt="Selected cities meeting `POP > 50000<code>AND</code>FIPS_CNTRY == US<code>criteria are shown in cyan color."  /&gt; &lt;p class="caption"&gt;(\#fig:f08-sel3)Selected cities meeting</code>POP &gt; 50000<code>AND</code>FIPS_CNTRY == US` criteria are shown in cyan color.
 </p>
 </div>
 </div>
@@ -635,13 +633,13 @@ Figure 8.4: Selected cities meeting <code>POP &gt; 50000</code> AND <code>FIPS_C
 <div class="figure"><span style="display:block;" id="fig:f08-loc1"></span>
 <img src="img/Select_location_1.jpg" alt="An example of a *Select Layer by Location* tool in ArcGIS Pro. The spatial association chosen is distance." width="300" />
 <p class="caption">
-Figure 8.5: An example of a <em>Select Layer by Location</em> tool in ArcGIS Pro. The spatial association chosen is distance.
+Figure 8.4: An example of a <em>Select Layer by Location</em> tool in ArcGIS Pro. The spatial association chosen is distance.
 </p>
 </div>
 <div class="figure"><span style="display:block;" id="fig:f08-loc1-map"></span>
 <img src="img/Cities_earthquakes.svg" alt="Selected cities meeting the criterion are shown in cyan color." width="300" />
 <p class="caption">
-Figure 8.6: Selected cities meeting the criterion are shown in cyan color.
+Figure 8.5: Selected cities meeting the criterion are shown in cyan color.
 </p>
 </div>
 </div>
@@ -657,7 +655,7 @@ The concept of <em>vector overlay</em> is not new and goes back many decades–e
 <div class="figure"><span style="display:block;" id="fig:f08-clip"></span>
 <img src="img/Clip.svg" alt="The Maine counties polygon layer is clipped to the circle polygon. Note that the ouput layer is limited to the county polygon geometry and its attributes (and does not include the clipping circle polygon)."  />
 <p class="caption">
-Figure 8.7: The Maine counties polygon layer is clipped to the circle polygon. Note that the ouput layer is limited to the county polygon geometry and its attributes (and does not include the clipping circle polygon).
+Figure 8.6: The Maine counties polygon layer is clipped to the circle polygon. Note that the ouput layer is limited to the county polygon geometry and its attributes (and does not include the clipping circle polygon).
 </p>
 </div>
 </div>
@@ -667,7 +665,7 @@ Figure 8.7: The Maine counties polygon layer is clipped to the circle polygon. N
 <div class="figure"><span style="display:block;" id="fig:f08-intersect"></span>
 <img src="img/Intersect.svg" alt="The Maine counties polygon layer is intersected with the circle polygon. The ouput layer combines both intersecting geometries and attributes."  />
 <p class="caption">
-Figure 8.8: The Maine counties polygon layer is intersected with the circle polygon. The ouput layer combines both intersecting geometries and attributes.
+Figure 8.7: The Maine counties polygon layer is intersected with the circle polygon. The ouput layer combines both intersecting geometries and attributes.
 </p>
 </div>
 </div>
@@ -677,7 +675,7 @@ Figure 8.8: The Maine counties polygon layer is intersected with the circle poly
 <div class="figure"><span style="display:block;" id="fig:f08-union"></span>
 <img src="img/Union.svg" alt="The Maine counties polygon layer is unioned with the circle polygon. The ouput layer combines both (complete) geometries and attributes. Where spatial overlaps do not occur, most software will either assign a NULL value or a 0."  />
 <p class="caption">
-Figure 8.9: The Maine counties polygon layer is unioned with the circle polygon. The ouput layer combines both (complete) geometries and attributes. Where spatial overlaps do not occur, most software will either assign a NULL value or a 0.
+Figure 8.8: The Maine counties polygon layer is unioned with the circle polygon. The ouput layer combines both (complete) geometries and attributes. Where spatial overlaps do not occur, most software will either assign a NULL value or a 0.
 </p>
 </div>
 
