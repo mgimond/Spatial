@@ -240,14 +240,15 @@ Greater than  | `>`
 Less than | `<`
 Equal | `==`
 Not equal | `!=`
-
+ 
 For example, the following figure shows the output of the comparison between two rasters where we are assessing if cells in `R1` are *greater than* those in `R2` (on a cell-by-cell basis).
-
-```{r f10-logical01, echo=FALSE, fig.cap = "Output of the operation R1 > R2. A value of 1 in the output raster indicates that the condition is true and a value of 0 indicates that the condition is false.", fig.height=2, fig.width=5}
-
+ 
+ 
+```{r f10-logical01, echo=FALSE, fig.cap = "Output of the operation `R1` &gt; `R2`. A value of 1 in the output raster indicates that the condition is true and a value of 0 indicates that the condition is false.", fig.height=2, fig.width=5}
+ 
 ras1 <- raster(ncol=3, nrow=3, xmn=0, xmx=100, ymn=0, ymx=100)
-ras2 <- ras1
-ras.out <- ras1
+ras2 <- ras1 
+ras.out <- ras1 
 projection(r) <- "+proj=utm +zone=19 +datum=NAD83"
 set.seed(32)
 values(ras1) <- round(runif(length(ras1),-5,5))
@@ -257,9 +258,8 @@ ras.out <- (ras1 > ras2)
 sg = stack(ras1,ras2,ras.out) 
 names(sg) <- c("R1","R2", "output") 
 gp(sg,1, sfmt="%2.0f", fnts=4)
-
 ```
-
+ 
 When assessing whether two cells are equal, some programming environments such as R and ArcMap's *Raster Calculator* require the use of the *double equality* syntax, `==`, as in `R1 == R2`. In these programming environments, the single equality syntax is usually interpreted as an *assignment operator* so `R1 = R2` would instruct the computer to assign the cell values in R2 to R1 (which is not what we want to do here). 
 
 Some applications make use of special functions to test a condition. For example, ArcMap has a function called `Con(condition, out1, out2)` which assigns the value `out1` if the condition is met and a value of `out2` if it's not. For example, ArcMap's raster calculator expression 
@@ -323,7 +323,7 @@ gp(sg,1, sfmt="%2.0f", fnts=4)
 
 Both comparison and Boolean operations can be combined into a single expression. For example, we may wish to find locations (cells) that satisfy requirements from two different raster layers: e.g. `0<R1<4`  AND  `R2>0`. To satisfy the first requirement, we can write out the expression as `(R1>0) & (R1<4)`. Both comparisons (delimited by parentheses) return a `0` (FALSE) or a `1` (TRUE). The ampersand, `&`, is a Boolean operator that checks that both conditions are met and returns a 1 if yes  or a 0 if not. This expression is then combined with another comparison using another ampersand operator that assesses the criterion R2>0. The amalgamated expression is thus `((R1>0) & (R1<4)) & (R2>0)`.
   
-```{r f10-combining01, echo=FALSE, fig.height=2, fig.width=5, fig.cap = "Output of the operation ((R1&gt;0) &amp; (R1&lt;4)) &amp; (R2&gt;0). A value of 1 in the output raster indicates that the condition is true and a value of 0 indicates that the condition is false."}
+```{r f10-combining01, echo=FALSE, fig.height=2, fig.width=5, fig.cap = "Output of the operation ((`R1`&gt;`0`) &amp; (`R1`&lt;`4`)) &amp; (`R2`&gt;`0`). A value of 1 in the output raster indicates that the condition is true and a value of 0 indicates that the condition is false."}
 
 ras1 <- raster(ncol=3, nrow=3, xmn=0, xmx=100, ymn=0, ymx=100)
 ras2 <- ras1
@@ -340,4 +340,4 @@ gp(sg,1, sfmt="%2.0f", fnts=4)
 
 ```
 
-> Note that most software environments assign the `AND` Boolean operator the ampersand character, `&`.
+> Note that most software environments assign the ampersand character, `&`, to the `AND` Boolean operator.

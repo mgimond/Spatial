@@ -2,7 +2,7 @@
 
 ## GIS File Data Formats
 
-In the GIS world, you will encounter many different GIS file formats. Some file formats are unique to specific GIS applications, others are universal. For this course, we will focus on a subset of spatial data file formats: **shapefiles** for vector data, **imagine** and **GeoTiff** files for rasters and **file geodatabases** for both vector and raster data.
+In the GIS world, you will encounter many different GIS file formats. Some file formats are unique to specific GIS applications, others are universal. For this course, we will focus on a subset of spatial data file formats: **shapefiles** for vector data, **Imagine** and **GeoTiff** files for rasters and **file geodatabases** and **geopackages** for both vector and raster data.
 
 ### Vector Data File Formats
 
@@ -29,7 +29,7 @@ The list of files that define a "shapefile" are shown in the following table. No
 
 A **file geodatabase** is a relational database storage format. It's a far more complex data structure than the shapefile and consists of a **.gdb** folder housing dozens of files. Its complexity renders it more versatile allowing it to store multiple feature classes and enabling topological definitions (i.e. allowing the user to define rules that govern the way different feature classes relate to one another). An example of the contents of a geodatabase is shown in the following figure.
 
-```{r f02-gdb, echo=FALSE, fig.cap = "Sample content of an ArcGIS file geodatabase. (src: esri)", out.width=444}
+```{r f02-gdb, echo=FALSE, fig.cap = "Sample content of an ArcGIS file geodatabase. (src: esri)", out.width=444, fig.align='center'}
 
 knitr::include_graphics("img/geodatabase.jpg")
 ```
@@ -42,7 +42,7 @@ This is a relatively new data format that follows [open format standards](https:
 
 Rasters are in part defined by their pixel depth. Pixel depth defines the range of distinct values the raster can store. For example, a 1-bit raster can only store 2 distinct values: 0 and 1.
 
-```{r echo=FALSE,  fig.height=3, fig.width=3}
+```{r echo=FALSE, fig.cap = "Examples of different pixel depths.",  fig.height=3, fig.width=3, fig.align='center'}
 
 ## Function
 pal <- function(col, border = "light gray", txt =TRUE,...)
@@ -85,7 +85,7 @@ There is a wide range of raster file formats used in the GIS world. Some of the 
 
 #### Imagine
 
-The **Imagine** file format was originally created by an image processing software company called ERDAS. This file format consists of a single **.img** file. This is a simpler file format than the shapefile. It is sometimes accompanied by an .xml file which usually stores metadata information about the raster layer.
+The **Imagine** file format was originally created by an image processing software company called ERDAS. This file format consists of a single **.img** file. This is a simpler file format than the vector shapefile. It is sometimes accompanied by an .xml file which usually stores metadata information about the raster layer.
 
 #### GeoTiff
 
@@ -97,9 +97,9 @@ A raster file can also be stored in a file geodatabase alongside vector files. G
 
 ## Managing GIS Files in ArcGIS
 
-Unless you are intimately familiar with the file structure of a GIS file, it is best to copy/move/delete GIS files from within the software environment. **ArcCatalog** (part of the ArcGIS suite) acts like a Windows file management environment with the added benefit that it recognizes GIS files.
+Unless you are intimately familiar with the file structure of a GIS file, it is best to copy/move/delete GIS files from within the software environment. 
 
-```{r f02-catalog, echo=FALSE, fig.cap = "Windows Explorer view vs. ArcCatalog view. Note, for example, how the many files that make up the Cities shapefile (as viewed in a Windows file manager environment) appears as a single entry in the ArcCatalog view. This makes it easier to rename the shapefile since it needs to be done only for a single entry in ArcCatalog (as opposed to renaming the Cities files seven times in the Windows file manager environment).", out.width=1071}
+```{r f02-catalog, echo=FALSE, fig.cap = "Windows File Explorer view vs. ArcGIS Catalog view. Note, for example, how the many files that make up the Cities shapefile (as viewed in a Windows file manager environment) appears as a single entry in the Catalog view. This makes it easier to rename the shapefile since it needs to be done only for a single entry in the GIS software (as opposed to renaming the Cities files seven times in the Windows file manager environment).", out.width=1071, fig.align='center'}
 
 knitr::include_graphics("img/ArcCatalog.jpg")
 ```
@@ -116,14 +116,14 @@ Because .*aprx* map files read data from GIS files, it must know where to find t
 
 A *relative pathname* defines the location of the GIS files relative to the location of the map file on your computer. For example, let's say that you created a project folder called HW05 under D:/Username/. In that folder, you have an ArcMap map document, Map.aprx (ArcMap GIS files have an *.mxd* extension and not an *.aprx* extension). The GIS document displays two layers stored in the GIS files Roads.shp and Cities.shp. In this scenario, the *.mxd* document and shapefiles are in the same project folder. If you set the **Pathnames** parameter to **"Store relative pathnames to data sources"** (accessed from ArcMap's **File \>\> Map Document Properties menu**) ArcMap will not need to know the entire directory structure above the HW05/ folder to find the two shapefiles as illustrated below.
 
-```{r echo=FALSE}
+```{r echo=FALSE, fig.align='center'}
 
 knitr::include_graphics("img/Directory_relative.svg")
 ```
 
 If the **"Store relative pathnames to data sources"** is not checked in the map's document properties, then ArcMap will need to know the *entire* directory structure leading to the HW05/ folder as illustrated below.
 
-```{r echo=FALSE}
+```{r echo=FALSE, fig.align='center'}
 
 knitr::include_graphics("img/Directory_full.svg")
 ```
@@ -133,6 +133,6 @@ Your choice of full vs relative pathnames matters if you find yourself having to
 > NOTE: Exclamation marks in your map document indicate that the GIS files are missing or that the directory structure has changed.
 
 
-```{r echo=FALSE, out.width=100}
+```{r echo=FALSE, out.width=100, fig.align='center', fig.cap = "In ArcGIS, an exclamation mark next to a layer indicates that the GIS file the layer is pointing to cannot be found."}
 knitr::include_graphics("img/Exclamation_marks.jpg")
 ```

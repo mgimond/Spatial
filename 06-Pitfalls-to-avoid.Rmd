@@ -29,14 +29,14 @@ knitr::knit_hooks$set(no.mar = function(before, options, envir) {
 
 Let's define a 5km x 5km area and map the location of each individual inside the study area. Let's assume, for sake of argument, that individuals are laid out in a perfect grid pattern. Now let's define two different zoning schemes: one which follows a uniform grid pattern and another that does not. The layout of individuals relative to both zonal schemes are shown in Figure \@ref(fig:grid-vs-tess-layout).
 
-```{r grid-vs-tess-layout, echo=FALSE, fig.cap = "Figure shows the layout of individuals inside two different zonal unit configurations."}
+```{r grid-vs-tess-layout, echo=FALSE, fig.cap = "Figure shows the layout of individuals inside two different zonal unit configurations.", fig.align='center'}
 
 knitr::include_graphics("img/grid_vs_tess_layout.svg")
 ```
 
 If we sum the number of individuals in each polygon, we get two maps that appear to be giving us two completely different population distribution patterns:
 
-```{r grid-vs-tess-count, echo=FALSE, fig.cap = "Count of individuals in each zonal unit. Note how an underlying point distribution can generate vastly different looking choropleth maps given different aggregation schemes."}
+```{r grid-vs-tess-count, echo=FALSE, fig.cap = "Count of individuals in each zonal unit. Note how an underlying point distribution can generate vastly different looking choropleth maps given different aggregation schemes.", fig.align='center'}
 
 knitr::include_graphics("img/grid_vs_tess_counts.svg")
 ```
@@ -44,7 +44,7 @@ knitr::include_graphics("img/grid_vs_tess_counts.svg")
 The maps highlight how non-uniform aerial units can fool us into thinking a pattern exists when in fact this is just an artifact of the aggregation scheme. A solution to this problem is to represent counts as **ratios** such as number of deaths per number of people or number of people per square kilometer. In Figure \@ref(fig:grid-vs-tess-density), we opt for the latter ratio (number of people per square kilometer).
 
 
-```{r grid-vs-tess-density, echo=FALSE, fig.cap = "Point density choropleth maps. The sample study extent is 20x20 units which generates a uniform point density of 1. The slight discrepancy in values for the map on the right is to be expected given that the zonal boundaries do not split the distance between points exactly."}
+```{r grid-vs-tess-density, echo=FALSE, fig.cap = "Point density choropleth maps. The sample study extent is 20x20 units which generates a uniform point density of 1. The slight discrepancy in values for the map on the right is to be expected given that the zonal boundaries do not split the distance between points exactly.", fig.align='center'}
 
 knitr::include_graphics("img/grid_vs_tess_density.svg")
 ```
@@ -53,7 +53,7 @@ knitr::include_graphics("img/grid_vs_tess_density.svg")
 
 Continuing with the uniform point distribution from the last section, let's assume that as part of the survey, two variables (v1 and v2) were recorded for each point (symbolized as varying shades of green and reds in the two left-hand maps of Figure  \@ref(fig:v1-and-v2-raw)). We might be interested in assessing if the variables v1 and v2 are correlated (i.e. as variable v1 increases in value, does this trigger a monotonic increase or decrease in variable v2?). One way to visualize the relationship between two variables is to generate a bivariate scatter plot (right plot of Figure  \@ref(fig:v1-and-v2-raw)).
 
-```{r v1-and-v2-raw, echo=FALSE, fig.cap = "Plots of variables v1 and v2 for each individual in the survey. The color scheme is sequential with darker colors depicting higher values and lighter colors depicting lower values.", out.width=550}
+```{r v1-and-v2-raw, echo=FALSE, fig.cap = "Plots of variables v1 and v2 for each individual in the survey. The color scheme is sequential with darker colors depicting higher values and lighter colors depicting lower values.", out.width=550, fig.align='center'}
 
 knitr::include_graphics("img/v1_and_v2_raw.png")
 ```
@@ -62,14 +62,14 @@ It's obvious from the adjoining scatter plot that there is little to no correlat
 
 But many datasets (such as the US census data) are provided to us not at the individual level but at various levels of aggregation units such as the census tract, the county or the state levels. When aggregated, the relationship between variables under investigation may change. For example, if we aggregated v1 and v2 using the uniform aggregation scheme highlighted earlier we get the following relationship.
 
-```{r v1-and-v2-unif, echo=FALSE, fig.cap = "Data summarized using a uniform aggregation scheme. The resulting regression analysis is shown in the right-hand plot. Note the slight increase in slope and $R^2$ values.", out.width=550}
+```{r v1-and-v2-unif, echo=FALSE, fig.cap = "Data summarized using a uniform aggregation scheme. The resulting regression analysis is shown in the right-hand plot. Note the slight increase in slope and $R^2$ values.", out.width=550, fig.align='center'}
 
 knitr::include_graphics("img/unif_aggr.svg")
 ```
 
 If we aggregate the same point data using the non-homogeneous aggregation scheme, we get yet another characterization of the relationship between v1 and v2.
 
-```{r v1-and-v2-nonunif, echo=FALSE, fig.cap = "Data summarized using a non-uniform aggregation scheme.The resulting regression analysis is shown in the right-hand plot.", out.width=550}
+```{r v1-and-v2-nonunif, echo=FALSE, fig.cap = "Data summarized using a non-uniform aggregation scheme.The resulting regression analysis is shown in the right-hand plot.", out.width=550, fig.align='center'}
 
 knitr::include_graphics("img/irr_aggr.svg")
 ```
@@ -87,21 +87,21 @@ But, as is often the case, our analysis is constrained by the data at hand. So w
 
 One of the first pitfalls you've been taught to avoid is the mapping of counts when the aerial units associated with these values are not uniform in size and shape. Two options in resolving this problem are: normalizing counts to area or normalizing counts to some underlying population count. An example of the latter is the mapping of infection rates or mortality rates. For example, the following map displays the distribution of kidney cancer death rates (by county) for the period 1980 to 1984.
 
-```{r f05-kidney0, echo=FALSE, fig.cap = "Kidney cancer death rates for the period spanning 1980-1984.", out.width=504}
+```{r f05-kidney0, echo=FALSE, fig.cap = "Kidney cancer death rates for the period spanning 1980-1984.", out.width=504, fig.align='center'}
 
 knitr::include_graphics("img/raw_rates.png")
 ```
 
 Now let's look at the top 10% of counties with the highest death rates.
 
-```{r f05-kidney1, echo=FALSE, fig.cap = "Top 10% of counties with the highest kidney cancer death rates.", out.width=466}
+```{r f05-kidney1, echo=FALSE, fig.cap = "Top 10% of counties with the highest kidney cancer death rates.", out.width=466, fig.align='center'}
 
 knitr::include_graphics("img/top10.png")
 ```
 
 And now let's look at the bottom 10% of counties with the lowest death rates.
 
-```{r f05-kidney2, echo=FALSE, fig.cap = "Bottom 10% of counties with the lowest kidney cancer death rates.", out.width=451}
+```{r f05-kidney2, echo=FALSE, fig.cap = "Bottom 10% of counties with the lowest kidney cancer death rates.", out.width=451, fig.align='center'}
 
 knitr::include_graphics("img/bottom10.png")
 ```
@@ -110,21 +110,21 @@ A quick glance of these maps suggests clustering of high and low rates around th
 
 Let's first look at a population count map (note that we are purposely not normalizing the count data).
 
-```{r f05-kidney3, echo=FALSE, fig.cap = "Population count for each county. Note that a quantile classification scheme is adopted forcing a large range of values to be assigned a single color swatch.", out.width=504}
+```{r f05-kidney3, echo=FALSE, fig.cap = "Population count for each county. Note that a quantile classification scheme is adopted forcing a large range of values to be assigned a single color swatch.", out.width=504, fig.align='center'}
 
 knitr::include_graphics("img/Population.png")
 ```
 
 The central part of the states where we are observing both very high and very low cancer death rates seem to have low population counts. Could population count have something to do with this odd congruence of high and low cancer rates? Let's explore the relationship between death rates and population counts outside of a GIS environment and focus solely on the two batches of numbers. The following plot is a scatterplot of death rates and population counts.
 
-```{r f05-kidney-plot, echo=FALSE, fig.cap = "Plot of rates vs population counts. Note the skewed nature of both data batches.", out.width=300}
+```{r f05-kidney-plot, echo=FALSE, fig.cap = "Plot of rates vs population counts. Note the skewed nature of both data batches.", out.width=300, fig.align='center'}
 
 knitr::include_graphics("img/Rate_vs_pop.png")
 ```
 
 Transforming both variables reveals much more about the relationship between them. 
 
-```{r f05-kidney-plot-trans, echo=FALSE, fig.cap = "Plot of rates vs population counts on log scales.", out.width=300}
+```{r f05-kidney-plot-trans, echo=FALSE, fig.cap = "Plot of rates vs population counts on log scales.", out.width=300, fig.align='center'}
 knitr::include_graphics("img/Rate_vs_pop_log.png")
 ```
 
@@ -140,7 +140,7 @@ To compensate for the small population counts, we can minimize the influence tho
 
 An EB smoothed representation of kidney cancer deaths gives us the following rate vs population plot:
 
-```{r EBRate-vs-pop-log, echo=FALSE, fig.cap = "Plot of EB smoothed rates vs population counts on log scales.", out.width=300}
+```{r EBRate-vs-pop-log, echo=FALSE, fig.cap = "Plot of EB smoothed rates vs population counts on log scales.", out.width=300, fig.align='center'}
 knitr::include_graphics("img/EBRate_vs_pop_log.png")
 ```
 
@@ -148,11 +148,11 @@ The variability in rates for smaller counties has decreased. The range of rate v
 
 Maps of the top 10% and bottom 10% EB smoothed rates are shown in the next two figures.
 
-```{r f05-top10-EB, echo=FALSE, fig.cap = "Top 10% of counties with the highest kidney cancer death rates using EB smoothing techniques.", out.width=466}
+```{r f05-top10-EB, echo=FALSE, fig.cap = "Top 10% of counties with the highest kidney cancer death rates using EB smoothing techniques.", out.width=466, fig.align='center'}
 knitr::include_graphics("img/top10EB.png")
 ```
 
-```{r f05-bottom10-EB, echo=FALSE, fig.cap = "Bottom 10% of counties with the lowest kidney cancer death rates using EB smoothing technique.", out.width=451}
+```{r f05-bottom10-EB, echo=FALSE, fig.cap = "Bottom 10% of counties with the lowest kidney cancer death rates using EB smoothing technique.", out.width=451, fig.align='center'}
 knitr::include_graphics("img/bottom10EB.png")
 ```
 

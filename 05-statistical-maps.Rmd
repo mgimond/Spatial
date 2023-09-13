@@ -22,7 +22,7 @@ The previous chapter demonstrated how the choice of a classification scheme can 
 
 Many spatial datasets consist of continuous values. As such, one can have as many unique values as there are unique polygons in a data layer. For example, a Massachusetts median household income map where a unique color is assigned to each unique value will look like this:
 
-```{r continuous, fig.width = 6.5, fig.height=2.5, echo=FALSE, fig.cap = "Example of a continuous color scheme applied to a choropleth map."}
+```{r continuous, fig.width = 6.5, fig.height=2.5, echo=FALSE, fig.cap = "Example of a continuous color scheme applied to a choropleth map.", fig.align='center'}
 library(ggplot2)
 library(gridExtra)
 library(classInt)
@@ -37,7 +37,7 @@ ggplot(ma, aes(fill=house_inc)) + geom_sf() + theme_void() +
 
 Such a map may not be as informative as one would like it to be. In statistics, we seek to reduce large sets of continuous values to discrete entities to help us better "handle" the data. In the field of statistics, discretization of values can take on the form of a histogram where values are assigned to one of several equal width bins. A choropleth map classification equivalent is the equal interval classification scheme. 
 
-```{r equalint, fig.width = 6.5, fig.height=2.5, echo=FALSE, fig.cap = "An equal interval choropleth map using 10 bins."}
+```{r equalint, fig.width = 6.5, fig.height=2.5, echo=FALSE, fig.cap = "An equal interval choropleth map using 10 bins.", fig.align='center'}
 clint <- classIntervals(ma$house_inc, style = "equal", n = 10)$brks
 
 p1 <- ggplot(ma, aes(fill=house_inc)) + geom_sf() + theme_void() +
@@ -47,7 +47,7 @@ p1 <- ggplot(ma, aes(fill=house_inc)) + geom_sf() + theme_void() +
                     guide = guide_coloursteps(even.steps = FALSE,
                                               show.limits = TRUE,
                                               title = NULL,
-                                              barheight = unit(2.0, "in"),
+                                              barheight = unit(2.2, "in"),
                                               barwidth = unit(0.15, "in"),
                                               label.position = "left")) 
 
@@ -68,7 +68,7 @@ An equal interval map benefits from having each color swatch covering an equal r
 
 While an equal interval map benefits from its intuitiveness, it may not be well suited for data that are not uniformly distributed across their range (note the disproportionate distribution of observations in each color a bin in the above figure). Quantiles define ranges of values that have equal number of observations. For example, the following plot groups the data into six quantiles with each quantile representing the same number of observations (Exceptions exist when multiple observations share the same exact value).
 
-```{r quantile, fig.width = 6.5, fig.height=2.5, echo=FALSE, fig.cap = "Example of a quantile map."}
+```{r quantile, fig.width = 6.5, fig.height=2.5, echo=FALSE, fig.cap = "Example of a quantile map.", fig.align='center'}
 clint <- classIntervals(ma$house_inc, style = "quantile", n = 6)$brks
 
 p1 <- ggplot(ma, aes(fill=house_inc)) + geom_sf() + theme_void() +
@@ -99,7 +99,7 @@ You'll note the differing color swatch *lengths* in the color bar reflecting the
 
 The discretization of continuous values can also include measures of centrality (e.g. the mean and the median) and  measures of spread (e.g. standard deviation units) with the goal of understanding the nature of the distribution such as its shape (e.g. symmetrical, skewed, etc...) and range. The boxplot is an example of statistical plot that offers both. This plot reduces the data to a five summary statistics including the median, the upper and lower quartiles (within which 50% of the data lie--also known as the interquartile range,IQR), and upper and lower "whiskers" that encompass 1.5 times the interquartile range. The boxplot may also display "outliers"--data points that may be deemed unusual or not characteristic of the bulk of the data.
 
-```{r boxmap, fig.width = 6.5, fig.height = 2.56, echo = FALSE, fig.cap = "Example of a boxplot map."}
+```{r boxmap, fig.width = 6.5, fig.height = 2.56, echo = FALSE, fig.cap = "Example of a boxplot map.", fig.align='center'}
 clint <- classIntervals(ma$house_inc, style = "box")$brks
 
 p1 <- ggplot(ma, aes(fill=house_inc)) + geom_sf() + theme_void() +
@@ -131,7 +131,7 @@ Here, we make use of a divergent color scheme to take advantage of the implied m
 
 The IQR map is a reduction of the boxplot map whereby we reduce the classes to just three: the interquartile range (IQR) and the upper and lower extremes. The map's purpose is to highlight the polygons covering the mid 50% range of values. This mid range usually benefits from a darker hue to help distinguish it from the upper and lower sets of values.
 
-```{r iqrmap, fig.width = 6.5, fig.height = 2.56, echo = FALSE, fig.cap = "Example of an IQR map."}
+```{r iqrmap, fig.width = 6.5, fig.height = 2.56, echo = FALSE, fig.cap = "Example of an IQR map.", fig.align='center'}
 clint <- classIntervals(ma$house_inc, style = "box")$brks
 clint <- clint[c(1,3,5,7)]
 
@@ -163,7 +163,7 @@ The IQR map differs from the preceding maps shown in this chapter in that upper 
 
 If the data distribution can be approximated by a *Normal* distribution (a theoretical distribution defined by a mathematical function), the classification scheme can be broken up into different standard deviation units.
 
-```{r sdmap, fig.width = 6.5, fig.height = 2.56, echo = FALSE, fig.cap = "Example of a standard deviation map."}
+```{r sdmap, fig.width = 6.5, fig.height = 2.56, echo = FALSE, fig.cap = "Example of a standard deviation map.", fig.align='center'}
 inc_sd <- sd(ma$house_inc)
 inc_mean <- mean(ma$house_inc)
 clint <- c(inc_mean - 3 * inc_sd,  inc_mean - 2 * inc_sd, inc_mean - inc_sd, inc_mean, 
@@ -210,7 +210,7 @@ So far, emphasis has been placed on the distribution of values which attempts to
 
 We can tweak the boxplot map from the last section by assigning darker hues to observations outside the whiskers (outliers) and a single light colored hue to all other values. By minimizing the range of color swatches, we place emphasis on the outliers.
 
-```{r outlier1, fig.width = 6.5, fig.height = 2.56, echo = FALSE, fig.cap = "Example of a boxplot outlier choropleth map."}
+```{r outlier1, fig.width = 6.5, fig.height = 2.56, echo = FALSE, fig.cap = "Example of a boxplot outlier choropleth map.", fig.align='center'}
 clint <- classIntervals(ma$house_inc, style = "box")$brks
 
 p1 <- ggplot(ma, aes(fill=house_inc)) + geom_sf(colour = "grey70") + theme_void() +
@@ -241,7 +241,7 @@ You'll note the asymmetrical distribution of outliers with a bit more than a doz
 
 In this next example, we use the +/- 2 standard deviation bounds from the *Normal* distribution to identify outliers in the income data. Hence, if the data were to follow a perfectly Normal distribution, this would translate to roughly the top 2.5% and bottom 2.5% of the distribution.
 
-```{r outlier2, fig.width = 6.5, fig.height = 2.56, echo = FALSE, fig.cap = "Example of a standard deviation outlier choropleth map."}
+```{r outlier2, fig.width = 6.5, fig.height = 2.56, echo = FALSE, fig.cap = "Example of a standard deviation outlier choropleth map.", fig.align='center'}
 inc_sd <- sd(ma$house_inc)
 inc_mean <- mean(ma$house_inc)
 clint <- c(inc_mean - 3 * inc_sd, inc_mean - 2 * inc_sd, inc_mean + 2 * inc_sd, inc_mean + 3 * inc_sd)
@@ -279,7 +279,7 @@ grid.arrange(p1,p2, layout_matrix=rbind(c(1,1,1,2)))
 
 In this last example, we'll characterize the top and bottom 2.5% of values as outliers by splitting the data into 40 quantiles then maping the top and bottom quantiles to capture the 2.5% fo values.
 
-```{r outlier3, fig.width = 7.3, fig.height = 2.56, echo = FALSE, fig.cap = "Example of a quantile outlier choropleth map where the top and bottom 2.5% regions are characterized as outliers."}
+```{r outlier3, fig.width = 7.3, fig.height = 2.56, echo = FALSE, fig.cap = "Example of a quantile outlier choropleth map where the top and bottom 2.5% regions are characterized as outliers.", fig.align='center'}
 clint <- classIntervals(ma$house_inc, style = "quantile", n = 40)$brks
 clint <- clint[c(1,2,40,41)]
 p1 <- ggplot(ma, aes(fill=house_inc)) + geom_sf() + theme_void() +
@@ -319,7 +319,7 @@ Many census datasets such as the U.S. Census Bureau's American Community Survey 
 
 One approach to mapping both estimates *and* SE's is to display both as side-by-side maps.
 
-```{r f07-map1, message=FALSE,warning=FALSE,echo=FALSE,fig.width = 7, fig.height = 3, fig.fullwidth = TRUE, fig.cap = "Maps of income estimates (left) and associated standard errors (right)."}
+```{r f07-map1, message=FALSE,warning=FALSE,echo=FALSE,fig.width = 7, fig.height = 3, fig.fullwidth = TRUE, fig.cap = "Maps of income estimates (left) and associated standard errors (right).", fig.align='center'}
 library(RColorBrewer)
 brks1 <- quantile(s1$Income, seq(0,1,0.2))
 brks1[length(brks1)] <- brks1[length(brks1)] + 1
@@ -336,14 +336,14 @@ While there is nothing inherently wrong in doing this, it can prove to be diffic
 
 Another approach is to overlay the measure of uncertainty (SE or MoE) as a textured layer on top of the income layer.
 
-```{r f07-map2, echo=FALSE, fig.cap = "Map of estimated income (in shades of green) superimposed with different hash marks representing the ranges of income SE.", out.width=400}
+```{r f07-map2, echo=FALSE, fig.cap = "Map of estimated income (in shades of green) superimposed with different hash marks representing the ranges of income SE.", out.width=400, fig.align='center'}
 
 knitr::include_graphics("img/Income_and_uncertainty.jpg")
 ```
 
 Or, one could map both the upper and lower ends of the MoE range side by side.
 
-```{r f07-map-MoE, message=FALSE,warning=FALSE,echo=FALSE,fig.width = 7, fig.height = 3, fig.fullwidth = TRUE, fig.cap = "Maps of top end of 90 percent income estimate (left) and bottom end of 90 percent income estimate (right)."}
+```{r f07-map-MoE, message=FALSE,warning=FALSE,echo=FALSE,fig.width = 7, fig.height = 3, fig.fullwidth = TRUE, fig.cap = "Maps of top end of 90 percent income estimate (left) and bottom end of 90 percent income estimate (right).", fig.align='center'}
 library(RColorBrewer)
 s1$IncMax <- s1$Income + 1.645 * s1$IncomeSE
 s1$IncMin <- s1$Income - 1.645 * s1$IncomeSE
@@ -362,7 +362,7 @@ print(P2, split=c(2, 1, 2, 1), more=FALSE)
 Attempting to convey uncertainty using the aforementioned maps fails to highlight the reason one chooses to map values in the first place: that is to compare values across a spatial domain. More specifically, we are interested in identifying spatial patterns of high or low values. What is implied in the above maps is that the estimates will always maintain their order across the polygons. In other words, if one polygon's estimate is greater than all neighboring estimates, this order will always hold true if another sample was surveyed. But this assumption is incorrect. Each polygon (or county in the above example) can derive different estimates independently from its neighboring polygon. 
 Let's look at a bar plot of our estimates.
 
-```{r f07-MoE-plot1, message=FALSE,warning=FALSE,echo=FALSE,fig.width = 5, fig.height = 3.0, fig.fullwidth = FALSE, fig.cap = "Income estimates by county with 90 percent confidence interval. Note that many counties have overlapping estimate ranges."}
+```{r f07-MoE-plot1, message=FALSE,warning=FALSE,echo=FALSE,fig.width = 5, fig.height = 3.0, fig.fullwidth = FALSE, fig.cap = "Income estimates by county with 90 percent confidence interval. Note that many counties have overlapping estimate ranges.", fig.align='center'}
 library(gplots)
 # Sort data by INCOME
 Y   = s1$Income[order(s1$Income)]  # per capita income
@@ -382,7 +382,7 @@ par(OP)
 Note, for example, how Piscataquis county's income estimate (grey point in the graphic) is lower than that of Oxford county. If another sample of the population was surveyed in each county, the new estimates could place Piscataquis *above* Oxford county in income rankings as shown in the following example:
 
 
-```{r f07-sim-values, message=FALSE,warning=FALSE,echo=FALSE,fig.width = 5, fig.height = 3.0, fig.fullwidth = FALSE, fig.cap = "Example of income estimates one could expect to sample based on the 90 percent confidence interval shown in the previous plot."}
+```{r f07-sim-values, message=FALSE,warning=FALSE,echo=FALSE,fig.width = 5, fig.height = 3.0, fig.fullwidth = FALSE, fig.cap = "Example of income estimates one could expect to sample based on the 90 percent confidence interval shown in the previous plot.", fig.align='center'}
 
 # ===================================================================
 # =====   Custom Normal distribution ================================
@@ -421,7 +421,7 @@ Note how, in this sample, Oxford's income drops in ranking below that of Piscata
 
 How does the *estimated income* map compare with the *simulated income* map?
 
-```{r f07-sim-map, message=FALSE,warning=FALSE,echo=FALSE,fig.width = 9, fig.height = 5.0, fig.fullwidth = TRUE, fig.cap = "Original income estimate (left) and realization of a simulated sample (right)."}
+```{r f07-sim-map, message=FALSE,warning=FALSE,echo=FALSE,fig.width = 5, fig.height = 3.0, fig.fullwidth = TRUE, fig.cap = "Original income estimate (left) and realization of a simulated sample (right).", fig.align='center'}
 library(RColorBrewer)
 s1$R1 <- Yrnd
 brks <- quantile(c(s1$Income, s1$R1), seq(0,1,0.2))
@@ -435,7 +435,7 @@ print(P2, split=c(2, 1, 2, 1), more=FALSE)
 
 A few more simulated samples (using the 90% confidence interval) are shown below:
 
-```{r f07-5sim-maps, message=FALSE,warning=FALSE,echo=FALSE,fig.width = 10, fig.height = 3.1, fig.fullwidth = TRUE, fig.cap = "Original income estimate (left) and realizations from simulated samples (R2 through R5)."}
+```{r f07-5sim-maps, message=FALSE,warning=FALSE,echo=FALSE,fig.width = 10, fig.height = 3.1, fig.fullwidth = TRUE, fig.cap = "Original income estimate (left) and realizations from simulated samples (R2 through R5).", fig.align='center'}
 
 set.seed(421); s1$R2 <- rnorml(Y, YSE, 1.645)
 set.seed(1231); s1$R3 <- rnorml(Y, YSE, 1.645)
@@ -448,13 +448,13 @@ spplot(s1, c("R1","R2","R3","R4","R5"),at=brks, col.regions=brewer.pal(7,"Greens
 
 ### Class comparison maps 
 
-```{r echo=FALSE}
+```{r echo=FALSE, fig.align='center'}
 brks <- c(0,20600, 22800,25000,27000,34000)
 ```
 
 There is no single solution to effectively convey both estimates *and* associated uncertainty in a map. Sun and Wong [@DataQuality2010] offer several suggestions dependent on the context of the problem. One approach adopts a class comparison method whereby a map displays both the estimate and a measure of whether the MoE surrounding that estimate extends beyond the assigned class. For example, if we adopt the classification breaks [`r sprintf("%i ",brks)`], we will find that many of the estimates' MoE extend beyond the classification breaks assigned to them.
 
-```{r compInt, message=FALSE, warning=FALSE, echo=FALSE, fig.width = 5, fig.height = 3.0, fig.fullwidth = FALSE, fig.cap = "Income estimates by county with 90 percent confidence interval. Note that many of the counties' MoE have ranges that cross into an adjacent class."}
+```{r compInt, message=FALSE, warning=FALSE, echo=FALSE, fig.width = 5, fig.height = 3.0, fig.fullwidth = FALSE, fig.cap = "Income estimates by county with 90 percent confidence interval. Note that many of the counties' MoE have ranges that cross into an adjacent class.", fig.align='center'}
 
 # Plot the estimate along with the MoE
 OP <- par(mar=c(3,6,0,1))
@@ -471,7 +471,7 @@ Take Piscataquis county, for example. Its estimate is assigned the second classi
 
 This information can be mapped as a hatch mark overlay. For example, income could be plotted using varying shades of green with hatch symbols indicating if the lower interval crosses into a lower class (135&deg; hatch), if the upper interval crosses into an upper class (45&deg; hatch), if both interval ends cross into a different class (90&deg;-vertical-hatch) or if both interval ends remain inside the estimate's class (no hatch).
 
-```{r ComPlot, message=FALSE, warning=FALSE, echo=FALSE, fig.height = 3.5, fig.margin = TRUE, fig.cap = "Plot of income with class comparison hatches."}
+```{r ComPlot, message=FALSE, warning=FALSE, echo=FALSE, fig.height = 3.5, fig.margin = TRUE, fig.cap = "Plot of income with class comparison hatches.", fig.align='center'}
 
 IncInt <- findInterval(s1$Income, brks)
 LowInt <- findInterval(s1$Income - 1.645 * s1$IncomeSE, brks )
@@ -523,7 +523,7 @@ SDplot = function(X,Y,x.lab,y.lab) {
 ```
 
 
-```{r f07-regression1, fig.height=2.5, echo=FALSE, fig.cap="Regression between percent not having completed any school grade and median per capita income for each county."}
+```{r f07-regression1, fig.height=2.5, echo=FALSE, fig.cap="Regression between percent not having completed any school grade and median per capita income for each county.", fig.align='center'}
 OP <- par(mar=c(2,2,1,1))
 SDplot(s1$Income,s1$NoSchool * 100,x.lab="Income",y.lab="% No school")
 abline( M1, col="red" )
@@ -541,7 +541,7 @@ SM <- summary(M)
 AM <- anova(M)
 ```
 
-```{r f07-regression2, fig.height=2.5, echo=FALSE, fig.cap="Example of what a regression line could look like had another sample been surveyed for each county."}
+```{r f07-regression2, fig.height=2.5, echo=FALSE, fig.cap="Example of what a regression line could look like had another sample been surveyed for each county.", fig.align='center'}
 OP <- par(mar=c(2,2,1,1))
 #plot(S$S1 ~ S$R1, pch=20, xlab="Income", ylab="% not schooled")
 SDplot(s1$R1,s1$S1 * 100,x.lab="Income",y.lab="% No school")
@@ -552,7 +552,7 @@ par(OP)
 
 With this new (simulated) sample, the $R^2$ value dropped to `r round(SM$r.squared,2)` and the p-value is now `r round(AM$Pr[1],3)`--a much less significant relationship then computed with the original estimate! In fact, if we were to survey  1000 different samples within each county we would get the following range of regression lines:
 
-```{r f07-regression-envelope, fig.height=2.5, echo=FALSE, fig.cap = "A range of regression lines computed from different samples from each county."}
+```{r f07-regression-envelope, fig.height=2.5, echo=FALSE, fig.cap = "A range of regression lines computed from different samples from each county.", fig.align='center'}
 OP <- par(mar=c(2,2,1,1))
 SDplot(s1$Income,s1$NoSchool * 100,x.lab="Income",y.lab="% No school")
 
