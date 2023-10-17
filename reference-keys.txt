@@ -11,7 +11,9 @@ fig:unnamed-chunk-6
 fig:unnamed-chunk-7
 fig:unnamed-chunk-8
 fig:f02-gdb
+fig:pixeldepth
 fig:f02-catalog
+fig:excla1
 fig:f04-hue
 fig:f04-lightness
 fig:f04-saturation
@@ -25,6 +27,7 @@ fig:f04-sequential
 fig:f04-sequential-map
 fig:f04-divergent
 fig:f04-divergent-map
+fig:diff-class
 fig:f04-three-breaks
 fig:continuous
 fig:equalint
@@ -71,6 +74,7 @@ fig:f06-typeset
 fig:f08-sel1
 fig:f08-sel2
 fig:f08-sel1-result
+fig:sel3
 fig:f08-loc1
 fig:f08-loc1-map
 fig:f08-clip
