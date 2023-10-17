@@ -42,7 +42,7 @@ This is a relatively new data format that follows [open format standards](https:
 
 Rasters are in part defined by their pixel depth. Pixel depth defines the range of distinct values the raster can store. For example, a 1-bit raster can only store 2 distinct values: 0 and 1.
 
-```{r echo=FALSE, fig.cap = "Examples of different pixel depths.",  fig.height=3, fig.width=3, fig.align='center'}
+```{r pixeldepth, echo=FALSE, fig.cap = "Examples of different pixel depths.",  fig.height=3, fig.width=3, fig.align='center'}
 
 ## Function
 pal <- function(col, border = "light gray", txt =TRUE,...)
@@ -133,6 +133,6 @@ Your choice of full vs relative pathnames matters if you find yourself having to
 > NOTE: Exclamation marks in your map document indicate that the GIS files are missing or that the directory structure has changed.
 
 
-```{r echo=FALSE, out.width=100, fig.align='center', fig.cap = "In ArcGIS, an exclamation mark next to a layer indicates that the GIS file the layer is pointing to cannot be found."}
+```{r excla1, echo=FALSE, out.width=100, fig.align='center', fig.cap = "In ArcGIS, an exclamation mark next to a layer indicates that the GIS file the layer is pointing to cannot be found."}
 knitr::include_graphics("img/Exclamation_marks.jpg")
 ```

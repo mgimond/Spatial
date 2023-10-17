@@ -63,5 +63,5 @@ Serif fonts are generally used to label natural features such as mountain ridges
 Varying the typeset size across the map should be avoided unless a visual hierarchy of labels is desired. You also may want to stick with a single font color across the map unless the differences in categories need to be emphasized. In the following example, a snapshot of a map before (left) and after (right) highlight how manipulating typeset colors and styles (i.e. italic, bold) can have a desirable effect **if done properly**.
 
 ```{r f06-typeset, echo=FALSE, fig.cap = "The lack of typeset differences makes the map on the left difficult to differentiate county names from lake/river names. The judicious use of font colors and style on the right facilitate the separation of features.", out.width=600, fig.align='center'}
-knitr::include_graphics("img/labels.svg")
+knitr::include_graphics("img/labels.png")
 ```

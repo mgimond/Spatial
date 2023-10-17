@@ -73,9 +73,12 @@ You can combine conditions from set algebra operations using the following Boole
 Following up with the last example, let's now select cities having a population greater than 50000 and that are in the US (and not Canada or Mexico). Assuming that the country field is labeled `FIPS_CNTRY` we could setup the expression as `"POP" > 50000 AND "FIPS_CNTRY" = US`. Note that a value need not be numeric. In this example we are asking that an attribute value equal a specific string value (i.e. that it equal the string `'US'`).
 
 
-```{r f08-sel3, echo=FALSE, fig.cap = "Selected cities meeting `POP > 50000` AND `FIPS_CNTRY == US` criteria are shown in cyan color."}
+```{r sel3, echo=FALSE, fig.cap = "Selected cities meeting  where POP &gt; 50000  AND  FIPS_CNTRY == US criteria are shown in cyan color."}
+
 knitr::include_graphics("img/Select_cities_2.svg")
+
 ```
+
 
 ## Selection by location
 

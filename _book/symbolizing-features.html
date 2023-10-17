@@ -710,10 +710,10 @@ Figure 4.13: This map of household income uses a divergent color scheme where tw
 <h2><span class="header-section-number">4.5</span> Classification Intervals<a href="symbolizing-features.html#classification-intervals" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>You may have noticed the use of different classification breaks in the last two maps. For the sequential color scheme map, an <em>equal interval</em> classification scheme was used where the full range of values in the map are split equally into 7 intervals so that each color swatch covers an equal range of values. The divergent color scheme map adopts a <em>quantile interval</em> classification where each color swatch is represented an equal number of times across each polygon.</p>
 <p>Using different classification intervals will result in different looking maps. In the following figure, three maps of household income (aggregated at the census tract level) are presented using different classification intervals: <strong>quantile</strong>, <strong>equal</strong> and <strong>Jenks</strong>. Note the different range of values covered by each color swatch.</p>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-2"></span>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:diff-class"></span>
 <img src="img/Three_breaks_compared_2.png" alt="Three different representations of the same spatial data using different classification intervals." width="720" />
 <p class="caption">
-Figure 2.3: Three different representations of the same spatial data using different classification intervals.
+Figure 4.14: Three different representations of the same spatial data using different classification intervals.
 </p>
 </div>
 <p>The <strong>quantile interval</strong> scheme ensures that each color swatch is represented an equal number of times. If we have 20 polygons and 5 classes, the interval breaks will be such that each color is assigned to 4 different polygons.</p>
@@ -723,7 +723,7 @@ Figure 2.3: Three different representations of the same spatial data using diffe
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:f04-three-breaks"></span>
 <img src="img/Three_hist_intervals.png" alt="Three different classification intervals used in the three maps. Note how each interval scheme encompasses different ranges of values (hence the reason all three maps look so different)." width="560" />
 <p class="caption">
-Figure 4.14: Three different classification intervals used in the three maps. Note how each interval scheme encompasses different ranges of values (hence the reason all three maps look so different).
+Figure 4.15: Three different classification intervals used in the three maps. Note how each interval scheme encompasses different ranges of values (hence the reason all three maps look so different).
 </p>
 </div>
 <div id="an-interactive-example" class="section level3 hasAnchor" number="4.5.1">

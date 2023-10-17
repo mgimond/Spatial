@@ -328,7 +328,7 @@ You may have noticed the use of different classification breaks in the last two 
 Using different classification intervals will result in different looking maps. In the following figure, three maps of household income (aggregated at the census tract level) are presented using different classification intervals: **quantile**, **equal** and **Jenks**. Note the different range of values covered by each color swatch.
 
 
-```{r echo=FALSE,  dpi=60, fig.align='center', fig.cap="Three different representations of the same spatial data using different classification intervals."}
+```{r diff-class, echo=FALSE,  dpi=60, fig.align='center', fig.cap="Three different representations of the same spatial data using different classification intervals."}
 
 knitr::include_graphics("img/Three_breaks_compared_2.png")
 ```
