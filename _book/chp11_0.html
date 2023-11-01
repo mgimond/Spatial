@@ -344,13 +344,18 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="13" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html"><i class="fa fa-check"></i><b>13</b> Spatial Autocorrelation</a>
 <ul>
-<li class="chapter" data-level="13.1" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#global-morans-i"><i class="fa fa-check"></i><b>13.1</b> Global Moran’s I</a>
+<li class="chapter" data-level="13.1" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#global-morans-i"><i class="fa fa-check"></i><b>13.1</b> Global Moran’s <em>I</em></a>
 <ul>
-<li class="chapter" data-level="13.1.1" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#computing-the-morans-i"><i class="fa fa-check"></i><b>13.1.1</b> Computing the Moran’s I</a></li>
+<li class="chapter" data-level="13.1.1" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#computing-the-morans-i"><i class="fa fa-check"></i><b>13.1.1</b> Computing the Moran’s <em>I</em></a></li>
 <li class="chapter" data-level="13.1.2" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#monte-carlo-approach-to-estimating-significance"><i class="fa fa-check"></i><b>13.1.2</b> Monte Carlo approach to estimating significance</a></li>
 </ul></li>
-<li class="chapter" data-level="13.2" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#morans-i-at-different-lags"><i class="fa fa-check"></i><b>13.2</b> Moran’s I at different lags</a></li>
-<li class="chapter" data-level="13.3" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#local-morans-i"><i class="fa fa-check"></i><b>13.3</b> Local Moran’s I</a></li>
+<li class="chapter" data-level="13.2" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#morans-i-at-different-lags"><i class="fa fa-check"></i><b>13.2</b> Moran’s <em>I</em> at different lags</a></li>
+<li class="chapter" data-level="13.3" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#local-morans-i"><i class="fa fa-check"></i><b>13.3</b> Local Moran’s <em>I</em></a></li>
+<li class="chapter" data-level="13.4" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#morans-i-equation-explained"><i class="fa fa-check"></i><b>13.4</b> Moran’s <em>I</em> equation explained</a>
+<ul>
+<li class="chapter" data-level="13.4.1" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#local-morans-i-1"><i class="fa fa-check"></i><b>13.4.1</b> Local Moran’s I</a></li>
+<li class="chapter" data-level="13.4.2" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#global-morans-i-1"><i class="fa fa-check"></i><b>13.4.2</b> Global Moran’s I</a></li>
+</ul></li>
 </ul></li>
 <li class="chapter" data-level="14" data-path="spatial-interpolation.html"><a href="spatial-interpolation.html"><i class="fa fa-check"></i><b>14</b> Spatial Interpolation</a>
 <ul>
@@ -662,9 +667,9 @@ Figure 11.6: Same analysis as last figure using different sub-regions. Note the 
 <p>The kernel density approach is an extension of the quadrat method: Like the quadrat density, the kernel approach computes a localized density for subsets of the study area, but unlike its quadrat density counterpart, the sub-regions overlap one another providing a <em>moving</em> sub-region window. This moving window is defined by a <strong>kernel</strong>. The kernel density approach generates a grid of density values whose cell size is smaller than that of the kernel window. Each cell is assigned the density value computed for the kernel window <em>centered</em> on that cell.</p>
 <p>A kernel not only defines the shape and size of the window, but it can also <em>weight</em> the points following a well defined kernel function. The simplest function is a <strong>basic kernel</strong> where each point in the kernel window is assigned equal weight.</p>
 <div class="figure"><span style="display:block;" id="fig:f11-kernel01"></span>
-<img src="11-Point-Patterns_files/figure-html/f11-kernel01-1.png" alt="An example of a basic 3x3 kernel density map (ArcGIS calls this a point density map) where each point is assigned an equal weight. For example, the second cell from the top and left (i.e. centered at location x=1.5 and y =8.5) has one point within a 3x3 unit (pixel) region and thus has a local density of 1/9 = 0.11." width="672" />
+<img src="11-Point-Patterns_files/figure-html/f11-kernel01-1.png" alt="An example of a basic 3x3 kernel density map (ArcGIS calls this a point density map) where each point is assigned an equal weight. For example, the cell centered at location x=1.5 and y =7.5 has one point within a 3x3 unit (pixel) region and thus has a local density of 1/9 = 0.11." width="672" />
 <p class="caption">
-Figure 11.7: An example of a basic 3x3 kernel density map (ArcGIS calls this a point density map) where each point is assigned an equal weight. For example, the second cell from the top and left (i.e. centered at location x=1.5 and y =8.5) has one point within a 3x3 unit (pixel) region and thus has a local density of 1/9 = 0.11.
+Figure 11.7: An example of a basic 3x3 kernel density map (ArcGIS calls this a point density map) where each point is assigned an equal weight. For example, the cell centered at location x=1.5 and y =7.5 has one point within a 3x3 unit (pixel) region and thus has a local density of 1/9 = 0.11.
 </p>
 </div>
 <p>Some of the most popular <strong>kernel functions</strong> assign weights to points that are inversely proportional to their distances to the kernel window center. A few such kernel functions follow a <em>gaussian</em> or <em>quartic</em> like distribution function. These functions tend to produce a smoother density map.</p>
@@ -787,7 +792,7 @@ Figure 11.15: Three different ANN vs. neighbor order plots. The black ANN line 
 Figure 11.16: The same point pattern presented with two different study areas. How differently would you describe the point pattern in both cases?
 </p>
 </div>
-<p>An important assumption that underlies our interpretation of the ANN results is that of stationarity of the underlying point process (i.e. that there is no overall drift or trend in the process’ intensity). If the point pattern is not stationary, then it will be difficult to assess if the results from the ANN analysis are due to interactions between the points or due to changes in some underlying factor that changes as a function of location.</p>
+<p>An important assumption that underlies our interpretation of the ANN results is that of stationarity of the underlying point process (i.e. that there is no overall drift or trend in the process’ intensity). If the point pattern is not stationary, then it will be difficult to assess if the results from the ANN analysis are due to interactions between the points or due to changes in some underlying factor that changes as a function of location. Correcting for lack of stationarity when performing hypothesis tests is described in the next chapter.</p>
 </div>
 <div id="k-and-l-functions" class="section level3 hasAnchor" number="11.3.2">
 <h3><span class="header-section-number">11.3.2</span> K and L functions<a href="chp11_0.html#k-and-l-functions" class="anchor-section" aria-label="Anchor link to header"></a></h3>

@@ -138,7 +138,7 @@ where we are simply multiplying the one-sided p-value by two.
 knitr::include_graphics("img/Pop_dens.png")
 ```
 
-The assumption of CSR is a good starting point, but it's often unrealistic. Most real-world processes exhibit 1^st^ and/or 2^nd^ order effects. We can simulate the placement of Walmart stores using the population density layer as our inhomogeneous point process. We can test this hypothesis by generating random points that follow the population density distribution.
+The assumption of CSR is a good starting point, but it's often unrealistic. Most real-world processes exhibit 1^st^ and/or 2^nd^ order effects. We therefore may need to correct for a non-stationary underlying process. We can simulate the placement of Walmart stores using the population density layer as our inhomogeneous point process. We can test this hypothesis by generating random points that follow the population density distribution.
 
 ```{r f12-walmart-pop-sim, echo=FALSE, fig.cap = "Examples of two randomly generated point patterns using population density as the underlying process."}
 

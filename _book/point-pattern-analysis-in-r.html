@@ -344,13 +344,18 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="13" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html"><i class="fa fa-check"></i><b>13</b> Spatial Autocorrelation</a>
 <ul>
-<li class="chapter" data-level="13.1" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#global-morans-i"><i class="fa fa-check"></i><b>13.1</b> Global Moran’s I</a>
+<li class="chapter" data-level="13.1" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#global-morans-i"><i class="fa fa-check"></i><b>13.1</b> Global Moran’s <em>I</em></a>
 <ul>
-<li class="chapter" data-level="13.1.1" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#computing-the-morans-i"><i class="fa fa-check"></i><b>13.1.1</b> Computing the Moran’s I</a></li>
+<li class="chapter" data-level="13.1.1" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#computing-the-morans-i"><i class="fa fa-check"></i><b>13.1.1</b> Computing the Moran’s <em>I</em></a></li>
 <li class="chapter" data-level="13.1.2" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#monte-carlo-approach-to-estimating-significance"><i class="fa fa-check"></i><b>13.1.2</b> Monte Carlo approach to estimating significance</a></li>
 </ul></li>
-<li class="chapter" data-level="13.2" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#morans-i-at-different-lags"><i class="fa fa-check"></i><b>13.2</b> Moran’s I at different lags</a></li>
-<li class="chapter" data-level="13.3" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#local-morans-i"><i class="fa fa-check"></i><b>13.3</b> Local Moran’s I</a></li>
+<li class="chapter" data-level="13.2" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#morans-i-at-different-lags"><i class="fa fa-check"></i><b>13.2</b> Moran’s <em>I</em> at different lags</a></li>
+<li class="chapter" data-level="13.3" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#local-morans-i"><i class="fa fa-check"></i><b>13.3</b> Local Moran’s <em>I</em></a></li>
+<li class="chapter" data-level="13.4" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#morans-i-equation-explained"><i class="fa fa-check"></i><b>13.4</b> Moran’s <em>I</em> equation explained</a>
+<ul>
+<li class="chapter" data-level="13.4.1" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#local-morans-i-1"><i class="fa fa-check"></i><b>13.4.1</b> Local Moran’s I</a></li>
+<li class="chapter" data-level="13.4.2" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#global-morans-i-1"><i class="fa fa-check"></i><b>13.4.2</b> Global Moran’s I</a></li>
+</ul></li>
 </ul></li>
 <li class="chapter" data-level="14" data-path="spatial-interpolation.html"><a href="spatial-interpolation.html"><i class="fa fa-check"></i><b>14</b> Spatial Interpolation</a>
 <ul>
@@ -617,7 +622,7 @@ spatstat
               padding-bottom: 1px;
               padding-left: 4px;
               padding-right: 4px;">
-3.0.6
+3.0.7
 </td>
 </tr>
 </tbody>
@@ -796,8 +801,8 @@ spatstat
  1st Qu.:1.207e-03   1st Qu.:0.000282  
  Median :3.377e-03   Median :0.001541  
  Mean   :8.473e-03   Mean   :0.007821  
- 3rd Qu.:1.078e-02   3rd Qu.:0.005904  
- Max.   :5.693e-02   Max.   :5.104472  </code></pre>
+ 3rd Qu.:1.078e-02   3rd Qu.:0.005903  
+ Max.   :5.693e-02   Max.   :5.102621  </code></pre>
 <p>The predicted maximum intensity value is two orders of magnitude greater than that observed.</p>
 <p>The overestimation of intenstity values can also be observed at lower values. The following plot limits the data to observed intensities less than 0.04. A red one-to-one line is added for reference. If intensities were similar, they would aggregate around this line.</p>
 <div class="sourceCode" id="cb365"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb365-1"><a href="point-pattern-analysis-in-r.html#cb365-1" tabindex="-1"></a><span class="fu">plot</span>(K1_vs_pred<span class="sc">$</span>pred <span class="sc">~</span> K1_vs_pred<span class="sc">$</span>K1, <span class="at">pch=</span><span class="dv">20</span>,</span>

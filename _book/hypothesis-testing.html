@@ -344,13 +344,18 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="13" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html"><i class="fa fa-check"></i><b>13</b> Spatial Autocorrelation</a>
 <ul>
-<li class="chapter" data-level="13.1" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#global-morans-i"><i class="fa fa-check"></i><b>13.1</b> Global Moran’s I</a>
+<li class="chapter" data-level="13.1" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#global-morans-i"><i class="fa fa-check"></i><b>13.1</b> Global Moran’s <em>I</em></a>
 <ul>
-<li class="chapter" data-level="13.1.1" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#computing-the-morans-i"><i class="fa fa-check"></i><b>13.1.1</b> Computing the Moran’s I</a></li>
+<li class="chapter" data-level="13.1.1" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#computing-the-morans-i"><i class="fa fa-check"></i><b>13.1.1</b> Computing the Moran’s <em>I</em></a></li>
 <li class="chapter" data-level="13.1.2" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#monte-carlo-approach-to-estimating-significance"><i class="fa fa-check"></i><b>13.1.2</b> Monte Carlo approach to estimating significance</a></li>
 </ul></li>
-<li class="chapter" data-level="13.2" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#morans-i-at-different-lags"><i class="fa fa-check"></i><b>13.2</b> Moran’s I at different lags</a></li>
-<li class="chapter" data-level="13.3" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#local-morans-i"><i class="fa fa-check"></i><b>13.3</b> Local Moran’s I</a></li>
+<li class="chapter" data-level="13.2" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#morans-i-at-different-lags"><i class="fa fa-check"></i><b>13.2</b> Moran’s <em>I</em> at different lags</a></li>
+<li class="chapter" data-level="13.3" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#local-morans-i"><i class="fa fa-check"></i><b>13.3</b> Local Moran’s <em>I</em></a></li>
+<li class="chapter" data-level="13.4" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#morans-i-equation-explained"><i class="fa fa-check"></i><b>13.4</b> Moran’s <em>I</em> equation explained</a>
+<ul>
+<li class="chapter" data-level="13.4.1" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#local-morans-i-1"><i class="fa fa-check"></i><b>13.4.1</b> Local Moran’s I</a></li>
+<li class="chapter" data-level="13.4.2" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#global-morans-i-1"><i class="fa fa-check"></i><b>13.4.2</b> Global Moran’s I</a></li>
+</ul></li>
 </ul></li>
 <li class="chapter" data-level="14" data-path="spatial-interpolation.html"><a href="spatial-interpolation.html"><i class="fa fa-check"></i><b>14</b> Spatial Interpolation</a>
 <ul>
@@ -697,7 +702,7 @@ Figure 12.7: Histogram of simulated ANN values (from 1000 simulations). This is 
 Figure 12.8: Walmart store distribution shown on top of a population density layer. Could population density distribution explain the distribution of Walmart stores?
 </p>
 </div>
-<p>The assumption of CSR is a good starting point, but it’s often unrealistic. Most real-world processes exhibit 1<sup>st</sup> and/or 2<sup>nd</sup> order effects. We can simulate the placement of Walmart stores using the population density layer as our inhomogeneous point process. We can test this hypothesis by generating random points that follow the population density distribution.</p>
+<p>The assumption of CSR is a good starting point, but it’s often unrealistic. Most real-world processes exhibit 1<sup>st</sup> and/or 2<sup>nd</sup> order effects. We therefore may need to correct for a non-stationary underlying process. We can simulate the placement of Walmart stores using the population density layer as our inhomogeneous point process. We can test this hypothesis by generating random points that follow the population density distribution.</p>
 <div class="figure"><span style="display:block;" id="fig:f12-walmart-pop-sim"></span>
 <img src="img/Non_hom_2.png" alt="Examples of two randomly generated point patterns using population density as the underlying process." width="267" />
 <p class="caption">

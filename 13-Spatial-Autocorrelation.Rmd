@@ -4,87 +4,583 @@
 *"The first law of geography: Everything is related to everything else, but near things are more related than distant things."* Waldo R. Tobler [@Tobler1970] 
 ```
 
-Mapped events or entities can have non-spatial information attached to them (some GIS software tag these as attributes).  A question often asked is whether or not features with similar values are clustered, randomly distributed or dispersed. In most cases, the distribution of attribute values will seldom show evidence of complete spatial randomness. 
+Mapped events or entities can have non-spatial information attached to them (some GIS software call these attributes). When mapped, these values often exhibit some degree of spatial relatedness at some scale. This is what Tobler was getting at: The idea that values close to one another tend to be similar. In fact, you will be hard-pressed to find mapped features that do not exhibit some kind of non-random pattern. 
 
 ```{r f13-random-maps, echo=FALSE}
 knitr::include_graphics("img/Random_maps.png")
 ```
 
-Though our visual senses can, in some cases, discern clustered regions from non-clustered regions, the distinction may not always be so obvious. We must therefore come up with a quantitative and objective approach to quantifying the degree to which similar features cluster and where such clustering occurs. One popular test of spatial autocorrelation is the Moran's I test.
+So how do we model spatial patterns? The approach taken will depend on how one chooses to characterize the underlying process--this can be either a spatial trend model or a spatial clustering/dispersion model. This chapter focuses on the latter.
 
-## Global Moran's I
+## Global Moran's *I*
 
-### Computing the Moran's I
+Though our visual senses can, in some cases, discern clustered regions from non-clustered regions, the distinction may not always be so obvious. We must therefore come up with a quantitative and objective approach to quantifying the degree to which similar features cluster or disperse and where such clustering occurs. One popular measure of spatial autocorrelation is the Moran's *I* coefficient.
 
-Let's start with a working example: 2010 per capita income for the state of Maine. 
+### Computing the Moran's *I*
 
-```{r f13-ME-income, echo=FALSE, fig.cap="2010 median per capita income aggregated at the county level.", out.width=300, fig.align='center'}
-knitr::include_graphics("img/Maine_income.png")
+Let's start with a working example: 2020 median per capita income for the state of Maine.
+
+```{r fig03, fig.height=3, fig.cap="Map of 2020 median per capita income for Maine counties (USA).", echo = FALSE, message=FALSE, fig.align='center'}
+library(sf)
+library(ggplot2)
+library(classInt)
+library(tukeyedar)
+library(spdep)
+
+z <- gzcon(url("https://github.com/mgimond/Spatial/raw/main/Data/Income_schooling_sf.rds"))
+s <- terra::unwrap(readRDS(z))
+
+clint <- classIntervals(s$Income, style = "pretty", n = 5)$brks
+ggplot(s, aes(fill=Income)) + geom_sf() +
+  theme_void() +
+    scale_fill_stepsn(colors = c("#D9EF8B",  "darkgreen") ,
+                     
+                    breaks = clint[2:(length(clint)-1) ],
+                    values = scales::rescale(clint[2:(length(clint)-1) ], c(0,1)),
+                    guide = guide_coloursteps(even.steps = FALSE,
+                                              show.limits = FALSE,
+                                              title = "Income ($)",
+                                              barheight = unit(2.0, "in"),
+                                              barwidth = unit(0.15, "in"),
+                                              label.position = "left")) 
 ```
 
-It may seem apparent that, when aggregated at the county level, the income distribution follows a north-south trend (i.e. high values appear clustered near the southern end of the state and low values seem clustered near the north and east). But a qualitative description may not be sufficient; we might want to quantify the degree to which similar (or dissimilar) counties are clustered. One measure of this type or relationship is the Moran's I statistic.
-
-The Moran's I statistic is the correlation coefficient for the relationship between a variable (like income) and its surrounding values. But before we go about computing this correlation, we need to come up with a way to define a neighbor. One approach is to define a neighbor as being any contiguous polygon. For example, the northern most county (Aroostook), has four contiguous neighbors while the southern most county (York) has two contiguous counties. Other neighborhood definitions include distance bands (e.g. counties within 100 km) and k nearest neighbors (e.g. the 2 closest neighbors). Note that distance bands and k nearest neighbors are usually measured using the polygon's centroids and not their boundaries.
 
 
-```{r f13-diff-neighbor, echo=FALSE, fig.cap="Maps show the links between each polygon and their respective neighbor(s) based on the neighborhood definition. A contiguous neighbor is defined as one that shares a boundary or a vertex with the polygon of interest.  Orange numbers indicate the number of neighbors for each polygon. Note that the top most county has no neighbors when a neighborhood definition of a 100 km distance band is used (i.e. no centroids are within a 100 km search radius)", out.width=600, fig.align='center'}
+It may seem apparent that, when aggregated at the county level, the income distribution appears clustered with high counties surrounded by high counties and low counties surrounded by low counties. But a qualitative description may not be sufficient; we might want to quantify the degree to which similar (or dissimilar) counties are clustered. One measure of this type or relationship is the **Moran's I statistic**.
+
+The Moran's *I* statistic is the correlation coefficient for the relationship between a variable (like income) and its neighboring values. But before we go about computing this correlation, we need to come up with a way to define a neighbor. One approach is to define a neighbor as being any contiguous polygon. For example, the northern most county (Aroostook), has four contiguous neighbors while the southern most county (York) has just two contiguous counties. Other neighborhood definitions can include distance bands (e.g. counties within 100 km) and k nearest neighbors (e.g. the 2 closest neighbors). Note that distance bands and k nearest neighbors are usually measured using the polygon's centroids and not their boundaries.
+
+```{r fig04, echo=FALSE, fig.cap="Maps show the links between each polygon and their respective neighbor(s) based on the neighborhood definition. A contiguous neighbor is defined as one that shares a boundary or a vertex with the polygon of interest.  Orange numbers indicate the number of neighbors for each polygon. Note that the top most county has no neighbors when a neighborhood definition of a 100 km distance band is used (i.e. no centroids are within a 100 km search radius)", out.width=600, fig.align='center'}
 knitr::include_graphics("img/Diff_neighbors.png")
 ```
 
-Once we define a neighborhood for our analysis we identify the neighbors for each polygon in our dataset then summaries the values for each neighborhood cluster (by computing their mean values, for example). This summarized neighbor value is sometimes referred to as a lagging value (*X~lag~*). In our working example, we adopt a contiguity neighborhood and compute the average neighboring income value (*Income~lag~*) for each county in our dataset. We then plot *Income~lag~* vs. *Income* for each county. The Moran's I coefficient between *Income~lag~* and *Income* is nothing more than the slope of the least squares regression line that best fits the points *after* having equalized the spread between both sets of data. 
+Once we've defined a neighborhood for our analysis, we identify the neighbors for each polygon in our dataset then summaries the values for each neighborhood cluster (by computing their mean values, for example). This summarized neighborhood value is sometimes referred to as a spatially lagged value (*X~lag~*). In our working example, we adopt a contiguity neighborhood and compute the average neighboring income value (*Income~lag~*) for each county in our dataset. We then plot *Income~lag~* vs. *Income* for each county. The Moran's *I* coefficient between *Income~lag~* and *Income* is nothing more than the slope of the least squares regression line that best fits the points *after* having equalized the spread between both sets of data.
 
-```{r f13-scatter-plot, echo=FALSE, fig.cap="Scatter plot of *Income~lag~* vs. *Income*. If we equalize the spread between both axes (i.e. convert to a z-score) the slope of the regression line represents the Moran's I statistic.", out.width=400, fig.align='center'}
-knitr::include_graphics("img/MoranI_scatter_plot.png")
+
+```{r fig05, fig.height=4, fig.width = 3.5, echo = FALSE, fig.cap="Scatter plot of spatially lagged income (neighboring income) vs. each countie's income. If we equalize the spread between both axes (i.e. convert to a z-value) the slope of the regression line represents the Moran's *I* statistic.", fig.align='center', results='hide'}
+
+nb <- poly2nb(s, queen=TRUE)
+lw <- nb2listw(nb, style="W", zero.policy=TRUE)
+I <- round(moran(s$Income, lw, length(nb), Szero(lw))$I,2)
+
+inc.lag <- lag.listw(lw, s$Income)
+dat1 <- data.frame(lag = inc.lag, income = s$Income)
+
+
+OP <- par( cex = 0.75, tck = -0.01)
+ eda_lm(dat1, income, lag, sd= FALSE, xlab = "Income", ylab=" Lagged income")
+par(OP)
 ```
 
-If there is no relationship between *Income* and *Income~lag~*, the slope will be close to flat (resulting in a Moran's I value near 0). In our working example, the Moran's I value is 0.377. So this begs the question, how significant is this Moran's I value (i.e. is the computed slope significantly different from 0)? There are two approaches to estimating the significance: an analytical solution and a Monte Carlo solution. The analytical solution makes some restrictive assumptions about the data and thus cannot always be reliable. Another approach (and the one favored here) is a Monte Carlo test which makes *no* assumptions about the dataset including the shape and layout of each polygon.
+If there is no degree of association between *Income* and *Income~lag~*, the slope will be close to flat (resulting in a Moran's *I* value near 0). In our working example, the slope is far from flat with a Moran's *I* value is 0.28. So this begs the question, how significant is this Moran's *I* value (i.e. is the computed slope significantly different from 0)? There are two approaches to estimating the significance: an analytical solution and a Monte Carlo solution. The analytical solution makes some restrictive assumptions about the data and thus cannot always be reliable. Another approach (and the one favored here) is a Monte Carlo test which makes *no* assumptions about the dataset including the shape and layout of each polygon.
 
 ### Monte Carlo approach to estimating significance
 
-In a Monte Carlo test (a permutation bootstrap test, to be exact), the attribute values are randomly assigned to polygons in the data set and for each permutation of the attribute values, a Moran's I value is computed. The output is a sampling distribution of Moran's I values under the (null) hypothesis that attribute values are randomly distributed across the study area. We then compare our observed Moran's I value to this sampling distribution.
+In a Monte Carlo test (a permutation bootstrap test, to be exact), the attribute values are randomly assigned to polygons in the data set and, for each permutation of the attribute values, a Moran's *I* value is computed.
 
-```{r f13-MC-result, echo=FALSE, fig.cap="Results from 199 permutations. Left plot shows Moran's I slopes (in gray) from each random permutation of income values superimposed with the observed Moran's I slope (in red). Right plot shows the distribution of Moran's I values for all 199 permutations; red vertical line shows our observed Moran's I value of 0.377.", out.width=400, fig.align='center'}
-knitr::include_graphics("img/MC_sim_1.png")
+```{r fig06, fig.height=4.1, fig.width = 4, fig.cap="Results from 199 permutations. Plot shows Moran's *I* slopes (in gray) computed from each random permutation of income values. The observed Moran's *I* slope for the original dataset is shown in red.", fig.align='center', echo = FALSE, results='hide'}
+
+OP <- par( cex = 0.75, tck = -0.01)
+sim <- vector()
+ eda_lm(dat1, income, lag, sd= FALSE, xlab = "Income", ylab=" Lagged income", size = 0)
+ set.seed(323)
+ for (i in 1:199){
+   s$rand <- sample(s$Income)
+   s$rand.lag <- lag.listw(lw, s$rand)
+   M <- lm(rand.lag ~ rand,s)
+   abline( M , col=rgb(0,0,0,0.1))
+   sim[i] <- coef(M)[2]
+ }
+par(OP)
 ```
 
-In our working example, 199 simulations indicate that out observed Moran's I value of 0.377 is not a value we would expect to compute if the income values were randomly distributed across each county. A (pseudo) *P-value* can easily be computed from the simulation results:
+The output is a sampling distribution of Moran's *I* values under the (null) hypothesis that attribute values are randomly distributed across the study area. We then compare our observed Moran's *I* value to this sampling distribution.
+
+```{r fig07, fig.height=3, fig.width=3,  echo=FALSE, fig.cap="Histogram shows the distribution of Moran's *I* values for all 199 permutations; red vertical line shows our observed Moran's *I* value of 0.28.", fig.align='center'}
+
+OP <- par( cex = 0.75, tck = -0.01, mgp=c(1.7,0.8,0))
+ hist(sim, main = NULL, xlab=("Simulated I"),  breaks = 10)
+ abline(v=I, col = "red")
+par(OP)
+```
+
+In our working example, 199 simulations indicate that our observed Moran's *I* value of `r I` is not a value we would expect to compute if the income values were randomly distributed across each county. A (pseudo) *P-value* can easily be computed from the simulation results:
 
 $$
 \dfrac{N_{extreme}+1}{N+1}
-$$ 
+$$
 
-where $N_{extreme}$ is the number of simulated Moran's I values more extreme than our observed statistic and $N$ is the total number of simulations. Here, out of 199 simulations, just one simulation result was more extreme than our observed statisic,  $N_{extreme}$ = 1, so $p$  is equal to (1 + 1) / (199 + 1) = 0.01. This is interpreted as "*there is a 1% probability that we would be wrong in rejecting the null hypothesis H~o~.*"
+where $N_{extreme}$ is the number of simulated Moran's *I* values more extreme than our observed statistic and $N$ is the total number of simulations. Here, out of 199 simulations, just three simulated *I* values were more extreme than our observed statistic, $N_{extreme}$ = 3, so $p$ is equal to (3 + 1) / (199 + 1) = 0.02. This is interpreted as "*there is a 2% probability that we would be wrong in rejecting the null hypothesis H~o~.*"
 
-## Moran's I at different lags
+Note that in this permutation example, we shuffled around the observed income values such that *all* values were present in each permutation outcome--this is sometimes referred to as a **randomization** option in a few software implementations of the Moran's *I* hypothesis test. Note that here, *randomization* is not to be confused with the way the permutation technique "randomly" assigns values to features in the data layer.
+
+Alternatively, one can choose to randomly assign a set of values to each feature in a data layer from a *theorized distribution* (for example, a *Normal* distribution). This may result in a completely different set of values for each permutation outcome. Note that you would only adopt this approach if the theorized distribution underpinning the value of interest is known *a priori*.
+
+Another important consideration when computing a P-value from a permutation test is the number of simulations to perform. In the above example we ran 199 permutations, thus, the smallest P-value we could possibly come up with is 1 / (199 + 1) or a P-value of 0.005. You should  therefore chose a number of permutations, $N$, large enough to ensure a reliable level of significance.
+
+## Moran's *I* at different lags
 
 So far we have looked at spatial autocorrelation where we define neighbors as all polygons sharing a boundary with the polygon of interest. We may also be interested in studying the *ranges* of autocorrelation values as a function of distance. The steps for this type of analysis are straightforward:
 
-1. Compute lag values for a defined set of neighbors.
+1.  Compute lag values for a defined set of neighbors.
 
-2. Calculate the Moran's I value for this set of neighbors.
+2.  Calculate the Moran's *I* value for this set of neighbors.
 
-3. Repeat steps 1  and 2  for a different set of neighbors (at a greater distance for example) .
+3.  Repeat steps 1 and 2 for a different set of neighbors (at a greater distance for example) .
 
-For example, the Moran's I values for income distribution in the state of Maine at distances of 75, 125, up to 325 km are presented in the following plot:
+For example, the Moran's *I* values for income distribution in the state of Maine at distances of 75, 125, up to 325 km are presented in the following plot:
 
-```{r f13-MC-distance, echo=FALSE, fig.cap="Moran's I at different spatial lags defined by a 50 km width annulus at 50 km distance increments. Red dots indicate Moran I values for which a P-value was 0.05 or less.", out.width=400, fig.align='center'}
+```{r f13-MC-distance, echo=FALSE, fig.cap="Moran's *I* at different spatial lags defined by a 50 km width annulus at 50 km distance increments. Red dots indicate Moran *I* values for which a P-value was 0.05 or less.", out.width=500, fig.align='center'}
 knitr::include_graphics("img/MoranI_distance_band.png")
 ```
 
 The plot suggests that there is significant spatial autocorrelation between counties within 25 km of one another, but as the distances between counties increases, autocorrelation shifts from being positive to being negative meaning that at greater distances, counties tend to be more dissimilar.
 
-## Local Moran's I
+## Local Moran's *I*
 
-We can decompose the global Moran's I down to its components thus constructing a *localized* measure of autocorrelation--i.e. a map of "hot spots" and "cold spots".
+We can decompose the global Moran's *I* into a *localized* measure of autocorrelation--i.e. a map of "hot spots" and "cold spots".
 
-```{r f13-local-I, echo=FALSE, fig.cap="Red points and polygons highlight counties with high income values surrounded by high income counties. Blue points and polygons highlight counties with low income values surrounded by low income counties.", out.height=300, out.width=300, fig.align='center'}
-knitr::include_graphics(c("img/HH_LL_noP.png", "img/HH_LL_noP_map.png"))
+A local Moran's *I* analysis is best suited for relatively large datasets, especially if a hypothesis test is to be implemented. We'll therefor switch to another dataset: Massachusetts household income data.
+
+```{r ma-dataset, fig.width = 5, fig.height=2.5, echo =FALSE, fig.align='center'}
+library(sf)
+library(ggplot2)
+library(classInt)
+library(tukeyedar)
+library(spdep)
+
+z <- gzcon(url("https://github.com/mgimond/Spatial/raw/main/Data//ma2.rds"))
+ma <- terra::unwrap(readRDS(z))
+
+clint <- classIntervals(ma$house_inc, style = "pretty", n = 6)$brks
+ggplot(ma, aes(fill=house_inc)) + geom_sf(col = NA) +
+  theme_void() +
+    scale_fill_stepsn(colors = c("#D9EF8B",  "darkgreen") ,
+                     
+                    breaks = clint[2:(length(clint)-1) ],
+                    values = scales::rescale(clint[2:(length(clint)-1) ], c(0,1)),
+                    guide = guide_coloursteps(even.steps = FALSE,
+                                              show.limits = FALSE,
+                                              title = "Income ($)",
+                                              barheight = unit(1.5, "in"),
+                                              barwidth = unit(0.15, "in"),
+                                              label.position = "left")) 
+  
+
 ```
 
-Next, we can use Monte Carlo techniques to assess whether or not the High-High values and Low-Low values are significant at a confidence level of 0.05 (i.e. for P-value= 0.05).
+Applying a contiguity based definition of a neighbor, we get the following scatter plot of spatially lagged income vs. income.
 
-```{r f13-local-I-MC, echo=FALSE, fig.cap="Significantly High-High and Low-Low clusters with P-values less than or equal to 0.5.", out.height=300, out.width=300, fig.align='center'}
-knitr::include_graphics(c("img/HH_LL_P.png", "img/HH_LL_P_map.png"))
+```{r chunk10, fig.width = 4, fig.height=4, echo = FALSE, fig.cap="Grey vertical and horizontal lines define the mean values for both axes values. Red points highlight counties with relatively high income values (i.e. greater than the mean) surrounded by counties whose average income value is relatively high. Likewise, dark blue points highlight counties with relatively low income values surrounded by counties whose average income value is relatively low.", fig.align='center', results='hide'}
+
+nb <- poly2nb(ma, queen=TRUE)
+lw <- nb2listw(nb, style="W", zero.policy=TRUE)
+
+inc.lag <- lag.listw(lw, ma$house_inc)
+dat1 <- data.frame(lag = inc.lag, income = ma$house_inc)
+
+
+M <- localmoran(ma$house_inc, lw)
+M.df <- data.frame(attr(M, "quadr"))
+
+OP <- par( cex = 0.75, tck = -0.01)
+ eda_lm(dat1, income, lag, sd = FALSE)
+ palette(c("blue", "lightblue", "darkgoldenrod2", "red"))
+ points(ma$house_inc, inc.lag, pch = 16, col = M.df$mean)
+par(OP)
+
 ```
+
+You'll note that the mean value for *Income*, highlighted as light grey vertical and horizontal lines in the above plot, carve up the four quadrant defining the low-low, high-low, high-high and low-high quadrants when starting from the bottom-left quadrant and working counterclockwise. Note that other measures of centrality, such as the median, could be used to delineate these quadrants.
+
+The values in the above scatter plot can be mapped to each polygon in the dataset as shown in the following figure.
+
+```{r fig08,  echo=FALSE,fig.width = 4.5, fig.height=2.5, fig.cap="A map view of the low-low (blue), high-low (light-blue), high-high (red) and low-high (orange) counties. ", fig.align='center'}
+
+OP <- par(mar=c(0,0,0,0))
+plot(st_geometry(ma), col = M.df$mean, border="white")
+par(OP)
+```
+
+Each observation that contributes to the global Moran's *I* can be assigned a localized version of that statistic, $I_i$ where the subscript $i$ references the individual geometric unit. The calculation of $I_i$ is shown later in the chapter.
+
+At this point, we have identified the counties that are surrounded by similar values. However, we have yet to assess which polygons are "significantly" similar or dissimilar to their neighbors.
+
+As with the global Moran's *I*, there is both an analytical and Monte Carlo approach to computing significance of $I_i$. In the case of a Monte Carlo approach, one shuffles all values in the dataset except for the value, $y_i$, of the geometric unit $i$ whose $I_i$ we are assessing for significance. For each permutation, we compare the value at $y_i$ to the average value of its neighboring values. From the permutations, we generate a distribution of $I_i$ values (for each $y_i$ feature) we would expect to get if the values were randomly distributed across all features.
+
+We can use the following polygon in eastern Massachusetts as example.
+
+```{r fig09, echo=FALSE, fig.width = 3.5, fig.height=3.5, fig.cap="Polygon whose *signifcance* value we are asessing in  this example.", fig.align='center'}
+col1 <- M.df$mean
+levels(col1) <-  c("blue", "lightblue", "darkgoldenrod2", "red")
+ext1 <- st_bbox( st_buffer(ma[1,], 20000))
+OP <- par(mar= c(0,0,0,0))
+plot(st_geometry(ma), col = adjustcolor(col1, alpha.f = 0.1), border="white",  extent = ext1)
+plot(st_geometry(ma[1,]), col = col1[1], add = TRUE)
+par(OP)
+I_i <- M[[1]]
+```
+
+Its local Moran's *I* statistic is `r round(I_i,2)`. A permutation test shuffles the income values around it all the while keeping its value constant. An example of an outcome of a few permutations follows:
+
+```{r fig10, echo=FALSE, fig.width = 9, fig.height=2, fig.cap="Local Moran's I outcomes of a few permutations of income values.", fig.align='center', results='hide'}
+
+fun1 <- function(){
+  Msim <- localmoran(c(ma$house_inc[1], sample(ma$house_inc[-1])), lw)
+  Isim <- attr(Msim, "quadr")$mean
+  levels(Isim) <-  c("blue", "lightblue", "darkgoldenrod2", "red")
+  Isim }
+
+fun2 <- function(){
+  col1 <- fun1()
+  plot(st_geometry(ma), col = adjustcolor(col1, alpha.f = 0.1), border="white",  extent = ext1)
+  plot(st_geometry(ma[1,]), col = col1[1], add = TRUE)
+}
+
+set.seed(319)
+OP <- par(mar= c(0,0,0,0), mfrow=c(1,5))
+ sapply(1:5, FUN = \(x)fun2())
+par(OP)
+```
+
+You'll note that even though the income value remains the same in the polygon of interest, its local Moran's *I* statistic will change because of the changing income values in its surrounding polygons. 
+
+If we perform many more permutations, we come up with a distribution of $I_i$ values under the null that the income values are randomly distributed across the state of Massachusetts. The distribution of $I_i$ for the above example is plotted using a histogram.
+
+```{r fig11, echo=FALSE, fig.width = 3, fig.height=2.5, fig.cap="Distribution of $I_i$ values under the null hypothesis that income values are randomly distributed across the study extent. The red vertical line shows the observed $I_i$ for comparison.", fig.align='center', results='hide'}
+
+n <- 999
+fun3 <- function(){localmoran(c(ma$house_inc[1], sample(ma$house_inc[-1])), lw)[1,1]}
+I_null <- sapply(1:n, FUN = \(x) fun3() )
+OP <- par(mar=c(4,3,0,0))
+ hist(I_null, breaks = 20, xlab="I(i)", main=NULL)
+ abline(v = I_i, col = "red", lw=2, xlab = "I(i)")
+par(OP)
+N.greater <- sum(I_null > I_i)
+p <- min(N.greater + 1, n + 1 - N.greater) / (n + 1)
+```
+
+About `r round(p * 100, 1)`% of the simulated values are more extreme than our observed $I_i$ giving us a pseudo p-value of `r round(p,2)`.
+
+If we perform this permutation for all polygons in our dataset, we can map the pseudo p-values for each polygon. Note that here, we are mapping the probability that the observed $I_i$ value is more extreme than expected (equivalent to a one-tail test).
+
+```{r  fig12, echo=FALSE,fig.width = 5, fig.height=2.5, fig.cap="Map of the pseudo p-values for each polygons' $I_i$ statistic.", fig.align='center'}
+
+M <- localmoran_perm(ma$house_inc, lw, nsim = 999)
+ma$p <- data.frame(M)$Pr.folded..Sim
+
+clint <- classIntervals(ma$p, style = "fixed", n = 7, 
+                        fixedBreaks = c(0,0.01, 0.05, 0.1, 0.2, 0.3, 0.4, 0.5))$brks
+ggplot(ma, aes(fill=p)) + geom_sf() +
+  theme_void() +
+    scale_fill_stepsn(colors = c("#555555", "#DDDDDD" ) ,
+                     
+                    breaks = clint[2:(length(clint)-1) ],
+                    values = scales::rescale(clint[2:(length(clint)-1) ], c(0,1)),
+                    guide = guide_coloursteps(even.steps = FALSE,
+                                              show.limits = FALSE,
+                                              title = "P-value",
+                                              barheight = unit(1.7, "in"),
+                                              barwidth = unit(0.15, "in"),
+                                              label.position = "left")) 
+
+```
+
+One can use the computed p-values to filter the $I_i$ values based on a desired level of significance. For example, the following scatter plot and map shows the high/low "hotspots" for which a pseudo p-value of 0.05 or less was computed from the above simulation.
+
+```{r  fig13, echo=FALSE, fig.width =9, fig.height=4, fig.cap="Local Moran's *I* values having a signifcance level of 0.05 or less.", fig.align='center', results = "hide"}
+
+sig <- ma$p <= 0.05
+
+OP2 <- par(mfrow = c(1,2), cex = 0.75, tck = -0.01)
+ eda_lm(dat1, income, lag, sd = FALSE)
+ palette(c("blue", "lightblue", "darkgoldenrod2", "red"))
+ points(ma$house_inc[sig], inc.lag[sig], pch = 16, col = M.df$mean[sig])
+
+ OP <- par(mar = c(0,0,0,0))
+  plot(st_geometry(ma), col = "#EDEDED", border = "white")
+  plot(st_geometry(ma[sig,]), col = M.df$mean[sig], border = "white", add = TRUE)
+ par(OP)
+par(OP2)
+```
+
+You'll note that the levels of significance do not apply to just the high-high and low-low regions, they can apply to *all* combinations of highs and lows. 
+
+Here's another example where the $I_i$ values are filtered based on a more stringent significance level of 0.01.
+
+```{r  fig14, echo=FALSE, fig.width =9, fig.height=4, fig.cap="Local Moran's *I* values having a signifcance level of 0.01 or less.", fig.align='center', results='hide'}
+
+sig <- ma$p <= 0.01
+OP2 <- par(mfrow = c(1,2), cex = 0.75, tck = -0.01)
+ eda_lm(dat1, income, lag, sd = FALSE)
+ palette(c("blue", "lightblue", "darkgoldenrod2", "red"))
+ points(ma$house_inc[sig], inc.lag[sig], pch = 16, col = M.df$mean[sig])
+
+ OP <- par(mar = c(0,0,0,0))
+  plot(st_geometry(ma), col = "#EDEDED", border = "white")
+  plot(st_geometry(ma[sig,]), col = M.df$mean[sig], border = "white", add = TRUE)
+ par(OP)
+par(OP2)
+```
+
+## Moran's *I* equation explained
+
+The Moran's *I* equation can take on many forms. One form of the equation can be presented as:
+
+$$
+I = \frac{N}{\sum\limits_i (X_i-\bar X)^2} 
+    \frac{\sum\limits_i \sum\limits_j w_{ij}(X_i-\bar X)(X_j-\bar X)}{\sum\limits_i \sum\limits_j w_{ij}} \tag{1}
+$$
+ 
+$N$ is the total number of features in the dataset, $X$ is the quantity of interest. Subscripts $i$ and $j$ reference two different features in the dataset, and $w_{ij}$ is a weight that defines the relationship between features $i$ and $j$ (i.e. the weights will determine if feature $j$ is a neighbor of $i$ and how much weight feature $j$ should be given when computing some overall neighboring $X$ value).
+
+There a few key components of this equation worth highlighting. First, you'll note the standardization of both sets of values by the subtraction of each value in $X_i$ or $X_j$ by the mean of $X$. This highlights the fact that we are seeking to compare the deviation of each value from an overall mean and not the deviation of their absolute values. 
+
+Second, you'll note an inverted variance term on the left-hand side of equation (1)--this is a measure of spread. You might recall from an introductory statistics course that the variance can be computed as:
+
+$$
+s^2 = \frac{\sum\limits_i (X_i-\bar X)^2}{N}\tag{2}
+$$
+Note that a more common measure of variance, the sample variance, where one divides the above numerator by $(n-1)$ can also be adopted in the Moran's *I* calculation.
+
+Equation (1) is thus dividing the large fraction on the right-hand side by the variance. This has for effect of limiting the range of possible Moran's *I* values between -1 and 1 (note that in some extreme cases, $I$ can take on a value more extreme than [-1; 1]). We can re-write the Moran's I equation by plugging in $s^2$ as follows:
+
+$$
+I = \frac{\sum\limits_i \sum\limits_j w_{ij}\frac{(X_i-\bar X)}{s}\frac{(X_j-\bar X)}{s}}{\sum\limits_i \sum\limits_j w_{ij}} \tag{3}
+$$
+Note that here $s\times s = s^2$. You might recognize the numerator as a sum of the product of standardized *z*-values between neighboring features. If we let $z_i = \frac{(X_i-\bar X)}{s}$ and $z_j = \frac{(X_j-\bar X)}{s}$, The Moran's I equation can be reduced to:
+
+$$
+I = \frac{\sum\limits_i \sum\limits_j w_{ij}(z_i\ z_j)}{\sum\limits_i \sum\limits_j w_{ij}} \tag{4}
+$$
+
+Recall that we are comparing a variable $X$ at $i$ to all of its neighboring values at $j$. More specifically, we are computing a summary value (such as the mean) of the neighboring values at $j$ and multiplying that by $X_i$. So, if we let $y_i = \sum\limits_j w_{ij} z_j$, the Moran's I coefficient can be rewritten as:
+
+$$
+I = \frac{\sum\limits_i z_i y_i}{\sum\limits_i \sum\limits_j w_{ij}}  \tag{5}
+$$
+
+So, $y_i$ is the average z-value for the neighboring features thus making the product $z_i y_i$ nothing more than a *correlation coefficient*.
+
+The product $z_iy_i$ is a local measure of spatial autocorrelation, $I_i$. If we *don't* summarize across all locations $i$, we get our local I statistic, $I_i$:
+
+$$
+I_i = z_iy_i  \tag{6}
+$$
+The global Moran's *I* statistic, $I$, is thus the average of all $I_i$ values.
+
+$$
+I = \frac{\sum\limits_i I_i}{\sum\limits_i \sum\limits_j w_{ij}}  \tag{5}
+$$
+
+Let's explore elements of the Moran's *I* equation using the following sample dataset.
+
+```{r fig15, fig.width = 7, fig.height=2.5, fig.cap="Simulated spatial layer. The figure on the left shows the each cell's ID value. The figure in the middle shows the values for each cell. The figure on the right shows the standardized values using equation (2).", echo=FALSE, fig.align='center', message = FALSE, warning = FALSE}
+# Custom functions
+gridcells <- function(df, col = "A1", breaks = 7, color = "Reds"){
+  
+  if(breaks > 1){
+    brks <- with(df, seq(min(df[[col]]), max(df[[col]]), length.out = breaks + 1))
+    col1 <- RColorBrewer::brewer.pal(color, n =breaks)
+  } else {
+    col1 <- "grey80"
+    brks <- c(min(df[[col]]), max(df[[col]]))
+  }
+  col <- ensym(col)
+  ggplot(df, aes(fill = !!col)) + geom_sf() +
+  geom_text(aes(x= st_coordinates(ctr)[,1],
+                y= st_coordinates(ctr)[,2],
+                label = !!col)) +
+  scale_fill_stepsn( 
+    colors = col1,
+    breaks = brks,
+    guide = guide_coloursteps(even.steps = FALSE,
+                                              show.limits = FALSE,
+                                              barheight = unit(2.2, "in"),
+                                              barwidth = unit(0.15, "in"))) +
+  theme_void() +
+  guides(fill="none")
+}
+
+sd2 <- function(x){
+  sqrt(sum( (x - mean(x))^2 ) / length(x))
+}
+
+# Synthetic data
+library(gridExtra)
+m <- matrix(c(25, 37, 41, 33, 31, 34, 18, 38, 12, 20, 11, 31, 5, 4, 6, 13),
+            byrow = FALSE, ncol = 4)
+r <- stars::st_as_stars(m)
+poly <- st_as_sf(r, as_points=FALSE )
+poly$id <- 1:length(m)
+ctr <- st_centroid(poly)
+
+poly$z <- with(poly, (A1 - mean(A1)) / sd2(A1))
+poly$z_disp <- round(poly$z, 2) # Rounded values used for display purposes only
+
+# Plot the layer(s)
+grid.arrange(gridcells(poly, "id", breaks = 1, color = "Reds") , gridcells(poly), gridcells(poly, "z_disp"), ncol = 3)
+```
+
+The first step in the computation of a Moran's *I* index is the generation of weights. The weights can take on many different values. For example, one could assign a value of `1` to a neighboring cell as shown in the following matrix.
+
+```{r fig16, echo=FALSE, fig.width = 3, fig.height=3, message=FALSE, warning=FALSE, fig.cap="Table 1.  Weights matrix for binary weights. Rows represent the $i$th index and columns represent the $j$th index."}
+
+library(kableExtra)
+library(dplyr)
+
+nb <- poly2nb(poly, queen=TRUE)
+nb.df <- nb2mat(nb, style = "B") |> as.data.frame()
+colnames(nb.df) <- 1:length(m)
+nb.df2 <- mutate(nb.df, across(1:16, ~ cell_spec(.x, color = ifelse(.x == 1, "red", "grey30"   ))))
+
+knitr::kable(nb.df2, row.names = TRUE, escape = FALSE, linesep = "") %>%
+    kable_styling(bootstrap_options = c("striped"), full_width = FALSE, font_size = 11) |> 
+    column_spec(1, bold=T) |>
+    column_spec(1:(length(m)+1), extra_css = 'padding: 5px;')|>
+    row_spec(1:length(m),extra_css = 'line-height: 4px;')
+```
+
+For example, cell ID `1` (whose value is `r poly$A1[1]` and whose standardized value is `r poly$z_disp[1]`) has for neighbors cells `2`, `5` and `6`. Computationally (working with the standardized values), this gives us a summarized neighboring value (aka lagged value), $y_1(lag)$ of:
+
+$$
+\begin{align*}
+y_1 =  \sum\limits_j w_{1j} z_j {}={} & (0)(0.21)+(1)(1.17)+(0)(1.5)+ ... + \\
+                                      & (1)(0.69)+(1)(0.93)+(0)(-0.36)+...+ \\
+                                      & (0)(-0.76) = 2.79
+\end{align*}                                  
+$$
+
+Computing the spatially lagged values for the other 15 cells generates the following scatterplot:
+
+```{r fig17, echo=FALSE, fig.height=4, fig.width=4,  results='hide', fig.cap="Moran's *I* scatterplot using a binary weight. The red point is the ($z_1$, $y_i$) pair computed for cell `1`.", fig.align='center'}
+
+lw <- nb2listw(nb, style = "B")
+
+poly$z_lag <- lag.listw(lw, poly$z)
+
+# M <- localmoran(poly$A1, lw)
+# M.df <- data.frame(attr(M, "quadr"))
+
+OP <- par(cex.axis=0.85)
+ eda_lm(poly, z, z_lag, sd = FALSE, reg=FALSE, xlab = expression(z[i]), 
+         ylab =  expression(y[i]))
+ points(poly$z[1], poly$z_lag[1], pch =16, col="red")
+par(OP)
+```
+
+You'll note that the range of neighboring values along the $y$-axis is much greater than that of the original values on the $x$-axis. This is not necessarily an issue given that the Moran's $I$ correlation coefficient standardizes the values by recentering them on the overall mean $(X - \bar{X})/s$. This is simply to re-emphasize that we are interested in how a neighboring value varies relative to a feature's value, regardless of the scale of values in either batches.
+
+If there is a downside to adopting a binary weight, it's the bias that the different number of neighbors can introduce in the calculation of the spatially lagged values. In other words, a feature with `5` polygons (such as feature ID `12`) will have a larger neighboring value than a feature with `3` neighbors (such as feature ID `1`) whose neighboring value will be less if there was no spatial autocorrelation in the dataset.
+
+A more natural weight is one where the values are standardized across each row of the weights matrix such that the weights across each row sum to one. For example:
+
+```{r fig18 , echo=FALSE, fig.width = 3, fig.height=3, fig.cap="Table 2.  Weights metrix for row standardfized weights."}
+
+nb.df <- nb2mat(nb, style = "W") |> round(digits = 3) |> as.data.frame()
+
+colnames(nb.df) <- 1:length(m)
+nb.df2 <- mutate(nb.df, across(1:16, ~ cell_spec(.x, color = ifelse(.x > 0, "red", "grey30"   ))))
+knitr::kable(nb.df2, row.names = TRUE, escape = FALSE, linesep = "") |>
+    kable_styling(bootstrap_options = c("striped"), full_width = FALSE, font_size = 11)  |> 
+    column_spec(1, bold=T)  |>
+    column_spec(1:(length(m)+1), extra_css = 'padding: 5px;')  |>
+    row_spec(1:length(m), extra_css = 'line-height: 4px;')
+```
+
+The spatially lagged value for cell ID `1` is thus computed as:
+
+$$
+\begin{align*}
+y_1 =  \sum\limits_j w_{1j} z_j {}={} & (0)(0.21)+(0.333)(1.17)+(0)(1.5)+...+ \\
+                                      & (0.333)(0.69)+(0.333)(0.93)+(0)(-0.36)+...+ \\
+                                      & (0)(-0.76) = 0.93
+\end{align*}
+$$
+
+Multiplying each neighbor by the standardized weight, then summing these values, is simply computing the neighbor's mean value. 
+
+Using the standardized weights generates the following scatter plot. Plot on the left shows the raw values on the *x* and *y* axes; plot on the right shows the standardized values $z_i$ and $y_i = \sum\limits_j w_{ij} z_j$. You'll note that the shape of the point cloud is the same in both plots given that the axes on the left plot are scaled such as to match the standardized scales in both axes.
+
+
+```{r fig19, echo=FALSE, fig.height=3.5, fig.width=7,  results='hide', fig.cap="Moran's scatter plot with original values on the left and same Moran's I scatter plot on the right using the standardzied values $z_i$ and $y_i$." , fig.align='center'}
+
+lw <- nb2listw(nb, style = "W")
+
+poly$val_lag <- lag.listw(lw, poly$A1)
+poly$z_lag <- lag.listw(lw, poly$z)
+
+# M <- localmoran(poly$A1, lw)
+# M.df <- data.frame(attr(M, "quadr"))
+# 
+# Mz <- localmoran(poly$z, lw)
+# Mz.df <- data.frame(attr(Mz, "quadr"))
+# 
+# M <- localmoran(poly$A1, lw)
+# M.df <- data.frame(attr(M, "quadr"))
+
+OP <- par(cex.axis=0.85, mfrow = c(1,2))
+  eda_lm(poly, A1, val_lag, sd = FALSE, reg=FALSE, xlab = expression(x[i]),
+         ylab = expression( x[i(lag)]))
+  eda_lm(poly, z, z_lag, sd = FALSE, reg=FALSE, xlab = expression(z[i]), 
+         ylab =  expression(y[i]) )
+par(OP)
+```
+
+Note the difference in the point cloud pattern in the above plot from the one generated using the binary weights. Other weights can be used such as inverse distance and k-nearest neighbors to name just a few. However, must software implementations of the Moran's *I* statistic will adopt the row standardized weights.
+
+### Local Moran's I
+
+Once a spatial weight is chosen, and both $z_i$ and $y_i$ are computed. We can compute the $z_iy_i$ product for all locations of $i$ thus giving us a measure of the local Moran's I statistic. Taking feature ID of `1` in our example, we compute $I_1(lag) = 0.21 \times 0.93 = 0.19$. Computing $I_i$ for all cells gives us the following plot. 
+
+```{r fig20, fig.width =7, fig.height=3.5, results='hide', echo=FALSE, warning=FALSE, fig.align='center', fig.cap="The left plot shows the Moran's I scatter plot with the point colors symbolizing the $I_i$ values. The figure on the right shows the matching $I_i$ values mapped to each respective cell.", fig.align='center'}
+
+poly$Istar <- with(poly, z * z_lag)
+
+ii <- cut(poly$Istar, breaks = c(-1.5,-1,-.5,-.25,0,.25,.5,1, 1.5), 
+          include.lowest = TRUE)
+col2 <- colorRampPalette(c( "red", "white", "#00CD00"))(8)[ii]
+
+OP <- par(mfrow=c(1,2))
+ eda_lm(poly, z, z_lag, sd = FALSE, reg=FALSE, ylab = expression( z[i(lag)] ),
+        xlab = expression( z[i] )  )
+  points(poly$z, poly$z_lag, bg = col2, col=col2, pch=21) 
+  OP2 <- par(mar = c(4,4,4,4))
+    plot(st_geometry(poly), main = NULL, col=col2, reset=FALSE)
+    text(st_coordinates(st_centroid(poly)), labels=round(poly$Istar,2), offset=0, cex=0.8)
+  par(OP2)
+par(OP)
+```
+
+Here, we are adopting a different color scheme from that used earlier. Green colors highlight features whose values are surrounded by similar values. These can be either positive values surrounded by standardized values that tend to be positive or negative values surrounded by values that tend to be negative. In both cases, the calculated $I_i$ will be positive. Red colors highlight features whose values are surrounded by dissimilar values. These can be either negative values surrounded by values that tend to be positive or positive values surrounded by values that tend to be negative. In both cases, the calculated $I_i$ will be negative. In our example, two features have a negative Moran's *I* coefficient: cell IDs `7` and `12`.
+
+
+### Global Moran's I
+
+The Global Moran's *I* coefficient, $I$ is nothing more than a summary of the local Moran's *I* coefficients. Using a standardized weight, $I$ is the average of all $I_i$ values.
+
+$$
+\begin{pmatrix}
+\frac{`r  paste(round(poly$Istar,2), collapse = "+")`}{\sum\limits_i\sum\limits_j w_{ij}} = 0.446
+\end{pmatrix}
+$$
+In this example, $\sum\limits_j w_{ij}$ is the sum of all 256 values in Table (2) which, using standardized weights, sums to 16. 
+
+$I$ is thus the slope that best fits the data. This can be plotted using either the standardized values or the raw values.
+
+```{r fig21, echo=FALSE, fig.height=3.5, fig.width=7,  results='hide', fig.cap="Moran's scatter with fitted Moran's *I* slope (red line).  The left plot uses the raw values $(X_i,X_i(lag))$ for its axes labels. Right plot uses the standardized values $(z_i,y_i)$ for its axes labels.", fig.align='center'}
+
+OP <- par(mfrow = c(1,2))
+  eda_lm(poly, A1, val_lag, sd= FALSE, xlab = expression(x[i]),
+         ylab = expression( x[i(lag)]))
+  eda_lm(poly, z, z_lag, sd= FALSE, xlab = expression(z[i]),
+         ylab = expression( y[i]))
+
+par(OP)
+```
+
+
+
 
 

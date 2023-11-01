@@ -172,7 +172,7 @@ The kernel density approach is an extension of the quadrat method: Like the quad
 
 A kernel not only defines the shape and size of the window, but it can also *weight* the points following a well defined kernel function. The simplest function is a **basic kernel** where each point in the kernel window is assigned equal weight.
 
-```{r f11-kernel01, fig.cap="An example of a basic 3x3 kernel density map (ArcGIS calls this a point density map) where each point is assigned an equal weight. For example, the second cell from the top and left (i.e. centered at location x=1.5 and y =8.5) has one point within a 3x3 unit (pixel) region and thus has a local density of 1/9 = 0.11.", fig.height=3.5, echo=FALSE}
+```{r f11-kernel01, fig.cap="An example of a basic 3x3 kernel density map (ArcGIS calls this a point density map) where each point is assigned an equal weight. For example, the cell centered at location x=1.5 and y =7.5 has one point within a 3x3 unit (pixel) region and thus has a local density of 1/9 = 0.11.", fig.height=3.5, echo=FALSE}
 
 #library(raster)
 library(terra)
@@ -530,7 +530,7 @@ OP <- par(mfrow=c(1,2), mar=c(1,1,1,0))
 par(OP)
 ```
 
-An important assumption that underlies our interpretation of the ANN results is that of stationarity of the underlying point process (i.e. that there is no overall drift or trend in the process’ intensity). If the point pattern is not stationary, then it will be difficult to assess if the results from the ANN analysis are due to interactions between the points or due to changes in some underlying factor that changes as a function of location.
+An important assumption that underlies our interpretation of the ANN results is that of stationarity of the underlying point process (i.e. that there is no overall drift or trend in the process’ intensity). If the point pattern is not stationary, then it will be difficult to assess if the results from the ANN analysis are due to interactions between the points or due to changes in some underlying factor that changes as a function of location. Correcting for lack of stationarity when performing hypothesis tests is described in the next chapter.
 
 
 ### K and L functions
