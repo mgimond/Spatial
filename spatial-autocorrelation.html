@@ -344,13 +344,18 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="13" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html"><i class="fa fa-check"></i><b>13</b> Spatial Autocorrelation</a>
 <ul>
-<li class="chapter" data-level="13.1" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#global-morans-i"><i class="fa fa-check"></i><b>13.1</b> Global Moran’s I</a>
+<li class="chapter" data-level="13.1" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#global-morans-i"><i class="fa fa-check"></i><b>13.1</b> Global Moran’s <em>I</em></a>
 <ul>
-<li class="chapter" data-level="13.1.1" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#computing-the-morans-i"><i class="fa fa-check"></i><b>13.1.1</b> Computing the Moran’s I</a></li>
+<li class="chapter" data-level="13.1.1" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#computing-the-morans-i"><i class="fa fa-check"></i><b>13.1.1</b> Computing the Moran’s <em>I</em></a></li>
 <li class="chapter" data-level="13.1.2" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#monte-carlo-approach-to-estimating-significance"><i class="fa fa-check"></i><b>13.1.2</b> Monte Carlo approach to estimating significance</a></li>
 </ul></li>
-<li class="chapter" data-level="13.2" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#morans-i-at-different-lags"><i class="fa fa-check"></i><b>13.2</b> Moran’s I at different lags</a></li>
-<li class="chapter" data-level="13.3" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#local-morans-i"><i class="fa fa-check"></i><b>13.3</b> Local Moran’s I</a></li>
+<li class="chapter" data-level="13.2" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#morans-i-at-different-lags"><i class="fa fa-check"></i><b>13.2</b> Moran’s <em>I</em> at different lags</a></li>
+<li class="chapter" data-level="13.3" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#local-morans-i"><i class="fa fa-check"></i><b>13.3</b> Local Moran’s <em>I</em></a></li>
+<li class="chapter" data-level="13.4" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#morans-i-equation-explained"><i class="fa fa-check"></i><b>13.4</b> Moran’s <em>I</em> equation explained</a>
+<ul>
+<li class="chapter" data-level="13.4.1" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#local-morans-i-1"><i class="fa fa-check"></i><b>13.4.1</b> Local Moran’s I</a></li>
+<li class="chapter" data-level="13.4.2" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#global-morans-i-1"><i class="fa fa-check"></i><b>13.4.2</b> Global Moran’s I</a></li>
+</ul></li>
 </ul></li>
 <li class="chapter" data-level="14" data-path="spatial-interpolation.html"><a href="spatial-interpolation.html"><i class="fa fa-check"></i><b>14</b> Spatial Interpolation</a>
 <ul>
@@ -581,87 +586,2069 @@ else, but near things are more related than distant things.”</em> Waldo
 R. Tobler <span class="citation"><span class="citation">(<a href="#ref-Tobler1970">Tobler 1970</a>)</span></span>
 </p>
 </div>
-<p>Mapped events or entities can have non-spatial information attached to them (some GIS software tag these as attributes). A question often asked is whether or not features with similar values are clustered, randomly distributed or dispersed. In most cases, the distribution of attribute values will seldom show evidence of complete spatial randomness.</p>
+<p>Mapped events or entities can have non-spatial information attached to them (some GIS software call these attributes). When mapped, these values often exhibit some degree of spatial relatedness at some scale. This is what Tobler was getting at: The idea that values close to one another tend to be similar. In fact, you will be hard-pressed to find mapped features that do not exhibit some kind of non-random pattern.</p>
 <p><img src="img/Random_maps.png" width="1662" /></p>
-<p>Though our visual senses can, in some cases, discern clustered regions from non-clustered regions, the distinction may not always be so obvious. We must therefore come up with a quantitative and objective approach to quantifying the degree to which similar features cluster and where such clustering occurs. One popular test of spatial autocorrelation is the Moran’s I test.</p>
+<p>So how do we model spatial patterns? The approach taken will depend on how one chooses to characterize the underlying process–this can be either a spatial trend model or a spatial clustering/dispersion model. This chapter focuses on the latter.</p>
 <div id="global-morans-i" class="section level2 hasAnchor" number="13.1">
-<h2><span class="header-section-number">13.1</span> Global Moran’s I<a href="spatial-autocorrelation.html#global-morans-i" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<h2><span class="header-section-number">13.1</span> Global Moran’s <em>I</em><a href="spatial-autocorrelation.html#global-morans-i" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Though our visual senses can, in some cases, discern clustered regions from non-clustered regions, the distinction may not always be so obvious. We must therefore come up with a quantitative and objective approach to quantifying the degree to which similar features cluster or disperse and where such clustering occurs. One popular measure of spatial autocorrelation is the Moran’s <em>I</em> coefficient.</p>
 <div id="computing-the-morans-i" class="section level3 hasAnchor" number="13.1.1">
-<h3><span class="header-section-number">13.1.1</span> Computing the Moran’s I<a href="spatial-autocorrelation.html#computing-the-morans-i" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>Let’s start with a working example: 2010 per capita income for the state of Maine.</p>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:f13-ME-income"></span>
-<img src="img/Maine_income.png" alt="2010 median per capita income aggregated at the county level." width="300" />
+<h3><span class="header-section-number">13.1.1</span> Computing the Moran’s <em>I</em><a href="spatial-autocorrelation.html#computing-the-morans-i" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Let’s start with a working example: 2020 median per capita income for the state of Maine.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig03"></span>
+<img src="13-Spatial-Autocorrelation_files/figure-html/fig03-1.png" alt="Map of 2020 median per capita income for Maine counties (USA)." width="672" />
 <p class="caption">
-Figure 13.1: 2010 median per capita income aggregated at the county level.
+Figure 13.1: Map of 2020 median per capita income for Maine counties (USA).
 </p>
 </div>
-<p>It may seem apparent that, when aggregated at the county level, the income distribution follows a north-south trend (i.e. high values appear clustered near the southern end of the state and low values seem clustered near the north and east). But a qualitative description may not be sufficient; we might want to quantify the degree to which similar (or dissimilar) counties are clustered. One measure of this type or relationship is the Moran’s I statistic.</p>
-<p>The Moran’s I statistic is the correlation coefficient for the relationship between a variable (like income) and its surrounding values. But before we go about computing this correlation, we need to come up with a way to define a neighbor. One approach is to define a neighbor as being any contiguous polygon. For example, the northern most county (Aroostook), has four contiguous neighbors while the southern most county (York) has two contiguous counties. Other neighborhood definitions include distance bands (e.g. counties within 100 km) and k nearest neighbors (e.g. the 2 closest neighbors). Note that distance bands and k nearest neighbors are usually measured using the polygon’s centroids and not their boundaries.</p>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:f13-diff-neighbor"></span>
+<p>It may seem apparent that, when aggregated at the county level, the income distribution appears clustered with high counties surrounded by high counties and low counties surrounded by low counties. But a qualitative description may not be sufficient; we might want to quantify the degree to which similar (or dissimilar) counties are clustered. One measure of this type or relationship is the <strong>Moran’s I statistic</strong>.</p>
+<p>The Moran’s <em>I</em> statistic is the correlation coefficient for the relationship between a variable (like income) and its neighboring values. But before we go about computing this correlation, we need to come up with a way to define a neighbor. One approach is to define a neighbor as being any contiguous polygon. For example, the northern most county (Aroostook), has four contiguous neighbors while the southern most county (York) has just two contiguous counties. Other neighborhood definitions can include distance bands (e.g. counties within 100 km) and k nearest neighbors (e.g. the 2 closest neighbors). Note that distance bands and k nearest neighbors are usually measured using the polygon’s centroids and not their boundaries.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig04"></span>
 <img src="img/Diff_neighbors.png" alt="Maps show the links between each polygon and their respective neighbor(s) based on the neighborhood definition. A contiguous neighbor is defined as one that shares a boundary or a vertex with the polygon of interest.  Orange numbers indicate the number of neighbors for each polygon. Note that the top most county has no neighbors when a neighborhood definition of a 100 km distance band is used (i.e. no centroids are within a 100 km search radius)" width="600" />
 <p class="caption">
 Figure 13.2: Maps show the links between each polygon and their respective neighbor(s) based on the neighborhood definition. A contiguous neighbor is defined as one that shares a boundary or a vertex with the polygon of interest. Orange numbers indicate the number of neighbors for each polygon. Note that the top most county has no neighbors when a neighborhood definition of a 100 km distance band is used (i.e. no centroids are within a 100 km search radius)
 </p>
 </div>
-<p>Once we define a neighborhood for our analysis we identify the neighbors for each polygon in our dataset then summaries the values for each neighborhood cluster (by computing their mean values, for example). This summarized neighbor value is sometimes referred to as a lagging value (<em>X<sub>lag</sub></em>). In our working example, we adopt a contiguity neighborhood and compute the average neighboring income value (<em>Income<sub>lag</sub></em>) for each county in our dataset. We then plot <em>Income<sub>lag</sub></em> vs. <em>Income</em> for each county. The Moran’s I coefficient between <em>Income<sub>lag</sub></em> and <em>Income</em> is nothing more than the slope of the least squares regression line that best fits the points <em>after</em> having equalized the spread between both sets of data.</p>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:f13-scatter-plot"></span>
-<img src="img/MoranI_scatter_plot.png" alt="Scatter plot of *Income~lag~* vs. *Income*. If we equalize the spread between both axes (i.e. convert to a z-score) the slope of the regression line represents the Moran's I statistic." width="400" />
+<p>Once we’ve defined a neighborhood for our analysis, we identify the neighbors for each polygon in our dataset then summaries the values for each neighborhood cluster (by computing their mean values, for example). This summarized neighborhood value is sometimes referred to as a spatially lagged value (<em>X<sub>lag</sub></em>). In our working example, we adopt a contiguity neighborhood and compute the average neighboring income value (<em>Income<sub>lag</sub></em>) for each county in our dataset. We then plot <em>Income<sub>lag</sub></em> vs. <em>Income</em> for each county. The Moran’s <em>I</em> coefficient between <em>Income<sub>lag</sub></em> and <em>Income</em> is nothing more than the slope of the least squares regression line that best fits the points <em>after</em> having equalized the spread between both sets of data.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig05"></span>
+<img src="13-Spatial-Autocorrelation_files/figure-html/fig05-1.png" alt="Scatter plot of spatially lagged income (neighboring income) vs. each countie's income. If we equalize the spread between both axes (i.e. convert to a z-value) the slope of the regression line represents the Moran's *I* statistic." width="336" />
 <p class="caption">
-Figure 13.3: Scatter plot of <em>Income<sub>lag</sub></em> vs. <em>Income</em>. If we equalize the spread between both axes (i.e. convert to a z-score) the slope of the regression line represents the Moran’s I statistic.
+Figure 13.3: Scatter plot of spatially lagged income (neighboring income) vs. each countie’s income. If we equalize the spread between both axes (i.e. convert to a z-value) the slope of the regression line represents the Moran’s <em>I</em> statistic.
 </p>
 </div>
-<p>If there is no relationship between <em>Income</em> and <em>Income<sub>lag</sub></em>, the slope will be close to flat (resulting in a Moran’s I value near 0). In our working example, the Moran’s I value is 0.377. So this begs the question, how significant is this Moran’s I value (i.e. is the computed slope significantly different from 0)? There are two approaches to estimating the significance: an analytical solution and a Monte Carlo solution. The analytical solution makes some restrictive assumptions about the data and thus cannot always be reliable. Another approach (and the one favored here) is a Monte Carlo test which makes <em>no</em> assumptions about the dataset including the shape and layout of each polygon.</p>
+<p>If there is no degree of association between <em>Income</em> and <em>Income<sub>lag</sub></em>, the slope will be close to flat (resulting in a Moran’s <em>I</em> value near 0). In our working example, the slope is far from flat with a Moran’s <em>I</em> value is 0.28. So this begs the question, how significant is this Moran’s <em>I</em> value (i.e. is the computed slope significantly different from 0)? There are two approaches to estimating the significance: an analytical solution and a Monte Carlo solution. The analytical solution makes some restrictive assumptions about the data and thus cannot always be reliable. Another approach (and the one favored here) is a Monte Carlo test which makes <em>no</em> assumptions about the dataset including the shape and layout of each polygon.</p>
 </div>
 <div id="monte-carlo-approach-to-estimating-significance" class="section level3 hasAnchor" number="13.1.2">
 <h3><span class="header-section-number">13.1.2</span> Monte Carlo approach to estimating significance<a href="spatial-autocorrelation.html#monte-carlo-approach-to-estimating-significance" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>In a Monte Carlo test (a permutation bootstrap test, to be exact), the attribute values are randomly assigned to polygons in the data set and for each permutation of the attribute values, a Moran’s I value is computed. The output is a sampling distribution of Moran’s I values under the (null) hypothesis that attribute values are randomly distributed across the study area. We then compare our observed Moran’s I value to this sampling distribution.</p>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:f13-MC-result"></span>
-<img src="img/MC_sim_1.png" alt="Results from 199 permutations. Left plot shows Moran's I slopes (in gray) from each random permutation of income values superimposed with the observed Moran's I slope (in red). Right plot shows the distribution of Moran's I values for all 199 permutations; red vertical line shows our observed Moran's I value of 0.377." width="400" />
+<p>In a Monte Carlo test (a permutation bootstrap test, to be exact), the attribute values are randomly assigned to polygons in the data set and, for each permutation of the attribute values, a Moran’s <em>I</em> value is computed.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig06"></span>
+<img src="13-Spatial-Autocorrelation_files/figure-html/fig06-1.png" alt="Results from 199 permutations. Plot shows Moran's *I* slopes (in gray) computed from each random permutation of income values. The observed Moran's *I* slope for the original dataset is shown in red." width="384" />
 <p class="caption">
-Figure 13.4: Results from 199 permutations. Left plot shows Moran’s I slopes (in gray) from each random permutation of income values superimposed with the observed Moran’s I slope (in red). Right plot shows the distribution of Moran’s I values for all 199 permutations; red vertical line shows our observed Moran’s I value of 0.377.
+Figure 13.4: Results from 199 permutations. Plot shows Moran’s <em>I</em> slopes (in gray) computed from each random permutation of income values. The observed Moran’s <em>I</em> slope for the original dataset is shown in red.
 </p>
 </div>
-<p>In our working example, 199 simulations indicate that out observed Moran’s I value of 0.377 is not a value we would expect to compute if the income values were randomly distributed across each county. A (pseudo) <em>P-value</em> can easily be computed from the simulation results:</p>
+<p>The output is a sampling distribution of Moran’s <em>I</em> values under the (null) hypothesis that attribute values are randomly distributed across the study area. We then compare our observed Moran’s <em>I</em> value to this sampling distribution.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig07"></span>
+<img src="13-Spatial-Autocorrelation_files/figure-html/fig07-1.png" alt="Histogram shows the distribution of Moran's *I* values for all 199 permutations; red vertical line shows our observed Moran's *I* value of 0.28." width="288" />
+<p class="caption">
+Figure 13.5: Histogram shows the distribution of Moran’s <em>I</em> values for all 199 permutations; red vertical line shows our observed Moran’s <em>I</em> value of 0.28.
+</p>
+</div>
+<p>In our working example, 199 simulations indicate that our observed Moran’s <em>I</em> value of 0.28 is not a value we would expect to compute if the income values were randomly distributed across each county. A (pseudo) <em>P-value</em> can easily be computed from the simulation results:</p>
 <p><span class="math display">\[
 \dfrac{N_{extreme}+1}{N+1}
 \]</span></p>
-<p>where <span class="math inline">\(N_{extreme}\)</span> is the number of simulated Moran’s I values more extreme than our observed statistic and <span class="math inline">\(N\)</span> is the total number of simulations. Here, out of 199 simulations, just one simulation result was more extreme than our observed statisic, <span class="math inline">\(N_{extreme}\)</span> = 1, so <span class="math inline">\(p\)</span> is equal to (1 + 1) / (199 + 1) = 0.01. This is interpreted as “<em>there is a 1% probability that we would be wrong in rejecting the null hypothesis H<sub>o</sub>.</em>”</p>
+<p>where <span class="math inline">\(N_{extreme}\)</span> is the number of simulated Moran’s <em>I</em> values more extreme than our observed statistic and <span class="math inline">\(N\)</span> is the total number of simulations. Here, out of 199 simulations, just three simulated <em>I</em> values were more extreme than our observed statistic, <span class="math inline">\(N_{extreme}\)</span> = 3, so <span class="math inline">\(p\)</span> is equal to (3 + 1) / (199 + 1) = 0.02. This is interpreted as “<em>there is a 2% probability that we would be wrong in rejecting the null hypothesis H<sub>o</sub>.</em>”</p>
+<p>Note that in this permutation example, we shuffled around the observed income values such that <em>all</em> values were present in each permutation outcome–this is sometimes referred to as a <strong>randomization</strong> option in a few software implementations of the Moran’s <em>I</em> hypothesis test. Note that here, <em>randomization</em> is not to be confused with the way the permutation technique “randomly” assigns values to features in the data layer.</p>
+<p>Alternatively, one can choose to randomly assign a set of values to each feature in a data layer from a <em>theorized distribution</em> (for example, a <em>Normal</em> distribution). This may result in a completely different set of values for each permutation outcome. Note that you would only adopt this approach if the theorized distribution underpinning the value of interest is known <em>a priori</em>.</p>
+<p>Another important consideration when computing a P-value from a permutation test is the number of simulations to perform. In the above example we ran 199 permutations, thus, the smallest P-value we could possibly come up with is 1 / (199 + 1) or a P-value of 0.005. You should therefore chose a number of permutations, <span class="math inline">\(N\)</span>, large enough to ensure a reliable level of significance.</p>
 </div>
 </div>
 <div id="morans-i-at-different-lags" class="section level2 hasAnchor" number="13.2">
-<h2><span class="header-section-number">13.2</span> Moran’s I at different lags<a href="spatial-autocorrelation.html#morans-i-at-different-lags" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<h2><span class="header-section-number">13.2</span> Moran’s <em>I</em> at different lags<a href="spatial-autocorrelation.html#morans-i-at-different-lags" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>So far we have looked at spatial autocorrelation where we define neighbors as all polygons sharing a boundary with the polygon of interest. We may also be interested in studying the <em>ranges</em> of autocorrelation values as a function of distance. The steps for this type of analysis are straightforward:</p>
 <ol style="list-style-type: decimal">
 <li><p>Compute lag values for a defined set of neighbors.</p></li>
-<li><p>Calculate the Moran’s I value for this set of neighbors.</p></li>
+<li><p>Calculate the Moran’s <em>I</em> value for this set of neighbors.</p></li>
 <li><p>Repeat steps 1 and 2 for a different set of neighbors (at a greater distance for example) .</p></li>
 </ol>
-<p>For example, the Moran’s I values for income distribution in the state of Maine at distances of 75, 125, up to 325 km are presented in the following plot:</p>
+<p>For example, the Moran’s <em>I</em> values for income distribution in the state of Maine at distances of 75, 125, up to 325 km are presented in the following plot:</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:f13-MC-distance"></span>
-<img src="img/MoranI_distance_band.png" alt="Moran's I at different spatial lags defined by a 50 km width annulus at 50 km distance increments. Red dots indicate Moran I values for which a P-value was 0.05 or less." width="400" />
+<img src="img/MoranI_distance_band.png" alt="Moran's *I* at different spatial lags defined by a 50 km width annulus at 50 km distance increments. Red dots indicate Moran *I* values for which a P-value was 0.05 or less." width="500" />
 <p class="caption">
-Figure 13.5: Moran’s I at different spatial lags defined by a 50 km width annulus at 50 km distance increments. Red dots indicate Moran I values for which a P-value was 0.05 or less.
+Figure 13.6: Moran’s <em>I</em> at different spatial lags defined by a 50 km width annulus at 50 km distance increments. Red dots indicate Moran <em>I</em> values for which a P-value was 0.05 or less.
 </p>
 </div>
 <p>The plot suggests that there is significant spatial autocorrelation between counties within 25 km of one another, but as the distances between counties increases, autocorrelation shifts from being positive to being negative meaning that at greater distances, counties tend to be more dissimilar.</p>
 </div>
 <div id="local-morans-i" class="section level2 hasAnchor" number="13.3">
-<h2><span class="header-section-number">13.3</span> Local Moran’s I<a href="spatial-autocorrelation.html#local-morans-i" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>We can decompose the global Moran’s I down to its components thus constructing a <em>localized</em> measure of autocorrelation–i.e. a map of “hot spots” and “cold spots”.</p>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:f13-local-I"></span>
-<img src="img/HH_LL_noP.png" alt="Red points and polygons highlight counties with high income values surrounded by high income counties. Blue points and polygons highlight counties with low income values surrounded by low income counties." width="300" height="300" /><img src="img/HH_LL_noP_map.png" alt="Red points and polygons highlight counties with high income values surrounded by high income counties. Blue points and polygons highlight counties with low income values surrounded by low income counties." width="300" height="300" />
+<h2><span class="header-section-number">13.3</span> Local Moran’s <em>I</em><a href="spatial-autocorrelation.html#local-morans-i" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>We can decompose the global Moran’s <em>I</em> into a <em>localized</em> measure of autocorrelation–i.e. a map of “hot spots” and “cold spots”.</p>
+<p>A local Moran’s <em>I</em> analysis is best suited for relatively large datasets, especially if a hypothesis test is to be implemented. We’ll therefor switch to another dataset: Massachusetts household income data.</p>
+<p><img src="13-Spatial-Autocorrelation_files/figure-html/ma-dataset-1.png" width="480" style="display: block; margin: auto;" /></p>
+<p>Applying a contiguity based definition of a neighbor, we get the following scatter plot of spatially lagged income vs. income.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:chunk10"></span>
+<img src="13-Spatial-Autocorrelation_files/figure-html/chunk10-1.png" alt="Grey vertical and horizontal lines define the mean values for both axes values. Red points highlight counties with relatively high income values (i.e. greater than the mean) surrounded by counties whose average income value is relatively high. Likewise, dark blue points highlight counties with relatively low income values surrounded by counties whose average income value is relatively low." width="384" />
 <p class="caption">
-Figure 13.6: Red points and polygons highlight counties with high income values surrounded by high income counties. Blue points and polygons highlight counties with low income values surrounded by low income counties.
+Figure 13.7: Grey vertical and horizontal lines define the mean values for both axes values. Red points highlight counties with relatively high income values (i.e. greater than the mean) surrounded by counties whose average income value is relatively high. Likewise, dark blue points highlight counties with relatively low income values surrounded by counties whose average income value is relatively low.
 </p>
 </div>
-<p>Next, we can use Monte Carlo techniques to assess whether or not the High-High values and Low-Low values are significant at a confidence level of 0.05 (i.e. for P-value= 0.05).</p>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:f13-local-I-MC"></span>
-<img src="img/HH_LL_P.png" alt="Significantly High-High and Low-Low clusters with P-values less than or equal to 0.5." width="300" height="300" /><img src="img/HH_LL_P_map.png" alt="Significantly High-High and Low-Low clusters with P-values less than or equal to 0.5." width="300" height="300" />
+<p>You’ll note that the mean value for <em>Income</em>, highlighted as light grey vertical and horizontal lines in the above plot, carve up the four quadrant defining the low-low, high-low, high-high and low-high quadrants when starting from the bottom-left quadrant and working counterclockwise. Note that other measures of centrality, such as the median, could be used to delineate these quadrants.</p>
+<p>The values in the above scatter plot can be mapped to each polygon in the dataset as shown in the following figure.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig08"></span>
+<img src="13-Spatial-Autocorrelation_files/figure-html/fig08-1.png" alt="A map view of the low-low (blue), high-low (light-blue), high-high (red) and low-high (orange) counties. " width="432" />
 <p class="caption">
-Figure 13.7: Significantly High-High and Low-Low clusters with P-values less than or equal to 0.5.
+Figure 13.8: A map view of the low-low (blue), high-low (light-blue), high-high (red) and low-high (orange) counties.
+</p>
+</div>
+<p>Each observation that contributes to the global Moran’s <em>I</em> can be assigned a localized version of that statistic, <span class="math inline">\(I_i\)</span> where the subscript <span class="math inline">\(i\)</span> references the individual geometric unit. The calculation of <span class="math inline">\(I_i\)</span> is shown later in the chapter.</p>
+<p>At this point, we have identified the counties that are surrounded by similar values. However, we have yet to assess which polygons are “significantly” similar or dissimilar to their neighbors.</p>
+<p>As with the global Moran’s <em>I</em>, there is both an analytical and Monte Carlo approach to computing significance of <span class="math inline">\(I_i\)</span>. In the case of a Monte Carlo approach, one shuffles all values in the dataset except for the value, <span class="math inline">\(y_i\)</span>, of the geometric unit <span class="math inline">\(i\)</span> whose <span class="math inline">\(I_i\)</span> we are assessing for significance. For each permutation, we compare the value at <span class="math inline">\(y_i\)</span> to the average value of its neighboring values. From the permutations, we generate a distribution of <span class="math inline">\(I_i\)</span> values (for each <span class="math inline">\(y_i\)</span> feature) we would expect to get if the values were randomly distributed across all features.</p>
+<p>We can use the following polygon in eastern Massachusetts as example.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig09"></span>
+<img src="13-Spatial-Autocorrelation_files/figure-html/fig09-1.png" alt="Polygon whose *signifcance* value we are asessing in  this example." width="336" />
+<p class="caption">
+Figure 13.9: Polygon whose <em>signifcance</em> value we are asessing in this example.
+</p>
+</div>
+<p>Its local Moran’s <em>I</em> statistic is 0.85. A permutation test shuffles the income values around it all the while keeping its value constant. An example of an outcome of a few permutations follows:</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig10"></span>
+<img src="13-Spatial-Autocorrelation_files/figure-html/fig10-1.png" alt="Local Moran's I outcomes of a few permutations of income values." width="864" />
+<p class="caption">
+Figure 13.10: Local Moran’s I outcomes of a few permutations of income values.
+</p>
+</div>
+<p>You’ll note that even though the income value remains the same in the polygon of interest, its local Moran’s <em>I</em> statistic will change because of the changing income values in its surrounding polygons.</p>
+<p>If we perform many more permutations, we come up with a distribution of <span class="math inline">\(I_i\)</span> values under the null that the income values are randomly distributed across the state of Massachusetts. The distribution of <span class="math inline">\(I_i\)</span> for the above example is plotted using a histogram.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig11"></span>
+<img src="13-Spatial-Autocorrelation_files/figure-html/fig11-1.png" alt="Distribution of $I_i$ values under the null hypothesis that income values are randomly distributed across the study extent. The red vertical line shows the observed $I_i$ for comparison." width="288" />
+<p class="caption">
+Figure 13.11: Distribution of <span class="math inline">\(I_i\)</span> values under the null hypothesis that income values are randomly distributed across the study extent. The red vertical line shows the observed <span class="math inline">\(I_i\)</span> for comparison.
+</p>
+</div>
+<p>About 9.3% of the simulated values are more extreme than our observed <span class="math inline">\(I_i\)</span> giving us a pseudo p-value of 0.09.</p>
+<p>If we perform this permutation for all polygons in our dataset, we can map the pseudo p-values for each polygon. Note that here, we are mapping the probability that the observed <span class="math inline">\(I_i\)</span> value is more extreme than expected (equivalent to a one-tail test).</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig12"></span>
+<img src="13-Spatial-Autocorrelation_files/figure-html/fig12-1.png" alt="Map of the pseudo p-values for each polygons' $I_i$ statistic." width="480" />
+<p class="caption">
+Figure 13.12: Map of the pseudo p-values for each polygons’ <span class="math inline">\(I_i\)</span> statistic.
+</p>
+</div>
+<p>One can use the computed p-values to filter the <span class="math inline">\(I_i\)</span> values based on a desired level of significance. For example, the following scatter plot and map shows the high/low “hotspots” for which a pseudo p-value of 0.05 or less was computed from the above simulation.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig13"></span>
+<img src="13-Spatial-Autocorrelation_files/figure-html/fig13-1.png" alt="Local Moran's *I* values having a signifcance level of 0.05 or less." width="864" />
+<p class="caption">
+Figure 13.13: Local Moran’s <em>I</em> values having a signifcance level of 0.05 or less.
+</p>
+</div>
+<p>You’ll note that the levels of significance do not apply to just the high-high and low-low regions, they can apply to <em>all</em> combinations of highs and lows.</p>
+<p>Here’s another example where the <span class="math inline">\(I_i\)</span> values are filtered based on a more stringent significance level of 0.01.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig14"></span>
+<img src="13-Spatial-Autocorrelation_files/figure-html/fig14-1.png" alt="Local Moran's *I* values having a signifcance level of 0.01 or less." width="864" />
+<p class="caption">
+Figure 13.14: Local Moran’s <em>I</em> values having a signifcance level of 0.01 or less.
+</p>
+</div>
+</div>
+<div id="morans-i-equation-explained" class="section level2 hasAnchor" number="13.4">
+<h2><span class="header-section-number">13.4</span> Moran’s <em>I</em> equation explained<a href="spatial-autocorrelation.html#morans-i-equation-explained" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The Moran’s <em>I</em> equation can take on many forms. One form of the equation can be presented as:</p>
+<p><span class="math display">\[
+I = \frac{N}{\sum\limits_i (X_i-\bar X)^2}
+    \frac{\sum\limits_i \sum\limits_j w_{ij}(X_i-\bar X)(X_j-\bar X)}{\sum\limits_i \sum\limits_j w_{ij}} \tag{1}
+\]</span></p>
+<p><span class="math inline">\(N\)</span> is the total number of features in the dataset, <span class="math inline">\(X\)</span> is the quantity of interest. Subscripts <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span> reference two different features in the dataset, and <span class="math inline">\(w_{ij}\)</span> is a weight that defines the relationship between features <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span> (i.e. the weights will determine if feature <span class="math inline">\(j\)</span> is a neighbor of <span class="math inline">\(i\)</span> and how much weight feature <span class="math inline">\(j\)</span> should be given when computing some overall neighboring <span class="math inline">\(X\)</span> value).</p>
+<p>There a few key components of this equation worth highlighting. First, you’ll note the standardization of both sets of values by the subtraction of each value in <span class="math inline">\(X_i\)</span> or <span class="math inline">\(X_j\)</span> by the mean of <span class="math inline">\(X\)</span>. This highlights the fact that we are seeking to compare the deviation of each value from an overall mean and not the deviation of their absolute values.</p>
+<p>Second, you’ll note an inverted variance term on the left-hand side of equation (1)–this is a measure of spread. You might recall from an introductory statistics course that the variance can be computed as:</p>
+<p><span class="math display">\[
+s^2 = \frac{\sum\limits_i (X_i-\bar X)^2}{N}\tag{2}
+\]</span>
+Note that a more common measure of variance, the sample variance, where one divides the above numerator by <span class="math inline">\((n-1)\)</span> can also be adopted in the Moran’s <em>I</em> calculation.</p>
+<p>Equation (1) is thus dividing the large fraction on the right-hand side by the variance. This has for effect of limiting the range of possible Moran’s <em>I</em> values between -1 and 1 (note that in some extreme cases, <span class="math inline">\(I\)</span> can take on a value more extreme than [-1; 1]). We can re-write the Moran’s I equation by plugging in <span class="math inline">\(s^2\)</span> as follows:</p>
+<p><span class="math display">\[
+I = \frac{\sum\limits_i \sum\limits_j w_{ij}\frac{(X_i-\bar X)}{s}\frac{(X_j-\bar X)}{s}}{\sum\limits_i \sum\limits_j w_{ij}} \tag{3}
+\]</span>
+Note that here <span class="math inline">\(s\times s = s^2\)</span>. You might recognize the numerator as a sum of the product of standardized <em>z</em>-values between neighboring features. If we let <span class="math inline">\(z_i = \frac{(X_i-\bar X)}{s}\)</span> and <span class="math inline">\(z_j = \frac{(X_j-\bar X)}{s}\)</span>, The Moran’s I equation can be reduced to:</p>
+<p><span class="math display">\[
+I = \frac{\sum\limits_i \sum\limits_j w_{ij}(z_i\ z_j)}{\sum\limits_i \sum\limits_j w_{ij}} \tag{4}
+\]</span></p>
+<p>Recall that we are comparing a variable <span class="math inline">\(X\)</span> at <span class="math inline">\(i\)</span> to all of its neighboring values at <span class="math inline">\(j\)</span>. More specifically, we are computing a summary value (such as the mean) of the neighboring values at <span class="math inline">\(j\)</span> and multiplying that by <span class="math inline">\(X_i\)</span>. So, if we let <span class="math inline">\(y_i = \sum\limits_j w_{ij} z_j\)</span>, the Moran’s I coefficient can be rewritten as:</p>
+<p><span class="math display">\[
+I = \frac{\sum\limits_i z_i y_i}{\sum\limits_i \sum\limits_j w_{ij}}  \tag{5}
+\]</span></p>
+<p>So, <span class="math inline">\(y_i\)</span> is the average z-value for the neighboring features thus making the product <span class="math inline">\(z_i y_i\)</span> nothing more than a <em>correlation coefficient</em>.</p>
+<p>The product <span class="math inline">\(z_iy_i\)</span> is a local measure of spatial autocorrelation, <span class="math inline">\(I_i\)</span>. If we <em>don’t</em> summarize across all locations <span class="math inline">\(i\)</span>, we get our local I statistic, <span class="math inline">\(I_i\)</span>:</p>
+<p><span class="math display">\[
+I_i = z_iy_i  \tag{6}
+\]</span>
+The global Moran’s <em>I</em> statistic, <span class="math inline">\(I\)</span>, is thus the average of all <span class="math inline">\(I_i\)</span> values.</p>
+<p><span class="math display">\[
+I = \frac{\sum\limits_i I_i}{\sum\limits_i \sum\limits_j w_{ij}}  \tag{5}
+\]</span></p>
+<p>Let’s explore elements of the Moran’s <em>I</em> equation using the following sample dataset.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig15"></span>
+<img src="13-Spatial-Autocorrelation_files/figure-html/fig15-1.png" alt="Simulated spatial layer. The figure on the left shows the each cell's ID value. The figure in the middle shows the values for each cell. The figure on the right shows the standardized values using equation (2)." width="672" />
+<p class="caption">
+Figure 13.15: Simulated spatial layer. The figure on the left shows the each cell’s ID value. The figure in the middle shows the values for each cell. The figure on the right shows the standardized values using equation (2).
+</p>
+</div>
+<p>The first step in the computation of a Moran’s <em>I</em> index is the generation of weights. The weights can take on many different values. For example, one could assign a value of <code>1</code> to a neighboring cell as shown in the following matrix.</p>
+<table class="table table-striped" style="font-size: 11px; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:left;">
+1
+</th>
+<th style="text-align:left;">
+2
+</th>
+<th style="text-align:left;">
+3
+</th>
+<th style="text-align:left;">
+4
+</th>
+<th style="text-align:left;">
+5
+</th>
+<th style="text-align:left;">
+6
+</th>
+<th style="text-align:left;">
+7
+</th>
+<th style="text-align:left;">
+8
+</th>
+<th style="text-align:left;">
+9
+</th>
+<th style="text-align:left;">
+10
+</th>
+<th style="text-align:left;">
+11
+</th>
+<th style="text-align:left;">
+12
+</th>
+<th style="text-align:left;">
+13
+</th>
+<th style="text-align:left;">
+14
+</th>
+<th style="text-align:left;">
+15
+</th>
+<th style="text-align:left;">
+16
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;font-weight: bold;padding: 5px;line-height: 4px;">
+1
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;padding: 5px;line-height: 4px;">
+2
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;padding: 5px;line-height: 4px;">
+3
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;padding: 5px;line-height: 4px;">
+4
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;padding: 5px;line-height: 4px;">
+5
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;padding: 5px;line-height: 4px;">
+6
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;padding: 5px;line-height: 4px;">
+7
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;padding: 5px;line-height: 4px;">
+8
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;padding: 5px;line-height: 4px;">
+9
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;padding: 5px;line-height: 4px;">
+10
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;padding: 5px;line-height: 4px;">
+11
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;padding: 5px;line-height: 4px;">
+12
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;padding: 5px;line-height: 4px;">
+13
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;padding: 5px;line-height: 4px;">
+14
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;padding: 5px;line-height: 4px;">
+15
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;padding: 5px;line-height: 4px;">
+16
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+</tr>
+</tbody>
+</table>
+<p>For example, cell ID <code>1</code> (whose value is 25 and whose standardized value is 0.21) has for neighbors cells <code>2</code>, <code>5</code> and <code>6</code>. Computationally (working with the standardized values), this gives us a summarized neighboring value (aka lagged value), <span class="math inline">\(y_1(lag)\)</span> of:</p>
+<p><span class="math display">\[
+\begin{align*}
+y_1 =  \sum\limits_j w_{1j} z_j {}={} &amp; (0)(0.21)+(1)(1.17)+(0)(1.5)+ ... + \\
+                                      &amp; (1)(0.69)+(1)(0.93)+(0)(-0.36)+...+ \\
+                                      &amp; (0)(-0.76) = 2.79
+\end{align*}                                  
+\]</span></p>
+<p>Computing the spatially lagged values for the other 15 cells generates the following scatterplot:</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig17"></span>
+<img src="13-Spatial-Autocorrelation_files/figure-html/fig17-1.png" alt="Moran's *I* scatterplot using a binary weight. The red point is the ($z_1$, $y_i$) pair computed for cell `1`." width="384" />
+<p class="caption">
+Figure 13.16: Moran’s <em>I</em> scatterplot using a binary weight. The red point is the (<span class="math inline">\(z_1\)</span>, <span class="math inline">\(y_i\)</span>) pair computed for cell <code>1</code>.
+</p>
+</div>
+<p>You’ll note that the range of neighboring values along the <span class="math inline">\(y\)</span>-axis is much greater than that of the original values on the <span class="math inline">\(x\)</span>-axis. This is not necessarily an issue given that the Moran’s <span class="math inline">\(I\)</span> correlation coefficient standardizes the values by recentering them on the overall mean <span class="math inline">\((X - \bar{X})/s\)</span>. This is simply to re-emphasize that we are interested in how a neighboring value varies relative to a feature’s value, regardless of the scale of values in either batches.</p>
+<p>If there is a downside to adopting a binary weight, it’s the bias that the different number of neighbors can introduce in the calculation of the spatially lagged values. In other words, a feature with <code>5</code> polygons (such as feature ID <code>12</code>) will have a larger neighboring value than a feature with <code>3</code> neighbors (such as feature ID <code>1</code>) whose neighboring value will be less if there was no spatial autocorrelation in the dataset.</p>
+<p>A more natural weight is one where the values are standardized across each row of the weights matrix such that the weights across each row sum to one. For example:</p>
+<table class="table table-striped" style="font-size: 11px; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:left;">
+1
+</th>
+<th style="text-align:left;">
+2
+</th>
+<th style="text-align:left;">
+3
+</th>
+<th style="text-align:left;">
+4
+</th>
+<th style="text-align:left;">
+5
+</th>
+<th style="text-align:left;">
+6
+</th>
+<th style="text-align:left;">
+7
+</th>
+<th style="text-align:left;">
+8
+</th>
+<th style="text-align:left;">
+9
+</th>
+<th style="text-align:left;">
+10
+</th>
+<th style="text-align:left;">
+11
+</th>
+<th style="text-align:left;">
+12
+</th>
+<th style="text-align:left;">
+13
+</th>
+<th style="text-align:left;">
+14
+</th>
+<th style="text-align:left;">
+15
+</th>
+<th style="text-align:left;">
+16
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;font-weight: bold;padding: 5px;line-height: 4px;">
+1
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.333</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.333</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.333</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;padding: 5px;line-height: 4px;">
+2
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;padding: 5px;line-height: 4px;">
+3
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;padding: 5px;line-height: 4px;">
+4
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.333</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.333</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.333</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;padding: 5px;line-height: 4px;">
+5
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;padding: 5px;line-height: 4px;">
+6
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.125</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.125</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.125</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.125</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.125</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.125</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.125</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.125</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;padding: 5px;line-height: 4px;">
+7
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.125</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.125</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.125</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.125</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.125</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.125</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.125</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.125</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;padding: 5px;line-height: 4px;">
+8
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;padding: 5px;line-height: 4px;">
+9
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;padding: 5px;line-height: 4px;">
+10
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.125</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.125</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.125</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.125</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.125</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.125</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.125</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.125</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;padding: 5px;line-height: 4px;">
+11
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.125</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.125</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.125</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.125</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.125</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.125</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.125</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.125</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;padding: 5px;line-height: 4px;">
+12
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;padding: 5px;line-height: 4px;">
+13
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.333</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.333</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.333</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;padding: 5px;line-height: 4px;">
+14
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;padding: 5px;line-height: 4px;">
+15
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;padding: 5px;line-height: 4px;">
+16
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.333</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.333</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.333</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: grey30 !important;">0</span>
+</td>
+</tr>
+</tbody>
+</table>
+<p>The spatially lagged value for cell ID <code>1</code> is thus computed as:</p>
+<p><span class="math display">\[
+\begin{align*}
+y_1 =  \sum\limits_j w_{1j} z_j {}={} &amp; (0)(0.21)+(0.333)(1.17)+(0)(1.5)+...+ \\
+                                      &amp; (0.333)(0.69)+(0.333)(0.93)+(0)(-0.36)+...+ \\
+                                      &amp; (0)(-0.76) = 0.93
+\end{align*}
+\]</span></p>
+<p>Multiplying each neighbor by the standardized weight, then summing these values, is simply computing the neighbor’s mean value.</p>
+<p>Using the standardized weights generates the following scatter plot. Plot on the left shows the raw values on the <em>x</em> and <em>y</em> axes; plot on the right shows the standardized values <span class="math inline">\(z_i\)</span> and <span class="math inline">\(y_i = \sum\limits_j w_{ij} z_j\)</span>. You’ll note that the shape of the point cloud is the same in both plots given that the axes on the left plot are scaled such as to match the standardized scales in both axes.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig19"></span>
+<img src="13-Spatial-Autocorrelation_files/figure-html/fig19-1.png" alt="Moran's scatter plot with original values on the left and same Moran's I scatter plot on the right using the standardzied values $z_i$ and $y_i$." width="672" />
+<p class="caption">
+Figure 13.17: Moran’s scatter plot with original values on the left and same Moran’s I scatter plot on the right using the standardzied values <span class="math inline">\(z_i\)</span> and <span class="math inline">\(y_i\)</span>.
+</p>
+</div>
+<p>Note the difference in the point cloud pattern in the above plot from the one generated using the binary weights. Other weights can be used such as inverse distance and k-nearest neighbors to name just a few. However, must software implementations of the Moran’s <em>I</em> statistic will adopt the row standardized weights.</p>
+<div id="local-morans-i-1" class="section level3 hasAnchor" number="13.4.1">
+<h3><span class="header-section-number">13.4.1</span> Local Moran’s I<a href="spatial-autocorrelation.html#local-morans-i-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Once a spatial weight is chosen, and both <span class="math inline">\(z_i\)</span> and <span class="math inline">\(y_i\)</span> are computed. We can compute the <span class="math inline">\(z_iy_i\)</span> product for all locations of <span class="math inline">\(i\)</span> thus giving us a measure of the local Moran’s I statistic. Taking feature ID of <code>1</code> in our example, we compute <span class="math inline">\(I_1(lag) = 0.21 \times 0.93 = 0.19\)</span>. Computing <span class="math inline">\(I_i\)</span> for all cells gives us the following plot.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig20"></span>
+<img src="13-Spatial-Autocorrelation_files/figure-html/fig20-1.png" alt="The left plot shows the Moran's I scatter plot with the point colors symbolizing the $I_i$ values. The figure on the right shows the matching $I_i$ values mapped to each respective cell." width="672" />
+<p class="caption">
+Figure 13.18: The left plot shows the Moran’s I scatter plot with the point colors symbolizing the <span class="math inline">\(I_i\)</span> values. The figure on the right shows the matching <span class="math inline">\(I_i\)</span> values mapped to each respective cell.
+</p>
+</div>
+<p>Here, we are adopting a different color scheme from that used earlier. Green colors highlight features whose values are surrounded by similar values. These can be either positive values surrounded by standardized values that tend to be positive or negative values surrounded by values that tend to be negative. In both cases, the calculated <span class="math inline">\(I_i\)</span> will be positive. Red colors highlight features whose values are surrounded by dissimilar values. These can be either negative values surrounded by values that tend to be positive or positive values surrounded by values that tend to be negative. In both cases, the calculated <span class="math inline">\(I_i\)</span> will be negative. In our example, two features have a negative Moran’s <em>I</em> coefficient: cell IDs <code>7</code> and <code>12</code>.</p>
+</div>
+<div id="global-morans-i-1" class="section level3 hasAnchor" number="13.4.2">
+<h3><span class="header-section-number">13.4.2</span> Global Moran’s I<a href="spatial-autocorrelation.html#global-morans-i-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The Global Moran’s <em>I</em> coefficient, <span class="math inline">\(I\)</span> is nothing more than a summary of the local Moran’s <em>I</em> coefficients. Using a standardized weight, <span class="math inline">\(I\)</span> is the average of all <span class="math inline">\(I_i\)</span> values.</p>
+<p><span class="math display">\[
+\begin{pmatrix}
+\frac{0.19+0.7+1.15+0.68+0.18+0.15+-0.24+0.44+0.25+0.12+0.14+-0.29+1.18+1.39+0.71+0.39}{\sum\limits_i\sum\limits_j w_{ij}} = 0.446
+\end{pmatrix}
+\]</span>
+In this example, <span class="math inline">\(\sum\limits_j w_{ij}\)</span> is the sum of all 256 values in Table (2) which, using standardized weights, sums to 16.</p>
+<p><span class="math inline">\(I\)</span> is thus the slope that best fits the data. This can be plotted using either the standardized values or the raw values.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig21"></span>
+<img src="13-Spatial-Autocorrelation_files/figure-html/fig21-1.png" alt="Moran's scatter with fitted Moran's *I* slope (red line).  The left plot uses the raw values $(X_i,X_i(lag))$ for its axes labels. Right plot uses the standardized values $(z_i,y_i)$ for its axes labels." width="672" />
+<p class="caption">
+Figure 13.19: Moran’s scatter with fitted Moran’s <em>I</em> slope (red line). The left plot uses the raw values <span class="math inline">\((X_i,X_i(lag))\)</span> for its axes labels. Right plot uses the standardized values <span class="math inline">\((z_i,y_i)\)</span> for its axes labels.
 </p>
 </div>
 
+</div>
 </div>
 </div>
 <h3>References</h3>
