@@ -734,8 +734,8 @@ spdep
 <p>To compute the p-value, find the end of the distribution closest to the observed Moran’s I value, then divide that count by the total count. Note that this is a so-called one-sided P-value. See lecture notes for more information.</p>
 <div class="sourceCode" id="cb415"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb415-1"><a href="spatial-autocorrelation-in-r.html#cb415-1" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">min</span>(N.greater <span class="sc">+</span> <span class="dv">1</span>, n <span class="sc">+</span> <span class="dv">1</span> <span class="sc">-</span> N.greater) <span class="sc">/</span> (n <span class="sc">+</span> <span class="dv">1</span>)</span>
 <span id="cb415-2"><a href="spatial-autocorrelation-in-r.html#cb415-2" tabindex="-1"></a>p</span></code></pre></div>
-<pre><code>[1] 0.02166667</code></pre>
-<p>In our working example, the p-value suggests that there is a small chance (0.022%) of being wrong in stating that the income values are not clustered at the county level.</p>
+<pre><code>[1] 0.01333333</code></pre>
+<p>In our working example, the p-value suggests that there is a small chance (0.013%) of being wrong in stating that the income values are not clustered at the county level.</p>
 </div>
 </div>
 <div id="app8_5" class="section level2 unnumbered hasAnchor">
@@ -765,7 +765,7 @@ data:  s1$Income
 weights: lw  
 number of simulations + 1: 600 
 
-statistic = 0.28281, observed rank = 585, p-value = 0.025
+statistic = 0.28281, observed rank = 584, p-value = 0.02667
 alternative hypothesis: greater</code></pre>
 <div class="sourceCode" id="cb421"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb421-1"><a href="spatial-autocorrelation-in-r.html#cb421-1" tabindex="-1"></a><span class="co"># Plot the distribution (note that this is a density plot instead of a histogram)</span></span>
 <span id="cb421-2"><a href="spatial-autocorrelation-in-r.html#cb421-2" tabindex="-1"></a><span class="fu">plot</span>(MC, <span class="at">main=</span><span class="st">&quot;&quot;</span>, <span class="at">las=</span><span class="dv">1</span>)</span></code></pre></div>
@@ -797,7 +797,7 @@ data:  s1$Income
 weights: lw  
 number of simulations + 1: 600 
 
-statistic = 0.31361, observed rank = 600, p-value = 0.001667
+statistic = 0.31361, observed rank = 596, p-value = 0.006667
 alternative hypothesis: greater</code></pre>
 
 </div>

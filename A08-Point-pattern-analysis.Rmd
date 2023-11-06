@@ -307,7 +307,7 @@ $$
 \lambda(i) = e^{-13.71 + 1.27(logged\ population\ density)}
 $$
 
-Here, the base intensity is close to zero ($e^{-13.71}$) when the logged population density is zero and for every increase in one unit of the logged population density, the Starbucks point density increases by $e^{1.27}$ units.
+Here, the base intensity is close to zero ($e^{-13.71}$) when the logged population density is zero and for every increase in one unit of the logged population density, the Starbucks point density increases by a factor of $e^{1.27}$ units.
 
 ## Distance based analysis {-}
 
