@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 13 Spatial Autocorrelation | Intro to GIS and Spatial Analysis</title>
+  <title>Chapter 12 Spatial Autocorrelation | Intro to GIS and Spatial Analysis</title>
   <meta name="description" content="This is a compilation of lecture notes that accompany my Intro to GIS and Spatial Analysis course." />
   <meta name="generator" content="bookdown 0.35 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 13 Spatial Autocorrelation | Intro to GIS and Spatial Analysis" />
+  <meta property="og:title" content="Chapter 12 Spatial Autocorrelation | Intro to GIS and Spatial Analysis" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="This is a compilation of lecture notes that accompany my Intro to GIS and Spatial Analysis course." />
   <meta name="github-repo" content="mgimond/spatial" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 13 Spatial Autocorrelation | Intro to GIS and Spatial Analysis" />
+  <meta name="twitter:title" content="Chapter 12 Spatial Autocorrelation | Intro to GIS and Spatial Analysis" />
   
   <meta name="twitter:description" content="This is a compilation of lecture notes that accompany my Intro to GIS and Spatial Analysis course." />
   
@@ -72,65 +72,6 @@
 </script>
 
 
-<style type="text/css">
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
-code span.al { color: #ff0000; } /* Alert */
-code span.an { color: #008000; } /* Annotation */
-code span.at { } /* Attribute */
-code span.bu { } /* BuiltIn */
-code span.cf { color: #0000ff; } /* ControlFlow */
-code span.ch { color: #008080; } /* Char */
-code span.cn { } /* Constant */
-code span.co { color: #008000; } /* Comment */
-code span.cv { color: #008000; } /* CommentVar */
-code span.do { color: #008000; } /* Documentation */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.im { } /* Import */
-code span.in { color: #008000; } /* Information */
-code span.kw { color: #0000ff; } /* Keyword */
-code span.op { } /* Operator */
-code span.ot { color: #ff4000; } /* Other */
-code span.pp { color: #ff4000; } /* Preprocessor */
-code span.sc { color: #008080; } /* SpecialChar */
-code span.ss { color: #008080; } /* SpecialString */
-code span.st { color: #008080; } /* String */
-code span.va { } /* Variable */
-code span.vs { color: #008080; } /* VerbatimString */
-code span.wa { color: #008000; font-weight: bold; } /* Warning */
-</style>
 
 <style type="text/css">
   
@@ -312,89 +253,87 @@ div.csl-indent {
 <li class="chapter" data-level="10.5.4" data-path="chp10_0.html"><a href="chp10_0.html#combining-operations"><i class="fa fa-check"></i><b>10.5.4</b> Combining operations</a></li>
 </ul></li>
 </ul></li>
-<li class="part"><span><b>PART 2: Spatial Analysis</b></span></li>
-<li class="chapter" data-level="11" data-path="chp11_0.html"><a href="chp11_0.html"><i class="fa fa-check"></i><b>11</b> Point Pattern Analysis</a>
+<li class="chapter" data-level="" data-path=""><a href="#part-part-2-spatial-analysis"><i class="fa fa-check"></i>(PART*) PART 2: Spatial Analysis</a>
 <ul>
-<li class="chapter" data-level="11.1" data-path="chp11_0.html"><a href="chp11_0.html#centrography"><i class="fa fa-check"></i><b>11.1</b> Centrography</a></li>
-<li class="chapter" data-level="11.2" data-path="chp11_0.html"><a href="chp11_0.html#density-based-analysis"><i class="fa fa-check"></i><b>11.2</b> Density based analysis</a>
+<li class="chapter" data-level="10.6" data-path="chp10_0.html"><a href="chp10_0.html#centrography"><i class="fa fa-check"></i><b>10.6</b> Centrography</a></li>
+<li class="chapter" data-level="10.7" data-path="chp10_0.html"><a href="chp10_0.html#density-based-analysis"><i class="fa fa-check"></i><b>10.7</b> Density based analysis</a>
 <ul>
-<li class="chapter" data-level="11.2.1" data-path="chp11_0.html"><a href="chp11_0.html#global-density"><i class="fa fa-check"></i><b>11.2.1</b> Global density</a></li>
-<li class="chapter" data-level="11.2.2" data-path="chp11_0.html"><a href="chp11_0.html#local-density"><i class="fa fa-check"></i><b>11.2.2</b> Local density</a></li>
-<li class="chapter" data-level="11.2.3" data-path="chp11_0.html"><a href="chp11_0.html#modeling-intensity-as-a-function-of-a-covariate"><i class="fa fa-check"></i><b>11.2.3</b> Modeling intensity as a function of a covariate</a></li>
+<li class="chapter" data-level="10.7.1" data-path="chp10_0.html"><a href="chp10_0.html#global-density"><i class="fa fa-check"></i><b>10.7.1</b> Global density</a></li>
+<li class="chapter" data-level="10.7.2" data-path="chp10_0.html"><a href="chp10_0.html#local-density"><i class="fa fa-check"></i><b>10.7.2</b> Local density</a></li>
+<li class="chapter" data-level="10.7.3" data-path="chp10_0.html"><a href="chp10_0.html#modeling-intensity-as-a-function-of-a-covariate"><i class="fa fa-check"></i><b>10.7.3</b> Modeling intensity as a function of a covariate</a></li>
 </ul></li>
-<li class="chapter" data-level="11.3" data-path="chp11_0.html"><a href="chp11_0.html#distance-based-analysis"><i class="fa fa-check"></i><b>11.3</b> Distance based analysis</a>
+<li class="chapter" data-level="10.8" data-path="chp10_0.html"><a href="chp10_0.html#distance-based-analysis"><i class="fa fa-check"></i><b>10.8</b> Distance based analysis</a>
 <ul>
-<li class="chapter" data-level="11.3.1" data-path="chp11_0.html"><a href="chp11_0.html#average-nearest-neighbor"><i class="fa fa-check"></i><b>11.3.1</b> Average Nearest Neighbor</a></li>
-<li class="chapter" data-level="11.3.2" data-path="chp11_0.html"><a href="chp11_0.html#k-and-l-functions"><i class="fa fa-check"></i><b>11.3.2</b> K and L functions</a></li>
-<li class="chapter" data-level="11.3.3" data-path="chp11_0.html"><a href="chp11_0.html#the-pair-correlation-function-g"><i class="fa fa-check"></i><b>11.3.3</b> The Pair Correlation Function <span class="math inline">\(g\)</span></a></li>
+<li class="chapter" data-level="10.8.1" data-path="chp10_0.html"><a href="chp10_0.html#average-nearest-neighbor"><i class="fa fa-check"></i><b>10.8.1</b> Average Nearest Neighbor</a></li>
+<li class="chapter" data-level="10.8.2" data-path="chp10_0.html"><a href="chp10_0.html#k-and-l-functions"><i class="fa fa-check"></i><b>10.8.2</b> K and L functions</a></li>
+<li class="chapter" data-level="10.8.3" data-path="chp10_0.html"><a href="chp10_0.html#the-pair-correlation-function-g"><i class="fa fa-check"></i><b>10.8.3</b> The Pair Correlation Function <span class="math inline">\(g\)</span></a></li>
 </ul></li>
-<li class="chapter" data-level="11.4" data-path="chp11_0.html"><a href="chp11_0.html#first-and-second-order-effects"><i class="fa fa-check"></i><b>11.4</b> First and second order effects</a></li>
+<li class="chapter" data-level="10.9" data-path="chp10_0.html"><a href="chp10_0.html#first-and-second-order-effects"><i class="fa fa-check"></i><b>10.9</b> First and second order effects</a></li>
 </ul></li>
-<li class="chapter" data-level="12" data-path="hypothesis-testing.html"><a href="hypothesis-testing.html"><i class="fa fa-check"></i><b>12</b> Hypothesis testing</a>
+<li class="chapter" data-level="11" data-path="hypothesis-testing.html"><a href="hypothesis-testing.html"><i class="fa fa-check"></i><b>11</b> Hypothesis testing</a>
 <ul>
-<li class="chapter" data-level="12.1" data-path="hypothesis-testing.html"><a href="hypothesis-testing.html#irpcsr"><i class="fa fa-check"></i><b>12.1</b> IRP/CSR</a></li>
-<li class="chapter" data-level="12.2" data-path="hypothesis-testing.html"><a href="hypothesis-testing.html#testing-for-csr-with-the-ann-tool"><i class="fa fa-check"></i><b>12.2</b> Testing for CSR with the ANN tool</a>
+<li class="chapter" data-level="11.1" data-path="hypothesis-testing.html"><a href="hypothesis-testing.html#irpcsr"><i class="fa fa-check"></i><b>11.1</b> IRP/CSR</a></li>
+<li class="chapter" data-level="11.2" data-path="hypothesis-testing.html"><a href="hypothesis-testing.html#testing-for-csr-with-the-ann-tool"><i class="fa fa-check"></i><b>11.2</b> Testing for CSR with the ANN tool</a>
 <ul>
-<li class="chapter" data-level="12.2.1" data-path="hypothesis-testing.html"><a href="hypothesis-testing.html#arcgis-average-nearest-neighbor-tool"><i class="fa fa-check"></i><b>12.2.1</b> ArcGIS’ Average Nearest Neighbor Tool</a></li>
-<li class="chapter" data-level="12.2.2" data-path="hypothesis-testing.html"><a href="hypothesis-testing.html#a-better-approach-a-monte-carlo-test"><i class="fa fa-check"></i><b>12.2.2</b> A better approach: a Monte Carlo test</a></li>
+<li class="chapter" data-level="11.2.1" data-path="hypothesis-testing.html"><a href="hypothesis-testing.html#arcgis-average-nearest-neighbor-tool"><i class="fa fa-check"></i><b>11.2.1</b> ArcGIS’ Average Nearest Neighbor Tool</a></li>
+<li class="chapter" data-level="11.2.2" data-path="hypothesis-testing.html"><a href="hypothesis-testing.html#a-better-approach-a-monte-carlo-test"><i class="fa fa-check"></i><b>11.2.2</b> A better approach: a Monte Carlo test</a></li>
 </ul></li>
-<li class="chapter" data-level="12.3" data-path="hypothesis-testing.html"><a href="hypothesis-testing.html#alternatives-to-csrirp"><i class="fa fa-check"></i><b>12.3</b> Alternatives to CSR/IRP</a></li>
-<li class="chapter" data-level="12.4" data-path="hypothesis-testing.html"><a href="hypothesis-testing.html#monte-carlo-test-with-k-and-l-functions"><i class="fa fa-check"></i><b>12.4</b> Monte Carlo test with K and L functions</a></li>
-<li class="chapter" data-level="12.5" data-path="hypothesis-testing.html"><a href="hypothesis-testing.html#PPM"><i class="fa fa-check"></i><b>12.5</b> Testing for a covariate effect</a></li>
+<li class="chapter" data-level="11.3" data-path="hypothesis-testing.html"><a href="hypothesis-testing.html#alternatives-to-csrirp"><i class="fa fa-check"></i><b>11.3</b> Alternatives to CSR/IRP</a></li>
+<li class="chapter" data-level="11.4" data-path="hypothesis-testing.html"><a href="hypothesis-testing.html#monte-carlo-test-with-k-and-l-functions"><i class="fa fa-check"></i><b>11.4</b> Monte Carlo test with K and L functions</a></li>
+<li class="chapter" data-level="11.5" data-path="hypothesis-testing.html"><a href="hypothesis-testing.html#PPM"><i class="fa fa-check"></i><b>11.5</b> Testing for a covariate effect</a></li>
 </ul></li>
-<li class="chapter" data-level="13" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html"><i class="fa fa-check"></i><b>13</b> Spatial Autocorrelation</a>
+<li class="chapter" data-level="12" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html"><i class="fa fa-check"></i><b>12</b> Spatial Autocorrelation</a>
 <ul>
-<li class="chapter" data-level="13.1" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#global-morans-i"><i class="fa fa-check"></i><b>13.1</b> Global Moran’s <em>I</em></a>
+<li class="chapter" data-level="12.1" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#global-morans-i"><i class="fa fa-check"></i><b>12.1</b> Global Moran’s <em>I</em></a>
 <ul>
-<li class="chapter" data-level="13.1.1" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#computing-the-morans-i"><i class="fa fa-check"></i><b>13.1.1</b> Computing the Moran’s <em>I</em></a></li>
-<li class="chapter" data-level="13.1.2" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#monte-carlo-approach-to-estimating-significance"><i class="fa fa-check"></i><b>13.1.2</b> Monte Carlo approach to estimating significance</a></li>
+<li class="chapter" data-level="12.1.1" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#computing-the-morans-i"><i class="fa fa-check"></i><b>12.1.1</b> Computing the Moran’s <em>I</em></a></li>
+<li class="chapter" data-level="12.1.2" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#monte-carlo-approach-to-estimating-significance"><i class="fa fa-check"></i><b>12.1.2</b> Monte Carlo approach to estimating significance</a></li>
 </ul></li>
-<li class="chapter" data-level="13.2" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#morans-i-at-different-lags"><i class="fa fa-check"></i><b>13.2</b> Moran’s <em>I</em> at different lags</a></li>
-<li class="chapter" data-level="13.3" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#local-morans-i"><i class="fa fa-check"></i><b>13.3</b> Local Moran’s <em>I</em></a></li>
-<li class="chapter" data-level="13.4" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#morans-i-equation-explained"><i class="fa fa-check"></i><b>13.4</b> Moran’s <em>I</em> equation explained</a>
+<li class="chapter" data-level="12.2" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#morans-i-at-different-lags"><i class="fa fa-check"></i><b>12.2</b> Moran’s <em>I</em> at different lags</a></li>
+<li class="chapter" data-level="12.3" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#local-morans-i"><i class="fa fa-check"></i><b>12.3</b> Local Moran’s <em>I</em></a></li>
+<li class="chapter" data-level="12.4" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#morans-i-equation-explained"><i class="fa fa-check"></i><b>12.4</b> Moran’s <em>I</em> equation explained</a>
 <ul>
-<li class="chapter" data-level="13.4.1" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#local-morans-i-1"><i class="fa fa-check"></i><b>13.4.1</b> Local Moran’s I</a></li>
-<li class="chapter" data-level="13.4.2" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#global-morans-i-1"><i class="fa fa-check"></i><b>13.4.2</b> Global Moran’s I</a></li>
-</ul></li>
-</ul></li>
-<li class="chapter" data-level="14" data-path="spatial-interpolation.html"><a href="spatial-interpolation.html"><i class="fa fa-check"></i><b>14</b> Spatial Interpolation</a>
-<ul>
-<li class="chapter" data-level="14.1" data-path="spatial-interpolation.html"><a href="spatial-interpolation.html#deterministic-approach-to-interpolation"><i class="fa fa-check"></i><b>14.1</b> Deterministic Approach to Interpolation</a>
-<ul>
-<li class="chapter" data-level="14.1.1" data-path="spatial-interpolation.html"><a href="spatial-interpolation.html#proximity-interpolation"><i class="fa fa-check"></i><b>14.1.1</b> Proximity interpolation</a></li>
-<li class="chapter" data-level="14.1.2" data-path="spatial-interpolation.html"><a href="spatial-interpolation.html#inverse-distance-weighted-idw"><i class="fa fa-check"></i><b>14.1.2</b> Inverse Distance Weighted (IDW)</a></li>
-<li class="chapter" data-level="14.1.3" data-path="spatial-interpolation.html"><a href="spatial-interpolation.html#fine-tuning-the-interpolation-parameters"><i class="fa fa-check"></i><b>14.1.3</b> Fine tuning the interpolation parameters</a></li>
-</ul></li>
-<li class="chapter" data-level="14.2" data-path="spatial-interpolation.html"><a href="spatial-interpolation.html#statistical-approach-to-interpolation"><i class="fa fa-check"></i><b>14.2</b> Statistical Approach to Interpolation</a>
-<ul>
-<li class="chapter" data-level="14.2.1" data-path="spatial-interpolation.html"><a href="spatial-interpolation.html#trend-surfaces"><i class="fa fa-check"></i><b>14.2.1</b> Trend Surfaces</a></li>
-<li class="chapter" data-level="14.2.2" data-path="spatial-interpolation.html"><a href="spatial-interpolation.html#ordinary-kriging"><i class="fa fa-check"></i><b>14.2.2</b> Ordinary Kriging</a></li>
+<li class="chapter" data-level="12.4.1" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#local-morans-i-1"><i class="fa fa-check"></i><b>12.4.1</b> Local Moran’s I</a></li>
+<li class="chapter" data-level="12.4.2" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#global-morans-i-1"><i class="fa fa-check"></i><b>12.4.2</b> Global Moran’s I</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="15" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>15</b> References</a></li>
+<li class="chapter" data-level="13" data-path="spatial-interpolation.html"><a href="spatial-interpolation.html"><i class="fa fa-check"></i><b>13</b> Spatial Interpolation</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="spatial-interpolation.html"><a href="spatial-interpolation.html#deterministic-approach-to-interpolation"><i class="fa fa-check"></i><b>13.1</b> Deterministic Approach to Interpolation</a>
+<ul>
+<li class="chapter" data-level="13.1.1" data-path="spatial-interpolation.html"><a href="spatial-interpolation.html#proximity-interpolation"><i class="fa fa-check"></i><b>13.1.1</b> Proximity interpolation</a></li>
+<li class="chapter" data-level="13.1.2" data-path="spatial-interpolation.html"><a href="spatial-interpolation.html#inverse-distance-weighted-idw"><i class="fa fa-check"></i><b>13.1.2</b> Inverse Distance Weighted (IDW)</a></li>
+<li class="chapter" data-level="13.1.3" data-path="spatial-interpolation.html"><a href="spatial-interpolation.html#fine-tuning-the-interpolation-parameters"><i class="fa fa-check"></i><b>13.1.3</b> Fine tuning the interpolation parameters</a></li>
+</ul></li>
+<li class="chapter" data-level="13.2" data-path="spatial-interpolation.html"><a href="spatial-interpolation.html#statistical-approach-to-interpolation"><i class="fa fa-check"></i><b>13.2</b> Statistical Approach to Interpolation</a>
+<ul>
+<li class="chapter" data-level="13.2.1" data-path="spatial-interpolation.html"><a href="spatial-interpolation.html#trend-surfaces"><i class="fa fa-check"></i><b>13.2.1</b> Trend Surfaces</a></li>
+<li class="chapter" data-level="13.2.2" data-path="spatial-interpolation.html"><a href="spatial-interpolation.html#ordinary-kriging"><i class="fa fa-check"></i><b>13.2.2</b> Ordinary Kriging</a></li>
+</ul></li>
+</ul></li>
 <li class="appendix"><span><b>Appendix</b></span></li>
-<li class="chapter" data-level="A" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html"><i class="fa fa-check"></i><b>A</b> Reading and writing spatial data in R</a>
+<li class="chapter" data-level="A" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>A</b> References</a>
 <ul>
-<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_2"><i class="fa fa-check"></i>Sample files for this exercise</a></li>
-<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_3"><i class="fa fa-check"></i>Introduction</a></li>
-<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_4"><i class="fa fa-check"></i>Creating spatial objects</a>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html#app1_2"><i class="fa fa-check"></i>Sample files for this exercise</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html#app1_3"><i class="fa fa-check"></i>Introduction</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html#app1_4"><i class="fa fa-check"></i>Creating spatial objects</a>
 <ul>
-<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_4_1"><i class="fa fa-check"></i>Reading a shapefile</a></li>
-<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_4_2"><i class="fa fa-check"></i>Reading a GeoPackage</a></li>
-<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_4_3"><i class="fa fa-check"></i>Reading a raster</a></li>
-<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_4_5"><i class="fa fa-check"></i>Creating a spatial object from a data frame</a></li>
-<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_4_6"><i class="fa fa-check"></i>Geocoding street addresses</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html#app1_4_1"><i class="fa fa-check"></i>Reading a shapefile</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html#app1_4_2"><i class="fa fa-check"></i>Reading a GeoPackage</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html#app1_4_3"><i class="fa fa-check"></i>Reading a raster</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html#app1_4_5"><i class="fa fa-check"></i>Creating a spatial object from a data frame</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html#app1_4_6"><i class="fa fa-check"></i>Geocoding street addresses</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_5"><i class="fa fa-check"></i>Converting from an <code>sf</code> object</a>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html#app1_5"><i class="fa fa-check"></i>Converting from an <code>sf</code> object</a>
 <ul>
-<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_5_1"><i class="fa fa-check"></i>Converting an <code>sf</code> object to a <code>Spatial*</code> object (<code>spdep</code>/<code>sp</code>)</a></li>
-<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_5_2"><i class="fa fa-check"></i>Converting an <code>sf</code> polygon object to an <code>owin</code> object</a></li>
-<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_5_3"><i class="fa fa-check"></i>Converting an <code>sf</code> point object to a <code>ppp</code> object</a></li>
-<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_5_4"><i class="fa fa-check"></i>Converting a <code>SpatRaster</code> object to an <code>im</code> object</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html#app1_5_1"><i class="fa fa-check"></i>Converting an <code>sf</code> object to a <code>Spatial*</code> object (<code>spdep</code>/<code>sp</code>)</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html#app1_5_2"><i class="fa fa-check"></i>Converting an <code>sf</code> polygon object to an <code>owin</code> object</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html#app1_5_3"><i class="fa fa-check"></i>Converting an <code>sf</code> point object to a <code>ppp</code> object</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html#app1_5_4"><i class="fa fa-check"></i>Converting a <code>SpatRaster</code> object to an <code>im</code> object</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_6"><i class="fa fa-check"></i>Converting to an <code>sf</code> object</a></li>
-<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_7"><i class="fa fa-check"></i>Dissecting the <code>sf</code> file object</a></li>
-<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_8"><i class="fa fa-check"></i>Exporting to different data file formats</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html#app1_6"><i class="fa fa-check"></i>Converting to an <code>sf</code> object</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html#app1_7"><i class="fa fa-check"></i>Dissecting the <code>sf</code> file object</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html#app1_8"><i class="fa fa-check"></i>Exporting to different data file formats</a></li>
 </ul></li>
 <li class="chapter" data-level="B" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html"><i class="fa fa-check"></i><b>B</b> Mapping data in R</a>
 <ul>
@@ -577,8 +516,8 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="spatial-autocorrelation" class="section level1 hasAnchor" number="13">
-<h1><span class="header-section-number">Chapter 13</span> Spatial Autocorrelation<a href="spatial-autocorrelation.html#spatial-autocorrelation" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="spatial-autocorrelation" class="section level1 hasAnchor" number="12">
+<h1><span class="header-section-number">Chapter 12</span> Spatial Autocorrelation<a href="spatial-autocorrelation.html#spatial-autocorrelation" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <div class="note">
 <p>
 <em>“The first law of geography: Everything is related to everything
@@ -589,16 +528,16 @@ R. Tobler <span class="citation"><span class="citation">(<a href="#ref-Tobler197
 <p>Mapped events or entities can have non-spatial information attached to them (some GIS software call these attributes). When mapped, these values often exhibit some degree of spatial relatedness at some scale. This is what Tobler was getting at: The idea that values close to one another tend to be similar. In fact, you will be hard-pressed to find mapped features that do not exhibit some kind of non-random pattern.</p>
 <p><img src="img/Random_maps.png" width="1662" /></p>
 <p>So how do we model spatial patterns? The approach taken will depend on how one chooses to characterize the underlying process–this can be either a spatial trend model or a spatial clustering/dispersion model. This chapter focuses on the latter.</p>
-<div id="global-morans-i" class="section level2 hasAnchor" number="13.1">
-<h2><span class="header-section-number">13.1</span> Global Moran’s <em>I</em><a href="spatial-autocorrelation.html#global-morans-i" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="global-morans-i" class="section level2 hasAnchor" number="12.1">
+<h2><span class="header-section-number">12.1</span> Global Moran’s <em>I</em><a href="spatial-autocorrelation.html#global-morans-i" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Though our visual senses can, in some cases, discern clustered regions from non-clustered regions, the distinction may not always be so obvious. We must therefore come up with a quantitative and objective approach to quantifying the degree to which similar features cluster or disperse and where such clustering occurs. One popular measure of spatial autocorrelation is the Moran’s <em>I</em> coefficient.</p>
-<div id="computing-the-morans-i" class="section level3 hasAnchor" number="13.1.1">
-<h3><span class="header-section-number">13.1.1</span> Computing the Moran’s <em>I</em><a href="spatial-autocorrelation.html#computing-the-morans-i" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="computing-the-morans-i" class="section level3 hasAnchor" number="12.1.1">
+<h3><span class="header-section-number">12.1.1</span> Computing the Moran’s <em>I</em><a href="spatial-autocorrelation.html#computing-the-morans-i" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Let’s start with a working example: 2020 median per capita income for the state of Maine.</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig03"></span>
 <img src="13-Spatial-Autocorrelation_files/figure-html/fig03-1.png" alt="Map of 2020 median per capita income for Maine counties (USA)." width="672" />
 <p class="caption">
-Figure 13.1: Map of 2020 median per capita income for Maine counties (USA).
+Figure 12.1: Map of 2020 median per capita income for Maine counties (USA).
 </p>
 </div>
 <p>It may seem apparent that, when aggregated at the county level, the income distribution appears clustered with high counties surrounded by high counties and low counties surrounded by low counties. But a qualitative description may not be sufficient; we might want to quantify the degree to which similar (or dissimilar) counties are clustered. One measure of this type or relationship is the <strong>Moran’s I statistic</strong>.</p>
@@ -606,32 +545,32 @@ Figure 13.1: Map of 2020 median per capita income for Maine counties (USA).
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig04"></span>
 <img src="img/Diff_neighbors.png" alt="Maps show the links between each polygon and their respective neighbor(s) based on the neighborhood definition. A contiguous neighbor is defined as one that shares a boundary or a vertex with the polygon of interest.  Orange numbers indicate the number of neighbors for each polygon. Note that the top most county has no neighbors when a neighborhood definition of a 100 km distance band is used (i.e. no centroids are within a 100 km search radius)" width="600" />
 <p class="caption">
-Figure 13.2: Maps show the links between each polygon and their respective neighbor(s) based on the neighborhood definition. A contiguous neighbor is defined as one that shares a boundary or a vertex with the polygon of interest. Orange numbers indicate the number of neighbors for each polygon. Note that the top most county has no neighbors when a neighborhood definition of a 100 km distance band is used (i.e. no centroids are within a 100 km search radius)
+Figure 12.2: Maps show the links between each polygon and their respective neighbor(s) based on the neighborhood definition. A contiguous neighbor is defined as one that shares a boundary or a vertex with the polygon of interest. Orange numbers indicate the number of neighbors for each polygon. Note that the top most county has no neighbors when a neighborhood definition of a 100 km distance band is used (i.e. no centroids are within a 100 km search radius)
 </p>
 </div>
 <p>Once we’ve defined a neighborhood for our analysis, we identify the neighbors for each polygon in our dataset then summaries the values for each neighborhood cluster (by computing their mean values, for example). This summarized neighborhood value is sometimes referred to as a spatially lagged value (<em>X<sub>lag</sub></em>). In our working example, we adopt a contiguity neighborhood and compute the average neighboring income value (<em>Income<sub>lag</sub></em>) for each county in our dataset. We then plot <em>Income<sub>lag</sub></em> vs. <em>Income</em> for each county. The Moran’s <em>I</em> coefficient between <em>Income<sub>lag</sub></em> and <em>Income</em> is nothing more than the slope of the least squares regression line that best fits the points <em>after</em> having equalized the spread between both sets of data.</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig05"></span>
 <img src="13-Spatial-Autocorrelation_files/figure-html/fig05-1.png" alt="Scatter plot of spatially lagged income (neighboring income) vs. each countie's income. If we equalize the spread between both axes (i.e. convert to a z-value) the slope of the regression line represents the Moran's *I* statistic." width="336" />
 <p class="caption">
-Figure 13.3: Scatter plot of spatially lagged income (neighboring income) vs. each countie’s income. If we equalize the spread between both axes (i.e. convert to a z-value) the slope of the regression line represents the Moran’s <em>I</em> statistic.
+Figure 12.3: Scatter plot of spatially lagged income (neighboring income) vs. each countie’s income. If we equalize the spread between both axes (i.e. convert to a z-value) the slope of the regression line represents the Moran’s <em>I</em> statistic.
 </p>
 </div>
 <p>If there is no degree of association between <em>Income</em> and <em>Income<sub>lag</sub></em>, the slope will be close to flat (resulting in a Moran’s <em>I</em> value near 0). In our working example, the slope is far from flat with a Moran’s <em>I</em> value is 0.28. So this begs the question, how significant is this Moran’s <em>I</em> value (i.e. is the computed slope significantly different from 0)? There are two approaches to estimating the significance: an analytical solution and a Monte Carlo solution. The analytical solution makes some restrictive assumptions about the data and thus cannot always be reliable. Another approach (and the one favored here) is a Monte Carlo test which makes <em>no</em> assumptions about the dataset including the shape and layout of each polygon.</p>
 </div>
-<div id="monte-carlo-approach-to-estimating-significance" class="section level3 hasAnchor" number="13.1.2">
-<h3><span class="header-section-number">13.1.2</span> Monte Carlo approach to estimating significance<a href="spatial-autocorrelation.html#monte-carlo-approach-to-estimating-significance" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="monte-carlo-approach-to-estimating-significance" class="section level3 hasAnchor" number="12.1.2">
+<h3><span class="header-section-number">12.1.2</span> Monte Carlo approach to estimating significance<a href="spatial-autocorrelation.html#monte-carlo-approach-to-estimating-significance" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>In a Monte Carlo test (a permutation bootstrap test, to be exact), the attribute values are randomly assigned to polygons in the data set and, for each permutation of the attribute values, a Moran’s <em>I</em> value is computed.</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig06"></span>
 <img src="13-Spatial-Autocorrelation_files/figure-html/fig06-1.png" alt="Results from 199 permutations. Plot shows Moran's *I* slopes (in gray) computed from each random permutation of income values. The observed Moran's *I* slope for the original dataset is shown in red." width="384" />
 <p class="caption">
-Figure 13.4: Results from 199 permutations. Plot shows Moran’s <em>I</em> slopes (in gray) computed from each random permutation of income values. The observed Moran’s <em>I</em> slope for the original dataset is shown in red.
+Figure 12.4: Results from 199 permutations. Plot shows Moran’s <em>I</em> slopes (in gray) computed from each random permutation of income values. The observed Moran’s <em>I</em> slope for the original dataset is shown in red.
 </p>
 </div>
 <p>The output is a sampling distribution of Moran’s <em>I</em> values under the (null) hypothesis that attribute values are randomly distributed across the study area. We then compare our observed Moran’s <em>I</em> value to this sampling distribution.</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig07"></span>
 <img src="13-Spatial-Autocorrelation_files/figure-html/fig07-1.png" alt="Histogram shows the distribution of Moran's *I* values for all 199 permutations; red vertical line shows our observed Moran's *I* value of 0.28." width="288" />
 <p class="caption">
-Figure 13.5: Histogram shows the distribution of Moran’s <em>I</em> values for all 199 permutations; red vertical line shows our observed Moran’s <em>I</em> value of 0.28.
+Figure 12.5: Histogram shows the distribution of Moran’s <em>I</em> values for all 199 permutations; red vertical line shows our observed Moran’s <em>I</em> value of 0.28.
 </p>
 </div>
 <p>In our working example, 199 simulations indicate that our observed Moran’s <em>I</em> value of 0.28 is not a value we would expect to compute if the income values were randomly distributed across each county. A (pseudo) <em>P-value</em> can easily be computed from the simulation results:</p>
@@ -644,8 +583,8 @@ Figure 13.5: Histogram shows the distribution of Moran’s <em>I</em> values for
 <p>Another important consideration when computing a P-value from a permutation test is the number of simulations to perform. In the above example we ran 199 permutations, thus, the smallest P-value we could possibly come up with is 1 / (199 + 1) or a P-value of 0.005. You should therefore chose a number of permutations, <span class="math inline">\(N\)</span>, large enough to ensure a reliable level of significance.</p>
 </div>
 </div>
-<div id="morans-i-at-different-lags" class="section level2 hasAnchor" number="13.2">
-<h2><span class="header-section-number">13.2</span> Moran’s <em>I</em> at different lags<a href="spatial-autocorrelation.html#morans-i-at-different-lags" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="morans-i-at-different-lags" class="section level2 hasAnchor" number="12.2">
+<h2><span class="header-section-number">12.2</span> Moran’s <em>I</em> at different lags<a href="spatial-autocorrelation.html#morans-i-at-different-lags" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>So far we have looked at spatial autocorrelation where we define neighbors as all polygons sharing a boundary with the polygon of interest. We may also be interested in studying the <em>ranges</em> of autocorrelation values as a function of distance. The steps for this type of analysis are straightforward:</p>
 <ol style="list-style-type: decimal">
 <li><p>Compute lag values for a defined set of neighbors.</p></li>
@@ -656,13 +595,13 @@ Figure 13.5: Histogram shows the distribution of Moran’s <em>I</em> values for
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:f13-MC-distance"></span>
 <img src="img/MoranI_distance_band.png" alt="Moran's *I* at different spatial lags defined by a 50 km width annulus at 50 km distance increments. Red dots indicate Moran *I* values for which a P-value was 0.05 or less." width="500" />
 <p class="caption">
-Figure 13.6: Moran’s <em>I</em> at different spatial lags defined by a 50 km width annulus at 50 km distance increments. Red dots indicate Moran <em>I</em> values for which a P-value was 0.05 or less.
+Figure 12.6: Moran’s <em>I</em> at different spatial lags defined by a 50 km width annulus at 50 km distance increments. Red dots indicate Moran <em>I</em> values for which a P-value was 0.05 or less.
 </p>
 </div>
 <p>The plot suggests that there is significant spatial autocorrelation between counties within 25 km of one another, but as the distances between counties increases, autocorrelation shifts from being positive to being negative meaning that at greater distances, counties tend to be more dissimilar.</p>
 </div>
-<div id="local-morans-i" class="section level2 hasAnchor" number="13.3">
-<h2><span class="header-section-number">13.3</span> Local Moran’s <em>I</em><a href="spatial-autocorrelation.html#local-morans-i" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="local-morans-i" class="section level2 hasAnchor" number="12.3">
+<h2><span class="header-section-number">12.3</span> Local Moran’s <em>I</em><a href="spatial-autocorrelation.html#local-morans-i" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>We can decompose the global Moran’s <em>I</em> into a <em>localized</em> measure of autocorrelation–i.e. a map of “hot spots” and “cold spots”.</p>
 <p>A local Moran’s <em>I</em> analysis is best suited for relatively large datasets, especially if a hypothesis test is to be implemented. We’ll therefor switch to another dataset: Massachusetts household income data.</p>
 <p><img src="13-Spatial-Autocorrelation_files/figure-html/ma-dataset-1.png" width="480" style="display: block; margin: auto;" /></p>
@@ -670,7 +609,7 @@ Figure 13.6: Moran’s <em>I</em> at different spatial lags defined by a 50 km w
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:chunk10"></span>
 <img src="13-Spatial-Autocorrelation_files/figure-html/chunk10-1.png" alt="Grey vertical and horizontal lines define the mean values for both axes values. Red points highlight counties with relatively high income values (i.e. greater than the mean) surrounded by counties whose average income value is relatively high. Likewise, dark blue points highlight counties with relatively low income values surrounded by counties whose average income value is relatively low." width="384" />
 <p class="caption">
-Figure 13.7: Grey vertical and horizontal lines define the mean values for both axes values. Red points highlight counties with relatively high income values (i.e. greater than the mean) surrounded by counties whose average income value is relatively high. Likewise, dark blue points highlight counties with relatively low income values surrounded by counties whose average income value is relatively low.
+Figure 12.7: Grey vertical and horizontal lines define the mean values for both axes values. Red points highlight counties with relatively high income values (i.e. greater than the mean) surrounded by counties whose average income value is relatively high. Likewise, dark blue points highlight counties with relatively low income values surrounded by counties whose average income value is relatively low.
 </p>
 </div>
 <p>You’ll note that the mean value for <em>Income</em>, highlighted as light grey vertical and horizontal lines in the above plot, carve up the four quadrant defining the low-low, high-low, high-high and low-high quadrants when starting from the bottom-left quadrant and working counterclockwise. Note that other measures of centrality, such as the median, could be used to delineate these quadrants.</p>
@@ -678,7 +617,7 @@ Figure 13.7: Grey vertical and horizontal lines define the mean values for both 
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig08"></span>
 <img src="13-Spatial-Autocorrelation_files/figure-html/fig08-1.png" alt="A map view of the low-low (blue), high-low (light-blue), high-high (red) and low-high (orange) counties. " width="432" />
 <p class="caption">
-Figure 13.8: A map view of the low-low (blue), high-low (light-blue), high-high (red) and low-high (orange) counties.
+Figure 12.8: A map view of the low-low (blue), high-low (light-blue), high-high (red) and low-high (orange) counties.
 </p>
 </div>
 <p>Each observation that contributes to the global Moran’s <em>I</em> can be assigned a localized version of that statistic, <span class="math inline">\(I_i\)</span> where the subscript <span class="math inline">\(i\)</span> references the individual geometric unit. The calculation of <span class="math inline">\(I_i\)</span> is shown later in the chapter.</p>
@@ -688,14 +627,14 @@ Figure 13.8: A map view of the low-low (blue), high-low (light-blue), high-high 
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig09"></span>
 <img src="13-Spatial-Autocorrelation_files/figure-html/fig09-1.png" alt="Polygon whose *signifcance* value we are asessing in  this example." width="336" />
 <p class="caption">
-Figure 13.9: Polygon whose <em>signifcance</em> value we are asessing in this example.
+Figure 12.9: Polygon whose <em>signifcance</em> value we are asessing in this example.
 </p>
 </div>
 <p>Its local Moran’s <em>I</em> statistic is 0.85. A permutation test shuffles the income values around it all the while keeping its value constant. An example of an outcome of a few permutations follows:</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig10"></span>
 <img src="13-Spatial-Autocorrelation_files/figure-html/fig10-1.png" alt="Local Moran's I outcomes of a few permutations of income values." width="864" />
 <p class="caption">
-Figure 13.10: Local Moran’s I outcomes of a few permutations of income values.
+Figure 12.10: Local Moran’s I outcomes of a few permutations of income values.
 </p>
 </div>
 <p>You’ll note that even though the income value remains the same in the polygon of interest, its local Moran’s <em>I</em> statistic will change because of the changing income values in its surrounding polygons.</p>
@@ -703,7 +642,7 @@ Figure 13.10: Local Moran’s I outcomes of a few permutations of income values.
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig11"></span>
 <img src="13-Spatial-Autocorrelation_files/figure-html/fig11-1.png" alt="Distribution of $I_i$ values under the null hypothesis that income values are randomly distributed across the study extent. The red vertical line shows the observed $I_i$ for comparison." width="288" />
 <p class="caption">
-Figure 13.11: Distribution of <span class="math inline">\(I_i\)</span> values under the null hypothesis that income values are randomly distributed across the study extent. The red vertical line shows the observed <span class="math inline">\(I_i\)</span> for comparison.
+Figure 12.11: Distribution of <span class="math inline">\(I_i\)</span> values under the null hypothesis that income values are randomly distributed across the study extent. The red vertical line shows the observed <span class="math inline">\(I_i\)</span> for comparison.
 </p>
 </div>
 <p>About 9.3% of the simulated values are more extreme than our observed <span class="math inline">\(I_i\)</span> giving us a pseudo p-value of 0.09.</p>
@@ -711,14 +650,14 @@ Figure 13.11: Distribution of <span class="math inline">\(I_i\)</span> values un
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig12"></span>
 <img src="13-Spatial-Autocorrelation_files/figure-html/fig12-1.png" alt="Map of the pseudo p-values for each polygons' $I_i$ statistic." width="480" />
 <p class="caption">
-Figure 13.12: Map of the pseudo p-values for each polygons’ <span class="math inline">\(I_i\)</span> statistic.
+Figure 12.12: Map of the pseudo p-values for each polygons’ <span class="math inline">\(I_i\)</span> statistic.
 </p>
 </div>
 <p>One can use the computed p-values to filter the <span class="math inline">\(I_i\)</span> values based on a desired level of significance. For example, the following scatter plot and map shows the high/low “hotspots” for which a pseudo p-value of 0.05 or less was computed from the above simulation.</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig13"></span>
 <img src="13-Spatial-Autocorrelation_files/figure-html/fig13-1.png" alt="Local Moran's *I* values having a signifcance level of 0.05 or less." width="864" />
 <p class="caption">
-Figure 13.13: Local Moran’s <em>I</em> values having a signifcance level of 0.05 or less.
+Figure 12.13: Local Moran’s <em>I</em> values having a signifcance level of 0.05 or less.
 </p>
 </div>
 <p>You’ll note that the levels of significance do not apply to just the high-high and low-low regions, they can apply to <em>all</em> combinations of highs and lows.</p>
@@ -726,12 +665,12 @@ Figure 13.13: Local Moran’s <em>I</em> values having a signifcance level of 0.
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig14"></span>
 <img src="13-Spatial-Autocorrelation_files/figure-html/fig14-1.png" alt="Local Moran's *I* values having a signifcance level of 0.01 or less." width="864" />
 <p class="caption">
-Figure 13.14: Local Moran’s <em>I</em> values having a signifcance level of 0.01 or less.
+Figure 12.14: Local Moran’s <em>I</em> values having a signifcance level of 0.01 or less.
 </p>
 </div>
 </div>
-<div id="morans-i-equation-explained" class="section level2 hasAnchor" number="13.4">
-<h2><span class="header-section-number">13.4</span> Moran’s <em>I</em> equation explained<a href="spatial-autocorrelation.html#morans-i-equation-explained" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="morans-i-equation-explained" class="section level2 hasAnchor" number="12.4">
+<h2><span class="header-section-number">12.4</span> Moran’s <em>I</em> equation explained<a href="spatial-autocorrelation.html#morans-i-equation-explained" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The Moran’s <em>I</em> equation can take on many forms. One form of the equation can be presented as:</p>
 <p><span class="math display">\[
 I = \frac{N}{\sum\limits_i (X_i-\bar X)^2}
@@ -769,7 +708,7 @@ I = \frac{\sum\limits_i I_i}{\sum\limits_i \sum\limits_j w_{ij}}  \tag{5}
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig15"></span>
 <img src="13-Spatial-Autocorrelation_files/figure-html/fig15-1.png" alt="Simulated spatial layer. The figure on the left shows each cell's ID value. The figure in the middle shows the values for each cell. The figure on the right shows the standardized values using equation (2)." width="672" />
 <p class="caption">
-Figure 13.15: Simulated spatial layer. The figure on the left shows each cell’s ID value. The figure in the middle shows the values for each cell. The figure on the right shows the standardized values using equation (2).
+Figure 12.15: Simulated spatial layer. The figure on the left shows each cell’s ID value. The figure in the middle shows the values for each cell. The figure on the right shows the standardized values using equation (2).
 </p>
 </div>
 <p>The first step in the computation of a Moran’s <em>I</em> index is the generation of weights. The weights can take on many different values. For example, one could assign a value of <code>1</code> to a neighboring cell as shown in the following matrix.</p>
@@ -1691,7 +1630,7 @@ y_1 =  \sum\limits_j w_{1j} z_j {}={} &amp; (0)(0.21)+(1)(1.17)+(0)(1.5)+ ... + 
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig17"></span>
 <img src="13-Spatial-Autocorrelation_files/figure-html/fig17-1.png" alt="Moran's *I* scatterplot using a binary weight. The red point is the ($z_1$, $y_1$) pair computed for cell `1`." width="384" />
 <p class="caption">
-Figure 13.16: Moran’s <em>I</em> scatterplot using a binary weight. The red point is the (<span class="math inline">\(z_1\)</span>, <span class="math inline">\(y_1\)</span>) pair computed for cell <code>1</code>.
+Figure 12.16: Moran’s <em>I</em> scatterplot using a binary weight. The red point is the (<span class="math inline">\(z_1\)</span>, <span class="math inline">\(y_1\)</span>) pair computed for cell <code>1</code>.
 </p>
 </div>
 <p>You’ll note that the range of neighboring values along the <span class="math inline">\(y\)</span>-axis is much greater than that of the original values on the <span class="math inline">\(x\)</span>-axis. This is not necessarily an issue given that the Moran’s <span class="math inline">\(I\)</span> correlation coefficient standardizes the values by recentering them on the overall mean <span class="math inline">\((X - \bar{X})/s\)</span>. This is simply to re-emphasize that we are interested in how a neighboring value varies relative to a feature’s value, regardless of the scale of values in either batches.</p>
@@ -2616,35 +2555,35 @@ y_1 =  \sum\limits_j w_{1j} z_j {}={} &amp; (0)(0.21)+(0.333)(1.17)+(0)(1.5)+...
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig19"></span>
 <img src="13-Spatial-Autocorrelation_files/figure-html/fig19-1.png" alt="Moran's scatter plot with original values on the left and same Moran's I scatter plot on the right using the standardzied values $z_i$ and $y_i$." width="672" />
 <p class="caption">
-Figure 13.17: Moran’s scatter plot with original values on the left and same Moran’s I scatter plot on the right using the standardzied values <span class="math inline">\(z_i\)</span> and <span class="math inline">\(y_i\)</span>.
+Figure 12.17: Moran’s scatter plot with original values on the left and same Moran’s I scatter plot on the right using the standardzied values <span class="math inline">\(z_i\)</span> and <span class="math inline">\(y_i\)</span>.
 </p>
 </div>
 <p>Note the difference in the point cloud pattern in the above plot from the one generated using the binary weights. Other weights can be used such as inverse distance and k-nearest neighbors to name just a few. However, must software implementations of the Moran’s <em>I</em> statistic will adopt the row standardized weights.</p>
-<div id="local-morans-i-1" class="section level3 hasAnchor" number="13.4.1">
-<h3><span class="header-section-number">13.4.1</span> Local Moran’s I<a href="spatial-autocorrelation.html#local-morans-i-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="local-morans-i-1" class="section level3 hasAnchor" number="12.4.1">
+<h3><span class="header-section-number">12.4.1</span> Local Moran’s I<a href="spatial-autocorrelation.html#local-morans-i-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Once a spatial weight is chosen, and both <span class="math inline">\(z_i\)</span> and <span class="math inline">\(y_i\)</span> are computed. We can compute the <span class="math inline">\(z_iy_i\)</span> product for all locations of <span class="math inline">\(i\)</span> thus giving us a measure of the local Moran’s I statistic. Taking feature ID of <code>1</code> in our example, we compute <span class="math inline">\(I_1(lag) = 0.21 \times 0.93 = 0.19\)</span>. Computing <span class="math inline">\(I_i\)</span> for all cells gives us the following plot.</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig20"></span>
 <img src="13-Spatial-Autocorrelation_files/figure-html/fig20-1.png" alt="The left plot shows the Moran's I scatter plot with the point colors symbolizing the $I_i$ values. The figure on the right shows the matching $I_i$ values mapped to each respective cell." width="672" />
 <p class="caption">
-Figure 13.18: The left plot shows the Moran’s I scatter plot with the point colors symbolizing the <span class="math inline">\(I_i\)</span> values. The figure on the right shows the matching <span class="math inline">\(I_i\)</span> values mapped to each respective cell.
+Figure 12.18: The left plot shows the Moran’s I scatter plot with the point colors symbolizing the <span class="math inline">\(I_i\)</span> values. The figure on the right shows the matching <span class="math inline">\(I_i\)</span> values mapped to each respective cell.
 </p>
 </div>
 <p>Here, we are adopting a different color scheme from that used earlier. Green colors highlight features whose values are surrounded by similar values. These can be either positive values surrounded by standardized values that tend to be positive or negative values surrounded by values that tend to be negative. In both cases, the calculated <span class="math inline">\(I_i\)</span> will be positive. Red colors highlight features whose values are surrounded by dissimilar values. These can be either negative values surrounded by values that tend to be positive or positive values surrounded by values that tend to be negative. In both cases, the calculated <span class="math inline">\(I_i\)</span> will be negative. In our example, two features have a negative Moran’s <em>I</em> coefficient: cell IDs <code>7</code> and <code>12</code>.</p>
 </div>
-<div id="global-morans-i-1" class="section level3 hasAnchor" number="13.4.2">
-<h3><span class="header-section-number">13.4.2</span> Global Moran’s I<a href="spatial-autocorrelation.html#global-morans-i-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="global-morans-i-1" class="section level3 hasAnchor" number="12.4.2">
+<h3><span class="header-section-number">12.4.2</span> Global Moran’s I<a href="spatial-autocorrelation.html#global-morans-i-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The Global Moran’s <em>I</em> coefficient, <span class="math inline">\(I\)</span> is nothing more than a summary of the local Moran’s <em>I</em> coefficients. Using a standardized weight, <span class="math inline">\(I\)</span> is the average of all <span class="math inline">\(I_i\)</span> values.</p>
 <p><span class="math display">\[
 \begin{pmatrix}
 \frac{0.19+0.7+1.15+0.68+0.18+0.15+-0.24+0.44+0.25+0.12+0.14+-0.29+1.18+1.39+0.71+0.39}{\sum\limits_i\sum\limits_j w_{ij}} = 0.446
 \end{pmatrix}
 \]</span>
-In this example, <span class="math inline">\(\sum\limits_j w_{ij}\)</span> is the sum of all 256 values in Table (2) which, using standardized weights, sums to 16.</p>
+In this example, <span class="math inline">\(\sum\limits_i \sum\limits_j w_{ij}\)</span> is the sum of all 256 values in Table (2) which, using standardized weights, sums to 16.</p>
 <p><span class="math inline">\(I\)</span> is thus the slope that best fits the data. This can be plotted using either the standardized values or the raw values.</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig21"></span>
 <img src="13-Spatial-Autocorrelation_files/figure-html/fig21-1.png" alt="Moran's scatter with fitted Moran's *I* slope (red line).  The left plot uses the raw values $(X_i,X_i(lag))$ for its axes labels. Right plot uses the standardized values $(z_i,y_i)$ for its axes labels." width="672" />
 <p class="caption">
-Figure 13.19: Moran’s scatter with fitted Moran’s <em>I</em> slope (red line). The left plot uses the raw values <span class="math inline">\((X_i,X_i(lag))\)</span> for its axes labels. Right plot uses the standardized values <span class="math inline">\((z_i,y_i)\)</span> for its axes labels.
+Figure 12.19: Moran’s scatter with fitted Moran’s <em>I</em> slope (red line). The left plot uses the raw values <span class="math inline">\((X_i,X_i(lag))\)</span> for its axes labels. Right plot uses the standardized values <span class="math inline">\((z_i,y_i)\)</span> for its axes labels.
 </p>
 </div>
 
