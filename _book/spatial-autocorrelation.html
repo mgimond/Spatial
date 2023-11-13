@@ -767,9 +767,9 @@ I = \frac{\sum\limits_i I_i}{\sum\limits_i \sum\limits_j w_{ij}}  \tag{5}
 \]</span></p>
 <p>Let’s explore elements of the Moran’s <em>I</em> equation using the following sample dataset.</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig15"></span>
-<img src="13-Spatial-Autocorrelation_files/figure-html/fig15-1.png" alt="Simulated spatial layer. The figure on the left shows the each cell's ID value. The figure in the middle shows the values for each cell. The figure on the right shows the standardized values using equation (2)." width="672" />
+<img src="13-Spatial-Autocorrelation_files/figure-html/fig15-1.png" alt="Simulated spatial layer. The figure on the left shows each cell's ID value. The figure in the middle shows the values for each cell. The figure on the right shows the standardized values using equation (2)." width="672" />
 <p class="caption">
-Figure 13.15: Simulated spatial layer. The figure on the left shows the each cell’s ID value. The figure in the middle shows the values for each cell. The figure on the right shows the standardized values using equation (2).
+Figure 13.15: Simulated spatial layer. The figure on the left shows each cell’s ID value. The figure in the middle shows the values for each cell. The figure on the right shows the standardized values using equation (2).
 </p>
 </div>
 <p>The first step in the computation of a Moran’s <em>I</em> index is the generation of weights. The weights can take on many different values. For example, one could assign a value of <code>1</code> to a neighboring cell as shown in the following matrix.</p>
@@ -1679,7 +1679,7 @@ Figure 13.15: Simulated spatial layer. The figure on the left shows the each cel
 </tr>
 </tbody>
 </table>
-<p>For example, cell ID <code>1</code> (whose value is 25 and whose standardized value is 0.21) has for neighbors cells <code>2</code>, <code>5</code> and <code>6</code>. Computationally (working with the standardized values), this gives us a summarized neighboring value (aka lagged value), <span class="math inline">\(y_1(lag)\)</span> of:</p>
+<p>For example, cell ID <code>1</code> (whose value is 25 and whose standardized value, <span class="math inline">\(z_1\)</span>, is 0.21) has for neighbors cells <code>2</code>, <code>5</code> and <code>6</code>. Computationally (working with the standardized values), this gives us a summarized neighboring value (aka lagged value), <span class="math inline">\(y_1(lag)\)</span> of:</p>
 <p><span class="math display">\[
 \begin{align*}
 y_1 =  \sum\limits_j w_{1j} z_j {}={} &amp; (0)(0.21)+(1)(1.17)+(0)(1.5)+ ... + \\
@@ -1689,9 +1689,9 @@ y_1 =  \sum\limits_j w_{1j} z_j {}={} &amp; (0)(0.21)+(1)(1.17)+(0)(1.5)+ ... + 
 \]</span></p>
 <p>Computing the spatially lagged values for the other 15 cells generates the following scatterplot:</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig17"></span>
-<img src="13-Spatial-Autocorrelation_files/figure-html/fig17-1.png" alt="Moran's *I* scatterplot using a binary weight. The red point is the ($z_1$, $y_i$) pair computed for cell `1`." width="384" />
+<img src="13-Spatial-Autocorrelation_files/figure-html/fig17-1.png" alt="Moran's *I* scatterplot using a binary weight. The red point is the ($z_1$, $y_1$) pair computed for cell `1`." width="384" />
 <p class="caption">
-Figure 13.16: Moran’s <em>I</em> scatterplot using a binary weight. The red point is the (<span class="math inline">\(z_1\)</span>, <span class="math inline">\(y_i\)</span>) pair computed for cell <code>1</code>.
+Figure 13.16: Moran’s <em>I</em> scatterplot using a binary weight. The red point is the (<span class="math inline">\(z_1\)</span>, <span class="math inline">\(y_1\)</span>) pair computed for cell <code>1</code>.
 </p>
 </div>
 <p>You’ll note that the range of neighboring values along the <span class="math inline">\(y\)</span>-axis is much greater than that of the original values on the <span class="math inline">\(x\)</span>-axis. This is not necessarily an issue given that the Moran’s <span class="math inline">\(I\)</span> correlation coefficient standardizes the values by recentering them on the overall mean <span class="math inline">\((X - \bar{X})/s\)</span>. This is simply to re-emphasize that we are interested in how a neighboring value varies relative to a feature’s value, regardless of the scale of values in either batches.</p>

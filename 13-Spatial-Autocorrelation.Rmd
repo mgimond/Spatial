@@ -376,7 +376,7 @@ $$
 
 Let's explore elements of the Moran's *I* equation using the following sample dataset.
 
-```{r fig15, fig.width = 7, fig.height=2.5, fig.cap="Simulated spatial layer. The figure on the left shows the each cell's ID value. The figure in the middle shows the values for each cell. The figure on the right shows the standardized values using equation (2).", echo=FALSE, fig.align='center', message = FALSE, warning = FALSE}
+```{r fig15, fig.width = 7, fig.height=2.5, fig.cap="Simulated spatial layer. The figure on the left shows each cell's ID value. The figure in the middle shows the values for each cell. The figure on the right shows the standardized values using equation (2).", echo=FALSE, fig.align='center', message = FALSE, warning = FALSE}
 # Custom functions
 gridcells <- function(df, col = "A1", breaks = 7, color = "Reds"){
   
@@ -442,7 +442,7 @@ knitr::kable(nb.df2, row.names = TRUE, escape = FALSE, linesep = "") %>%
     row_spec(1:length(m),extra_css = 'line-height: 4px;')
 ```
 
-For example, cell ID `1` (whose value is `r poly$A1[1]` and whose standardized value is `r poly$z_disp[1]`) has for neighbors cells `2`, `5` and `6`. Computationally (working with the standardized values), this gives us a summarized neighboring value (aka lagged value), $y_1(lag)$ of:
+For example, cell ID `1` (whose value is `r poly$A1[1]` and whose standardized value, $z_1$, is `r poly$z_disp[1]`) has for neighbors cells `2`, `5` and `6`. Computationally (working with the standardized values), this gives us a summarized neighboring value (aka lagged value), $y_1(lag)$ of:
 
 $$
 \begin{align*}
@@ -454,7 +454,7 @@ $$
 
 Computing the spatially lagged values for the other 15 cells generates the following scatterplot:
 
-```{r fig17, echo=FALSE, fig.height=4, fig.width=4,  results='hide', fig.cap="Moran's *I* scatterplot using a binary weight. The red point is the ($z_1$, $y_i$) pair computed for cell `1`.", fig.align='center'}
+```{r fig17, echo=FALSE, fig.height=4, fig.width=4,  results='hide', fig.cap="Moran's *I* scatterplot using a binary weight. The red point is the ($z_1$, $y_1$) pair computed for cell `1`.", fig.align='center'}
 
 lw <- nb2listw(nb, style = "B")
 
@@ -565,7 +565,7 @@ $$
 \frac{`r  paste(round(poly$Istar,2), collapse = "+")`}{\sum\limits_i\sum\limits_j w_{ij}} = 0.446
 \end{pmatrix}
 $$
-In this example, $\sum\limits_j w_{ij}$ is the sum of all 256 values in Table (2) which, using standardized weights, sums to 16. 
+In this example, $\sum\limits_i \sum\limits_j w_{ij}$ is the sum of all 256 values in Table (2) which, using standardized weights, sums to 16. 
 
 $I$ is thus the slope that best fits the data. This can be plotted using either the standardized values or the raw values.
 
