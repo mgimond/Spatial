@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>J Interpolation in R | Intro to GIS and Spatial Analysis</title>
   <meta name="description" content="This is a compilation of lecture notes that accompany my Intro to GIS and Spatial Analysis course." />
-  <meta name="generator" content="bookdown 0.35 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.37 and GitBook 2.6.7" />
 
   <meta property="og:title" content="J Interpolation in R | Intro to GIS and Spatial Analysis" />
   <meta property="og:type" content="book" />
@@ -53,14 +53,14 @@
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
 <script src="libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
-<script src="libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
+<script src="libs/htmlwidgets-1.6.3/htmlwidgets.js"></script>
 <link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet-1.3.1/leaflet.js"></script>
 <link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
 <script src="libs/proj4-2.6.2/proj4.min.js"></script>
 <script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
 <link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
-<script src="libs/leaflet-binding-2.2.0/leaflet.js"></script>
+<script src="libs/leaflet-binding-2.2.1/leaflet.js"></script>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-71085TV4MB"></script>
 <script>
@@ -662,7 +662,7 @@ sp
               padding-bottom: 1px;
               padding-left: 4px;
               padding-right: 4px;">
-4.3.1
+4.3.2
 </td>
 <td style="text-align:left;color: white !important;background-color: #AAAAAA !important;text-align: center;font-size: 12px !important; 
               margin:5px; 
@@ -682,7 +682,7 @@ sp
               padding-bottom: 1px;
               padding-left: 4px;
               padding-right: 4px;">
-3.3.3
+3.3.4
 </td>
 <td style="text-align:left;color: white !important;background-color: #AAAAAA !important;text-align: center;font-size: 12px !important; 
               margin:5px; 
@@ -722,7 +722,7 @@ sp
               padding-bottom: 1px;
               padding-left: 4px;
               padding-right: 4px;">
-2.0.0
+2.1.1
 </td>
 </tr>
 </tbody>
@@ -772,7 +772,7 @@ sp
 <span id="cb430-16"><a href="interpolation-in-r.html#cb430-16" tabindex="-1"></a></span>
 <span id="cb430-17"><a href="interpolation-in-r.html#cb430-17" tabindex="-1"></a><span class="co"># Map the data</span></span>
 <span id="cb430-18"><a href="interpolation-in-r.html#cb430-18" tabindex="-1"></a><span class="fu">tm_shape</span>(th.clp) <span class="sc">+</span> </span>
-<span id="cb430-19"><a href="interpolation-in-r.html#cb430-19" tabindex="-1"></a>  <span class="fu">tm_polygons</span>(<span class="at">col=</span><span class="st">&quot;Precip_in&quot;</span>, <span class="at">palette=</span><span class="st">&quot;RdBu&quot;</span>, <span class="at">auto.palette.mapping=</span><span class="cn">FALSE</span>,</span>
+<span id="cb430-19"><a href="interpolation-in-r.html#cb430-19" tabindex="-1"></a>  <span class="fu">tm_polygons</span>(<span class="at">col=</span><span class="st">&quot;Precip_in&quot;</span>, <span class="at">palette=</span><span class="st">&quot;RdBu&quot;</span>, </span>
 <span id="cb430-20"><a href="interpolation-in-r.html#cb430-20" tabindex="-1"></a>              <span class="at">title=</span><span class="st">&quot;Predicted precipitation </span><span class="sc">\n</span><span class="st">(in inches)&quot;</span>) <span class="sc">+</span></span>
 <span id="cb430-21"><a href="interpolation-in-r.html#cb430-21" tabindex="-1"></a>  <span class="fu">tm_legend</span>(<span class="at">legend.outside=</span><span class="cn">TRUE</span>)</span></code></pre></div>
 <p><img src="A10-Interpolation_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
@@ -806,22 +806,21 @@ that we explicitly identify the package by typing
 <span id="cb431-11"><a href="interpolation-in-r.html#cb431-11" tabindex="-1"></a><span class="fu">fullgrid</span>(grd)    <span class="ot">&lt;-</span> <span class="cn">TRUE</span>  <span class="co"># Create SpatialGrid object</span></span>
 <span id="cb431-12"><a href="interpolation-in-r.html#cb431-12" tabindex="-1"></a></span>
 <span id="cb431-13"><a href="interpolation-in-r.html#cb431-13" tabindex="-1"></a><span class="co"># Add P&#39;s projection information to the empty grid</span></span>
-<span id="cb431-14"><a href="interpolation-in-r.html#cb431-14" tabindex="-1"></a><span class="fu">proj4string</span>(P) <span class="ot">&lt;-</span> <span class="fu">proj4string</span>(P) <span class="co"># Temp fix until new proj env is adopted</span></span>
-<span id="cb431-15"><a href="interpolation-in-r.html#cb431-15" tabindex="-1"></a><span class="fu">proj4string</span>(grd) <span class="ot">&lt;-</span> <span class="fu">proj4string</span>(P)</span>
-<span id="cb431-16"><a href="interpolation-in-r.html#cb431-16" tabindex="-1"></a></span>
-<span id="cb431-17"><a href="interpolation-in-r.html#cb431-17" tabindex="-1"></a><span class="co"># Interpolate the grid cells using a power value of 2 (idp=2.0)</span></span>
-<span id="cb431-18"><a href="interpolation-in-r.html#cb431-18" tabindex="-1"></a>P.idw <span class="ot">&lt;-</span> <span class="fu">idw</span>(Precip_in <span class="sc">~</span> <span class="dv">1</span>, P, <span class="at">newdata=</span>grd, <span class="at">idp =</span> <span class="fl">2.0</span>)</span>
-<span id="cb431-19"><a href="interpolation-in-r.html#cb431-19" tabindex="-1"></a></span>
-<span id="cb431-20"><a href="interpolation-in-r.html#cb431-20" tabindex="-1"></a><span class="co"># Convert to raster object then clip to Texas</span></span>
-<span id="cb431-21"><a href="interpolation-in-r.html#cb431-21" tabindex="-1"></a>r       <span class="ot">&lt;-</span> <span class="fu">rast</span>(P.idw)</span>
-<span id="cb431-22"><a href="interpolation-in-r.html#cb431-22" tabindex="-1"></a>r.m     <span class="ot">&lt;-</span> <span class="fu">mask</span>(r, <span class="fu">st_as_sf</span>(W))</span>
-<span id="cb431-23"><a href="interpolation-in-r.html#cb431-23" tabindex="-1"></a></span>
-<span id="cb431-24"><a href="interpolation-in-r.html#cb431-24" tabindex="-1"></a><span class="co"># Plot</span></span>
-<span id="cb431-25"><a href="interpolation-in-r.html#cb431-25" tabindex="-1"></a><span class="fu">tm_shape</span>(r.m[<span class="st">&quot;var1.pred&quot;</span>]) <span class="sc">+</span> </span>
-<span id="cb431-26"><a href="interpolation-in-r.html#cb431-26" tabindex="-1"></a>  <span class="fu">tm_raster</span>(<span class="at">n=</span><span class="dv">10</span>,<span class="at">palette =</span> <span class="st">&quot;RdBu&quot;</span>, <span class="at">auto.palette.mapping =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb431-27"><a href="interpolation-in-r.html#cb431-27" tabindex="-1"></a>            <span class="at">title=</span><span class="st">&quot;Predicted precipitation </span><span class="sc">\n</span><span class="st">(in inches)&quot;</span>) <span class="sc">+</span> </span>
-<span id="cb431-28"><a href="interpolation-in-r.html#cb431-28" tabindex="-1"></a>  <span class="fu">tm_shape</span>(P) <span class="sc">+</span> <span class="fu">tm_dots</span>(<span class="at">size=</span><span class="fl">0.2</span>) <span class="sc">+</span></span>
-<span id="cb431-29"><a href="interpolation-in-r.html#cb431-29" tabindex="-1"></a>  <span class="fu">tm_legend</span>(<span class="at">legend.outside=</span><span class="cn">TRUE</span>)</span></code></pre></div>
+<span id="cb431-14"><a href="interpolation-in-r.html#cb431-14" tabindex="-1"></a><span class="fu">crs</span>(grd) <span class="ot">&lt;-</span> <span class="fu">crs</span>(P)</span>
+<span id="cb431-15"><a href="interpolation-in-r.html#cb431-15" tabindex="-1"></a></span>
+<span id="cb431-16"><a href="interpolation-in-r.html#cb431-16" tabindex="-1"></a><span class="co"># Interpolate the grid cells using a power value of 2 (idp=2.0)</span></span>
+<span id="cb431-17"><a href="interpolation-in-r.html#cb431-17" tabindex="-1"></a>P.idw <span class="ot">&lt;-</span> <span class="fu">idw</span>(Precip_in <span class="sc">~</span> <span class="dv">1</span>, P, <span class="at">newdata=</span>grd, <span class="at">idp =</span> <span class="fl">2.0</span>)</span>
+<span id="cb431-18"><a href="interpolation-in-r.html#cb431-18" tabindex="-1"></a></span>
+<span id="cb431-19"><a href="interpolation-in-r.html#cb431-19" tabindex="-1"></a><span class="co"># Convert to raster object then clip to Texas</span></span>
+<span id="cb431-20"><a href="interpolation-in-r.html#cb431-20" tabindex="-1"></a>r       <span class="ot">&lt;-</span> <span class="fu">rast</span>(P.idw)</span>
+<span id="cb431-21"><a href="interpolation-in-r.html#cb431-21" tabindex="-1"></a>r.m     <span class="ot">&lt;-</span> <span class="fu">mask</span>(r, <span class="fu">st_as_sf</span>(W))</span>
+<span id="cb431-22"><a href="interpolation-in-r.html#cb431-22" tabindex="-1"></a></span>
+<span id="cb431-23"><a href="interpolation-in-r.html#cb431-23" tabindex="-1"></a><span class="co"># Plot</span></span>
+<span id="cb431-24"><a href="interpolation-in-r.html#cb431-24" tabindex="-1"></a><span class="fu">tm_shape</span>(r.m[<span class="st">&quot;var1.pred&quot;</span>]) <span class="sc">+</span> </span>
+<span id="cb431-25"><a href="interpolation-in-r.html#cb431-25" tabindex="-1"></a>  <span class="fu">tm_raster</span>(<span class="at">n=</span><span class="dv">10</span>,<span class="at">palette =</span> <span class="st">&quot;RdBu&quot;</span>, <span class="at">auto.palette.mapping =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb431-26"><a href="interpolation-in-r.html#cb431-26" tabindex="-1"></a>            <span class="at">title=</span><span class="st">&quot;Predicted precipitation </span><span class="sc">\n</span><span class="st">(in inches)&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb431-27"><a href="interpolation-in-r.html#cb431-27" tabindex="-1"></a>  <span class="fu">tm_shape</span>(P) <span class="sc">+</span> <span class="fu">tm_dots</span>(<span class="at">size=</span><span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb431-28"><a href="interpolation-in-r.html#cb431-28" tabindex="-1"></a>  <span class="fu">tm_legend</span>(<span class="at">legend.outside=</span><span class="cn">TRUE</span>)</span></code></pre></div>
 <p><img src="A10-Interpolation_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 <div id="fine-tuning-the-interpolation" class="section level3 unnumbered hasAnchor">
 <h3>Fine-tuning the interpolation<a href="interpolation-in-r.html#fine-tuning-the-interpolation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -909,7 +908,7 @@ that we explicitly identify the package by typing
 <span id="cb436-17"><a href="interpolation-in-r.html#cb436-17" tabindex="-1"></a></span>
 <span id="cb436-18"><a href="interpolation-in-r.html#cb436-18" tabindex="-1"></a><span class="co"># Plot the map</span></span>
 <span id="cb436-19"><a href="interpolation-in-r.html#cb436-19" tabindex="-1"></a><span class="fu">tm_shape</span>(r.m) <span class="sc">+</span> </span>
-<span id="cb436-20"><a href="interpolation-in-r.html#cb436-20" tabindex="-1"></a>  <span class="fu">tm_raster</span>(<span class="at">n=</span><span class="dv">10</span>, <span class="at">palette=</span><span class="st">&quot;RdBu&quot;</span>, <span class="at">auto.palette.mapping=</span><span class="cn">FALSE</span>, </span>
+<span id="cb436-20"><a href="interpolation-in-r.html#cb436-20" tabindex="-1"></a>  <span class="fu">tm_raster</span>(<span class="at">n=</span><span class="dv">10</span>, <span class="at">palette=</span><span class="st">&quot;RdBu&quot;</span>, </span>
 <span id="cb436-21"><a href="interpolation-in-r.html#cb436-21" tabindex="-1"></a>            <span class="at">title=</span><span class="st">&quot;Predicted precipitation </span><span class="sc">\n</span><span class="st">(in inches)&quot;</span>) <span class="sc">+</span></span>
 <span id="cb436-22"><a href="interpolation-in-r.html#cb436-22" tabindex="-1"></a>  <span class="fu">tm_shape</span>(P) <span class="sc">+</span> <span class="fu">tm_dots</span>(<span class="at">size=</span><span class="fl">0.2</span>) <span class="sc">+</span></span>
 <span id="cb436-23"><a href="interpolation-in-r.html#cb436-23" tabindex="-1"></a>  <span class="fu">tm_legend</span>(<span class="at">legend.outside=</span><span class="cn">TRUE</span>)</span></code></pre></div>
@@ -937,7 +936,7 @@ that we explicitly identify the package by typing
 <span id="cb437-17"><a href="interpolation-in-r.html#cb437-17" tabindex="-1"></a></span>
 <span id="cb437-18"><a href="interpolation-in-r.html#cb437-18" tabindex="-1"></a><span class="co"># Plot the map</span></span>
 <span id="cb437-19"><a href="interpolation-in-r.html#cb437-19" tabindex="-1"></a><span class="fu">tm_shape</span>(r.m) <span class="sc">+</span> </span>
-<span id="cb437-20"><a href="interpolation-in-r.html#cb437-20" tabindex="-1"></a>  <span class="fu">tm_raster</span>(<span class="at">n=</span><span class="dv">10</span>, <span class="at">palette=</span><span class="st">&quot;RdBu&quot;</span>, <span class="at">auto.palette.mapping=</span><span class="cn">FALSE</span>,</span>
+<span id="cb437-20"><a href="interpolation-in-r.html#cb437-20" tabindex="-1"></a>  <span class="fu">tm_raster</span>(<span class="at">n=</span><span class="dv">10</span>, <span class="at">palette=</span><span class="st">&quot;RdBu&quot;</span>, </span>
 <span id="cb437-21"><a href="interpolation-in-r.html#cb437-21" tabindex="-1"></a>            <span class="at">title=</span><span class="st">&quot;Predicted precipitation </span><span class="sc">\n</span><span class="st">(in inches)&quot;</span>) <span class="sc">+</span></span>
 <span id="cb437-22"><a href="interpolation-in-r.html#cb437-22" tabindex="-1"></a>  <span class="fu">tm_shape</span>(P) <span class="sc">+</span> <span class="fu">tm_dots</span>(<span class="at">size=</span><span class="fl">0.2</span>) <span class="sc">+</span></span>
 <span id="cb437-23"><a href="interpolation-in-r.html#cb437-23" tabindex="-1"></a>  <span class="fu">tm_legend</span>(<span class="at">legend.outside=</span><span class="cn">TRUE</span>)</span></code></pre></div>
@@ -981,7 +980,7 @@ that we explicitly identify the package by typing
 <span id="cb439-11"><a href="interpolation-in-r.html#cb439-11" tabindex="-1"></a></span>
 <span id="cb439-12"><a href="interpolation-in-r.html#cb439-12" tabindex="-1"></a><span class="co"># Plot the map</span></span>
 <span id="cb439-13"><a href="interpolation-in-r.html#cb439-13" tabindex="-1"></a><span class="fu">tm_shape</span>(r.m[<span class="st">&quot;var1.pred&quot;</span>]) <span class="sc">+</span> </span>
-<span id="cb439-14"><a href="interpolation-in-r.html#cb439-14" tabindex="-1"></a>  <span class="fu">tm_raster</span>(<span class="at">n=</span><span class="dv">10</span>, <span class="at">palette=</span><span class="st">&quot;RdBu&quot;</span>, <span class="at">auto.palette.mapping=</span><span class="cn">FALSE</span>, </span>
+<span id="cb439-14"><a href="interpolation-in-r.html#cb439-14" tabindex="-1"></a>  <span class="fu">tm_raster</span>(<span class="at">n=</span><span class="dv">10</span>, <span class="at">palette=</span><span class="st">&quot;RdBu&quot;</span>, </span>
 <span id="cb439-15"><a href="interpolation-in-r.html#cb439-15" tabindex="-1"></a>            <span class="at">title=</span><span class="st">&quot;Predicted precipitation </span><span class="sc">\n</span><span class="st">(in inches)&quot;</span>) <span class="sc">+</span></span>
 <span id="cb439-16"><a href="interpolation-in-r.html#cb439-16" tabindex="-1"></a>  <span class="fu">tm_shape</span>(P) <span class="sc">+</span> <span class="fu">tm_dots</span>(<span class="at">size=</span><span class="fl">0.2</span>) <span class="sc">+</span></span>
 <span id="cb439-17"><a href="interpolation-in-r.html#cb439-17" tabindex="-1"></a>  <span class="fu">tm_legend</span>(<span class="at">legend.outside=</span><span class="cn">TRUE</span>)</span></code></pre></div>
