@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 9 Coordinate Systems | Intro to GIS and Spatial Analysis</title>
   <meta name="description" content="This is a compilation of lecture notes that accompany my Intro to GIS and Spatial Analysis course." />
-  <meta name="generator" content="bookdown 0.35 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.37 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 9 Coordinate Systems | Intro to GIS and Spatial Analysis" />
   <meta property="og:type" content="book" />
@@ -53,14 +53,14 @@
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
 <script src="libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
-<script src="libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
+<script src="libs/htmlwidgets-1.6.3/htmlwidgets.js"></script>
 <link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet-1.3.1/leaflet.js"></script>
 <link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
 <script src="libs/proj4-2.6.2/proj4.min.js"></script>
 <script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
 <link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
-<script src="libs/leaflet-binding-2.2.0/leaflet.js"></script>
+<script src="libs/leaflet-binding-2.2.1/leaflet.js"></script>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-71085TV4MB"></script>
 <script>
@@ -584,7 +584,7 @@ div.csl-indent {
 <h2><span class="header-section-number">9.1</span> Geographic Coordinate Systems<a href="chp09_0.html#geographic-coordinate-systems" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>A geographic coordinate system is a reference system for identifying locations on the curved surface of the earth. Locations on the earth’s surface are measured in angular units from the center of the earth relative to two planes: the plane defined by the equator and the plane defined by the prime meridian (which crosses Greenwich England). A location is therefore defined by two values: a latitudinal value and a longitudinal value.</p>
 <div class="figure"><span style="display:block;" id="fig:f09-latlong"></span>
-<img src="img/lat_vs_lon.png" alt="Examples of latitudinal lines are shown on the left and examples of longitudinal lines are shown on the right. The 0&deg; degree reference lines for each are shown in red (equator for latitudinal measurements and prime meridian for longitudinal measurements)." width="314" />
+<img src="img/lat_vs_lon.png" alt="Examples of latitudinal lines are shown on the left and examples of longitudinal lines are shown on the right. The 0&amp;deg; degree reference lines for each are shown in red (equator for latitudinal measurements and prime meridian for longitudinal measurements)." width="314" />
 <p class="caption">
 Figure 9.1: Examples of latitudinal lines are shown on the left and examples of longitudinal lines are shown on the right. The 0° degree reference lines for each are shown in red (equator for latitudinal measurements and prime meridian for longitudinal measurements).
 </p>
@@ -611,7 +611,7 @@ Figure 9.3: The earth can be mathematically modeled as a simple sphere (left) or
 <p>Our estimate of these radii is quite precise thanks to satellite and computational capabilities. The semi-major axis is 6,378,137 meters and the semi-minor axis is 6,356,752 meters.</p>
 <p>Differences in distance measurements along the surfaces of an ellipsoid vs. a sphere are small but measurable (the difference can be as high as 20 km) as illustrated in the following lattice plots.</p>
 <div class="figure"><span style="display:block;" id="fig:f09-dist-diff"></span>
-<img src="img/Ellipsoid_vs_sphere_distances.svg" alt="Differences in distance measurements between the surface of a sphere and an ellipsoid. Each graphic plots the differences in distance measurements made from a single point location along the 0&deg; meridian identified by the green colored box (latitude value) to various latitudinal locations along a longitude (whose value is listed in the bisque colored box). For example, the second plot from the top-left corner plot shows the differences in distance measurements made from a location at 90&deg; north (along the prime meridian) to a range of latitudinal locations along the 45&deg; meridian."  />
+<img src="img/Ellipsoid_vs_sphere_distances.svg" alt="Differences in distance measurements between the surface of a sphere and an ellipsoid. Each graphic plots the differences in distance measurements made from a single point location along the 0&amp;deg; meridian identified by the green colored box (latitude value) to various latitudinal locations along a longitude (whose value is listed in the bisque colored box). For example, the second plot from the top-left corner plot shows the differences in distance measurements made from a location at 90&amp;deg; north (along the prime meridian) to a range of latitudinal locations along the 45&amp;deg; meridian."  />
 <p class="caption">
 Figure 9.4: Differences in distance measurements between the surface of a sphere and an ellipsoid. Each graphic plots the differences in distance measurements made from a single point location along the 0° meridian identified by the green colored box (latitude value) to various latitudinal locations along a longitude (whose value is listed in the bisque colored box). For example, the second plot from the top-left corner plot shows the differences in distance measurements made from a location at 90° north (along the prime meridian) to a range of latitudinal locations along the 45° meridian.
 </p>
@@ -734,7 +734,7 @@ Figure 9.8: A geocentric datum couples a geoid with the ellipsoid at each elemen
 <h3><span class="header-section-number">9.1.4</span> Building the Geographic Coordinate System<a href="chp09_0.html#building-the-geographic-coordinate-system" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>A Geographic Coordinate System (GCS) is defined by the ellipsoid model and by the way this ellipsoid is aligned with the geoid (thus defining the datum). It is important to know which GCS is associated with a GIS file or a map document reference system. This is particularly true when the overlapping layers are tied to different datums (and therefore GCS’). This is because a location on the earth’s surface can take on different coordinate values. For example, a location recorded in an NAD 1927 GCS having a coordinate pair of 44.56698° north and 69.65939° west will register a coordinate value of 44.56704° north and 69.65888° west in a NAD83 GCS and a coordinate value of 44.37465° north and -69.65888° west in a sphere based WGS84 GCS. If the coordinate systems for these point coordinate values were not properly defined, then they could be misplaced on a map. This is analogous to recording temperature using different units of measure (degrees Celsius, Fahrenheit and Kelvin)–each unit of measure will produce a different numeric value.</p>
 <div class="figure"><span style="display:block;" id="fig:f09-GCS-offsets"></span>
-<img src="img/GCS_diff_coord_values.png" alt="Map of the Colby flagpole in two different geographic coordinate systems (*GCS NAD 1983* on the left and *GCS NAD 1927* on the right). Note the offset in the 44.5639&deg; line of latitude relative to the flagpole. Also note the 0.0005&deg; longitudinal offset between both reference systems." width="540" />
+<img src="img/GCS_diff_coord_values.png" alt="Map of the Colby flagpole in two different geographic coordinate systems (*GCS NAD 1983* on the left and *GCS NAD 1927* on the right). Note the offset in the 44.5639&amp;deg; line of latitude relative to the flagpole. Also note the 0.0005&amp;deg; longitudinal offset between both reference systems." width="540" />
 <p class="caption">
 Figure 9.9: Map of the Colby flagpole in two different geographic coordinate systems (<em>GCS NAD 1983</em> on the left and <em>GCS NAD 1927</em> on the right). Note the offset in the 44.5639° line of latitude relative to the flagpole. Also note the 0.0005° longitudinal offset between both reference systems.
 </p>

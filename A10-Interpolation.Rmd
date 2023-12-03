@@ -57,7 +57,7 @@ th.clp   <- st_intersection(th2, w)
 
 # Map the data
 tm_shape(th.clp) + 
-  tm_polygons(col="Precip_in", palette="RdBu", auto.palette.mapping=FALSE,
+  tm_polygons(col="Precip_in", palette="RdBu", 
               title="Predicted precipitation \n(in inches)") +
   tm_legend(legend.outside=TRUE)
 
@@ -86,8 +86,7 @@ gridded(grd)     <- TRUE  # Create SpatialPixel object
 fullgrid(grd)    <- TRUE  # Create SpatialGrid object
 
 # Add P's projection information to the empty grid
-proj4string(P) <- proj4string(P) # Temp fix until new proj env is adopted
-proj4string(grd) <- proj4string(P)
+crs(grd) <- crs(P)
 
 # Interpolate the grid cells using a power value of 2 (idp=2.0)
 P.idw <- idw(Precip_in ~ 1, P, newdata=grd, idp = 2.0)
@@ -199,7 +198,7 @@ r.m <- mask(r, st_as_sf(W))
 
 # Plot the map
 tm_shape(r.m) + 
-  tm_raster(n=10, palette="RdBu", auto.palette.mapping=FALSE, 
+  tm_raster(n=10, palette="RdBu", 
             title="Predicted precipitation \n(in inches)") +
   tm_shape(P) + tm_dots(size=0.2) +
   tm_legend(legend.outside=TRUE)
@@ -230,7 +229,7 @@ r.m <- mask(r, st_as_sf(W))
 
 # Plot the map
 tm_shape(r.m) + 
-  tm_raster(n=10, palette="RdBu", auto.palette.mapping=FALSE,
+  tm_raster(n=10, palette="RdBu", 
             title="Predicted precipitation \n(in inches)") +
   tm_shape(P) + tm_dots(size=0.2) +
   tm_legend(legend.outside=TRUE)
@@ -282,7 +281,7 @@ r.m <- mask(r, st_as_sf(W))
 
 # Plot the map
 tm_shape(r.m["var1.pred"]) + 
-  tm_raster(n=10, palette="RdBu", auto.palette.mapping=FALSE, 
+  tm_raster(n=10, palette="RdBu", 
             title="Predicted precipitation \n(in inches)") +
   tm_shape(P) + tm_dots(size=0.2) +
   tm_legend(legend.outside=TRUE)
