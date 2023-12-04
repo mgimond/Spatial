@@ -154,6 +154,9 @@ fig:fig11
 fig:fig12
 fig:fig13
 fig:fig14
+fig:fig14a
+fig:fig14b
+fig:fig14c
 fig:fig15
 fig:fig17
 fig:fig19
@@ -321,6 +324,7 @@ computing-the-morans-i
 monte-carlo-approach-to-estimating-significance
 morans-i-at-different-lags
 local-morans-i
+a-note-about-interpreting-the-pseudo-p-value
 morans-i-equation-explained
 local-morans-i-1
 global-morans-i-1

@@ -1,3 +1,8 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
 # Spatial Autocorrelation
 
 ```{block type="note"}
@@ -26,6 +31,7 @@ library(ggplot2)
 library(classInt)
 library(tukeyedar)
 library(spdep)
+options(scipen = 9999)
 
 z <- gzcon(url("https://github.com/mgimond/Spatial/raw/main/Data/Income_schooling_sf.rds"))
 s <- terra::unwrap(readRDS(z))
@@ -105,7 +111,7 @@ OP <- par( cex = 0.75, tck = -0.01, mgp=c(1.7,0.8,0))
 par(OP)
 ```
 
-In our working example, 199 simulations indicate that our observed Moran's *I* value of `r I` is not a value we would expect to compute if the income values were randomly distributed across each county. A (pseudo) *P-value* can easily be computed from the simulation results:
+In our working example, 199 simulations indicate that our observed Moran's *I* value of `r I` is not a value we would expect to compute if the income values were randomly distributed across each county. A pseudo *p-value* can easily be computed from the simulation results:
 
 $$
 \dfrac{N_{extreme}+1}{N+1}
@@ -117,7 +123,7 @@ Note that in this permutation example, we shuffled around the observed income va
 
 Alternatively, one can choose to randomly assign a set of values to each feature in a data layer from a *theorized distribution* (for example, a *Normal* distribution). This may result in a completely different set of values for each permutation outcome. Note that you would only adopt this approach if the theorized distribution underpinning the value of interest is known *a priori*.
 
-Another important consideration when computing a P-value from a permutation test is the number of simulations to perform. In the above example we ran 199 permutations, thus, the smallest P-value we could possibly come up with is 1 / (199 + 1) or a P-value of 0.005. You should  therefore chose a number of permutations, $N$, large enough to ensure a reliable level of significance.
+Another important consideration when computing a pseudo p-value from a permutation test is the number of simulations to perform. In the above example we ran 199 permutations, thus, the smallest p-value we could possibly come up with is 1 / (199 + 1) or a p-value of 0.005. You should  therefore chose a number of permutations, $N$, large enough to ensure a reliable level of significance.
 
 ## Moran's *I* at different lags
 
@@ -274,8 +280,8 @@ clint <- classIntervals(ma$p, style = "fixed", n = 7,
                         fixedBreaks = c(0,0.01, 0.05, 0.1, 0.2, 0.3, 0.4, 0.5))$brks
 ggplot(ma, aes(fill=p)) + geom_sf() +
   theme_void() +
-    scale_fill_stepsn(colors = c("#555555", "#DDDDDD" ) ,
-                     
+   # scale_fill_stepsn(colors = c("#555555", "#DDDDDD" ) ,
+     scale_fill_stepsn(colors = c("#882020", "#ffdddd" ) ,                
                     breaks = clint[2:(length(clint)-1) ],
                     values = scales::rescale(clint[2:(length(clint)-1) ], c(0,1)),
                     guide = guide_coloursteps(even.steps = FALSE,
@@ -287,7 +293,7 @@ ggplot(ma, aes(fill=p)) + geom_sf() +
 
 ```
 
-One can use the computed p-values to filter the $I_i$ values based on a desired level of significance. For example, the following scatter plot and map shows the high/low "hotspots" for which a pseudo p-value of 0.05 or less was computed from the above simulation.
+One can use the computed pseudo p-values to filter the $I_i$ values based on a desired level of significance. For example, the following scatter plot and map shows the high/low "hotspots" for which a pseudo p-value of 0.05 or less was computed from the above simulation.
 
 ```{r  fig13, echo=FALSE, fig.width =9, fig.height=4, fig.cap="Local Moran's *I* values having a signifcance level of 0.05 or less.", fig.align='center', results = "hide"}
 
@@ -323,6 +329,139 @@ OP2 <- par(mfrow = c(1,2), cex = 0.75, tck = -0.01)
  par(OP)
 par(OP2)
 ```
+
+### A note about interpreting the pseudo p-value
+
+While the permutation technique highlighted in the previous section used in assessing the significance of localized spatial autocorrelation does a good job in circumventing limitations found in a parametric approach to inference (e.g. skewness in the data, irregular grids, etc...), it still has some limitations when one interprets this level of significance across *all* features. For example, if the underlying process that generated the distribution of income values was truly random, the outcome of such a realization could look like this:
+
+```{r fig14a, echo=FALSE, fig.width=8, fig.height=3,  fig.cap="Realization of a random process. Left map is the distribution of income values under a random process. Right map is the outcome of a permutation test showing the computed pseudo p-values. Each permutation test runs 9999 permutations."}
+# Here I use rgeoda which is faster than spdep for permutations
+library(rgeoda)
+# P values used in custom function
+p.breaks <- c(0, 0.001,0.01,0.05, 0.1, 0.51)
+p.labels <-  c(0.001,0.01,0.05, 0.1,">0.1")
+
+# Custom function
+plot_clust <- function(poly, rnd, cluster, lisa, p = FALSE){
+  
+  clint <- classIntervals(ma[[rnd]], style = "equal", n = 6)$brks
+  rnd.col <- as.character(cut(ma[[rnd]], breaks = clint, labels=pal.inc))
+  poly$cluster <- factor(lisa$labels[lisa$c_vals+1], levels = lisa$labels)
+  pval <- cut(lisa$p_vals , breaks = p.breaks,labels = p.labels )
+  pval.col <- c( "#CB181D", "#FCAE91", "#FEE5D9" , "#FFF8DC", "#FFFFFF")
+  p.col <- pval.col[pval]
+  poly.col <- lisa$colors[lisa$c_vals+1]
+  #  psub <- poly[rnd]
+  
+  # Plot clusters
+  OP<- par(no.readonly = TRUE, mar=c(0,0,0,0))
+  m <- matrix(c(1,3,2,4),nrow = 2, ncol = 2, byrow = TRUE)
+  layout(mat = m, heights  = c(0.80,0.2,0.8,0.2))
+  #  layout.show(4)
+
+  # Plot values 
+  OP2 <- par(mar=c(0,0,0,0))
+  plot(st_geometry(poly), col = rnd.col, reset = TRUE, 
+       border = "#bbbbbb")
+  mtext("Random process", padj=3, adj=0.3, col = "#707070")
+  par(OP2)
+  
+  OP2 <- par(mgp = c(0.5,0.5,0) )
+.image_scale(3, breaks = clint, col =  pal.inc,
+             key.length = 0.7, key.pos = 1, key.width = lcm(1),
+             at = round(clint,0))
+  par(OP2)
+  
+  if(p == FALSE){
+    # Plot clusters
+    OP2 <- par(mar=c(0,0,0,0))
+    plot(st_geometry(poly), col = poly.col,  reset = TRUE,
+         border = "#bbbbbb")
+    mtext("Clusters", padj=3, adj=0.3, col = "#707070")
+    par(OP2)
+    
+    # Plot legend
+    OP2 <- par(mar=c(0,0,0,0))
+    plot(1, type = "n", axes=FALSE, xlab="", ylab="")
+    legend('top', legend = lisa$labels[-length(lisa$labels)], horiz = FALSE, ncol = 3,
+           text.width = sapply( lisa$labels[-length(lisa$labels)], strwidth), bty = "n",
+           fill = lisa$colors, border = "#eeeeee", cex = 0.9)
+    par(OP2)
+  } else {
+    OP2 <- par(mar=c(0,0,0,0))
+    plot(st_geometry(poly), col = p.col,  reset = TRUE,
+         border = "#bbbbbb")
+    mtext("Pseudo p-values", padj=3, adj=0.3, col = "#707070")
+    par(OP2)
+    
+    #Plot legend
+    OP2 <- par(mar=c(0,0,0,0))
+    plot(1, type = "n", axes=FALSE, xlab="", ylab="")
+    legend('top', legend = p.labels, horiz = FALSE, ncol = 5,
+           text.width = sapply( p.labels, strwidth), bty = "n",
+           fill = pval.col, border = "#eeeeee", cex = 1)
+    par(OP2)
+  }
+
+  par(OP)
+}
+
+# Create palettes
+pal.inc <- RColorBrewer::brewer.pal(6, "Greens")
+clint <- classIntervals(ma$house_inc, style = "quantile", n = 6)$brks
+
+# Get neighbors
+queen_w <- queen_weights(ma)
+
+# A random process
+set.seed(307)
+ma$rnd <- sample(ma$house_inc)
+lisa <- local_moran(queen_w, ma["rnd"], permutations = 9999)
+plot_clust(poly=ma, rnd = "rnd",lisa=lisa,  p= TRUE)
+```
+
+Note how some $I_i$ values are associated with low pseudo p-value. In fact, one polygon's $I_i$ value is associated with pseudo p-value of 0.001 or less! This is to be expected since the likelihood of finding a significant $I_i$ increases the more permutation tests are performed. Here we have 343 polygons, thus we ran 343 tests. This is analogous to having multiple opportunities to picking an ace of spades from a deck of cards--the more opportunities you have, the greater the chance of grabbing an ace of spades. 
+
+Here's another example of a local Moran's I test on a realization of a randomly reshuffled set of income values.
+
+```{r fig14b, echo=FALSE, fig.width=8, fig.height=3,  fig.cap="Another realization of a random process. Left map is the distribution of income values under a random process. Right map is the outcome of a permutation test showing computed pseudo p-values. "}
+set.seed(521)
+ma$rnd <- sample(ma$house_inc)
+lisa <- local_moran(queen_w, ma["rnd"],permutations = 9999)
+plot_clust(poly=ma, rnd = "rnd",lisa=lisa, p= TRUE)
+```
+
+We still have quite a few $I_i$ values associated with a very low pseudo p-value (The smallest p-value in this example is `r min(lisa$p_vals)`), This would lead one to assume that several polygons exhibit significant levels of spatial autocorrelation with their neighbors when in fact this is due to chance since we did not explicitly generate localized positive or negative spatial autocorrelation. 
+
+Instead of generating two realizations of a random process, what if we generated 200 realizations of a random process? This would generate 200 x 323 pseudo p-values. With this working example, about 10% of the outcomes result in a pseudo p-value of 0.05 or less.
+
+```{r fig14c, fig.width=8, fig.height=2, echo=FALSE, fig.cap="Distribution of pseudo p-values following 200 realizations of a random process. Blue numbers are the p-value bins, red numbers under each bins are calculated percentages."}
+p.dist <- vector()
+for (i in 1:200){
+  ma$rnd <- sample(ma$house_inc)
+  lisa2   <- local_moran(queen_w, ma["rnd"], permutations = 9999)
+  p.dist <- rbind(p.dist, lisa2$p_vals)
+}
+#hist(p.dist)
+p.sum <- cut(p.dist , breaks = p.breaks,labels = p.labels ) %>% table()
+p.tab <- p.sum  / sum(p.sum ) * 100
+p.tab.names <- names(p.tab)
+names(p.tab) <- rep(" ",5)
+OP <- par(col.main = "#707070", oma = c(0,0,0,0), ylbias=2) 
+mosaicplot(p.tab, main="Pseudo p-values distribution", cex.axis = 0.8, off = 4,
+           las=1)
+mtext( p.tab.names, side = 3, adj = c(0.01, 0.065, 0.12, 0.21, 0.6) , 
+       cex=0.8, col = "blue")
+mtext( as.character(round(p.tab, 2)), side = 1, adj = c(0.01, 0.061, 0.12, 0.21, 0.6) , 
+       cex=0.8, col = "red")
+par(OP)
+```
+
+This problem is known in the field of statistics as the **multiple comparison problem**. Several solutions have been offered, each with their pros and cons. One solution that seems to have gained traction as of late is the *False Discoverer Rate* correction (FDR). There are at least a couple different implementation of this technique. One implementation starts by ranking the pseudo p-values, $p$, from smallest to largest and assigning a rank, $i$, to each value. Next, a reference value is computed for each rank as $i(\alpha/n)$ where $\alpha$ is the desired significance cutoff value (0.05, for example) and $n$ is the total number of observations (e.g. polygons) for which a pseudo p-value has been computed (343 in our working example). All computed $p_i$ values that are less than $i(\alpha/n)$ are deemed significant at the desired $\alpha$ value.
+
+Using the previous realization of a random process that generated a minimum pseudo p-value of `r min(lisa$p_vals)`, the FDR technique would have generated a reference p-value of `r round(lisa_fdr(lisa, 0.05),5)`--a value smaller than the smallest computed pseudo p-value of `r min(lisa$p_vals)`. Adopting this correction to our output would have resulted in *no* local $I_i$ values being associated with a significant level at or below 0.05 when corrected for the multiple comparison problem.
+
+It's important to note that there is no one perfect solution to the multiple comparison problem. Add to this the other challenges facing inferential interpretation in a spatial framework that includes the potential for overlapping neighbors (i.e. same polygons used in separate permutation tests), the traditional approaches to interpreting  significance becomes challenging. It is thus recommended to interpret these tests with caution.
 
 ## Moran's *I* equation explained
 
