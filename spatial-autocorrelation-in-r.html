@@ -350,7 +350,10 @@ div.csl-indent {
 <li class="chapter" data-level="13.1.2" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#monte-carlo-approach-to-estimating-significance"><i class="fa fa-check"></i><b>13.1.2</b> Monte Carlo approach to estimating significance</a></li>
 </ul></li>
 <li class="chapter" data-level="13.2" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#morans-i-at-different-lags"><i class="fa fa-check"></i><b>13.2</b> Moran’s <em>I</em> at different lags</a></li>
-<li class="chapter" data-level="13.3" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#local-morans-i"><i class="fa fa-check"></i><b>13.3</b> Local Moran’s <em>I</em></a></li>
+<li class="chapter" data-level="13.3" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#local-morans-i"><i class="fa fa-check"></i><b>13.3</b> Local Moran’s <em>I</em></a>
+<ul>
+<li class="chapter" data-level="13.3.1" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#a-note-about-interpreting-the-pseudo-p-value"><i class="fa fa-check"></i><b>13.3.1</b> A note about interpreting the pseudo p-value</a></li>
+</ul></li>
 <li class="chapter" data-level="13.4" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#morans-i-equation-explained"><i class="fa fa-check"></i><b>13.4</b> Moran’s <em>I</em> equation explained</a>
 <ul>
 <li class="chapter" data-level="13.4.1" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#local-morans-i-1"><i class="fa fa-check"></i><b>13.4.1</b> Local Moran’s I</a></li>
@@ -734,8 +737,8 @@ spdep
 <p>To compute the p-value, find the end of the distribution closest to the observed Moran’s I value, then divide that count by the total count. Note that this is a so-called one-sided P-value. See lecture notes for more information.</p>
 <div class="sourceCode" id="cb415"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb415-1"><a href="spatial-autocorrelation-in-r.html#cb415-1" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">min</span>(N.greater <span class="sc">+</span> <span class="dv">1</span>, n <span class="sc">+</span> <span class="dv">1</span> <span class="sc">-</span> N.greater) <span class="sc">/</span> (n <span class="sc">+</span> <span class="dv">1</span>)</span>
 <span id="cb415-2"><a href="spatial-autocorrelation-in-r.html#cb415-2" tabindex="-1"></a>p</span></code></pre></div>
-<pre><code>[1] 0.015</code></pre>
-<p>In our working example, the p-value suggests that there is a small chance (0.015%) of being wrong in stating that the income values are not clustered at the county level.</p>
+<pre><code>[1] 0.025</code></pre>
+<p>In our working example, the p-value suggests that there is a small chance (0.025%) of being wrong in stating that the income values are not clustered at the county level.</p>
 </div>
 </div>
 <div id="app8_5" class="section level2 unnumbered hasAnchor">
@@ -797,7 +800,7 @@ data:  s1$Income
 weights: lw  
 number of simulations + 1: 600 
 
-statistic = 0.31361, observed rank = 595, p-value = 0.008333
+statistic = 0.31361, observed rank = 594, p-value = 0.01
 alternative hypothesis: greater</code></pre>
 
 </div>

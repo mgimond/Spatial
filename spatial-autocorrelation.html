@@ -350,7 +350,10 @@ div.csl-indent {
 <li class="chapter" data-level="13.1.2" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#monte-carlo-approach-to-estimating-significance"><i class="fa fa-check"></i><b>13.1.2</b> Monte Carlo approach to estimating significance</a></li>
 </ul></li>
 <li class="chapter" data-level="13.2" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#morans-i-at-different-lags"><i class="fa fa-check"></i><b>13.2</b> Moran’s <em>I</em> at different lags</a></li>
-<li class="chapter" data-level="13.3" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#local-morans-i"><i class="fa fa-check"></i><b>13.3</b> Local Moran’s <em>I</em></a></li>
+<li class="chapter" data-level="13.3" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#local-morans-i"><i class="fa fa-check"></i><b>13.3</b> Local Moran’s <em>I</em></a>
+<ul>
+<li class="chapter" data-level="13.3.1" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#a-note-about-interpreting-the-pseudo-p-value"><i class="fa fa-check"></i><b>13.3.1</b> A note about interpreting the pseudo p-value</a></li>
+</ul></li>
 <li class="chapter" data-level="13.4" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#morans-i-equation-explained"><i class="fa fa-check"></i><b>13.4</b> Moran’s <em>I</em> equation explained</a>
 <ul>
 <li class="chapter" data-level="13.4.1" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#local-morans-i-1"><i class="fa fa-check"></i><b>13.4.1</b> Local Moran’s I</a></li>
@@ -634,14 +637,14 @@ Figure 13.4: Results from 199 permutations. Plot shows Moran’s <em>I</em> slop
 Figure 13.5: Histogram shows the distribution of Moran’s <em>I</em> values for all 199 permutations; red vertical line shows our observed Moran’s <em>I</em> value of 0.28.
 </p>
 </div>
-<p>In our working example, 199 simulations indicate that our observed Moran’s <em>I</em> value of 0.28 is not a value we would expect to compute if the income values were randomly distributed across each county. A (pseudo) <em>P-value</em> can easily be computed from the simulation results:</p>
+<p>In our working example, 199 simulations indicate that our observed Moran’s <em>I</em> value of 0.28 is not a value we would expect to compute if the income values were randomly distributed across each county. A pseudo <em>p-value</em> can easily be computed from the simulation results:</p>
 <p><span class="math display">\[
 \dfrac{N_{extreme}+1}{N+1}
 \]</span></p>
 <p>where <span class="math inline">\(N_{extreme}\)</span> is the number of simulated Moran’s <em>I</em> values more extreme than our observed statistic and <span class="math inline">\(N\)</span> is the total number of simulations. Here, out of 199 simulations, just three simulated <em>I</em> values were more extreme than our observed statistic, <span class="math inline">\(N_{extreme}\)</span> = 3, so <span class="math inline">\(p\)</span> is equal to (3 + 1) / (199 + 1) = 0.02. This is interpreted as “<em>there is a 2% probability that we would be wrong in rejecting the null hypothesis H<sub>o</sub>.</em>”</p>
 <p>Note that in this permutation example, we shuffled around the observed income values such that <em>all</em> values were present in each permutation outcome–this is sometimes referred to as a <strong>randomization</strong> option in a few software implementations of the Moran’s <em>I</em> hypothesis test. Note that here, <em>randomization</em> is not to be confused with the way the permutation technique “randomly” assigns values to features in the data layer.</p>
 <p>Alternatively, one can choose to randomly assign a set of values to each feature in a data layer from a <em>theorized distribution</em> (for example, a <em>Normal</em> distribution). This may result in a completely different set of values for each permutation outcome. Note that you would only adopt this approach if the theorized distribution underpinning the value of interest is known <em>a priori</em>.</p>
-<p>Another important consideration when computing a P-value from a permutation test is the number of simulations to perform. In the above example we ran 199 permutations, thus, the smallest P-value we could possibly come up with is 1 / (199 + 1) or a P-value of 0.005. You should therefore chose a number of permutations, <span class="math inline">\(N\)</span>, large enough to ensure a reliable level of significance.</p>
+<p>Another important consideration when computing a pseudo p-value from a permutation test is the number of simulations to perform. In the above example we ran 199 permutations, thus, the smallest p-value we could possibly come up with is 1 / (199 + 1) or a p-value of 0.005. You should therefore chose a number of permutations, <span class="math inline">\(N\)</span>, large enough to ensure a reliable level of significance.</p>
 </div>
 </div>
 <div id="morans-i-at-different-lags" class="section level2 hasAnchor" number="13.2">
@@ -714,7 +717,7 @@ Figure 13.11: Distribution of <span class="math inline">\(I_i\)</span> values un
 Figure 13.12: Map of the pseudo p-values for each polygons’ <span class="math inline">\(I_i\)</span> statistic.
 </p>
 </div>
-<p>One can use the computed p-values to filter the <span class="math inline">\(I_i\)</span> values based on a desired level of significance. For example, the following scatter plot and map shows the high/low “hotspots” for which a pseudo p-value of 0.05 or less was computed from the above simulation.</p>
+<p>One can use the computed pseudo p-values to filter the <span class="math inline">\(I_i\)</span> values based on a desired level of significance. For example, the following scatter plot and map shows the high/low “hotspots” for which a pseudo p-value of 0.05 or less was computed from the above simulation.</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig13"></span>
 <img src="13-Spatial-Autocorrelation_files/figure-html/fig13-1.png" alt="Local Moran's *I* values having a signifcance level of 0.05 or less." width="864" />
 <p class="caption">
@@ -728,6 +731,35 @@ Figure 13.13: Local Moran’s <em>I</em> values having a signifcance level of 0.
 <p class="caption">
 Figure 13.14: Local Moran’s <em>I</em> values having a signifcance level of 0.01 or less.
 </p>
+</div>
+<div id="a-note-about-interpreting-the-pseudo-p-value" class="section level3 hasAnchor" number="13.3.1">
+<h3><span class="header-section-number">13.3.1</span> A note about interpreting the pseudo p-value<a href="spatial-autocorrelation.html#a-note-about-interpreting-the-pseudo-p-value" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>While the permutation technique highlighted in the previous section used in assessing the significance of localized spatial autocorrelation does a good job in circumventing limitations found in a parametric approach to inference (e.g. skewness in the data, irregular grids, etc…), it still has some limitations when one interprets this level of significance across <em>all</em> features. For example, if the underlying process that generated the distribution of income values was truly random, the outcome of such a realization could look like this:</p>
+<div class="figure"><span style="display:block;" id="fig:fig14a"></span>
+<img src="13-Spatial-Autocorrelation_files/figure-html/fig14a-1.png" alt="Realization of a random process. Left map is the distribution of income values under a random process. Right map is the outcome of a permutation test showing the computed pseudo p-values. Each permutation test runs 9999 permutations." width="768" />
+<p class="caption">
+Figure 13.15: Realization of a random process. Left map is the distribution of income values under a random process. Right map is the outcome of a permutation test showing the computed pseudo p-values. Each permutation test runs 9999 permutations.
+</p>
+</div>
+<p>Note how some <span class="math inline">\(I_i\)</span> values are associated with low pseudo p-value. In fact, one polygon’s <span class="math inline">\(I_i\)</span> value is associated with pseudo p-value of 0.001 or less! This is to be expected since the likelihood of finding a significant <span class="math inline">\(I_i\)</span> increases the more permutation tests are performed. Here we have 343 polygons, thus we ran 343 tests. This is analogous to having multiple opportunities to picking an ace of spades from a deck of cards–the more opportunities you have, the greater the chance of grabbing an ace of spades.</p>
+<p>Here’s another example of a local Moran’s I test on a realization of a randomly reshuffled set of income values.</p>
+<div class="figure"><span style="display:block;" id="fig:fig14b"></span>
+<img src="13-Spatial-Autocorrelation_files/figure-html/fig14b-1.png" alt="Another realization of a random process. Left map is the distribution of income values under a random process. Right map is the outcome of a permutation test showing computed pseudo p-values. " width="768" />
+<p class="caption">
+Figure 13.16: Another realization of a random process. Left map is the distribution of income values under a random process. Right map is the outcome of a permutation test showing computed pseudo p-values.
+</p>
+</div>
+<p>We still have quite a few <span class="math inline">\(I_i\)</span> values associated with a very low pseudo p-value (The smallest p-value in this example is 0.0006), This would lead one to assume that several polygons exhibit significant levels of spatial autocorrelation with their neighbors when in fact this is due to chance since we did not explicitly generate localized positive or negative spatial autocorrelation.</p>
+<p>Instead of generating two realizations of a random process, what if we generated 200 realizations of a random process? This would generate 200 x 323 pseudo p-values. With this working example, about 10% of the outcomes result in a pseudo p-value of 0.05 or less.</p>
+<div class="figure"><span style="display:block;" id="fig:fig14c"></span>
+<img src="13-Spatial-Autocorrelation_files/figure-html/fig14c-1.png" alt="Distribution of pseudo p-values following 200 realizations of a random process. Blue numbers are the p-value bins, red numbers under each bins are calculated percentages." width="768" />
+<p class="caption">
+Figure 13.17: Distribution of pseudo p-values following 200 realizations of a random process. Blue numbers are the p-value bins, red numbers under each bins are calculated percentages.
+</p>
+</div>
+<p>This problem is known in the field of statistics as the <strong>multiple comparison problem</strong>. Several solutions have been offered, each with their pros and cons. One solution that seems to have gained traction as of late is the <em>False Discoverer Rate</em> correction (FDR). There are at least a couple different implementation of this technique. One implementation starts by ranking the pseudo p-values, <span class="math inline">\(p\)</span>, from smallest to largest and assigning a rank, <span class="math inline">\(i\)</span>, to each value. Next, a reference value is computed for each rank as <span class="math inline">\(i(\alpha/n)\)</span> where <span class="math inline">\(\alpha\)</span> is the desired significance cutoff value (0.05, for example) and <span class="math inline">\(n\)</span> is the total number of observations (e.g. polygons) for which a pseudo p-value has been computed (343 in our working example). All computed <span class="math inline">\(p_i\)</span> values that are less than <span class="math inline">\(i(\alpha/n)\)</span> are deemed significant at the desired <span class="math inline">\(\alpha\)</span> value.</p>
+<p>Using the previous realization of a random process that generated a minimum pseudo p-value of 0.0006, the FDR technique would have generated a reference p-value of 0.00015–a value smaller than the smallest computed pseudo p-value of 0.0006. Adopting this correction to our output would have resulted in <em>no</em> local <span class="math inline">\(I_i\)</span> values being associated with a significant level at or below 0.05 when corrected for the multiple comparison problem.</p>
+<p>It’s important to note that there is no one perfect solution to the multiple comparison problem. Add to this the other challenges facing inferential interpretation in a spatial framework that includes the potential for overlapping neighbors (i.e. same polygons used in separate permutation tests), the traditional approaches to interpreting significance becomes challenging. It is thus recommended to interpret these tests with caution.</p>
 </div>
 </div>
 <div id="morans-i-equation-explained" class="section level2 hasAnchor" number="13.4">
@@ -769,7 +801,7 @@ I = \frac{\sum\limits_i I_i}{\sum\limits_i \sum\limits_j w_{ij}}  \tag{5}
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig15"></span>
 <img src="13-Spatial-Autocorrelation_files/figure-html/fig15-1.png" alt="Simulated spatial layer. The figure on the left shows each cell's ID value. The figure in the middle shows the values for each cell. The figure on the right shows the standardized values using equation (2)." width="672" />
 <p class="caption">
-Figure 13.15: Simulated spatial layer. The figure on the left shows each cell’s ID value. The figure in the middle shows the values for each cell. The figure on the right shows the standardized values using equation (2).
+Figure 13.18: Simulated spatial layer. The figure on the left shows each cell’s ID value. The figure in the middle shows the values for each cell. The figure on the right shows the standardized values using equation (2).
 </p>
 </div>
 <p>The first step in the computation of a Moran’s <em>I</em> index is the generation of weights. The weights can take on many different values. For example, one could assign a value of <code>1</code> to a neighboring cell as shown in the following matrix.</p>
@@ -1691,7 +1723,7 @@ y_1 =  \sum\limits_j w_{1j} z_j {}={} &amp; (0)(0.21)+(1)(1.17)+(0)(1.5)+ ... + 
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig17"></span>
 <img src="13-Spatial-Autocorrelation_files/figure-html/fig17-1.png" alt="Moran's *I* scatterplot using a binary weight. The red point is the ($z_1$, $y_1$) pair computed for cell `1`." width="384" />
 <p class="caption">
-Figure 13.16: Moran’s <em>I</em> scatterplot using a binary weight. The red point is the (<span class="math inline">\(z_1\)</span>, <span class="math inline">\(y_1\)</span>) pair computed for cell <code>1</code>.
+Figure 13.19: Moran’s <em>I</em> scatterplot using a binary weight. The red point is the (<span class="math inline">\(z_1\)</span>, <span class="math inline">\(y_1\)</span>) pair computed for cell <code>1</code>.
 </p>
 </div>
 <p>You’ll note that the range of neighboring values along the <span class="math inline">\(y\)</span>-axis is much greater than that of the original values on the <span class="math inline">\(x\)</span>-axis. This is not necessarily an issue given that the Moran’s <span class="math inline">\(I\)</span> correlation coefficient standardizes the values by recentering them on the overall mean <span class="math inline">\((X - \bar{X})/s\)</span>. This is simply to re-emphasize that we are interested in how a neighboring value varies relative to a feature’s value, regardless of the scale of values in either batches.</p>
@@ -2616,7 +2648,7 @@ y_1 =  \sum\limits_j w_{1j} z_j {}={} &amp; (0)(0.21)+(0.333)(1.17)+(0)(1.5)+...
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig19"></span>
 <img src="13-Spatial-Autocorrelation_files/figure-html/fig19-1.png" alt="Moran's scatter plot with original values on the left and same Moran's I scatter plot on the right using the standardzied values $z_i$ and $y_i$." width="672" />
 <p class="caption">
-Figure 13.17: Moran’s scatter plot with original values on the left and same Moran’s I scatter plot on the right using the standardzied values <span class="math inline">\(z_i\)</span> and <span class="math inline">\(y_i\)</span>.
+Figure 13.20: Moran’s scatter plot with original values on the left and same Moran’s I scatter plot on the right using the standardzied values <span class="math inline">\(z_i\)</span> and <span class="math inline">\(y_i\)</span>.
 </p>
 </div>
 <p>Note the difference in the point cloud pattern in the above plot from the one generated using the binary weights. Other weights can be used such as inverse distance and k-nearest neighbors to name just a few. However, must software implementations of the Moran’s <em>I</em> statistic will adopt the row standardized weights.</p>
@@ -2626,7 +2658,7 @@ Figure 13.17: Moran’s scatter plot with original values on the left and same M
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig20"></span>
 <img src="13-Spatial-Autocorrelation_files/figure-html/fig20-1.png" alt="The left plot shows the Moran's I scatter plot with the point colors symbolizing the $I_i$ values. The figure on the right shows the matching $I_i$ values mapped to each respective cell." width="672" />
 <p class="caption">
-Figure 13.18: The left plot shows the Moran’s I scatter plot with the point colors symbolizing the <span class="math inline">\(I_i\)</span> values. The figure on the right shows the matching <span class="math inline">\(I_i\)</span> values mapped to each respective cell.
+Figure 13.21: The left plot shows the Moran’s I scatter plot with the point colors symbolizing the <span class="math inline">\(I_i\)</span> values. The figure on the right shows the matching <span class="math inline">\(I_i\)</span> values mapped to each respective cell.
 </p>
 </div>
 <p>Here, we are adopting a different color scheme from that used earlier. Green colors highlight features whose values are surrounded by similar values. These can be either positive values surrounded by standardized values that tend to be positive or negative values surrounded by values that tend to be negative. In both cases, the calculated <span class="math inline">\(I_i\)</span> will be positive. Red colors highlight features whose values are surrounded by dissimilar values. These can be either negative values surrounded by values that tend to be positive or positive values surrounded by values that tend to be negative. In both cases, the calculated <span class="math inline">\(I_i\)</span> will be negative. In our example, two features have a negative Moran’s <em>I</em> coefficient: cell IDs <code>7</code> and <code>12</code>.</p>
@@ -2644,7 +2676,7 @@ In this example, <span class="math inline">\(\sum\limits_i \sum\limits_j w_{ij}\
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig21"></span>
 <img src="13-Spatial-Autocorrelation_files/figure-html/fig21-1.png" alt="Moran's scatter with fitted Moran's *I* slope (red line).  The left plot uses the raw values $(X_i,X_i(lag))$ for its axes labels. Right plot uses the standardized values $(z_i,y_i)$ for its axes labels." width="672" />
 <p class="caption">
-Figure 13.19: Moran’s scatter with fitted Moran’s <em>I</em> slope (red line). The left plot uses the raw values <span class="math inline">\((X_i,X_i(lag))\)</span> for its axes labels. Right plot uses the standardized values <span class="math inline">\((z_i,y_i)\)</span> for its axes labels.
+Figure 13.22: Moran’s scatter with fitted Moran’s <em>I</em> slope (red line). The left plot uses the raw values <span class="math inline">\((X_i,X_i(lag))\)</span> for its axes labels. Right plot uses the standardized values <span class="math inline">\((z_i,y_i)\)</span> for its axes labels.
 </p>
 </div>
 
