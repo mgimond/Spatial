@@ -157,6 +157,8 @@ fig:fig14
 fig:fig14a
 fig:fig14b
 fig:fig14c
+fig:fig14d
+fig:fig14e
 fig:fig15
 fig:fig17
 fig:fig19

@@ -758,8 +758,21 @@ Figure 13.17: Distribution of pseudo p-values following 200 realizations of a ra
 </p>
 </div>
 <p>This problem is known in the field of statistics as the <strong>multiple comparison problem</strong>. Several solutions have been offered, each with their pros and cons. One solution that seems to have gained traction as of late is the <em>False Discoverer Rate</em> correction (FDR). There are at least a couple different implementation of this technique. One implementation starts by ranking the pseudo p-values, <span class="math inline">\(p\)</span>, from smallest to largest and assigning a rank, <span class="math inline">\(i\)</span>, to each value. Next, a reference value is computed for each rank as <span class="math inline">\(i(\alpha/n)\)</span> where <span class="math inline">\(\alpha\)</span> is the desired significance cutoff value (0.05, for example) and <span class="math inline">\(n\)</span> is the total number of observations (e.g. polygons) for which a pseudo p-value has been computed (343 in our working example). All computed <span class="math inline">\(p_i\)</span> values that are less than <span class="math inline">\(i(\alpha/n)\)</span> are deemed significant at the desired <span class="math inline">\(\alpha\)</span> value.</p>
-<p>Using the previous realization of a random process that generated a minimum pseudo p-value of 0.0006, the FDR technique would have generated a reference p-value of 0.00015–a value smaller than the smallest computed pseudo p-value of 0.0006. Adopting this correction to our output would have resulted in <em>no</em> local <span class="math inline">\(I_i\)</span> values being associated with a significant level at or below 0.05 when corrected for the multiple comparison problem.</p>
-<p>It’s important to note that there is no one perfect solution to the multiple comparison problem. Add to this the other challenges facing inferential interpretation in a spatial framework that includes the potential for overlapping neighbors (i.e. same polygons used in separate permutation tests), the traditional approaches to interpreting significance becomes challenging. It is thus recommended to interpret these tests with caution.</p>
+<p>Applying the FDR correction to the pseudo p-value cutoff of 0.05 in the household income data gives us the following cluster map.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig14d"></span>
+<img src="13-Spatial-Autocorrelation_files/figure-html/fig14d-1.png" alt="Clusters deemed significant at the p=0.05 level when applying the FDR correction." width="864" />
+<p class="caption">
+Figure 13.18: Clusters deemed significant at the p=0.05 level when applying the FDR correction.
+</p>
+</div>
+<p>Applying the FDR correction to the pseudo p-value cutoff of 0.01 generates even fewer clusters:</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig14e"></span>
+<img src="13-Spatial-Autocorrelation_files/figure-html/fig14e-1.png" alt="Clusters deemed significant at the p=0.01 level when applying the FDR correction." width="864" />
+<p class="caption">
+Figure 13.19: Clusters deemed significant at the p=0.01 level when applying the FDR correction.
+</p>
+</div>
+<p>It’s important to note that there is no one perfect solution to the multiple comparison problem. This, and other challenges facing inferential interpretation in a spatial framework such as the potential for overlapping neighbors (i.e. same polygons used in separate permutation tests) make traditional approaches to interpreting significance challenging. It is thus recommended to interpret these tests with caution.</p>
 </div>
 </div>
 <div id="morans-i-equation-explained" class="section level2 hasAnchor" number="13.4">
@@ -801,7 +814,7 @@ I = \frac{\sum\limits_i I_i}{\sum\limits_i \sum\limits_j w_{ij}}  \tag{5}
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig15"></span>
 <img src="13-Spatial-Autocorrelation_files/figure-html/fig15-1.png" alt="Simulated spatial layer. The figure on the left shows each cell's ID value. The figure in the middle shows the values for each cell. The figure on the right shows the standardized values using equation (2)." width="672" />
 <p class="caption">
-Figure 13.18: Simulated spatial layer. The figure on the left shows each cell’s ID value. The figure in the middle shows the values for each cell. The figure on the right shows the standardized values using equation (2).
+Figure 13.20: Simulated spatial layer. The figure on the left shows each cell’s ID value. The figure in the middle shows the values for each cell. The figure on the right shows the standardized values using equation (2).
 </p>
 </div>
 <p>The first step in the computation of a Moran’s <em>I</em> index is the generation of weights. The weights can take on many different values. For example, one could assign a value of <code>1</code> to a neighboring cell as shown in the following matrix.</p>
@@ -1723,7 +1736,7 @@ y_1 =  \sum\limits_j w_{1j} z_j {}={} &amp; (0)(0.21)+(1)(1.17)+(0)(1.5)+ ... + 
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig17"></span>
 <img src="13-Spatial-Autocorrelation_files/figure-html/fig17-1.png" alt="Moran's *I* scatterplot using a binary weight. The red point is the ($z_1$, $y_1$) pair computed for cell `1`." width="384" />
 <p class="caption">
-Figure 13.19: Moran’s <em>I</em> scatterplot using a binary weight. The red point is the (<span class="math inline">\(z_1\)</span>, <span class="math inline">\(y_1\)</span>) pair computed for cell <code>1</code>.
+Figure 13.21: Moran’s <em>I</em> scatterplot using a binary weight. The red point is the (<span class="math inline">\(z_1\)</span>, <span class="math inline">\(y_1\)</span>) pair computed for cell <code>1</code>.
 </p>
 </div>
 <p>You’ll note that the range of neighboring values along the <span class="math inline">\(y\)</span>-axis is much greater than that of the original values on the <span class="math inline">\(x\)</span>-axis. This is not necessarily an issue given that the Moran’s <span class="math inline">\(I\)</span> correlation coefficient standardizes the values by recentering them on the overall mean <span class="math inline">\((X - \bar{X})/s\)</span>. This is simply to re-emphasize that we are interested in how a neighboring value varies relative to a feature’s value, regardless of the scale of values in either batches.</p>
@@ -2648,7 +2661,7 @@ y_1 =  \sum\limits_j w_{1j} z_j {}={} &amp; (0)(0.21)+(0.333)(1.17)+(0)(1.5)+...
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig19"></span>
 <img src="13-Spatial-Autocorrelation_files/figure-html/fig19-1.png" alt="Moran's scatter plot with original values on the left and same Moran's I scatter plot on the right using the standardzied values $z_i$ and $y_i$." width="672" />
 <p class="caption">
-Figure 13.20: Moran’s scatter plot with original values on the left and same Moran’s I scatter plot on the right using the standardzied values <span class="math inline">\(z_i\)</span> and <span class="math inline">\(y_i\)</span>.
+Figure 13.22: Moran’s scatter plot with original values on the left and same Moran’s I scatter plot on the right using the standardzied values <span class="math inline">\(z_i\)</span> and <span class="math inline">\(y_i\)</span>.
 </p>
 </div>
 <p>Note the difference in the point cloud pattern in the above plot from the one generated using the binary weights. Other weights can be used such as inverse distance and k-nearest neighbors to name just a few. However, must software implementations of the Moran’s <em>I</em> statistic will adopt the row standardized weights.</p>
@@ -2658,7 +2671,7 @@ Figure 13.20: Moran’s scatter plot with original values on the left and same M
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig20"></span>
 <img src="13-Spatial-Autocorrelation_files/figure-html/fig20-1.png" alt="The left plot shows the Moran's I scatter plot with the point colors symbolizing the $I_i$ values. The figure on the right shows the matching $I_i$ values mapped to each respective cell." width="672" />
 <p class="caption">
-Figure 13.21: The left plot shows the Moran’s I scatter plot with the point colors symbolizing the <span class="math inline">\(I_i\)</span> values. The figure on the right shows the matching <span class="math inline">\(I_i\)</span> values mapped to each respective cell.
+Figure 13.23: The left plot shows the Moran’s I scatter plot with the point colors symbolizing the <span class="math inline">\(I_i\)</span> values. The figure on the right shows the matching <span class="math inline">\(I_i\)</span> values mapped to each respective cell.
 </p>
 </div>
 <p>Here, we are adopting a different color scheme from that used earlier. Green colors highlight features whose values are surrounded by similar values. These can be either positive values surrounded by standardized values that tend to be positive or negative values surrounded by values that tend to be negative. In both cases, the calculated <span class="math inline">\(I_i\)</span> will be positive. Red colors highlight features whose values are surrounded by dissimilar values. These can be either negative values surrounded by values that tend to be positive or positive values surrounded by values that tend to be negative. In both cases, the calculated <span class="math inline">\(I_i\)</span> will be negative. In our example, two features have a negative Moran’s <em>I</em> coefficient: cell IDs <code>7</code> and <code>12</code>.</p>
@@ -2676,7 +2689,7 @@ In this example, <span class="math inline">\(\sum\limits_i \sum\limits_j w_{ij}\
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig21"></span>
 <img src="13-Spatial-Autocorrelation_files/figure-html/fig21-1.png" alt="Moran's scatter with fitted Moran's *I* slope (red line).  The left plot uses the raw values $(X_i,X_i(lag))$ for its axes labels. Right plot uses the standardized values $(z_i,y_i)$ for its axes labels." width="672" />
 <p class="caption">
-Figure 13.22: Moran’s scatter with fitted Moran’s <em>I</em> slope (red line). The left plot uses the raw values <span class="math inline">\((X_i,X_i(lag))\)</span> for its axes labels. Right plot uses the standardized values <span class="math inline">\((z_i,y_i)\)</span> for its axes labels.
+Figure 13.24: Moran’s scatter with fitted Moran’s <em>I</em> slope (red line). The left plot uses the raw values <span class="math inline">\((X_i,X_i(lag))\)</span> for its axes labels. Right plot uses the standardized values <span class="math inline">\((z_i,y_i)\)</span> for its axes labels.
 </p>
 </div>
 

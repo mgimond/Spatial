@@ -5,8 +5,8 @@ editor_options:
 ---
 # Spatial Autocorrelation
 
-```{block type="note"}
-*"The first law of geography: Everything is related to everything else, but near things are more related than distant things."* Waldo R. Tobler [@Tobler1970] 
+```{block type="note", eval = FALSE}
+_"The first law of geography: Everything is related to everything else, but near things are more related than distant things."_ Waldo R. Tobler [@Tobler1970] 
 ```
 
 Mapped events or entities can have non-spatial information attached to them (some GIS software call these attributes). When mapped, these values often exhibit some degree of spatial relatedness at some scale. This is what Tobler was getting at: The idea that values close to one another tend to be similar. In fact, you will be hard-pressed to find mapped features that do not exhibit some kind of non-random pattern. 
@@ -273,7 +273,7 @@ If we perform this permutation for all polygons in our dataset, we can map the p
 
 ```{r  fig12, echo=FALSE,fig.width = 5, fig.height=2.5, fig.cap="Map of the pseudo p-values for each polygons' $I_i$ statistic.", fig.align='center'}
 
-M <- localmoran_perm(ma$house_inc, lw, nsim = 999)
+M <- localmoran_perm(ma$house_inc, lw, nsim = 29999)
 ma$p <- data.frame(M)$Pr.folded..Sim
 
 clint <- classIntervals(ma$p, style = "fixed", n = 7, 
@@ -416,8 +416,8 @@ queen_w <- queen_weights(ma)
 # A random process
 set.seed(307)
 ma$rnd <- sample(ma$house_inc)
-lisa <- local_moran(queen_w, ma["rnd"], permutations = 9999)
-plot_clust(poly=ma, rnd = "rnd",lisa=lisa,  p= TRUE)
+lisar <- local_moran(queen_w, ma["rnd"], permutations = 9999)
+plot_clust(poly=ma, rnd = "rnd",lisa=lisar,  p= TRUE)
 ```
 
 Note how some $I_i$ values are associated with low pseudo p-value. In fact, one polygon's $I_i$ value is associated with pseudo p-value of 0.001 or less! This is to be expected since the likelihood of finding a significant $I_i$ increases the more permutation tests are performed. Here we have 343 polygons, thus we ran 343 tests. This is analogous to having multiple opportunities to picking an ace of spades from a deck of cards--the more opportunities you have, the greater the chance of grabbing an ace of spades. 
@@ -427,11 +427,11 @@ Here's another example of a local Moran's I test on a realization of a randomly 
 ```{r fig14b, echo=FALSE, fig.width=8, fig.height=3,  fig.cap="Another realization of a random process. Left map is the distribution of income values under a random process. Right map is the outcome of a permutation test showing computed pseudo p-values. "}
 set.seed(521)
 ma$rnd <- sample(ma$house_inc)
-lisa <- local_moran(queen_w, ma["rnd"],permutations = 9999)
-plot_clust(poly=ma, rnd = "rnd",lisa=lisa, p= TRUE)
+lisar <- local_moran(queen_w, ma["rnd"],permutations = 9999)
+plot_clust(poly=ma, rnd = "rnd",lisa=lisar, p= TRUE)
 ```
 
-We still have quite a few $I_i$ values associated with a very low pseudo p-value (The smallest p-value in this example is `r min(lisa$p_vals)`), This would lead one to assume that several polygons exhibit significant levels of spatial autocorrelation with their neighbors when in fact this is due to chance since we did not explicitly generate localized positive or negative spatial autocorrelation. 
+We still have quite a few $I_i$ values associated with a very low pseudo p-value (The smallest p-value in this example is `r min(lisar$p_vals)`), This would lead one to assume that several polygons exhibit significant levels of spatial autocorrelation with their neighbors when in fact this is due to chance since we did not explicitly generate localized positive or negative spatial autocorrelation. 
 
 Instead of generating two realizations of a random process, what if we generated 200 realizations of a random process? This would generate 200 x 323 pseudo p-values. With this working example, about 10% of the outcomes result in a pseudo p-value of 0.05 or less.
 
@@ -459,9 +459,54 @@ par(OP)
 
 This problem is known in the field of statistics as the **multiple comparison problem**. Several solutions have been offered, each with their pros and cons. One solution that seems to have gained traction as of late is the *False Discoverer Rate* correction (FDR). There are at least a couple different implementation of this technique. One implementation starts by ranking the pseudo p-values, $p$, from smallest to largest and assigning a rank, $i$, to each value. Next, a reference value is computed for each rank as $i(\alpha/n)$ where $\alpha$ is the desired significance cutoff value (0.05, for example) and $n$ is the total number of observations (e.g. polygons) for which a pseudo p-value has been computed (343 in our working example). All computed $p_i$ values that are less than $i(\alpha/n)$ are deemed significant at the desired $\alpha$ value.
 
-Using the previous realization of a random process that generated a minimum pseudo p-value of `r min(lisa$p_vals)`, the FDR technique would have generated a reference p-value of `r round(lisa_fdr(lisa, 0.05),5)`--a value smaller than the smallest computed pseudo p-value of `r min(lisa$p_vals)`. Adopting this correction to our output would have resulted in *no* local $I_i$ values being associated with a significant level at or below 0.05 when corrected for the multiple comparison problem.
+Applying the FDR correction to the pseudo p-value cutoff of 0.05 in the household income data gives us the following cluster map. 
 
-It's important to note that there is no one perfect solution to the multiple comparison problem. Add to this the other challenges facing inferential interpretation in a spatial framework that includes the potential for overlapping neighbors (i.e. same polygons used in separate permutation tests), the traditional approaches to interpreting  significance becomes challenging. It is thus recommended to interpret these tests with caution.
+```{r  fig14d, echo=FALSE, fig.width =9, fig.height=4, fig.cap="Clusters deemed significant at the p=0.05 level when applying the FDR correction.", fig.align='center', results = "hide"}
+
+ord <- order(ma$p)
+ma <- ma[ord, ]
+inc.lag <- inc.lag[ord]
+M.df <- M.df[ord, ]
+ma$fdr <- 1:nrow(ma) /nrow(ma) * 0.05
+sig <- ma$p < ma$fdr
+
+OP2 <- par(mfrow = c(1,2), cex = 0.75, tck = -0.01)
+ eda_lm(dat1, income, lag, sd = FALSE)
+ palette(c("blue", "lightblue", "darkgoldenrod2", "red"))
+ points(ma$house_inc[sig], inc.lag[sig], pch = 16, col = M.df$mean[sig])
+
+ OP <- par(mar = c(0,0,0,0))
+  plot(st_geometry(ma), col = "#EDEDED", border = "white")
+  plot(st_geometry(ma[sig,]), col = M.df$mean[sig], border = "white", add = TRUE)
+ par(OP)
+par(OP2)
+```
+
+
+Applying the FDR correction to the pseudo p-value cutoff of 0.01 generates even fewer clusters:
+
+```{r  fig14e, echo=FALSE, fig.width =9, fig.height=4, fig.cap="Clusters deemed significant at the p=0.01 level when applying the FDR correction.", fig.align='center', results = "hide"}
+
+ord <- order(ma$p)
+ma <- ma[ord, ]
+inc.lag <- inc.lag[ord]
+M.df <- M.df[ord, ]
+ma$fdr <- 1:nrow(ma) /nrow(ma) * 0.01
+sig <- ma$p < ma$fdr
+
+OP2 <- par(mfrow = c(1,2), cex = 0.75, tck = -0.01)
+ eda_lm(dat1, income, lag, sd = FALSE)
+ palette(c("blue", "lightblue", "darkgoldenrod2", "red"))
+ points(ma$house_inc[sig], inc.lag[sig], pch = 16, col = M.df$mean[sig])
+
+ OP <- par(mar = c(0,0,0,0))
+  plot(st_geometry(ma), col = "#EDEDED", border = "white")
+  plot(st_geometry(ma[sig,]), col = M.df$mean[sig], border = "white", add = TRUE)
+ par(OP)
+par(OP2)
+```
+
+It's important to note that there is no one perfect solution to the multiple comparison problem. This, and other challenges facing inferential interpretation in a spatial framework such as the potential for overlapping neighbors (i.e. same polygons used in separate permutation tests) make traditional approaches to interpreting  significance challenging. It is thus recommended to interpret these tests with caution.
 
 ## Moran's *I* equation explained
 
