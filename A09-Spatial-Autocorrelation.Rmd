@@ -5,184 +5,140 @@ editor_options:
 ---
 # Spatial autocorrelation in R
 
-```{r, echo = FALSE}
-source("package_list.R")
-get.pckg.info("A09-Spatial-Autocorrelation.Rmd") 
-```
-
 For a basic theoretical treatise on spatial autocorrelation the reader is encouraged to review the [lecture notes](./spatial-autocorrelation.html). This section is intended to supplement the lecture notes by implementing spatial autocorrelation techniques in the R programming environment.
 
-## Sample files for this exercise {-#app8_1}
+## Sample files for this exercise {#app8_1 .unnumbered}
 
 Data used in the following exercises can be loaded into your current R session by running the following chunk of code.
 
 ```{r}
-z <- gzcon(url("https://github.com/mgimond/Spatial/raw/main/Data/s_sf.RDS"))
-s1 <- readRDS(z)
+z <- gzcon(url("https://github.com/mgimond/Spatial/raw/main/Data/ma2.rds"))
+ma <- readRDS(z)
 ```
 
-The data object consists of an `sf` vector layer representing income and education data aggregated at the county level for the state of Maine.
+The `ma` object consists of an `sf` vector layer representing census data aggregated at the county subdivision level for 2021 *(src. Census Bureau 5-year ACS)*.
 
-## Introduction {-#app8_2}
+## Introduction {#app8_2 .unnumbered}
 
-The spatial object `s1` has five attributes. The one of interest for this exercise is `Income` (per capita, in units of dollars).
+The spatial object `ma` has nine attributes with the first being a [FIPS](https://en.wikipedia.org/wiki/Federal_Information_Processing_Standards) identifier. The one of interest for this exercise is `house_inc` (median household income for 2021, in units of dollars). The following table shows just the first few records of the 343 polygon layer (FIPS and geometry columns are not shown).
 
-```{r echo=FALSE, results='asis', out.width=500}
+```{r echo=FALSE, results='asis', fig.width=10, fig.height=3.5}
 library(gridExtra)
-tb.me  <- tableGrob( data.frame(s1)[,1:5],  theme = ttheme_default(base_size = 11))
-grid.arrange(tb.me)
+library(grid)
+tb.ma  <- tableGrob( data.frame(ma)[1:10,2:9],  
+                     theme = ttheme_default(base_size = 8.8))
+grid.arrange(tb.ma)
+#grid.draw(tb.ma)
 ```
 
-
-Let's map the income distribution using a quantile classification scheme. We'll make use of the `tmap` package.
+A map of the income distribution using an equal interval classification scheme is generated using the `tmap` package.
 
 ```{r fig.height=3}
 library(tmap)
-tm_shape(s1) + tm_polygons(style="quantile", col = "Income") +
-  tm_legend(outside = TRUE, text.size = .8) 
+
+tm_shape(ma) + tm_polygons(style="equal", border.col = "grey80", lwd = 0.5,
+                           col = "house_inc", palette="Greens") +
+               tm_legend(outside = TRUE, text.size = .8)  +
+               tm_layout(frame = FALSE)
 ```
 
-## Define neighboring polygons {-#app8_3}
+## Define neighboring polygons {#app8_3 .unnumbered}
 
-The first step requires that we define "neighboring" polygons. This could refer to contiguous polygons, polygons within a certain distance band, or it could be non-spatial in nature and defined by social, political or cultural "neighbors".
+We must first define what is meant by "neighboring" polygons. This can refer to contiguous polygons, polygons within a certain distance band, or it could be non-spatial in nature and defined by social, political or cultural "neighbors".
 
-Here, we'll adopt a contiguous neighbor definition where we'll accept any contiguous polygon that shares at least on vertex (this is the "queen" case and is defined by setting the parameter `queen=TRUE`). If we required that at least one *edge* be shared between polygons then we would set `queen=FALSE`.
+In this example, we'll adopt a contiguous neighbor definition where we'll accept any contiguous polygon that shares at least on *vertex* (this is the "queen" case and is defined by setting the parameter `queen=TRUE` in the `poly2nb()` function). If we required that at least one *edge* be shared between polygons then we would set `queen=FALSE`.
 
 ```{r}
 library(spdep)
-nb <- poly2nb(s1, queen=TRUE)
+nb <- poly2nb(ma, queen=TRUE)
 ```
 
-For each polygon in our polygon object, `nb` lists all neighboring polygons. For example, to see the neighbors for the first polygon in the object, type:
+Other neighborhood functions that can be implemented in `spdep` include:
+
+|                         |                                                        |                      |
+|-----------------------|--------------------------------|-----------------|
+| `dnearneigh`            | distance based neighbor (allows for annulus neighbors) | For point geometry   |
+| `knearneigh` + `knn2nb` | k nearest neighbor                             | For point geometry   |
+
+For each polygon in our polygon object, `nb` lists all polygons deemed *contiguous*. For example, to see the neighbors for the first polygon in the object, type:
+
 
 ```{r}
 nb[[1]]
 ```
 
-Polygon `1` has 4 neighbors. The numbers represent the polygon IDs as stored in the spatial object `s1`. Polygon `1` is associated with the County attribute name `Aroostook`:
+Polygon `1` has 4 neighbors. The numbers represent the polygon IDs as stored in the spatial object `ma`. Polygon `1` is associated with the following `name` attribute:
 
 ```{r}
-s1$NAME[1]
+ma$name[1]
 ```
 
 Its four neighboring polygons are associated with the counties:
 
 ```{r}
-s1$NAME[c(2,3,4,5)]
+ma$name[c(2,3,4,5)]
 ```
-Next, we need to assign weights to each neighboring polygon. In our case, each neighboring polygon will be assigned equal weight (`style="W"`). This is accomplished by assigning the fraction $1/ (\# of neighbors)$ to each neighboring county then summing the weighted income values. While this is the most intuitive way to summaries the neighbors' values it has one drawback in that polygons along the edges of the study area will base their lagged values on fewer polygons thus potentially over- or under-estimating the true nature of the spatial autocorrelation in the data. For this example, we'll stick with the `style="W"` option for simplicity's sake but note that other more robust options are available, notably `style="B"`.
+
+Next, we need to assign weights to each neighboring polygon. In our case, each neighboring polygon will be multiplied by  the weight $1/ (\#\ of\ neighbors)$ (`style="W"`--note the uppercase `"W"`) such that the sum of the weights equal `1`. If a binary weight is desired (i.e. one where each neighboring polygon is a assigned a weight of `1`, regardless of the number of neighbors), set `style="B"`.
 
 ```{r}
 lw <- nb2listw(nb, style="W", zero.policy=TRUE)
 ```
 
-The `zero.policy=TRUE` option allows for lists of non-neighbors. This should be used with caution since the user may not be aware of missing neighbors in their dataset however, a `zero.policy` of `FALSE` would return an `error`.
+The `zero.policy=TRUE` option allows for lists of non-neighbors. This should be used with caution since the user may not be aware of missing neighbors in their dataset. Setting `zero.policy` to `FALSE` will return an `error` if at least one polygon has no neighbor.
 
 To see the weight of the first polygon's four neighbors type:
+
 ```{r}
 lw$weights[1]
 ```
 
-Each neighbor is assigned a quarter of the total weight. This means that when R computes the average neighboring income values, each neighbor's income will be multiplied by `0.25` before being tallied.
+For polygon `1`, each neighbor is assigned a quarter of the total weight. This means that when R computes the  neighboring income values, each neighbor's income will be multiplied by `0.25` before being summed thus giving us the arithmetic mean of polygon `1`'s neighbors.
 
-Finally, we'll compute the average neighbor income value for each polygon. These values are often referred to as **spatially lagged** values.
+## Generating a Moran's I scatter plot {#app8_4 .unnumbered}
+
+If you wish to view the relationship between each polygon's value (`house_inc` in this working example) and its spatially lagged values, you need to first extract the lagged values from the `lw` object.
 
 ```{r}
-Inc.lag <- lag.listw(lw, s1$Income)
+ma$lag <- lag.listw(lw, ma$house_inc)
 ```
-
-The following table shows the average neighboring income values (stored in the `Inc.lag` object) for each county.
-
-```{r echo=FALSE, results='asis', out.width=500}
-library(gridExtra)
-df.tmp <- data.frame(County = s1$NAME, Income = s1$Income, `Inc.lag`=Inc.lag,
-                     check.names = FALSE)
-tb.me  <- tableGrob( df.tmp,  
-                     theme = ttheme_default(base_size = 11))
-grid.arrange(tb.me)
-```
-
-## Computing the Moran's I statistic: the hard way {-#app8_4}
 
 We can plot *lagged income* vs. *income* and fit a linear regression model to the data.
 
-```{r, fig.height=2, fig.width=3, echo=2:6}
-OP <- par(mar=c(2,1.6,0,0), mgp=c(3.3,0.8,0), cex=0.8, pty="s")
+```{r, fig.height=3, fig.width=3.5, echo=2:9}
+OP <- par(mar=c(4,3.6,0,0), mgp=c(3,0.8,0), cex=0.8, pty="s")
 # Create a regression model
-M <- lm(Inc.lag ~ s1$Income)
+M <- lm(lag ~ house_inc, ma)
 
 # Plot the data
-plot( Inc.lag ~ s1$Income, pch=20, asp=1, las=1)
-abline(M, col="red") # Add the regression line from model M
+plot( lag ~ house_inc, ma, pch=21, asp=1, las=1, col = "grey40", bg="grey80")
+abline(M, col="blue") # Add the regression line from model M
+abline(v = mean(ma$house_inc), lty=3, col = "grey80")
+abline(h = mean(ma$house_inc), lty=3, col = "grey80")
 par(OP) 
 ```
 
-The slope of the regression line is the Moran's I coefficient.
+The slope of the regression model *is* the Moran's I coefficient. The next step will show you how to compute this statistic without needing to compute the lagged values and fitting a regression model.
+
+## Computing the Moran's I coefficient {#app8_4b .unnumbered}
+
+The Moran's I global statistic can be computed uisng the `moran` function. Note that you need to specify the attribute value (`house_inc` in this example) and not just the geometric elements.
 
 ```{r}
-coef(M)[2]
+moran(ma$house_inc, listw = lw, n = length(nb), S0 = Szero(lw))
 ```
 
-To assess if the slope is significantly different from zero, we can *randomly* permute the income values across all counties (i.e. we are not imposing any spatial autocorrelation structure), then fit a regression model to each permuted set of values.  The slope values from the regression give us the distribution of Moran's I values we could expect to get under the null hypothesis that the income values are randomly distributed across the counties. We then compare the observed Moran's I value to this distribution.
+`listw` is passed the weights list. `n` is the total number of features having at least one neighbor. This values can be extracted via `length(nb)` . `S0` is the sum of all weights which, in our example should sum to the number of observations with non-zero neighbors. Here too, we make use of another function, `Szero(lw)` (note the uppercase `S`) to extract that number.
 
-```{r}
-n <- 599L   # Define the number of simulations
-I.r <- vector(length=n)  # Create an empty vector
+## Assessing statistical significance {#app8_5 .unnumbered}
 
-for (i in 1:n){
-  # Randomly shuffle income values
-  x <- sample(s1$Income, replace=FALSE)
-  # Compute new set of lagged values
-  x.lag <- lag.listw(lw, x)
-  # Compute the regression slope and store its value
-  M.r    <- lm(x.lag ~ x)
-  I.r[i] <- coef(M.r)[2]
-}
-```
-
-```{r fig.height=2, fig.width=3, echo=2:5}
-OP <- par(mar=c(3,3,0.1,0), mgp=c(2.1,0.8,0), cex=0.8)
-# Plot the histogram of simulated Moran's I values
-# then add our observed Moran's I value to the plot
-hist(I.r, main=NULL, xlab="Moran's I", las=1)
-abline(v=coef(M)[2], col="red")
-par(OP)
-```
-
-The simulation suggests that our observed Moran's I value is not consistent with a Moran's I value one would expect to get if the income values were not spatially autocorrelated. In the next step, we'll compute a pseudo p-value from this simulation.
-
-### Computing a pseudo p-value from an MC simulation {-}
-
-First, we need to find the number of simulated Moran's I values values greater than our observed Moran's I value.
-
-```{r}
-N.greater <- sum(coef(M)[2] > I.r)
-```
-
-To compute the p-value, find the end of the distribution closest to the observed Moran's I value, then divide that count by the total count. Note that this is a so-called one-sided P-value. See lecture notes for more information.
-
-```{r}
-p <- min(N.greater + 1, n + 1 - N.greater) / (n + 1)
-p
-```
-
-In our working example, the p-value suggests that there is a small chance (`r round(p,3)`%) of being wrong in stating that the income values are not clustered at the county level.
-
-## Computing the Moran's I statistic: the easy way {-#app8_5}
-
-To get the Moran's I value, simply use the `moran.test` function.
-
-```{r}
-moran.test(s1$Income,lw)
-```
-
-Note that the p-value computed from the `moran.test` function is not computed from an MC simulation but *analytically* instead. This may not always prove to be the most accurate measure of significance. To test for significance using the *MC simulation* method instead, use the `moran.mc` function.
+To assess if the Moran's I statistic (i.e. the slope in the scatter plot) is significantly different from zero, we can *randomly* permute the income values across all polygons (i.e. we are not imposing any spatial autocorrelation structure), then we compute a Moran's I coefficient for each permuted set of values. This gives us the distribution of Moran's I values we could expect to get under the null hypothesis that the income values are randomly distributed across all census units. We then compare the observed Moran's I value to this distribution. In this example, we'll permute the data 999 times by setting `nsim = 999`. 
 
 ```{r fig.height=2, fig.width=3, echo=2:8}
 OP <- par(mar=c(3,3,0.1,0), mgp=c(2.1,0.8,0), cex=0.8)
-MC<- moran.mc(s1$Income, lw, nsim=599)
+MC<- moran.mc(ma$house_inc, lw, nsim = 999)
 
-# View results (including p-value)
+# View results (including pseudo p-value)
 MC
 
 # Plot the distribution (note that this is a density plot instead of a histogram)
@@ -190,52 +146,173 @@ plot(MC, main="", las=1)
 par(OP)
 ```
 
-## Moran's I as a function of a distance band {-#app8_6}
+The simulation suggests that our observed Moran's I value is not consistent with a Moran's I value one would expect to get if the income values were not spatially autocorrelated. The pseudo p-value can be extracted from the `MC` model as:
 
-In this section, we will explore spatial autocorrelation as a function of distance bands. 
+```{r}
+MC$p.value
+```
+
+In our simulation, none of the Moran's statistics computed from the permuted data was more extreme than our observed Moran's I value. The p-value is therefore capped by the number of simulations. in other words, we cannot compute a p-value less than $1/(1 + N)$ (where `N` is the total number of simulations) or `1/(1 + 999)` = `0.001`.
+
+Note that by default, the `moran.mc` function will compute the number of simulations greater than the observed statistic. So, if the observed statistic is on the left side of the distribution, the pseudo p-value will be greater than `0.5` (note that this is a one-sided test). You can change the *alternative hypothesis* to one where we may expect a more dispersed pattern by setting the parameter `alternative` to `"less"`.
+
+## Moran's I as a function of a distance band {#app8_6 .unnumbered}
+
+In this section, we will explore spatial autocorrelation as a function of distance bands.
 
 Instead of defining neighbors as contiguous polygons, we will define neighbors based on distances to polygon centers. We therefore need to extract the center of each polygon.
 
 ```{r}
-coo <- st_centroid(s1)
+xy <- st_centroid(ma)
 ```
 
-The object `coo` stores all sixteen pairs of coordinate values. 
+The object `xy` stores all 343 pairs of coordinate values (i.e. the same number of points as polygons).
 
-Next, we will define the search radius to include all neighboring polygon centers within 50 km (or 50,000 meters)
-
+Next, we will define the search radius to include all neighboring polygon centers that are at least 70 km away but less than 80 km away.
 
 ```{r}
-S.dist  <-  dnearneigh(coo, 0, 50000)  
+s.dist  <-  dnearneigh(xy, 70000, 80000)  
 ```
 
-The `dnearneigh` function takes on three parameters: the coordinate values `coo`, the radius for the inner radius of the annulus band, and the radius for the outer  annulus band. In our example, the inner annulus radius is `0` which implies that **all** polygon centers **up to**  50km are considered neighbors. 
+The `dnearneigh` function takes three parameters: the coordinate values `xy`, the radius for the inner radius of the annulus band, and the radius for the outer annulus band. In our example, the inner annulus radius is `70`km which implies that **all** polygon centers **up to** 70km are not included in the lagged value calculation.
 
-Note that if we chose to restrict the neighbors to all polygon centers between 50 km and 100 km, for example, then we would define a search annulus (instead of a circle) as `dnearneigh(coo, 50000, 100000)`.
-
-Now that we defined our search circle, we need to identify all neighboring polygons for each polygon in the dataset.
+Polygon `1` has `r s.dist[[1]] |> length()` polygons as neighbors when adopting the annulus definition.
 
 ```{r}
-lw <- nb2listw(S.dist, style="W",zero.policy=T) 
+s.dist[[1]] |> length()
+```
+
+You can map the neighbors for polygon `1` as follows. (Polygon `1` is shown with a red fill color).
+
+```{r fig.height = 3}
+annulus1 <- ma[s.dist[[1]], "house_inc"] # Extract polygon 1's neighbors
+
+tm_shape(ma) + tm_borders(col = "grey80") +
+tm_shape(ma[1,]) + tm_fill(col="red") +
+tm_shape(annulus1) + tm_polygons(style="equal", border.col = "grey80", lwd = 0.5,
+                           col = "house_inc", palette="Greens") +
+               tm_legend(outside = TRUE, text.size = .8)  +
+               tm_layout(frame = FALSE)
+```
+
+Now that we defined the distance based neighbors for all polygons, we need to compute their weights. We will adopt the same weighing scheme used in the contiguous definition of neighbors in the earlier example.
+
+```{r}
+lw <- nb2listw(s.dist, style="W", zero.policy=T) 
+```
+
+The polygon `1`'s neighbors are each assigned a weight of `r lw$weights[[1]][1]`.
+
+```{r}
+lw$weights[[1]]
 ```
 
 Run the MC simulation.
 
 ```{r}
-MI  <-  moran.mc(s1$Income, lw, nsim=599,zero.policy=T) 
+MC  <-  moran.mc(ma$house_inc, lw, nsim=599, zero.policy=T) 
 ```
 
 Plot the results.
 
 ```{r fig.height=2, fig.width=3, echo=2}
-OP <- par(mar=c(3,3,0.1,0), mgp=c(2.1,0.8,0), cex=0.8)
-plot(MI, main="", las=1) 
+OP <- par(mar=c(3.1,3,0.1,0), mgp=c(2.1,0.8,0), cex=0.8)
+plot(MC, main="", las=1) 
 par(OP)
 ```
+
+Here, we are observing a different statistical outcome. The observed Moran's I coefficient is on the left side of the distribution suggesting that income values tend to be more different than similar when separated by a 50 km distance. 
 
 Display p-value and other summary statistics.
 
 ```{r}
-MI
+MC
 ```
+
+Since we went with the default alternative parameter of `"greater"` in the `moran.mc` function, the output is giving us the fraction of simulated values greater than our observed value--about `r round(MC$p.value * 100, 1)`% in our example. Given that our observed statistic is on the left side of the distribution, it's best to report the p-value as (1 - `r round(MC$p.value,3)`) or `r round(1-MC$p.value,3)` with the alternative hypothesis that the values are more dissimilar than expected.
+
+## Local Moran's I  {#app8_7 .unnumbered}
+
+To compute local indicators of spatial autocorrelation (Local Moran's I), we can make use of the `localmoran` function from the `spdep` package. However, this function adopts an analytical approach to computing the p-value. It's best to adopt a Monte Carlo approach. This can be performed using the `localmoran_perm` function. In this example, we will run `9999` permutations for each polygon.
+
+We'll first revert to our earlier definition of neighbor (i.e. one of contiguity).
+
+```{r}
+lw <- nb2listw(nb, style="W", zero.policy=TRUE)
+```
+
+Next, we'll run the local Moran's I analysis using the `localmoran_perm` function.
+
+```{r}
+MCi <- localmoran_perm(ma$house_inc, lw, nsim = 9999)
+MCi.df <- as.data.frame(MCi) 
+```
+
+The object `MCi` stores several parameters including the local Moran's statistic for each polygon, $I_i$, and its associated pseudo p-value. `MCi.df` is a dataframe version of the `MCi`object.
+
+Next, we'll add the pseudo p-values to the `ma` spatial object.
+
+```{r}
+ma$p  <- MCi.df$`Pr(folded) Sim`
+```
+
+Note that the `localmoran_perm` function generates two different p-values: ``MCi.df$`Pr(z != E(Ii)) Sim` `` and ``MCi.df$`Pr(folded) Sim` ``. The former is for a two sided test (`alternative = "two.sided"`) and the latter is a "folded" p-value for a one-sided test.
+
+We can generate a map of the pseudo p-values as follows:
+
+```{r fig.height=3, fig.width = 6}
+pal1 <- c("#DE2D26","#FC9272", "#FEE0D2", "grey90")
+library(tmap)
+tm_shape(ma) + tm_polygons(style="fixed", breaks = c(0, 0.001, 0.01, 0.05, 0.5),
+                           col = "p", palette=pal1, border.col = "grey80", lwd = 0.5) +
+               tm_legend(outside = TRUE, text.size = .8) +
+               tm_layout(frame = FALSE) 
+```
+
+Next, we'll map the significant clusters.
+
+First, we will use the `hotspot` function to identify "significant" clusters using a p-value cutoff of `0.05`. Since the output is a factor, a manipulation of its levels is made to facilitate the assignment of colors when generating the map. 
+
+```{r}
+ma$Ii <- hotspot(MCi, Prname="Pr(folded) Sim", cutoff = 0.05, p.adjust = "none")
+
+# Replace NA with ">0.05". This requires that the Ii factor be re-leveled
+ma$Ii <- factor(ma$Ii, levels=c("High-High","Low-Low", "Low-High", "High-Low", ">0.05"))
+ma$Ii[is.na(ma$Ii)] <- ">0.05"
+```
+
+Next, we define the color palette, then we generate the map.
+
+```{r fig.height=3, fig.width = 6}
+pal2 <- c( "#FF0000", "#0000FF", "#a7adf9", "#f4ada8","#ededed")
+
+tm_shape(ma) + tm_polygons(style="cat", border.col = "grey80", lwd = 0.5,
+                           col = "Ii", palette=pal2) +
+               tm_legend(outside = TRUE, text.size = .8) +
+               tm_layout(frame = FALSE)
+               
+```
+
+### Correcting for multiple comparisons  {#app8_7_1 .unnumbered}
+
+The `p.adjust` parameter in the `hotspot` function can be used to correct for multiple tests. One popular correction is the False Discovery Rate (FDR) that can be implemented by setting `p.adjust` to `"fdr"`. 
+
+```{r}
+ma$Ii <- hotspot(MCi, Prname="Pr(folded) Sim", cutoff = 0.05, p.adjust = "fdr")
+
+# Replace NA with ">0.05". This requires that the Ii factor be re-leveled
+ma$Ii <- factor(ma$Ii, levels=c("High-High","Low-Low", "Low-High", "High-Low", ">0.05 corrected"))
+ma$Ii[is.na(ma$Ii)] <- ">0.05 corrected"
+```
+
+We now have a more stringent implementation of the p-value.
+
+```{r fig.height=3, fig.width = 6}
+tm_shape(ma) + tm_polygons(style="cat", border.col = "grey80", lwd = 0.5,
+                           col = "Ii", palette=pal2) +
+               tm_legend(outside = TRUE, text.size = .8) +
+               tm_layout(frame = FALSE) 
+```
+
+
 
