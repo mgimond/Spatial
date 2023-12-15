@@ -53,7 +53,7 @@
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
 <script src="libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
-<script src="libs/htmlwidgets-1.6.3/htmlwidgets.js"></script>
+<script src="libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
 <link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet-1.3.1/leaflet.js"></script>
 <link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
@@ -539,12 +539,14 @@ div.csl-indent {
 <li class="chapter" data-level="" data-path="spatial-autocorrelation-in-r.html"><a href="spatial-autocorrelation-in-r.html#app8_1"><i class="fa fa-check"></i>Sample files for this exercise</a></li>
 <li class="chapter" data-level="" data-path="spatial-autocorrelation-in-r.html"><a href="spatial-autocorrelation-in-r.html#app8_2"><i class="fa fa-check"></i>Introduction</a></li>
 <li class="chapter" data-level="" data-path="spatial-autocorrelation-in-r.html"><a href="spatial-autocorrelation-in-r.html#app8_3"><i class="fa fa-check"></i>Define neighboring polygons</a></li>
-<li class="chapter" data-level="" data-path="spatial-autocorrelation-in-r.html"><a href="spatial-autocorrelation-in-r.html#app8_4"><i class="fa fa-check"></i>Computing the Moran’s I statistic: the hard way</a>
-<ul>
-<li class="chapter" data-level="" data-path="spatial-autocorrelation-in-r.html"><a href="spatial-autocorrelation-in-r.html#computing-a-pseudo-p-value-from-an-mc-simulation"><i class="fa fa-check"></i>Computing a pseudo p-value from an MC simulation</a></li>
-</ul></li>
-<li class="chapter" data-level="" data-path="spatial-autocorrelation-in-r.html"><a href="spatial-autocorrelation-in-r.html#app8_5"><i class="fa fa-check"></i>Computing the Moran’s I statistic: the easy way</a></li>
+<li class="chapter" data-level="" data-path="spatial-autocorrelation-in-r.html"><a href="spatial-autocorrelation-in-r.html#app8_4"><i class="fa fa-check"></i>Generating a Moran’s I scatter plot</a></li>
+<li class="chapter" data-level="" data-path="spatial-autocorrelation-in-r.html"><a href="spatial-autocorrelation-in-r.html#app8_4b"><i class="fa fa-check"></i>Computing the Moran’s I coefficient</a></li>
+<li class="chapter" data-level="" data-path="spatial-autocorrelation-in-r.html"><a href="spatial-autocorrelation-in-r.html#app8_5"><i class="fa fa-check"></i>Assessing statistical significance</a></li>
 <li class="chapter" data-level="" data-path="spatial-autocorrelation-in-r.html"><a href="spatial-autocorrelation-in-r.html#app8_6"><i class="fa fa-check"></i>Moran’s I as a function of a distance band</a></li>
+<li class="chapter" data-level="" data-path="spatial-autocorrelation-in-r.html"><a href="spatial-autocorrelation-in-r.html#app8_7"><i class="fa fa-check"></i>Local Moran’s I</a>
+<ul>
+<li class="chapter" data-level="" data-path="spatial-autocorrelation-in-r.html"><a href="spatial-autocorrelation-in-r.html#app8_7_1"><i class="fa fa-check"></i>Correcting for multiple comparisons</a></li>
+</ul></li>
 </ul></li>
 <li class="chapter" data-level="J" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html"><i class="fa fa-check"></i><b>J</b> Interpolation in R</a>
 <ul>
@@ -615,7 +617,7 @@ spatstat
               padding-bottom: 1px;
               padding-left: 4px;
               padding-right: 4px;">
-4.3.2
+4.3.1
 </td>
 <td style="text-align:left;color: white !important;background-color: #AAAAAA !important;text-align: center;font-size: 12px !important; 
               margin:5px; 
@@ -805,7 +807,7 @@ spatstat
  Median :3.377e-03   Median :0.001541  
  Mean   :8.473e-03   Mean   :0.007821  
  3rd Qu.:1.078e-02   3rd Qu.:0.005904  
- Max.   :5.693e-02   Max.   :5.104218  </code></pre>
+ Max.   :5.693e-02   Max.   :5.102160  </code></pre>
 <p>The predicted maximum intensity value is two orders of magnitude greater than that observed.</p>
 <p>The overestimation of intenstity values can also be observed at lower values. The following plot limits the data to observed intensities less than 0.04. A red one-to-one line is added for reference. If intensities were similar, they would aggregate around this line.</p>
 <div class="sourceCode" id="cb365"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb365-1"><a href="point-pattern-analysis-in-r.html#cb365-1" tabindex="-1"></a><span class="fu">plot</span>(K1_vs_pred<span class="sc">$</span>pred <span class="sc">~</span> K1_vs_pred<span class="sc">$</span>K1, <span class="at">pch=</span><span class="dv">20</span>,</span>
