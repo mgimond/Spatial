@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 10 Map Algebra | Intro to GIS and Spatial Analysis</title>
   <meta name="description" content="This is a compilation of lecture notes that accompany my Intro to GIS and Spatial Analysis course." />
-  <meta name="generator" content="bookdown 0.37 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.40 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 10 Map Algebra | Intro to GIS and Spatial Analysis" />
   <meta property="og:type" content="book" />
@@ -53,6 +53,7 @@
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
 <script src="libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<link href="libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet" />
 <script src="libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
 <link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet-1.3.1/leaflet.js"></script>
@@ -60,7 +61,7 @@
 <script src="libs/proj4-2.6.2/proj4.min.js"></script>
 <script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
 <link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
-<script src="libs/leaflet-binding-2.2.1/leaflet.js"></script>
+<script src="libs/leaflet-binding-2.2.2/leaflet.js"></script>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-71085TV4MB"></script>
 <script>
@@ -74,7 +75,7 @@
 
 <style type="text/css">
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -141,6 +142,7 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
+  margin-bottom: 0em;
 }
 .hanging div.csl-entry {
   margin-left:2em;
@@ -598,9 +600,9 @@ Figure 10.1: Example of a local operation where <code>output=(2 * raster + 1)</c
 </div>
 <p>More than one raster can be involved in a local operation. For example, two rasters can be summed (i.e. each overlapping pixels are summed) to generate a new raster.</p>
 <div class="figure"><span style="display:block;" id="fig:f10-local02"></span>
-<img src="10-Map-Algebra_files/figure-html/f10-local02-1.png" alt="Example of a local operation where `output=(raster1+raster2)`. Note how each cell output only involves input raster cells that share the same exact location." width="672" />
+<img src="10-Map-Algebra_files/figure-html/f10-local02-1.png" alt="Example of a local operation where `output=(input1+input2)`. Note how each cell output only involves input raster cells that share the same exact location." width="672" />
 <p class="caption">
-Figure 10.2: Example of a local operation where <code>output=(raster1+raster2)</code>. Note how each cell output only involves input raster cells that share the same exact location.
+Figure 10.2: Example of a local operation where <code>output=(input1+input2)</code>. Note how each cell output only involves input raster cells that share the same exact location.
 </p>
 </div>
 <p>Local operations also include <strong>reclassification</strong> of values. This is where a range of values from the input raster are assigned a new (common) value. For example, we might want to reclassify the input raster values as follows:</p>
@@ -701,6 +703,12 @@ Figure 10.9: Example of a global function: the Euclidean distance. Each pixel is
 <h3><span class="header-section-number">10.5.1</span> Mathematical operators and functions<a href="chp10_0.html#mathematical-operators-and-functions" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Two mathematical operators have already been demonstrated in earlier sections: the <em>multiplier</em> and the <em>addition</em> operators. Other operators include division and the modulo (aka the modulus) which is the remainder of a division. Mathematical <em>functions</em> can also be applied to gridded data manipulation. Examples are square root and sine functions. The following table showcases a few examples with ArcGIS and R syntax.</p>
 <table>
+<colgroup>
+<col width="29%" />
+<col width="23%" />
+<col width="23%" />
+<col width="23%" />
+</colgroup>
 <thead>
 <tr class="header">
 <th>Operation</th>
@@ -714,31 +722,31 @@ Figure 10.9: Example of a global function: the Euclidean distance. Each pixel is
 <td>Addition</td>
 <td><code>+</code></td>
 <td><code>+</code></td>
-<td><code>R1 + R2</code></td>
+<td><code>input1 + input2</code></td>
 </tr>
 <tr class="even">
 <td>Subtraction</td>
 <td><code>-</code></td>
 <td><code>-</code></td>
-<td><code>R1 - R2</code></td>
+<td><code>input1 - input2</code></td>
 </tr>
 <tr class="odd">
 <td>Division</td>
 <td><code>/</code></td>
 <td><code>/</code></td>
-<td><code>R1 / R2</code></td>
+<td><code>input1 / input2</code></td>
 </tr>
 <tr class="even">
 <td>Modulo</td>
 <td><code>Mod()</code></td>
 <td><code>%%</code></td>
-<td><code>Mod(R1, 100)</code>, <code>R1 %% 10</code></td>
+<td><code>Mod(input1, 100)</code>, <code>input1 %% 10</code></td>
 </tr>
 <tr class="odd">
 <td>Square root</td>
 <td><code>SquareRoot()</code></td>
 <td><code>sqrt()</code></td>
-<td><code>SquareRoot(R1)</code>, <code>sqrt(R1)</code></td>
+<td><code>SquareRoot(input1)</code>, <code>sqrt(input1)</code></td>
 </tr>
 </tbody>
 </table>
@@ -772,17 +780,17 @@ Figure 10.9: Example of a global function: the Euclidean distance. Each pixel is
 </tr>
 </tbody>
 </table>
-<p>For example, the following figure shows the output of the comparison between two rasters where we are assessing if cells in <code>R1</code> are <em>greater than</em> those in <code>R2</code> (on a cell-by-cell basis).</p>
+<p>For example, the following figure shows the output of the comparison between two rasters where we are assessing if cells in <code>input1</code> are <em>greater than</em> those in <code>input2</code> (on a cell-by-cell basis).</p>
 <div class="figure"><span style="display:block;" id="fig:f10-logical01"></span>
-<img src="10-Map-Algebra_files/figure-html/f10-logical01-1.png" alt="Output of the operation `R1` &amp;gt; `R2`. A value of 1 in the output raster indicates that the condition is true and a value of 0 indicates that the condition is false." width="480" />
+<img src="10-Map-Algebra_files/figure-html/f10-logical01-1.png" alt="Output of the operation `input1` &amp;gt; `input2`. A value of 1 in the output raster indicates that the condition is true and a value of 0 indicates that the condition is false." width="480" />
 <p class="caption">
-Figure 10.10: Output of the operation <code>R1</code> &gt; <code>R2</code>. A value of 1 in the output raster indicates that the condition is true and a value of 0 indicates that the condition is false.
+Figure 10.10: Output of the operation <code>input1</code> &gt; <code>input2</code>. A value of 1 in the output raster indicates that the condition is true and a value of 0 indicates that the condition is false.
 </p>
 </div>
-<p>When assessing whether two cells are equal, some programming environments such as R and ArcMap’s <em>Raster Calculator</em> require the use of the <em>double equality</em> syntax, <code>==</code>, as in <code>R1 == R2</code>. In these programming environments, the single equality syntax is usually interpreted as an <em>assignment operator</em> so <code>R1 = R2</code> would instruct the computer to assign the cell values in R2 to R1 (which is not what we want to do here).</p>
-<p>Some applications make use of special functions to test a condition. For example, ArcMap has a function called <code>Con(condition, out1, out2)</code> which assigns the value <code>out1</code> if the condition is met and a value of <code>out2</code> if it’s not. For example, ArcMap’s raster calculator expression</p>
-<pre><code>Con( R1 &gt; R2, 1, 0)</code></pre>
-<p>outputs a value of <code>1</code> if <code>R1</code> is greater than <code>R2</code> and <code>0</code> if not. It generates the same output as the one shown in the above figure. Note that in most programming environments (including ArcMap), the expression <code>R1 &gt; R2</code> produces the same output because the value <code>1</code> is the numeric representation of <code>TRUE</code> and <code>0</code> that of <code>FALSE</code>.</p>
+<p>When assessing whether two cells are equal, some programming environments such as R and ArcGIS’s <em>Raster Calculator</em> require the use of the <em>double equality</em> syntax, <code>==</code>, as in <code>input1 == input2</code>. In these programming environments, the single equality syntax is usually interpreted as an <em>assignment operator</em> so <code>input1 = input2</code> would instruct the computer to assign the cell values in <code>input2</code> to <code>input1</code> (which is not what we want to do here).</p>
+<p>Some applications make use of special functions to test a condition. For example, ArcGIS has a function called <code>Con(condition, out1, out2)</code> which assigns the value <code>out1</code> if the condition is met and a value of <code>out2</code> if it’s not. For example, ArcGIS’s raster calculator expression</p>
+<pre><code>Con( input1 &gt; input2, 1, 0)</code></pre>
+<p>outputs a value of <code>1</code> if <code>input1</code> is greater than <code>input2</code> and <code>0</code> if not. It generates the same output as the one shown in the above figure. Note that in most programming environments (including ArcGIS), the expression <code>input1 &gt; input2</code> produces the same output because the value <code>1</code> is the numeric representation of <code>TRUE</code> and <code>0</code> that of <code>FALSE</code>.</p>
 </div>
 <div id="boolean-or-logical-operators" class="section level3 hasAnchor" number="10.5.3">
 <h3><span class="header-section-number">10.5.3</span> Boolean (or Logical) operators<a href="chp10_0.html#boolean-or-logical-operators" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -801,19 +809,19 @@ Figure 10.10: Output of the operation <code>R1</code> &gt; <code>R2</code>. A va
 <td align="left">AND</td>
 <td align="left">&amp;</td>
 <td align="left">&amp;</td>
-<td><code>R1 &amp; R2</code></td>
+<td><code>input1 &amp; input2</code></td>
 </tr>
 <tr class="even">
 <td align="left">OR</td>
 <td align="left"><code>|</code></td>
 <td align="left"><code>|</code></td>
-<td><code>R1 | R2</code></td>
+<td><code>input1 | input2</code></td>
 </tr>
 <tr class="odd">
 <td align="left">NOT</td>
 <td align="left"><code>~</code></td>
 <td align="left"><code>!</code></td>
-<td><code>~R2</code>, <code>!R2</code></td>
+<td><code>~input2</code>, <code>! input2</code></td>
 </tr>
 </tbody>
 </table>
@@ -822,25 +830,25 @@ Figure 10.10: Output of the operation <code>R1</code> &gt; <code>R2</code>. A va
 </blockquote>
 <p>For example, if <code>cell1=0</code> and <code>cell2=1</code>, the Boolean operation <code>cell1 AND cell2</code> results in a <code>FALSE</code> (or 0) output cell value. This Boolean operation can be translated into plain English as “are the cells 1 and 2 both TRUE?” to which we answer “No they are not” (cell1 is FALSE). The <strong>OR</strong> operator can be interpreted as “is x <em>or</em> y TRUE?” so that <code>cell1 OR cell2</code> would return <code>TRUE</code>. The <strong>NOT</strong> interpreter can be interpreted as “is x not TRUE?” so that <code>NOT cell1</code> would return <code>TRUE</code>.</p>
 <div class="figure"><span style="display:block;" id="fig:f10-boolean01"></span>
-<img src="10-Map-Algebra_files/figure-html/f10-boolean01-1.png" alt="Output of the operation `R1 AND R2`. A value of 1 in the output raster indicates that the condition is true and a value of 0 indicates that the condition is false. Note that many programming environments treat *any* none 0 values as TRUE so that `-3 AND -4` will return `TRUE`." width="480" />
+<img src="10-Map-Algebra_files/figure-html/f10-boolean01-1.png" alt="Output of the operation `input1 AND input2`. A value of 1 in the output raster indicates that the condition is true and a value of 0 indicates that the condition is false. Note that many programming environments treat *any* none 0 values as TRUE so that `-3 AND -4` will return `TRUE`." width="480" />
 <p class="caption">
-Figure 10.11: Output of the operation <code>R1 AND R2</code>. A value of 1 in the output raster indicates that the condition is true and a value of 0 indicates that the condition is false. Note that many programming environments treat <em>any</em> none 0 values as TRUE so that <code>-3 AND -4</code> will return <code>TRUE</code>.
+Figure 10.11: Output of the operation <code>input1 AND input2</code>. A value of 1 in the output raster indicates that the condition is true and a value of 0 indicates that the condition is false. Note that many programming environments treat <em>any</em> none 0 values as TRUE so that <code>-3 AND -4</code> will return <code>TRUE</code>.
 </p>
 </div>
 <div class="figure"><span style="display:block;" id="fig:f10-boolean02"></span>
-<img src="10-Map-Algebra_files/figure-html/f10-boolean02-1.png" alt="Output of the operation `NOT R2`. A value of 1 in the output raster indicates that the input cell is NOT TRUE (i.e. has a value of 0)." width="480" />
+<img src="10-Map-Algebra_files/figure-html/f10-boolean02-1.png" alt="Output of the operation `NOT input2`. A value of 1 in the output raster indicates that the input cell is NOT TRUE (i.e. has a value of 0)." width="480" />
 <p class="caption">
-Figure 10.12: Output of the operation <code>NOT R2</code>. A value of 1 in the output raster indicates that the input cell is NOT TRUE (i.e. has a value of 0).
+Figure 10.12: Output of the operation <code>NOT input2</code>. A value of 1 in the output raster indicates that the input cell is NOT TRUE (i.e. has a value of 0).
 </p>
 </div>
 </div>
 <div id="combining-operations" class="section level3 hasAnchor" number="10.5.4">
 <h3><span class="header-section-number">10.5.4</span> Combining operations<a href="chp10_0.html#combining-operations" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>Both comparison and Boolean operations can be combined into a single expression. For example, we may wish to find locations (cells) that satisfy requirements from two different raster layers: e.g. <code>0&lt;R1&lt;4</code> AND <code>R2&gt;0</code>. To satisfy the first requirement, we can write out the expression as <code>(R1&gt;0) &amp; (R1&lt;4)</code>. Both comparisons (delimited by parentheses) return a <code>0</code> (FALSE) or a <code>1</code> (TRUE). The ampersand, <code>&amp;</code>, is a Boolean operator that checks that both conditions are met and returns a 1 if yes or a 0 if not. This expression is then combined with another comparison using another ampersand operator that assesses the criterion R2&gt;0. The amalgamated expression is thus <code>((R1&gt;0) &amp; (R1&lt;4)) &amp; (R2&gt;0)</code>.</p>
+<p>Both comparison and Boolean operations can be combined into a single expression. For example, we may wish to find locations (cells) that satisfy requirements from two different raster layers: e.g. <code>0&lt;input1&lt;4</code> AND <code>input2&gt;0</code>. To satisfy the first requirement, we can write out the expression as <code>(input1&gt;0) &amp; (input1&lt;4)</code>. Both comparisons (delimited by parentheses) return a <code>0</code> (FALSE) or a <code>1</code> (TRUE). The ampersand, <code>&amp;</code>, is a Boolean operator that checks that both conditions are met and returns a 1 if yes or a 0 if not. This expression is then combined with another comparison using another ampersand operator that assesses the criterion input2&gt;0. The amalgamated expression is thus <code>((input1&gt;0) &amp; (input1&lt;4)) &amp; (input2&gt;0)</code>.</p>
 <div class="figure"><span style="display:block;" id="fig:f10-combining01"></span>
-<img src="10-Map-Algebra_files/figure-html/f10-combining01-1.png" alt="Output of the operation ((`R1`&amp;gt;`0`) &amp;amp; (`R1`&amp;lt;`4`)) &amp;amp; (`R2`&amp;gt;`0`). A value of 1 in the output raster indicates that the condition is true and a value of 0 indicates that the condition is false." width="480" />
+<img src="10-Map-Algebra_files/figure-html/f10-combining01-1.png" alt="Output of the operation ((`input1`&amp;gt;`0`) &amp;amp; (`input1`&amp;lt;`4`)) &amp;amp; (`input2`&amp;gt;`0`). A value of 1 in the output raster indicates that the condition is true and a value of 0 indicates that the condition is false." width="480" />
 <p class="caption">
-Figure 10.13: Output of the operation ((<code>R1</code>&gt;<code>0</code>) &amp; (<code>R1</code>&lt;<code>4</code>)) &amp; (<code>R2</code>&gt;<code>0</code>). A value of 1 in the output raster indicates that the condition is true and a value of 0 indicates that the condition is false.
+Figure 10.13: Output of the operation ((<code>input1</code>&gt;<code>0</code>) &amp; (<code>input1</code>&lt;<code>4</code>)) &amp; (<code>input2</code>&gt;<code>0</code>). A value of 1 in the output raster indicates that the condition is true and a value of 0 indicates that the condition is false.
 </p>
 </div>
 <blockquote>
@@ -854,7 +862,7 @@ Figure 10.13: Output of the operation ((<code>R1</code>&gt;<code>0</code>) &amp;
 
 
 <h3>References</h3>
-<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
 <div id="ref-DTomlin" class="csl-entry">
 Tomlin, Dana C. 1990. <em>GIS and Cartographic Modeling</em>. New Jersey: Prentice Hall.
 </div>

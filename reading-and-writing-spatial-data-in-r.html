@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>A Reading and writing spatial data in R | Intro to GIS and Spatial Analysis</title>
   <meta name="description" content="This is a compilation of lecture notes that accompany my Intro to GIS and Spatial Analysis course." />
-  <meta name="generator" content="bookdown 0.37 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.40 and GitBook 2.6.7" />
 
   <meta property="og:title" content="A Reading and writing spatial data in R | Intro to GIS and Spatial Analysis" />
   <meta property="og:type" content="book" />
@@ -53,6 +53,7 @@
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
 <script src="libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<link href="libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet" />
 <script src="libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
 <link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet-1.3.1/leaflet.js"></script>
@@ -60,7 +61,7 @@
 <script src="libs/proj4-2.6.2/proj4.min.js"></script>
 <script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
 <link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
-<script src="libs/leaflet-binding-2.2.1/leaflet.js"></script>
+<script src="libs/leaflet-binding-2.2.2/leaflet.js"></script>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-71085TV4MB"></script>
 <script>
@@ -74,7 +75,7 @@
 
 <style type="text/css">
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -141,6 +142,7 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
+  margin-bottom: 0em;
 }
 .hanging div.csl-entry {
   margin-left:2em;
@@ -587,7 +589,7 @@ div.csl-indent {
 <table class="package_ver_table">
 <tbody>
 <tr>
-<td style="text-align:left;color: black !important;background-color: #ffc178 !important;text-align: center;font-size: 12px !important; 
+<td style="text-align:left;color: black !important;background-color: rgba(255, 193, 120, 255) !important;text-align: center;font-size: 12px !important; 
               margin:5px; 
               border-radius: 8px;
               border: 2px solid white;
@@ -597,7 +599,7 @@ div.csl-indent {
               padding-right: 4px;">
 R
 </td>
-<td style="text-align:left;color: black !important;background-color: #ffc178 !important;text-align: center;font-size: 12px !important; 
+<td style="text-align:left;color: black !important;background-color: rgba(255, 193, 120, 255) !important;text-align: center;font-size: 12px !important; 
               margin:5px; 
               border-radius: 8px;
               border: 2px solid white;
@@ -607,7 +609,7 @@ R
               padding-right: 4px;">
 sf
 </td>
-<td style="text-align:left;color: black !important;background-color: #ffc178 !important;text-align: center;font-size: 12px !important; 
+<td style="text-align:left;color: black !important;background-color: rgba(255, 193, 120, 255) !important;text-align: center;font-size: 12px !important; 
               margin:5px; 
               border-radius: 8px;
               border: 2px solid white;
@@ -617,7 +619,7 @@ sf
               padding-right: 4px;">
 terra
 </td>
-<td style="text-align:left;color: black !important;background-color: #ffc178 !important;text-align: center;font-size: 12px !important; 
+<td style="text-align:left;color: black !important;background-color: rgba(255, 193, 120, 255) !important;text-align: center;font-size: 12px !important; 
               margin:5px; 
               border-radius: 8px;
               border: 2px solid white;
@@ -627,7 +629,7 @@ terra
               padding-right: 4px;">
 tidygeocoder
 </td>
-<td style="text-align:left;color: black !important;background-color: #ffc178 !important;text-align: center;font-size: 12px !important; 
+<td style="text-align:left;color: black !important;background-color: rgba(255, 193, 120, 255) !important;text-align: center;font-size: 12px !important; 
               margin:5px; 
               border-radius: 8px;
               border: 2px solid white;
@@ -639,7 +641,7 @@ spatstat
 </td>
 </tr>
 <tr>
-<td style="text-align:left;color: white !important;background-color: #AAAAAA !important;text-align: center;font-size: 12px !important; 
+<td style="text-align:left;color: white !important;background-color: rgba(170, 170, 170, 255) !important;text-align: center;font-size: 12px !important; 
               margin:5px; 
               border-radius: 8px;
               border: 2px solid white;
@@ -647,9 +649,9 @@ spatstat
               padding-bottom: 1px;
               padding-left: 4px;
               padding-right: 4px;">
-4.3.1
+4.4.0
 </td>
-<td style="text-align:left;color: white !important;background-color: #AAAAAA !important;text-align: center;font-size: 12px !important; 
+<td style="text-align:left;color: white !important;background-color: rgba(170, 170, 170, 255) !important;text-align: center;font-size: 12px !important; 
               margin:5px; 
               border-radius: 8px;
               border: 2px solid white;
@@ -657,9 +659,9 @@ spatstat
               padding-bottom: 1px;
               padding-left: 4px;
               padding-right: 4px;">
-1.0.14
+1.0.16
 </td>
-<td style="text-align:left;color: white !important;background-color: #AAAAAA !important;text-align: center;font-size: 12px !important; 
+<td style="text-align:left;color: white !important;background-color: rgba(170, 170, 170, 255) !important;text-align: center;font-size: 12px !important; 
               margin:5px; 
               border-radius: 8px;
               border: 2px solid white;
@@ -667,9 +669,9 @@ spatstat
               padding-bottom: 1px;
               padding-left: 4px;
               padding-right: 4px;">
-1.7.65
+1.7.78
 </td>
-<td style="text-align:left;color: white !important;background-color: #AAAAAA !important;text-align: center;font-size: 12px !important; 
+<td style="text-align:left;color: white !important;background-color: rgba(170, 170, 170, 255) !important;text-align: center;font-size: 12px !important; 
               margin:5px; 
               border-radius: 8px;
               border: 2px solid white;
@@ -679,7 +681,7 @@ spatstat
               padding-right: 4px;">
 1.0.5
 </td>
-<td style="text-align:left;color: white !important;background-color: #AAAAAA !important;text-align: center;font-size: 12px !important; 
+<td style="text-align:left;color: white !important;background-color: rgba(170, 170, 170, 255) !important;text-align: center;font-size: 12px !important; 
               margin:5px; 
               border-radius: 8px;
               border: 2px solid white;
@@ -687,7 +689,7 @@ spatstat
               padding-bottom: 1px;
               padding-left: 4px;
               padding-right: 4px;">
-3.0.7
+3.1.1
 </td>
 </tr>
 </tbody>
@@ -710,19 +712,19 @@ spatstat
 <table class="table table-striped table-hover table-condensed" style="width: auto !important; border-bottom: 0;">
 <thead>
 <tr>
-<th style="text-align:right;color: white !important;background-color: #6E6E6E !important;text-align: center;">
+<th style="text-align:right;color: white !important;background-color: rgba(110, 110, 110, 255) !important;text-align: center;">
 Data format
 </th>
-<th style="text-align:center;color: white !important;background-color: #6E6E6E !important;text-align: center;">
+<th style="text-align:center;color: white !important;background-color: rgba(110, 110, 110, 255) !important;text-align: center;">
 Used with…
 </th>
-<th style="text-align:center;color: white !important;background-color: #6E6E6E !important;text-align: center;">
+<th style="text-align:center;color: white !important;background-color: rgba(110, 110, 110, 255) !important;text-align: center;">
 Used in package…
 </th>
-<th style="text-align:left;color: white !important;background-color: #6E6E6E !important;text-align: center;">
+<th style="text-align:left;color: white !important;background-color: rgba(110, 110, 110, 255) !important;text-align: center;">
 Used for…
 </th>
-<th style="text-align:left;color: white !important;background-color: #6E6E6E !important;text-align: center;">
+<th style="text-align:left;color: white !important;background-color: rgba(110, 110, 110, 255) !important;text-align: center;">
 Comment
 </th>
 </tr>
@@ -961,8 +963,8 @@ Geodetic CRS:  WGS 84
 <pre><code># A tibble: 3 × 4
   name            address                                           lat      long
   &lt;chr&gt;           &lt;chr&gt;                                           &lt;dbl&gt;     &lt;dbl&gt;
-1 Colby College   4000 Mayflower drive, Waterville, ME , 04901 44.56615 -69.66232
-2 Bates College   275 College st, Lewiston, ME 04240           44.10638 -70.20636
+1 Colby College   4000 Mayflower drive, Waterville, ME , 04901 44.56119 -69.65846
+2 Bates College   275 College st, Lewiston, ME 04240           44.12403 -70.18890
 3 Bowdoin College 255 Maine St, Brunswick, ME 04011            43.90870 -69.96142</code></pre>
 <p>Another free (but manual) alternative, is to use the US Census Bureau’s web <a href="https://geocoding.geo.census.gov/geocoder/locations/addressbatch?form">geocoding service</a> for creating lat/lon values from a file of US street addresses. This needs to be completed via their web interface and the resulting data table (a CSV file) would then need to be loaded into R as a data frame.</p>
 </div>
@@ -1130,7 +1132,7 @@ PROJCRS[&quot;NAD83 / UTM zone 19N&quot;,
 </div>
 </div>
 <h3>References</h3>
-<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
 <div id="ref-sf" class="csl-entry">
 Pebesma, Edzer. 2018. <span>“<span class="nocase">Simple Features for R: Standardized Support for Spatial Vector Data</span>.”</span> <em><span>The R Journal</span></em> 10 (1): 439–46. <a href="https://doi.org/10.32614/RJ-2018-009">https://doi.org/10.32614/RJ-2018-009</a>.
 </div>

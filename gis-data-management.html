@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 3 GIS Data Management | Intro to GIS and Spatial Analysis</title>
   <meta name="description" content="This is a compilation of lecture notes that accompany my Intro to GIS and Spatial Analysis course." />
-  <meta name="generator" content="bookdown 0.37 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.40 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 3 GIS Data Management | Intro to GIS and Spatial Analysis" />
   <meta property="og:type" content="book" />
@@ -53,6 +53,7 @@
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
 <script src="libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<link href="libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet" />
 <script src="libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
 <link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet-1.3.1/leaflet.js"></script>
@@ -60,7 +61,7 @@
 <script src="libs/proj4-2.6.2/proj4.min.js"></script>
 <script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
 <link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
-<script src="libs/leaflet-binding-2.2.1/leaflet.js"></script>
+<script src="libs/leaflet-binding-2.2.2/leaflet.js"></script>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-71085TV4MB"></script>
 <script>
@@ -74,7 +75,7 @@
 
 <style type="text/css">
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -141,6 +142,7 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
+  margin-bottom: 0em;
 }
 .hanging div.csl-entry {
   margin-left:2em;
@@ -591,9 +593,9 @@ div.csl-indent {
 <h3><span class="header-section-number">3.1.1</span> Vector Data File Formats<a href="gis-data-management.html#vector-data-file-formats" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <div id="shapefile" class="section level4 hasAnchor" number="3.1.1.1">
 <h4><span class="header-section-number">3.1.1.1</span> Shapefile<a href="gis-data-management.html#shapefile" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<p>A <strong>shapefile</strong> is a file-based data format native to ArcView 3.x software (a much older version of ArcMap). Conceptually, a shapefile is a feature class–it stores a collection of features that have the same geometry type (point, line, or polygon), the same attributes, and a common spatial extent.</p>
-<p>Despite what its name may imply, a “single” shapefile is actually composed of at least three files, and as many as eight. Each file that makes up a “shapefile” has a common filename but different extension type.</p>
-<p>The list of files that define a “shapefile” are shown in the following table. Note that each file has a specific role in defining a shapefile.</p>
+<p>A <strong>shapefile</strong> is a file-based data format native to ArcView 3.x software (a much older version of ArcGIS Pro). Conceptually, a shapefile is a feature class–it stores a collection of features that have the same geometry type (point, line, or polygon), the same attributes, and a common spatial extent.</p>
+<p>Despite what its name may imply, a “single” shapefile is actually composed of at least three files, and as many as eight. Each file that makes up a “shapefile” has a common filename but different extension types.</p>
+<p>The list of files that define a “shapefile” are shown in the following table. Note that each file has a specific role in defining a <em>shapefile</em>.</p>
 <table>
 <thead>
 <tr class="header">
@@ -649,7 +651,7 @@ Figure 3.1: Sample content of an ArcGIS file geodatabase. (src: esri)
 </div>
 <div id="geopackage" class="section level4 hasAnchor" number="3.1.1.3">
 <h4><span class="header-section-number">3.1.1.3</span> GeoPackage<a href="gis-data-management.html#geopackage" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<p>This is a relatively new data format that follows <a href="https://en.wikipedia.org/wiki/Open_format">open format standards</a> (i.e. it is non-proprietary). It’s built on top of SQLite (a self-contained relational database). Its one big advantage over many other vector formats is its compactness–coordinate value, metadata, attribute table, projection information, etc…, are all stored in a <em>single</em> file which facilitates portability. Its filename usually ends in <code>.gpkg</code>. Applications such as QGIS (2.12 and up), R and ArcGIS will recognize this format (ArcGIS version 10.2.2 and above will read the file from ArcCatalog but requires a script to create a GeoPackage).</p>
+<p>This is a relatively new data format that follows <a href="https://en.wikipedia.org/wiki/Open_format">open format standards</a> (i.e. it is non-proprietary). It’s built on top of SQLite (a self-contained relational database). Its one big advantage over many other vector formats is its compactness–coordinate value, metadata, attribute table, projection information, etc…, are all stored in a <em>single</em> file which facilitates portability. Its filename usually ends in <code>.gpkg</code>. Applications such as QGIS (2.12 and up), R and ArcGIS will recognize this format.</p>
 </div>
 </div>
 <div id="raster-data-file-formats" class="section level3 hasAnchor" number="3.1.2">
