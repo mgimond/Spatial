@@ -2,7 +2,7 @@
 
 ```{r, echo = FALSE}
 source("package_list.R")
-get.pckg.info("A10-Interpolation.Rmd") 
+get.pckg.info("A09-Spatial-Autocorrelation.Rmd") 
 ```
 
 First, let's load the data from the website. The data are vector layers stored as `sf` objects. 

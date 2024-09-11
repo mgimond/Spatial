@@ -1,9 +1,9 @@
----
-output: html_document
-editor_options: 
-  chunk_output_type: console
----
 # Spatial autocorrelation in R
+
+```{r, echo = FALSE}
+source("package_list.R")
+get.pckg.info("A10-Interpolation.Rmd") 
+```
 
 For a basic theoretical treatise on spatial autocorrelation the reader is encouraged to review the [lecture notes](./spatial-autocorrelation.html). This section is intended to supplement the lecture notes by implementing spatial autocorrelation techniques in the R programming environment.
 

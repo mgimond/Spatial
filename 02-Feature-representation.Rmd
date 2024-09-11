@@ -145,8 +145,8 @@ Another way to categorize an attribute is by its **data type**. ArcGIS supports 
 
 Type | Stored values                            | Note
 -----|------------------------------------------|-----
-Short integer | -32,768 to 32,768 | Whole numbers
-Long integer | -2,147,483,648 to 2,147,483,648 | Whole numbers
+Short integer | -32,768 to 32,767 | Whole numbers
+Long integer | -2,147,483,648 to 2,147,483,647 | Whole numbers
 Float | -3.4 * E-38 to 1.2 E38 | Real numbers
 Double | -2.2 * E-308 to 1.8 * E308 | Real numbers
 Text | Up to 64,000 characters | Letters and words
@@ -162,8 +162,9 @@ library(sf)
 #library(spdep)
 library(tmap)
 library(RColorBrewer)
-fn     <- system.file("etc/shapes/eire.shp", package = "spdep")[1] 
-eire   <- st_read(fn) 
+#fn     <- system.file("etc/shapes/eire.shp", package = "spdep")[1] 
+#eire   <- st_read(fn) 
+eire <- st_read(system.file("shapes/eire.gpkg", package="spData"))
 st_crs(eire) <- st_crs("+proj=utm +zone=30 +units=km") 
 eire$x <- round(log(eire$INCOME) / max(log(eire$INCOME)),2)
 brks   <- seq(0.5,1.0, .1) 

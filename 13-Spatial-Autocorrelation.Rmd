@@ -75,7 +75,7 @@ dat1 <- data.frame(lag = inc.lag, income = s$Income)
 
 
 OP <- par( cex = 0.75, tck = -0.01)
- eda_lm(dat1, income, lag, sd= FALSE, xlab = "Income", ylab=" Lagged income")
+ eda_lm(dat1, income, lag, sd= FALSE, xlab = "Income", ylab=" Lagged income", show.par = FALSE)
 par(OP)
 ```
 
@@ -89,7 +89,7 @@ In a Monte Carlo test (a permutation bootstrap test, to be exact), the attribute
 
 OP <- par( cex = 0.75, tck = -0.01)
 sim <- vector()
- eda_lm(dat1, income, lag, sd= FALSE, xlab = "Income", ylab=" Lagged income", size = 0)
+ eda_lm(dat1, income, lag, sd= FALSE, xlab = "Income", ylab=" Lagged income", size = 0, show.par = FALSE)
  set.seed(323)
  for (i in 1:199){
    s$rand <- sample(s$Income)
@@ -191,7 +191,7 @@ M <- localmoran(ma$house_inc, lw)
 M.df <- data.frame(attr(M, "quadr"))
 
 OP <- par( cex = 0.75, tck = -0.01)
- eda_lm(dat1, income, lag, sd = FALSE)
+ eda_lm(dat1, income, lag, sd = FALSE, show.par = FALSE)
  palette(c("blue", "lightblue", "darkgoldenrod2", "red"))
  points(ma$house_inc, inc.lag, pch = 16, col = M.df$mean)
 par(OP)
@@ -300,7 +300,7 @@ One can use the computed pseudo p-values to filter the $I_i$ values based on a d
 sig <- ma$p <= 0.05
 
 OP2 <- par(mfrow = c(1,2), cex = 0.75, tck = -0.01)
- eda_lm(dat1, income, lag, sd = FALSE)
+ eda_lm(dat1, income, lag, sd = FALSE, show.par = FALSE)
  palette(c("blue", "lightblue", "darkgoldenrod2", "red"))
  points(ma$house_inc[sig], inc.lag[sig], pch = 16, col = M.df$mean[sig])
 
@@ -319,7 +319,7 @@ Here's another example where the $I_i$ values are filtered based on a more strin
 
 sig <- ma$p <= 0.01
 OP2 <- par(mfrow = c(1,2), cex = 0.75, tck = -0.01)
- eda_lm(dat1, income, lag, sd = FALSE)
+ eda_lm(dat1, income, lag, sd = FALSE, show.par = FALSE)
  palette(c("blue", "lightblue", "darkgoldenrod2", "red"))
  points(ma$house_inc[sig], inc.lag[sig], pch = 16, col = M.df$mean[sig])
 
@@ -471,7 +471,7 @@ ma$fdr <- 1:nrow(ma) /nrow(ma) * 0.05
 sig <- ma$p < ma$fdr
 
 OP2 <- par(mfrow = c(1,2), cex = 0.75, tck = -0.01)
- eda_lm(dat1, income, lag, sd = FALSE)
+ eda_lm(dat1, income, lag, sd = FALSE, show.par = FALSE)
  palette(c("blue", "lightblue", "darkgoldenrod2", "red"))
  points(ma$house_inc[sig], inc.lag[sig], pch = 16, col = M.df$mean[sig])
 
@@ -495,7 +495,7 @@ ma$fdr <- 1:nrow(ma) /nrow(ma) * 0.01
 sig <- ma$p < ma$fdr
 
 OP2 <- par(mfrow = c(1,2), cex = 0.75, tck = -0.01)
- eda_lm(dat1, income, lag, sd = FALSE)
+ eda_lm(dat1, income, lag, sd = FALSE, show.par = FALSE)
  palette(c("blue", "lightblue", "darkgoldenrod2", "red"))
  points(ma$house_inc[sig], inc.lag[sig], pch = 16, col = M.df$mean[sig])
 
@@ -619,7 +619,7 @@ nb.df <- nb2mat(nb, style = "B") |> as.data.frame()
 colnames(nb.df) <- 1:length(m)
 nb.df2 <- mutate(nb.df, across(1:16, ~ cell_spec(.x, color = ifelse(.x == 1, "red", "grey30"   ))))
 
-knitr::kable(nb.df2, row.names = TRUE, escape = FALSE, linesep = "") %>%
+knitr::kable(nb.df2, format="html", row.names = TRUE, escape = FALSE, linesep = "") %>%
     kable_styling(bootstrap_options = c("striped"), full_width = FALSE, font_size = 11) |> 
     column_spec(1, bold=T) |>
     column_spec(1:(length(m)+1), extra_css = 'padding: 5px;')|>
@@ -649,7 +649,7 @@ poly$z_lag <- lag.listw(lw, poly$z)
 
 OP <- par(cex.axis=0.85)
  eda_lm(poly, z, z_lag, sd = FALSE, reg=FALSE, xlab = expression(z[i]), 
-         ylab =  expression(y[i]))
+         ylab =  expression(y[i]), show.par = FALSE)
  points(poly$z[1], poly$z_lag[1], pch =16, col="red")
 par(OP)
 ```
@@ -666,7 +666,7 @@ nb.df <- nb2mat(nb, style = "W") |> round(digits = 3) |> as.data.frame()
 
 colnames(nb.df) <- 1:length(m)
 nb.df2 <- mutate(nb.df, across(1:16, ~ cell_spec(.x, color = ifelse(.x > 0, "red", "grey30"   ))))
-knitr::kable(nb.df2, row.names = TRUE, escape = FALSE, linesep = "") |>
+knitr::kable(nb.df2, format="html", row.names = TRUE, escape = FALSE, linesep = "") |>
     kable_styling(bootstrap_options = c("striped"), full_width = FALSE, font_size = 11)  |> 
     column_spec(1, bold=T)  |>
     column_spec(1:(length(m)+1), extra_css = 'padding: 5px;')  |>
@@ -706,9 +706,9 @@ poly$z_lag <- lag.listw(lw, poly$z)
 
 OP <- par(cex.axis=0.85, mfrow = c(1,2))
   eda_lm(poly, A1, val_lag, sd = FALSE, reg=FALSE, xlab = expression(x[i]),
-         ylab = expression( x[i(lag)]))
+         ylab = expression( x[i(lag)]), show.par = FALSE)
   eda_lm(poly, z, z_lag, sd = FALSE, reg=FALSE, xlab = expression(z[i]), 
-         ylab =  expression(y[i]) )
+         ylab =  expression(y[i]), show.par = FALSE )
 par(OP)
 ```
 
@@ -728,7 +728,7 @@ col2 <- colorRampPalette(c( "red", "white", "#00CD00"))(8)[ii]
 
 OP <- par(mfrow=c(1,2))
  eda_lm(poly, z, z_lag, sd = FALSE, reg=FALSE, ylab = expression( z[i(lag)] ),
-        xlab = expression( z[i] )  )
+        xlab = expression( z[i] ) , show.par = FALSE )
   points(poly$z, poly$z_lag, bg = col2, col=col2, pch=21) 
   OP2 <- par(mar = c(4,4,4,4))
     plot(st_geometry(poly), main = NULL, col=col2, reset=FALSE)
@@ -757,9 +757,9 @@ $I$ is thus the slope that best fits the data. This can be plotted using either 
 
 OP <- par(mfrow = c(1,2))
   eda_lm(poly, A1, val_lag, sd= FALSE, xlab = expression(x[i]),
-         ylab = expression( x[i(lag)]))
+         ylab = expression( x[i(lag)]), show.par = FALSE)
   eda_lm(poly, z, z_lag, sd= FALSE, xlab = expression(z[i]),
-         ylab = expression( y[i]))
+         ylab = expression( y[i]), show.par = FALSE)
 
 par(OP)
 ```

@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 13 Spatial Autocorrelation | Intro to GIS and Spatial Analysis</title>
   <meta name="description" content="This is a compilation of lecture notes that accompany my Intro to GIS and Spatial Analysis course." />
-  <meta name="generator" content="bookdown 0.37 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.40 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 13 Spatial Autocorrelation | Intro to GIS and Spatial Analysis" />
   <meta property="og:type" content="book" />
@@ -53,6 +53,7 @@
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
 <script src="libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<link href="libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet" />
 <script src="libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
 <link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet-1.3.1/leaflet.js"></script>
@@ -60,7 +61,7 @@
 <script src="libs/proj4-2.6.2/proj4.min.js"></script>
 <script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
 <link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
-<script src="libs/leaflet-binding-2.2.1/leaflet.js"></script>
+<script src="libs/leaflet-binding-2.2.2/leaflet.js"></script>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-71085TV4MB"></script>
 <script>
@@ -74,7 +75,7 @@
 
 <style type="text/css">
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -141,6 +142,7 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
+  margin-bottom: 0em;
 }
 .hanging div.csl-entry {
   margin-left:2em;
@@ -881,52 +883,52 @@ Figure 13.20: Simulated spatial layer. The figure on the left shows each cell’
 1
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
 <span style="     color: red !important;">1</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
-</td>
-<td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: red !important;">1</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
 <span style="     color: red !important;">1</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: red !important;">1</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 </tr>
 <tr>
@@ -937,13 +939,13 @@ Figure 13.20: Simulated spatial layer. The figure on the left shows each cell’
 <span style="     color: red !important;">1</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
 <span style="     color: red !important;">1</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
 <span style="     color: red !important;">1</span>
@@ -955,31 +957,31 @@ Figure 13.20: Simulated spatial layer. The figure on the left shows each cell’
 <span style="     color: red !important;">1</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 </tr>
 <tr>
@@ -987,19 +989,19 @@ Figure 13.20: Simulated spatial layer. The figure on the left shows each cell’
 3
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
 <span style="     color: red !important;">1</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
 <span style="     color: red !important;">1</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
 <span style="     color: red !important;">1</span>
@@ -1011,28 +1013,28 @@ Figure 13.20: Simulated spatial layer. The figure on the left shows each cell’
 <span style="     color: red !important;">1</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 </tr>
 <tr>
@@ -1040,52 +1042,52 @@ Figure 13.20: Simulated spatial layer. The figure on the left shows each cell’
 4
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
-</td>
-<td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: red !important;">1</span>
-</td>
-<td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
-</td>
-<td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
-</td>
-<td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
 <span style="     color: red !important;">1</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
 <span style="     color: red !important;">1</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: red !important;">1</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 </tr>
 <tr>
@@ -1099,46 +1101,46 @@ Figure 13.20: Simulated spatial layer. The figure on the left shows each cell’
 <span style="     color: red !important;">1</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
-</td>
-<td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: red !important;">1</span>
-</td>
-<td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
-</td>
-<td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
 <span style="     color: red !important;">1</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
 <span style="     color: red !important;">1</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: red !important;">1</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 </tr>
 <tr>
@@ -1155,19 +1157,19 @@ Figure 13.20: Simulated spatial layer. The figure on the left shows each cell’
 <span style="     color: red !important;">1</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
 <span style="     color: red !important;">1</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
 <span style="     color: red !important;">1</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
 <span style="     color: red !important;">1</span>
@@ -1179,19 +1181,19 @@ Figure 13.20: Simulated spatial layer. The figure on the left shows each cell’
 <span style="     color: red !important;">1</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 </tr>
 <tr>
@@ -1199,7 +1201,7 @@ Figure 13.20: Simulated spatial layer. The figure on the left shows each cell’
 7
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
 <span style="     color: red !important;">1</span>
@@ -1211,19 +1213,19 @@ Figure 13.20: Simulated spatial layer. The figure on the left shows each cell’
 <span style="     color: red !important;">1</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
 <span style="     color: red !important;">1</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
 <span style="     color: red !important;">1</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
 <span style="     color: red !important;">1</span>
@@ -1235,16 +1237,16 @@ Figure 13.20: Simulated spatial layer. The figure on the left shows each cell’
 <span style="     color: red !important;">1</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 </tr>
 <tr>
@@ -1252,34 +1254,10 @@ Figure 13.20: Simulated spatial layer. The figure on the left shows each cell’
 8
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
-</td>
-<td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: red !important;">1</span>
-</td>
-<td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: red !important;">1</span>
-</td>
-<td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
-</td>
-<td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
-</td>
-<td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: red !important;">1</span>
-</td>
-<td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
-</td>
-<td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
-</td>
-<td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
 <span style="     color: red !important;">1</span>
@@ -1288,16 +1266,40 @@ Figure 13.20: Simulated spatial layer. The figure on the left shows each cell’
 <span style="     color: red !important;">1</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: red !important;">1</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 </tr>
 <tr>
@@ -1305,40 +1307,16 @@ Figure 13.20: Simulated spatial layer. The figure on the left shows each cell’
 9
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
-</td>
-<td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: red !important;">1</span>
-</td>
-<td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: red !important;">1</span>
-</td>
-<td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
-</td>
-<td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
-</td>
-<td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
-</td>
-<td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: red !important;">1</span>
-</td>
-<td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
-</td>
-<td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
 <span style="     color: red !important;">1</span>
@@ -1347,10 +1325,34 @@ Figure 13.20: Simulated spatial layer. The figure on the left shows each cell’
 <span style="     color: red !important;">1</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 </tr>
 <tr>
@@ -1358,40 +1360,16 @@ Figure 13.20: Simulated spatial layer. The figure on the left shows each cell’
 10
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
-</td>
-<td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: red !important;">1</span>
-</td>
-<td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: red !important;">1</span>
-</td>
-<td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: red !important;">1</span>
-</td>
-<td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
-</td>
-<td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: red !important;">1</span>
-</td>
-<td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
-</td>
-<td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: red !important;">1</span>
-</td>
-<td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
 <span style="     color: red !important;">1</span>
@@ -1403,7 +1381,31 @@ Figure 13.20: Simulated spatial layer. The figure on the left shows each cell’
 <span style="     color: red !important;">1</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 </tr>
 <tr>
@@ -1411,22 +1413,19 @@ Figure 13.20: Simulated spatial layer. The figure on the left shows each cell’
 11
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
-</td>
-<td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: red !important;">1</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
 <span style="     color: red !important;">1</span>
@@ -1435,19 +1434,22 @@ Figure 13.20: Simulated spatial layer. The figure on the left shows each cell’
 <span style="     color: red !important;">1</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
 <span style="     color: red !important;">1</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
 <span style="     color: red !important;">1</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
 <span style="     color: red !important;">1</span>
@@ -1464,46 +1466,46 @@ Figure 13.20: Simulated spatial layer. The figure on the left shows each cell’
 12
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
-</td>
-<td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: red !important;">1</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
 <span style="     color: red !important;">1</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: red !important;">1</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
 <span style="     color: red !important;">1</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
 <span style="     color: red !important;">1</span>
@@ -1517,52 +1519,52 @@ Figure 13.20: Simulated spatial layer. The figure on the left shows each cell’
 13
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
-</td>
-<td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: red !important;">1</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
 <span style="     color: red !important;">1</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: red !important;">1</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
 <span style="     color: red !important;">1</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 </tr>
 <tr>
@@ -1570,31 +1572,28 @@ Figure 13.20: Simulated spatial layer. The figure on the left shows each cell’
 14
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
-</td>
-<td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: red !important;">1</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
 <span style="     color: red !important;">1</span>
@@ -1603,19 +1602,22 @@ Figure 13.20: Simulated spatial layer. The figure on the left shows each cell’
 <span style="     color: red !important;">1</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
 <span style="     color: red !important;">1</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
 <span style="     color: red !important;">1</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 </tr>
 <tr>
@@ -1623,34 +1625,31 @@ Figure 13.20: Simulated spatial layer. The figure on the left shows each cell’
 15
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
-</td>
-<td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: red !important;">1</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
 <span style="     color: red !important;">1</span>
@@ -1659,13 +1658,16 @@ Figure 13.20: Simulated spatial layer. The figure on the left shows each cell’
 <span style="     color: red !important;">1</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
 <span style="     color: red !important;">1</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
 <span style="     color: red !important;">1</span>
@@ -1676,52 +1678,52 @@ Figure 13.20: Simulated spatial layer. The figure on the left shows each cell’
 16
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
-</td>
-<td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: red !important;">1</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
 <span style="     color: red !important;">1</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: red !important;">1</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
 <span style="     color: red !important;">1</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 </tr>
 </tbody>
@@ -1805,52 +1807,52 @@ Figure 13.21: Moran’s <em>I</em> scatterplot using a binary weight. The red po
 1
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
 <span style="     color: red !important;">0.333</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
-</td>
-<td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: red !important;">0.333</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
 <span style="     color: red !important;">0.333</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: red !important;">0.333</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 </tr>
 <tr>
@@ -1861,13 +1863,13 @@ Figure 13.21: Moran’s <em>I</em> scatterplot using a binary weight. The red po
 <span style="     color: red !important;">0.2</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
 <span style="     color: red !important;">0.2</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
 <span style="     color: red !important;">0.2</span>
@@ -1879,31 +1881,31 @@ Figure 13.21: Moran’s <em>I</em> scatterplot using a binary weight. The red po
 <span style="     color: red !important;">0.2</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 </tr>
 <tr>
@@ -1911,19 +1913,19 @@ Figure 13.21: Moran’s <em>I</em> scatterplot using a binary weight. The red po
 3
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
 <span style="     color: red !important;">0.2</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
 <span style="     color: red !important;">0.2</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
 <span style="     color: red !important;">0.2</span>
@@ -1935,28 +1937,28 @@ Figure 13.21: Moran’s <em>I</em> scatterplot using a binary weight. The red po
 <span style="     color: red !important;">0.2</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 </tr>
 <tr>
@@ -1964,52 +1966,52 @@ Figure 13.21: Moran’s <em>I</em> scatterplot using a binary weight. The red po
 4
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
-</td>
-<td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: red !important;">0.333</span>
-</td>
-<td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
-</td>
-<td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
-</td>
-<td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
 <span style="     color: red !important;">0.333</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
 <span style="     color: red !important;">0.333</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: red !important;">0.333</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 </tr>
 <tr>
@@ -2023,46 +2025,46 @@ Figure 13.21: Moran’s <em>I</em> scatterplot using a binary weight. The red po
 <span style="     color: red !important;">0.2</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
-</td>
-<td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: red !important;">0.2</span>
-</td>
-<td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
-</td>
-<td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
 <span style="     color: red !important;">0.2</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
 <span style="     color: red !important;">0.2</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: red !important;">0.2</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 </tr>
 <tr>
@@ -2079,19 +2081,19 @@ Figure 13.21: Moran’s <em>I</em> scatterplot using a binary weight. The red po
 <span style="     color: red !important;">0.125</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
 <span style="     color: red !important;">0.125</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
 <span style="     color: red !important;">0.125</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
 <span style="     color: red !important;">0.125</span>
@@ -2103,19 +2105,19 @@ Figure 13.21: Moran’s <em>I</em> scatterplot using a binary weight. The red po
 <span style="     color: red !important;">0.125</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 </tr>
 <tr>
@@ -2123,7 +2125,7 @@ Figure 13.21: Moran’s <em>I</em> scatterplot using a binary weight. The red po
 7
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
 <span style="     color: red !important;">0.125</span>
@@ -2135,19 +2137,19 @@ Figure 13.21: Moran’s <em>I</em> scatterplot using a binary weight. The red po
 <span style="     color: red !important;">0.125</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
 <span style="     color: red !important;">0.125</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
 <span style="     color: red !important;">0.125</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
 <span style="     color: red !important;">0.125</span>
@@ -2159,16 +2161,16 @@ Figure 13.21: Moran’s <em>I</em> scatterplot using a binary weight. The red po
 <span style="     color: red !important;">0.125</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 </tr>
 <tr>
@@ -2176,34 +2178,10 @@ Figure 13.21: Moran’s <em>I</em> scatterplot using a binary weight. The red po
 8
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
-</td>
-<td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: red !important;">0.2</span>
-</td>
-<td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: red !important;">0.2</span>
-</td>
-<td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
-</td>
-<td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
-</td>
-<td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: red !important;">0.2</span>
-</td>
-<td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
-</td>
-<td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
-</td>
-<td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
 <span style="     color: red !important;">0.2</span>
@@ -2212,16 +2190,40 @@ Figure 13.21: Moran’s <em>I</em> scatterplot using a binary weight. The red po
 <span style="     color: red !important;">0.2</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: red !important;">0.2</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 </tr>
 <tr>
@@ -2229,40 +2231,16 @@ Figure 13.21: Moran’s <em>I</em> scatterplot using a binary weight. The red po
 9
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
-</td>
-<td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: red !important;">0.2</span>
-</td>
-<td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: red !important;">0.2</span>
-</td>
-<td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
-</td>
-<td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
-</td>
-<td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
-</td>
-<td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: red !important;">0.2</span>
-</td>
-<td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
-</td>
-<td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
 <span style="     color: red !important;">0.2</span>
@@ -2271,10 +2249,34 @@ Figure 13.21: Moran’s <em>I</em> scatterplot using a binary weight. The red po
 <span style="     color: red !important;">0.2</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 </tr>
 <tr>
@@ -2282,40 +2284,16 @@ Figure 13.21: Moran’s <em>I</em> scatterplot using a binary weight. The red po
 10
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
-</td>
-<td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: red !important;">0.125</span>
-</td>
-<td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: red !important;">0.125</span>
-</td>
-<td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: red !important;">0.125</span>
-</td>
-<td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
-</td>
-<td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: red !important;">0.125</span>
-</td>
-<td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
-</td>
-<td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: red !important;">0.125</span>
-</td>
-<td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
 <span style="     color: red !important;">0.125</span>
@@ -2327,7 +2305,31 @@ Figure 13.21: Moran’s <em>I</em> scatterplot using a binary weight. The red po
 <span style="     color: red !important;">0.125</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.125</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.125</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.125</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.125</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.125</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 </tr>
 <tr>
@@ -2335,22 +2337,19 @@ Figure 13.21: Moran’s <em>I</em> scatterplot using a binary weight. The red po
 11
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
-</td>
-<td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: red !important;">0.125</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
 <span style="     color: red !important;">0.125</span>
@@ -2359,19 +2358,22 @@ Figure 13.21: Moran’s <em>I</em> scatterplot using a binary weight. The red po
 <span style="     color: red !important;">0.125</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: red !important;">0.125</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
 <span style="     color: red !important;">0.125</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
 <span style="     color: red !important;">0.125</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
 <span style="     color: red !important;">0.125</span>
@@ -2388,46 +2390,46 @@ Figure 13.21: Moran’s <em>I</em> scatterplot using a binary weight. The red po
 12
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
-</td>
-<td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: red !important;">0.2</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
 <span style="     color: red !important;">0.2</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: red !important;">0.2</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
 <span style="     color: red !important;">0.2</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
 <span style="     color: red !important;">0.2</span>
@@ -2441,52 +2443,52 @@ Figure 13.21: Moran’s <em>I</em> scatterplot using a binary weight. The red po
 13
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
-</td>
-<td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: red !important;">0.333</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
 <span style="     color: red !important;">0.333</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: red !important;">0.333</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
 <span style="     color: red !important;">0.333</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 </tr>
 <tr>
@@ -2494,31 +2496,28 @@ Figure 13.21: Moran’s <em>I</em> scatterplot using a binary weight. The red po
 14
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
-</td>
-<td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: red !important;">0.2</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
 <span style="     color: red !important;">0.2</span>
@@ -2527,19 +2526,22 @@ Figure 13.21: Moran’s <em>I</em> scatterplot using a binary weight. The red po
 <span style="     color: red !important;">0.2</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
 <span style="     color: red !important;">0.2</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
 <span style="     color: red !important;">0.2</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 </tr>
 <tr>
@@ -2547,34 +2549,31 @@ Figure 13.21: Moran’s <em>I</em> scatterplot using a binary weight. The red po
 15
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
-</td>
-<td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: red !important;">0.2</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
 <span style="     color: red !important;">0.2</span>
@@ -2583,13 +2582,16 @@ Figure 13.21: Moran’s <em>I</em> scatterplot using a binary weight. The red po
 <span style="     color: red !important;">0.2</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
 <span style="     color: red !important;">0.2</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
 <span style="     color: red !important;">0.2</span>
@@ -2600,52 +2602,52 @@ Figure 13.21: Moran’s <em>I</em> scatterplot using a binary weight. The red po
 16
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
-</td>
-<td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: red !important;">0.333</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
 <span style="     color: red !important;">0.333</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: red !important;">0.333</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
 <span style="     color: red !important;">0.333</span>
 </td>
 <td style="text-align:left;padding: 5px;line-height: 4px;">
-<span style="     color: grey30 !important;">0</span>
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
 </td>
 </tr>
 </tbody>
@@ -2699,7 +2701,7 @@ Figure 13.24: Moran’s scatter with fitted Moran’s <em>I</em> slope (red line
 </div>
 </div>
 <h3>References</h3>
-<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
 <div id="ref-Tobler1970" class="csl-entry">
 Tobler, Waldo R. 1970. <span>“<span class="nocase">A Computer Movie Simulating Urban Growth in the Detroit Region</span>.”</span> <em>Economic Geography</em> 46 (2): 234–40. <a href="http://www.geog.ucsb.edu/~tobler/publications/pdf_docs/A-Computer-Movie.pdf">http://www.geog.ucsb.edu/~tobler/publications/pdf_docs/A-Computer-Movie.pdf</a>.
 </div>

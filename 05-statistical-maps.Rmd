@@ -66,7 +66,7 @@ An equal interval map benefits from having each color swatch covering an equal r
 
 ### Quantile map
 
-While an equal interval map benefits from its intuitiveness, it may not be well suited for data that are not uniformly distributed across their range (note the disproportionate distribution of observations in each color a bin in the above figure). Quantiles define ranges of values that have equal number of observations. For example, the following plot groups the data into six quantiles with each quantile representing the same number of observations (Exceptions exist when multiple observations share the same exact value).
+While an equal interval map benefits from its intuitiveness, it may not be well suited for data that are not uniformly distributed across their range (note the disproportionate distribution of observations in each color bin in the above figure). Quantiles define ranges of values that have equal number of observations. For example, the following plot groups the data into six quantiles with each quantile representing the same number of observations (Exceptions exist when multiple observations share the same exact value).
 
 ```{r quantile, fig.width = 6.5, fig.height=2.5, echo=FALSE, fig.cap = "Example of a quantile map.", fig.align='center'}
 clint <- classIntervals(ma$house_inc, style = "quantile", n = 6)$brks

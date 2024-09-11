@@ -12,7 +12,7 @@ Knowing why and for whom a map is being made will dictate its layout. If it's to
 
 Knowing the intended audience should also dictate what you will convey and how. If it's a general audience with little technical expertise then a simpler presentation may be in order. If the audience is well versed in the topic, then the map may be more complex. 
 
-```{r f06-map, echo=FALSE, fig.cap = "Map elements. Note that not all elements are needed, nor are they appropriate in some cases. Can you identify at least one element that does not belong in the map (hint, note the orientation of the longitudinal lines; are they parallel to one another? What implication does this have on the North direction and the placement of the North arrow?)", fig.height=4, fig.align='center'}
+```{r f06-map, echo=FALSE, fig.cap = "Map elements. Note that not all elements are needed, nor are they appropriate in some cases. Can you identify at least one element that does not belong in the map (hint, note the orientation of the longitudinal lines; are they parallel to one another? What implication does this have on the North direction and the placement of the North arrow? src. Esri)", fig.height=4, fig.align='center'}
 
 knitr::include_graphics("img/Map_elements.png", dpi = NA)
 ```

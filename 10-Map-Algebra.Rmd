@@ -1,3 +1,8 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
 # Map Algebra {#chp10_0}
 
  **Dana Tomlin** [@DTomlin] is credited with defining a framework for the analysis of field data stored as gridded values (i.e. rasters). He coined this framework *map algebra*. Though gridded data can be stored in a vector format, map algebra is usually performed on raster data. Map algebra operations and functions are broken down into four groups: **local**, **focal**, **zonal** and **global**. Each is explored in the following
@@ -12,7 +17,8 @@ gp <- function(sg, nr=1, sfmt="%02.0f", fnts = 2.1){
   library(scales)
   r.df <- as.data.frame(cbind(xyFromCell(sg,1:ncell(sg)),getValues(sg)))
   plotData = tidyr::pivot_longer(r.df, cols = c(-x,-y) )
-  ggplot(aes(x = x, y = y), data = plotData, environment = environment()) +     geom_tile(aes(fill = value)) + facet_wrap(~ name, nrow=nr) +
+  ggplot(aes(x = x, y = y), data = plotData, environment = environment()) +     
+    geom_tile(aes(fill = value)) + facet_wrap(~ name, nrow=nr) +
     scale_colour_brewer(palette="Blues") +  
     theme(strip.text.x = element_text(size=9, family="mono", face="bold"), 
           legend.position = "none",
@@ -37,18 +43,18 @@ For example, if we start off with an original raster, then multiply it by 2 then
 l1 <- r * 2 + 1   # Apply basic operations to r, assign output to l1
  
 sg = stack(r,l1) 
-names(sg) = c("raster","output") 
+names(sg) = c("input","output") 
 gp(sg,1)
 
 ```
 
 More than one raster can be involved in a local operation. For example, two rasters can be summed (i.e. each overlapping pixels are summed) to generate a new raster.
 
-```{r f10-local02, echo=FALSE, fig.cap = "Example of a local operation where `output=(raster1+raster2)`. Note how each cell output only involves input raster cells that share the same exact location.", fig.width=7, fig.height=3}
+```{r f10-local02, echo=FALSE, fig.cap = "Example of a local operation where `output=(input1+input2)`. Note how each cell output only involves input raster cells that share the same exact location.", fig.width=7, fig.height=3}
 l2 <- r - r + runif(length(r), 0,10)   # Apply basic operations to r, assign output to l1
 l3 <- r + l2 
 sg = stack(r,l2,l3) 
-names(sg) = c("R1","R2", "output") 
+names(sg) = c("input1"," input2", "output") 
 gp(sg,1)
 ```
 
@@ -71,7 +77,7 @@ l4   = reclassify(r, m, right = T)
 l1 <- r * 2 + 1   # Apply basic operations to r, assign output to l1
  
 sg = stack(r,l4) 
-names(sg) = c("raster","output") 
+names(sg) = c("input","output") 
 gp(sg,1)
 
 ```
@@ -91,7 +97,7 @@ values(r2) = round(runif(ncell(r2),1,100))
 f1 = focal(r2, w=matrix(1/9,nrow=3,ncol=3), fun=sum)
 
 sg = stack(r2,f1)
-names(sg) = c("raster","output") 
+names(sg) = c("input","output") 
 gp(sg,1,"%2.1f")
 
 ```
@@ -106,7 +112,7 @@ values(r2) = round(runif(ncell(r2),1,100))
 f1 = focal(r2, w=matrix(1,nrow=3,ncol=3)  , fun=mean, na.rm=TRUE, pad=TRUE)
 
 sg = stack(r2, f1)
-names(sg) = c("raster","output") 
+names(sg) = c("input","output") 
 gp(sg,1,"%2.1f")
 
 ```
@@ -122,7 +128,7 @@ m  <- matrix(c(1,1,1,1,0,1,1,1,1),nrow = 3) # This defines the 3x3 moving window
 f1 = focal(r2, w=m  , fun=mean, na.rm=TRUE, pad=TRUE)
 
 sg = stack(r2,f1)
-names(sg) = c("raster","output") 
+names(sg) = c("input","output") 
 gp(sg,1,"%2.1f")
 
 ```
@@ -138,7 +144,7 @@ m = focalWeight(r2, 4, "Gauss")
 f1 = focal(r2, w=m  , fun=sum, na.rm=TRUE, pad=TRUE)
 
 sg = stack(r2,f1)
-names(sg) = c("raster","output") 
+names(sg) = c("input","output") 
 gp(sg,1,"%2.1f")
 
 ```
@@ -150,7 +156,8 @@ A zonal operation computes a new summary value (such as the mean) from cells agg
 ```{r f10-zonal01, echo=FALSE, fig.cap = "Example of a zonal operation where the cell values are averaged for each of the three zones delineated in red.", message=FALSE, warning=FALSE, fig.height=3.5, fig.width=6}
 
 library(gridExtra)
-library(broom)
+library(stars)
+#library(broom)
 cds1 <- rbind(c(0,50), c(0,100), c(50,100), c(50,50), c(0,50))
 cds2 <- rbind(c(0,0), c(100,0), c(50,50), c(0,50), c(0,0))
 cds3 <- rbind(c(100,0), c(50,50), c(50,100), c(100,100), c(100,0))
@@ -158,35 +165,28 @@ polys <- SpatialPolygons(list(Polygons(list(Polygon(cds1)), 1),
                               Polygons(list(Polygon(cds2)), 2),
                               Polygons(list(Polygon(cds3)), 3)))
 
+polys <- st_sf(st_sfc(list(st_polygon(list(cds1)), st_polygon(list(cds2)), st_polygon(list(cds3)))), crs = crs(r, asText = TRUE))
 
-v <- extract(r, polys, fun=mean)
-Polys.df <- SpatialPolygonsDataFrame(polys, data.frame(Val=v, row.names=row.names(polys)), match.ID = FALSE)
-Polys.df$id <- as.character(1:nrow(Polys.df))
-s.df <- tidy(Polys.df)
-#s.df <- fortify(Polys.df,  region = "Val")
+v <- extract(r, polys, fun=mean, bind = TRUE)
 
-cnames <- aggregate(cbind(long, lat) ~ group, data=s.df, FUN=function(x)mean(range(x)))
-cnames <- cbind(cnames, v)
+dfx <- data.frame(rbind(cds1[1:4,],cds2[1:4,], cds3[1:4,]), 
+                  id = rep(1:3, each = 4),
+                  val = rep(extract(r, polys, fun=mean, bind = TRUE), each = 4))
+dfx_center <-  as.data.frame(st_coordinates(st_centroid(polys)))
+dfx_center$val <- v
 
-p1 <- gplot(r) + geom_tile(aes(fill = value)) +  
-  scale_colour_brewer(palette="Blues") + 
-  coord_equal() +   
-  geom_text(aes(label=sprintf("%2.1f", value)),colour='white',size=2.1) +
-  geom_polygon(data=s.df, aes(long,lat, group=group, alpha=0),colour='red', fill=NA ) +
-  theme(strip.text.x = element_text(size=9, family="mono", face="bold"), 
-      legend.position = "none",
-      axis.text=element_blank(),
-      axis.title=element_blank() )
+sg <- stack(r)
+names(sg) <- "input"
 
-p2 <- gplot(r) + 
-  geom_polygon(data=s.df, aes(long,lat, group=group, fill=as.numeric(id),alpha=.5),colour='white' ) +
-  scale_colour_brewer(palette="Blues") + 
-  coord_equal() +   
-  geom_text(data=cnames,aes(long,lat,label=sprintf("%2.1f", v)),colour='white',size=4.1) +
-  theme(strip.text.x = element_text(size=9, family="mono", face="bold"), 
-      legend.position = "none",
-      axis.text=element_blank(),
-      axis.title=element_blank() )
+p1 <- gp(sg) + geom_polygon(data=dfx, aes(x=X1, y = X2, group = id), colour = "red", fill = NA)
+
+names(sg) <- "output"
+p2 <- gp(sg) + geom_polygon(data=dfx, aes(x=X1, y = X2, group = id, fill = val),
+                     alpha = 0.5, colour = "white") +
+      geom_text(data=dfx_center,
+                aes(x=X, y = Y,label=sprintf("%2.1f", val)),colour='white',size=4.1)
+
+
 grid.arrange(p1, p2, ncol=2)
 
 ```
@@ -205,7 +205,7 @@ p[c(20,85)] = 1   # Change the pixels 20 and 85  to 1
 p.d = distance(p) # Compute the shortest distance between each output pixel in the 
                   # output raster and pixels 20 and 85
 sg = stack(p, p.d)
-names(sg) = c("Input","Output") 
+names(sg) = c("input","output") 
 gp(sg,1,"%2.0f")
 
 ```
@@ -224,11 +224,11 @@ Two mathematical operators have already been demonstrated in earlier sections: t
 
 Operation | ArcGIS Syntax | R Syntax | Example
 ----------|--------|--------|--------
-Addition | `+`     | `+` |  `R1 + R2`		
-Subtraction | `-`  | `-` | `R1 - R2`		
-Division | `/` | `/` | `R1 / R2`
-Modulo | `Mod()` | `%%` | `Mod(R1, 100)`, `R1 %% 10`
-Square root | `SquareRoot()` | `sqrt()`| `SquareRoot(R1)`, `sqrt(R1)`
+Addition | `+`     | `+` |  `input1 + input2`		
+Subtraction | `-`  | `-` | `input1 - input2`		
+Division | `/` | `/` | `input1 / input2`
+Modulo | `Mod()` | `%%` | `Mod(input1, 100)`, `input1 %% 10`
+Square root | `SquareRoot()` | `sqrt()`| `SquareRoot(input1)`, `sqrt(input1)`
 
 ### Logical comparison
 
@@ -241,10 +241,10 @@ Less than | `<`
 Equal | `==`
 Not equal | `!=`
  
-For example, the following figure shows the output of the comparison between two rasters where we are assessing if cells in `R1` are *greater than* those in `R2` (on a cell-by-cell basis).
+For example, the following figure shows the output of the comparison between two rasters where we are assessing if cells in `input1` are *greater than* those in `input2` (on a cell-by-cell basis).
  
  
-```{r f10-logical01, echo=FALSE, fig.cap = "Output of the operation `R1` &gt; `R2`. A value of 1 in the output raster indicates that the condition is true and a value of 0 indicates that the condition is false.", fig.height=2, fig.width=5}
+```{r f10-logical01, echo=FALSE, fig.cap = "Output of the operation `input1` &gt; `input2`. A value of 1 in the output raster indicates that the condition is true and a value of 0 indicates that the condition is false.", fig.height=2, fig.width=5}
  
 ras1 <- raster(ncol=3, nrow=3, xmn=0, xmx=100, ymn=0, ymx=100)
 ras2 <- ras1 
@@ -256,18 +256,18 @@ set.seed(5)
 values(ras2) <- round(runif(length(ras2),-5,5))
 ras.out <- (ras1 > ras2)
 sg = stack(ras1,ras2,ras.out) 
-names(sg) <- c("R1","R2", "output") 
+names(sg) <- c("input1","input2", "output") 
 gp(sg,1, sfmt="%2.0f", fnts=4)
 ```
  
-When assessing whether two cells are equal, some programming environments such as R and ArcMap's *Raster Calculator* require the use of the *double equality* syntax, `==`, as in `R1 == R2`. In these programming environments, the single equality syntax is usually interpreted as an *assignment operator* so `R1 = R2` would instruct the computer to assign the cell values in R2 to R1 (which is not what we want to do here). 
+When assessing whether two cells are equal, some programming environments such as R and ArcGIS's *Raster Calculator* require the use of the *double equality* syntax, `==`, as in `input1 == input2`. In these programming environments, the single equality syntax is usually interpreted as an *assignment operator* so `input1 = input2` would instruct the computer to assign the cell values in `input2` to `input1` (which is not what we want to do here). 
 
-Some applications make use of special functions to test a condition. For example, ArcMap has a function called `Con(condition, out1, out2)` which assigns the value `out1` if the condition is met and a value of `out2` if it's not. For example, ArcMap's raster calculator expression 
+Some applications make use of special functions to test a condition. For example, ArcGIS has a function called `Con(condition, out1, out2)` which assigns the value `out1` if the condition is met and a value of `out2` if it's not. For example, ArcGIS's raster calculator expression 
 
 ```
-Con( R1 > R2, 1, 0)
+Con( input1 > input2, 1, 0)
 ```
-outputs a value of `1` if `R1` is greater than `R2` and `0` if not. It generates the same output as the one shown in the above figure. Note that in most programming environments (including ArcMap), the expression `R1 > R2` produces the same output because the value `1` is the numeric representation of  `TRUE` and `0` that of `FALSE`. 
+outputs a value of `1` if `input1` is greater than `input2` and `0` if not. It generates the same output as the one shown in the above figure. Note that in most programming environments (including ArcGIS), the expression `input1 > input2` produces the same output because the value `1` is the numeric representation of  `TRUE` and `0` that of `FALSE`. 
 
 
 ### Boolean (or Logical) operators
@@ -276,16 +276,16 @@ In map algebra, *Boolean* operators are used to compare conditional states of a 
 
 Boolean  ArcGIS   R          Example
 -------- -------- ---------  ------
-AND      &       	&	         `R1 & R2`
-OR       `|`     	`|`        `R1 | R2`
-NOT	     `~`      `!`        `~R2`, `!R2`
+AND      &       	&	         `input1 & input2`
+OR       `|`     	`|`        `input1 | input2`
+NOT	     `~`      `!`        `~input2`, `! input2`
 
 > A "TRUE" state is usually encoded as a `1` or any *non-zero* integer while a "FALSE" state is usually encoded as a `0`.
 
 For example, if `cell1=0` and `cell2=1`, the Boolean operation `cell1 AND cell2` results in a `FALSE` (or 0) output cell value. This Boolean operation can be translated into plain English as "are the cells 1 and 2 both TRUE?" to which we answer "No they are not" (cell1 is FALSE). The **OR** operator can be interpreted as "is x *or* y TRUE?" so that `cell1 OR cell2` would return `TRUE`. The **NOT** interpreter can be interpreted as "is x not TRUE?" so that `NOT cell1` would return `TRUE`. 
 
 
-```{r f10-boolean01, echo=FALSE, fig.cap = "Output of the operation `R1 AND R2`. A value of 1 in the output raster indicates that the condition is true and a value of 0 indicates that the condition is false. Note that many programming environments treat *any* none 0 values as TRUE so that `-3 AND -4` will return `TRUE`.", fig.height=2, fig.width=5}
+```{r f10-boolean01, echo=FALSE, fig.cap = "Output of the operation `input1 AND input2`. A value of 1 in the output raster indicates that the condition is true and a value of 0 indicates that the condition is false. Note that many programming environments treat *any* none 0 values as TRUE so that `-3 AND -4` will return `TRUE`.", fig.height=2, fig.width=5}
  
 ras1 <- raster(ncol=3, nrow=3, xmn=0, xmx=100, ymn=0, ymx=100)
 ras2 <- ras1
@@ -297,12 +297,12 @@ set.seed(5)
 values(ras2) <- round(runif(length(ras2),-5,5))
 ras.out <- (ras1 & ras2)
 sg = stack(ras1,ras2,ras.out) 
-names(sg) <- c("R1","R2", "output") 
+names(sg) <- c("input1","input2", "output") 
 gp(sg,1, sfmt="%2.0f", fnts=4)
  
 ```
 
-```{r f10-boolean02, echo=FALSE, fig.cap = "Output of the operation `NOT R2`. A value of 1 in the output raster indicates that the input cell is NOT TRUE (i.e. has a value of 0).", fig.height=2, fig.width=5}
+```{r f10-boolean02, echo=FALSE, fig.cap = "Output of the operation `NOT input2`. A value of 1 in the output raster indicates that the input cell is NOT TRUE (i.e. has a value of 0).", fig.height=2, fig.width=5}
  
 ras1 <- raster(ncol=3, nrow=3, xmn=0, xmx=100, ymn=0, ymx=100)
 ras2 <- ras1
@@ -314,16 +314,16 @@ set.seed(5)
 values(ras2) <- round(runif(length(ras2),-5,5))
 ras.out <- (! ras2)
 sg = stack(ras2,ras.out) 
-names(sg) <- c("R2", "output") 
+names(sg) <- c("input2", "output") 
 gp(sg,1, sfmt="%2.0f", fnts=4)
  
 ```
 
 ### Combining operations
 
-Both comparison and Boolean operations can be combined into a single expression. For example, we may wish to find locations (cells) that satisfy requirements from two different raster layers: e.g. `0<R1<4`  AND  `R2>0`. To satisfy the first requirement, we can write out the expression as `(R1>0) & (R1<4)`. Both comparisons (delimited by parentheses) return a `0` (FALSE) or a `1` (TRUE). The ampersand, `&`, is a Boolean operator that checks that both conditions are met and returns a 1 if yes  or a 0 if not. This expression is then combined with another comparison using another ampersand operator that assesses the criterion R2>0. The amalgamated expression is thus `((R1>0) & (R1<4)) & (R2>0)`.
+Both comparison and Boolean operations can be combined into a single expression. For example, we may wish to find locations (cells) that satisfy requirements from two different raster layers: e.g. `0<input1<4`  AND  `input2>0`. To satisfy the first requirement, we can write out the expression as `(input1>0) & (input1<4)`. Both comparisons (delimited by parentheses) return a `0` (FALSE) or a `1` (TRUE). The ampersand, `&`, is a Boolean operator that checks that both conditions are met and returns a 1 if yes  or a 0 if not. This expression is then combined with another comparison using another ampersand operator that assesses the criterion input2>0. The amalgamated expression is thus `((input1>0) & (input1<4)) & (input2>0)`.
   
-```{r f10-combining01, echo=FALSE, fig.height=2, fig.width=5, fig.cap = "Output of the operation ((`R1`&gt;`0`) &amp; (`R1`&lt;`4`)) &amp; (`R2`&gt;`0`). A value of 1 in the output raster indicates that the condition is true and a value of 0 indicates that the condition is false."}
+```{r f10-combining01, echo=FALSE, fig.height=2, fig.width=5, fig.cap = "Output of the operation ((`input1`&gt;`0`) &amp; (`input1`&lt;`4`)) &amp; (`input2`&gt;`0`). A value of 1 in the output raster indicates that the condition is true and a value of 0 indicates that the condition is false."}
 
 ras1 <- raster(ncol=3, nrow=3, xmn=0, xmx=100, ymn=0, ymx=100)
 ras2 <- ras1
@@ -335,7 +335,7 @@ set.seed(5)
 values(ras2) <- round(runif(length(ras2),-5,5))
 ras.out <- ((ras1 > 0) & (ras1 <4)) & (ras2 > 0) 
 sg <- stack(ras1,ras2,ras.out) 
-names(sg) <- c("R1","R2", "output") 
+names(sg) <- c("input1","input2", "output") 
 gp(sg,1, sfmt="%2.0f", fnts=4)
 
 ```
