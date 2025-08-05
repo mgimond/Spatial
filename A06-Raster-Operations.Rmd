@@ -1,3 +1,8 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
 # Raster operations in R
 
 ```{r, echo = FALSE}
@@ -45,8 +50,8 @@ Let's look at the output. Note that all `0` pixels are coded as `FALSE` and all 
 
 ```{r, fig.height=3}
 library(tmap)
-tm_shape(bath3) + tm_raster(palette = "Greys") + 
-  tm_legend(outside = TRUE, text.size = .8) 
+tm_shape(bath3) + tm_raster(col.scale = tm_scale(values="brewer.greys"),
+                            col.legend = tm_legend(position = tm_pos_out())) 
 ```
 
 If a more elaborate form of reclassification is desired, you can use the `classify` function. In the following example, the raster object `bath` is reclassified to 4 unique values: 100, 500, 1000 and 11000 as follows:
@@ -74,7 +79,8 @@ bath3 <- classify(bath, m, right = T)
 The `right=T` parameter indicates that the intervals should be closed to the right (i.e. the second column of the reclassification matrix is inclusive).
 
 ```{r, fig.height=3}
-tm_shape(bath3) + tm_raster(style="cat") + tm_legend(outside = TRUE, text.size = .8) 
+tm_shape(bath3) + tm_raster(col.scale = tm_scale_categorical(values = "seq"), 
+                            col.legend = tm_legend(position = tm_pos_out()))  
 ```
 
 You can also assign `NA` (missing) values to pixels. For example, to assign `NA` values to cells that are equal to 100, type
@@ -86,8 +92,9 @@ bath3[bath3 == 100] <- NA
 The following chunk of code highlights all `NA` pixels in grey and labels them as missing.
 
 ```{r, fig.height=3}
-tm_shape(bath3) + tm_raster(showNA=TRUE, colorNA="grey") + 
-  tm_legend(outside = TRUE, text.size = .8) 
+tm_shape(bath3) + 
+  tm_raster(col.scale = tm_scale_categorical(values = "seq", value.na = "grey"), 
+            col.legend = tm_legend(position = tm_pos_out(), na.show = TRUE))  
 ```
 
 ### Binary operations and functions (where two rasters are used) {-}
@@ -99,8 +106,9 @@ elevation <- elev - bath
 ```
 
 ```{r, fig.height=3}
-tm_shape(elevation) + tm_raster(palette="-RdBu") + 
-  tm_legend(outside = TRUE, text.size = .8) 
+tm_shape(elevation) + 
+  tm_raster(col.scale = tm_scale_intervals(values = "-brewer.rd_bu", midpoint = 0),
+            col.legend = tm_legend(position = tm_pos_out(), na.show = TRUE))
 ```
 
 ## Focal operations and functions {-}
@@ -120,8 +128,9 @@ f1 <- focal(elevation, w = matrix(1, nrow = 11, ncol = 11), fun = mean)
 ```
 
 ```{r, fig.height=3}
-tm_shape(f1) + tm_raster(palette="-RdBu") + 
-  tm_legend(outside = TRUE, text.size = .8) 
+tm_shape(f1) +
+  tm_raster(col.scale = tm_scale_intervals(values = "-brewer.rd_bu", midpoint = 0),
+            col.legend = tm_legend(position = tm_pos_out(), na.show = TRUE))
 ```
 
 By default edge cells are assigned a value of `NA`. This is because cells outside of the input raster extent have no value, so when the average value is computed for a cell along the raster's edge, the kernel will include the NA values outside the raster's extent. To see an example of this, we will first smooth the raster using a 3 by 3 focal window, then we'll zoom in on a 3 by 3 portion of the `elevation` raster in the above left-hand corner of its extent.
@@ -276,8 +285,9 @@ More complicated kernels can be defined. In the following example, a [Sobel][2] 
 Sobel <- matrix(c(-1,0,1,-2,0,2,-1,0,1) / 4, nrow=3) 
 f3    <- focal(elevation, w=Sobel, fun=sum) 
 
-tm_shape(f3) + tm_raster(palette="Greys") + 
-  tm_legend(legend.show = FALSE) 
+tm_shape(f3) +
+  tm_raster(col.scale = tm_scale_continuous(values = "brewer.greys", midpoint = 0),
+            col.legend = tm_legend(show = FALSE))
 ```
 
 ## Zonal operations and functions {-}
@@ -287,8 +297,9 @@ A common zonal operation is the aggregation of cells. In the following example, 
 ```{r fig.height=3}
 z1 <- aggregate(elevation, fact=2, fun=mean, expand=TRUE)
 
-tm_shape(z1) + tm_raster(palette="-RdBu",n=6) + 
-  tm_legend(outside = TRUE, text.size = .8) 
+tm_shape(z1) +
+  tm_raster(col.scale = tm_scale_intervals(values = "-brewer.rd_bu", midpoint = 0, n = 6),
+            col.legend = tm_legend(position = tm_pos_out(), na.show = TRUE)) 
 ```
 
 The image may not look much different from the original, but a look at the image properties will show a difference in pixel sizes.
@@ -317,8 +328,10 @@ cont.elev.sf <- st_as_sf(cont.elev)
 The column of interest is automatically named `band1`. We can now map the average elevation by continent.
 
 ```{r, fig.height=3}
-tm_shape(cont.elev.sf) + tm_polygons(col="band1") + 
-  tm_legend(outside = TRUE, text.size = .8)
+tm_shape(cont.elev.sf) +
+  tm_polygons(fill="band1",
+             fill.scale = tm_scale_intervals(values = "brewer.reds", midpoint = NA),
+             fill.legend = tm_legend(position = tm_pos_out()))
 ```
 
 Many custom functions can be applied to `extract`. For example, to extract the maximum elevation value by continent, type:
@@ -349,8 +362,9 @@ crs(r1) <- "+proj=ortho"  # Assign an arbitrary coordinate system (needed for ma
 ```
 
 ```{r fig.height=3}
-tm_shape(r1) + tm_raster(palette="red") + 
-  tm_legend(outside = TRUE, text.size = .8) 
+tm_shape(r1) +
+  tm_raster(col.scale = tm_scale_discrete(values = "reds"),
+            col.legend = tm_legend(show = FALSE)) 
 ```
 
 Next, we'll compute a Euclidean distance raster from these two cells. The output extent will default to the input raster extent.
@@ -360,9 +374,12 @@ r1.d <- distance(r1)
 ```
 
 ```{r fig.height=3}
-tm_shape(r1.d) + tm_raster(palette = "Greens", style="order", title="Distance") + 
-  tm_legend(outside = TRUE, text.size = .8) +
-  tm_shape(r1) + tm_raster(palette="red", title="Points") 
+tm_shape(r1.d) +  
+  tm_raster(col.scale = tm_scale_continuous(values = "brewer.greens"),
+            col.legend = tm_legend(position = tm_pos_out(), title = "Distance"))  +
+  tm_shape(r1) + 
+  tm_raster(col.scale = tm_scale_discrete(values = "reds"),
+            col.legend = tm_legend(show = FALSE)) 
 ```
 
 You can also compute a distance raster using `sf` point objects. In the following example, distances to points (25,30) and (87,80) are computed for each output cell. However, since we are working off of point objects (and not an existing raster as was the case in the previous example), we will need to create a blank raster layer which will define the extent of the Euclidean distance raster output. 
@@ -387,6 +404,11 @@ Let's plot the resulting output.
 tm_shape(r2.d) + tm_raster(palette = "Greens", style="order") + 
   tm_legend(outside = TRUE, text.size = .8) +
   tm_shape(p1) + tm_bubbles(col="red") 
+
+tm_shape(r2.d) +  
+  tm_raster(col.scale = tm_scale_continuous(values = "brewer.greens"),
+            col.legend = tm_legend(position = tm_pos_out(), title = "Distance"))  +
+  tm_shape(p1) + tm_dots(fill = "red") 
 ```
 
 ## Computing cumulative distances {-}
@@ -646,7 +668,7 @@ h16  <- geoCorrection(h16)
 
 # Define a point source and assign a projection
 A <- SpatialPoints(cbind(50,290000))
-crs(A) <- "+proj=utm +zone=19 +datum=NAD83 +units=m +no_defs"  
+#crs(A) <- "+proj=utm +zone=19 +datum=NAD83 +units=m +no_defs"  
 
 # Compute the cumulative cost raster
 h8.acc   <- accCost(h8, A)
@@ -660,13 +682,15 @@ h16.acc[h16.acc == Inf] <- NA
 Let's plot the results. Yellow cells will identify cumulative distances within 290 km.
 
 ```{r fig.height=4, fig.align='left'}
-tm_shape(h8.acc) + tm_raster(n=2, style="fixed", breaks=c(0,290000,Inf)) +
-  tm_facets() + tm_shape(A) + tm_bubbles(col="green", size = .5) + 
-  tm_legend(outside = TRUE, text.size = .8)
-
-tm_shape(h16.acc) + tm_raster(n=2, style="fixed", breaks=c(0,290000,Inf)) + 
-  tm_facets() + tm_shape(A) + tm_bubbles(col="green", size = .5) + 
-  tm_legend(outside = TRUE, text.size = .8)
+tm_shape(h8.acc) + 
+  tm_raster(col.scale = tm_scale(values = "brewer.yl_or_rd", breaks=c(0,290000,Inf)),
+            col.legend = tm_legend(position = tm_pos_out(), title = "Distance")) +
+  tm_shape(st_as_sf(A)) +  tm_dots(fill = "red", size = 0.8)
+ 
+tm_shape(h16.acc) + 
+  tm_raster(col.scale = tm_scale(values = "brewer.yl_or_rd", breaks=c(0,290000,Inf)),
+            col.legend = tm_legend(position = tm_pos_out(), title = "Distance")) +
+  tm_shape(st_as_sf(A)) +  tm_dots(fill = "red", size = 0.8)
 ```
 
 We can compute the difference between the 8-node and 16-node cumulative distance rasters:

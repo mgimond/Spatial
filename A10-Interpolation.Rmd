@@ -1,3 +1,8 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
 # Interpolation in R 
 
 ```{r, echo = FALSE}
@@ -13,21 +18,22 @@ library(tmap)
 
 # Load precipitation data
 z <- gzcon(url("https://github.com/mgimond/Spatial/raw/main/Data/precip.rds"))
-P <- readRDS(z)
-p <- st_as_sf(P)
-# Load Texas boudary map
+p.sp <- readRDS(z) 
+p <- st_as_sf(p.sp) # Create sf version of point layer
+# Load Texas boundary map
 z <- gzcon(url("https://github.com/mgimond/Spatial/raw/main/Data/texas.rds"))
-W <- readRDS(z)
-w <- st_as_sf(W)
+w.sp <- readRDS(z)
+w <- st_as_sf(w.sp)
 
-# # Replace point boundary extent with that of Texas
-
-tm_shape(w) + tm_polygons() +
+# Generate map
+tm_shape(w) + tm_polygons() + 
   tm_shape(p) +
-  tm_dots(col="Precip_in", palette = "RdBu", auto.palette.mapping = FALSE,
-             title="Sampled precipitation \n(in inches)", size=0.7) +
-  tm_text("Precip_in", just="left", xmod=.5, size = 0.7) +
-  tm_legend(legend.outside=TRUE)
+  tm_dots(fill="Precip_in", size=0.5, 
+          fill.scale = tm_scale_intervals(n=5, values = "brewer.rd_bu", style = "pretty"), 
+          fill.legend = tm_legend(title = "Precipitation (in)")) +
+  tm_text(text = "Precip_in", options = opt_tm_text(just="left"),
+          xmod=.5, 
+          size = 0.7) 
 ```
 
 The `p` point layer defines the sampled precipitation values. These points will be used to predict values at unsampled locations.
@@ -36,13 +42,14 @@ The `w` polygon layer defines the boundary of Texas. This will be the extent for
 
 ## Thiessen polygons {-}
 
-The Thiessen polygons (or proximity interpolation) can be created using `spatstat`'s `dirichlet` function. Note that this function will require that the input point layer be converted to a `spatstat` `ppp` object--hence the use of the inline `as.ppp(P)` syntax in the following code chunk.
+The Thiessen polygons (or proximity interpolation) can be created using `spatstat`'s `dirichlet` function. Note that this function will require that the input point layer be converted to a `spatstat` `ppp` object--hence the use of the inline `as.ppp(p)` syntax in the following code chunk.
 
 ```{r results='hide',  fig.height=3.3, results='hold'}
 library(spatstat)  # Used for the dirichlet tessellation function
 
 # Create a tessellated surface
-th  <- dirichlet(as.ppp(p)) |> st_as_sfc() |> st_as_sf()
+
+th  <- dirichlet(as.ppp(p, W = as.owin(w))) |> st_as_sfc() |> st_as_sf()
 
 # The dirichlet function does not carry over projection information
 # requiring that this information be added manually
@@ -57,9 +64,9 @@ th.clp   <- st_intersection(th2, w)
 
 # Map the data
 tm_shape(th.clp) + 
-  tm_polygons(col="Precip_in", palette="RdBu", 
-              title="Predicted precipitation \n(in inches)") +
-  tm_legend(legend.outside=TRUE)
+  tm_polygons(fill="Precip_in", 
+              fill.scale = tm_scale_intervals(n=5, values = "brewer.rd_bu", style = "pretty"), 
+              fill.legend = tm_legend(title = "Predicted precipitation \n(in inches)"))
 
 ```
 
@@ -79,28 +86,29 @@ library(terra)
 library(sp) 
 
 # Create an empty grid where n is the total number of cells
-grd              <- as.data.frame(spsample(P, "regular", n=50000))
+grd              <- as.data.frame(spsample(w.sp, "regular", n=50000))
 names(grd)       <- c("X", "Y")
 coordinates(grd) <- c("X", "Y")
 gridded(grd)     <- TRUE  # Create SpatialPixel object
 fullgrid(grd)    <- TRUE  # Create SpatialGrid object
 
-# Add P's projection information to the empty grid
-crs(grd) <- crs(P)
+# Add p.sp's projection information to the empty grid
+crs(grd) <- crs(p.sp)
 
 # Interpolate the grid cells using a power value of 2 (idp=2.0)
-P.idw <- idw(Precip_in ~ 1, P, newdata=grd, idp = 2.0)
+p.idw <- idw(Precip_in ~ 1, p.sp, newdata=grd, idp = 2.0)
 
 # Convert to raster object then clip to Texas
-r       <- rast(P.idw)
-r.m     <- mask(r, st_as_sf(W))
+r       <- rast(p.idw)
+r.m     <- mask(r, w)
 
 # Plot
 tm_shape(r.m["var1.pred"]) + 
-  tm_raster(n=10,palette = "RdBu", auto.palette.mapping = FALSE,
-            title="Predicted precipitation \n(in inches)") + 
-  tm_shape(P) + tm_dots(size=0.2) +
-  tm_legend(legend.outside=TRUE)
+  tm_raster(col.scale = tm_scale_intervals(values = "brewer.rd_bu", n = 8),
+            col.legend = tm_legend(position = tm_pos_out(), 
+                                   title = "Predicted precipitation \n(in inches)" )) +
+  tm_shape(p) + tm_dots(size=0.5)
+
 ```
 
 ### Fine-tuning the interpolation {-}
@@ -109,16 +117,16 @@ The choice of power function can be subjective. To fine-tune the choice of the p
 
 ```{r results='hide',  fig.height=3.0}
 # Leave-one-out validation routine
-IDW.out <- vector(length = length(P))
-for (i in 1:length(P)) {
-  IDW.out[i] <- idw(Precip_in ~ 1, P[-i,], P[i,], idp=2.0)$var1.pred
+IDW.out <- vector(length = length(p.sp))
+for (i in 1:length(p.sp)) {
+  IDW.out[i] <- idw(Precip_in ~ 1, p.sp[-i,], p.sp[i,], idp=2.0)$var1.pred
 }
 
 # Plot the differences
 OP <- par(pty="s", mar=c(4,3,0,0))
-  plot(IDW.out ~ P$Precip_in, asp=1, xlab="Observed", ylab="Predicted", pch=16,
+  plot(IDW.out ~ p.sp$Precip_in, asp=1, xlab="Observed", ylab="Predicted", pch=16,
        col=rgb(0,0,0,0.5))
-  abline(lm(IDW.out ~ P$Precip_in), col="red", lw=2,lty=2)
+  abline(lm(IDW.out ~ p.sp$Precip_in), col="red", lw=2,lty=2)
   abline(0,1)
 par(OP)
 ```
@@ -127,7 +135,7 @@ The RMSE can be computed from `IDW.out` as follows:
 
 ```{r}
 # Compute RMSE
-sqrt( sum((IDW.out - P$Precip_in)^2) / length(P))
+sqrt( sum((IDW.out - p.sp$Precip_in)^2) / length(p.sp))
 ```
 
 ### Cross-validation {-}
@@ -136,14 +144,14 @@ In addition to generating an interpolated surface, you can create a 95% confiden
 
 ```{r results='hide',  fig.height=3.3, cache=TRUE}
 # Create the interpolated surface (using gstat's idw function)
-img <- idw(Precip_in~1, P, newdata=grd, idp=2.0)
-n   <- length(P)
+img <- idw(Precip_in~1, p.sp, newdata=grd, idp=2.0)
+n   <- length(p.sp)
 Zi  <- matrix(nrow = length(img$var1.pred), ncol = n)
 
 # Remove a point then interpolate (do this n times for each point)
 st <- rast()
 for (i in 1:n){
-  Z1 <- gstat::idw(Precip_in~1, P[-i,], newdata=grd, idp=2.0)
+  Z1 <- gstat::idw(Precip_in~1, p.sp[-i,], newdata=grd, idp=2.0)
   st <- c(st,rast(Z1))
   # Calculated pseudo-value Z at j
   Zi[,i] <- n * img$var1.pred - (n-1) * Z1$var1.pred
@@ -165,12 +173,14 @@ img.sig$v <- CI /img$var1.pred
 
 # Clip the confidence raster to Texas
 r <- rast(img.sig, layer="v")
-r.m <- mask(r, st_as_sf(W))
+r.m <- mask(r, w)
 
 # Plot the map
-tm_shape(r.m["var1.pred"]) + tm_raster(n=7,title="95% confidence interval \n(in inches)") +
-  tm_shape(P) + tm_dots(size=0.2) +
-  tm_legend(legend.outside=TRUE)
+tm_shape(r.m["var1.pred"]) + 
+    tm_raster(col.scale = tm_scale_intervals(values = "yl_or_rd", n = 6),
+            col.legend = tm_legend(position = tm_pos_out(), na.show = TRUE,
+            title="95% confidence interval \n(in inches)")) +
+  tm_shape(p) + tm_dots(size=0.4)
 
 ```
 
@@ -182,26 +192,26 @@ To fit a first order polynomial model of the form $precip = intercept + aX + bY$
 # Define the 1st order polynomial equation
 f.1 <- as.formula(Precip_in ~ X + Y) 
  
-# Add X and Y to P
-P$X <- coordinates(P)[,1]
-P$Y <- coordinates(P)[,2]
+# Add X and Y to p.sp
+p.sp$X <- coordinates(p.sp)[,1]
+p.sp$Y <- coordinates(p.sp)[,2]
 
 # Run the regression model
-lm.1 <- lm( f.1, data=P)
+lm.1 <- lm( f.1, data=p.sp)
 
 # Use the regression model output to interpolate the surface
 dat.1st <- SpatialGridDataFrame(grd, data.frame(var1.pred = predict(lm.1, newdata=grd))) 
 
 # Clip the interpolated raster to Texas
 r   <- rast(dat.1st)
-r.m <- mask(r, st_as_sf(W))
+r.m <- mask(r, w)
 
 # Plot the map
-tm_shape(r.m) + 
-  tm_raster(n=10, palette="RdBu", 
-            title="Predicted precipitation \n(in inches)") +
-  tm_shape(P) + tm_dots(size=0.2) +
-  tm_legend(legend.outside=TRUE)
+tm_shape(r.m) +  
+  tm_raster(col.scale = tm_scale_intervals(values = "brewer.rd_bu", n = 8),
+            col.legend = tm_legend(position = tm_pos_out(), 
+                                   title = "Predicted precipitation \n(in inches)" )) +
+  tm_shape(p) + tm_dots(size=0.5) 
  
 ```
 
@@ -213,26 +223,26 @@ To fit a second order polynomial model of the form $precip = intercept + aX + bY
 # Define the 2nd order polynomial equation
 f.2 <- as.formula(Precip_in ~ X + Y + I(X*X)+I(Y*Y) + I(X*Y))
 
-# Add X and Y to P
-P$X <- coordinates(P)[,1]
-P$Y <- coordinates(P)[,2]
+# Add X and Y to p.sp
+p.sp$X <- coordinates(p.sp)[,1]
+p.sp$Y <- coordinates(p.sp)[,2]
  
 # Run the regression model
-lm.2 <- lm( f.2, data=P)
+lm.2 <- lm( f.2, data=p.sp)
 
 # Use the regression model output to interpolate the surface
 dat.2nd <- SpatialGridDataFrame(grd, data.frame(var1.pred = predict(lm.2, newdata=grd))) 
 
 # Clip the interpolated raster to Texas
 r   <- rast(dat.2nd)
-r.m <- mask(r, st_as_sf(W))
+r.m <- mask(r, w)
 
 # Plot the map
 tm_shape(r.m) + 
-  tm_raster(n=10, palette="RdBu", 
-            title="Predicted precipitation \n(in inches)") +
-  tm_shape(P) + tm_dots(size=0.2) +
-  tm_legend(legend.outside=TRUE)
+  tm_raster(col.scale = tm_scale_intervals(values = "brewer.rd_bu", n = 8),
+            col.legend = tm_legend(position = tm_pos_out(), 
+                                   title = "Predicted precipitation \n(in inches)" )) +
+  tm_shape(p) + tm_dots(size=0.5)
  
 ```
 
@@ -250,7 +260,7 @@ f.1 <- as.formula(Precip_in ~ X + Y)
 # Compute the sample variogram; note that the f.1 trend model is one of the
 # parameters passed to variogram(). This tells the function to create the 
 # variogram on the de-trended data.
-var.smpl <- variogram(f.1, P, cloud = FALSE, cutoff=1000000, width=89900)
+var.smpl <- variogram(f.1, p.sp, cloud = FALSE, cutoff=1000000, width=89900)
 
 # Compute the variogram model by passing the nugget, sill and range values
 # to fit.variogram() via the vgm() function.
@@ -273,18 +283,18 @@ f.1 <- as.formula(Precip_in ~ X + Y)
 
 # Perform the krige interpolation (note the use of the variogram model
 # created in the earlier step)
-dat.krg <- krige( f.1, P, grd, dat.fit)
+dat.krg <- krige( f.1, p.sp, grd, dat.fit)
 
 # Convert kriged surface to a raster object for clipping
 r <- rast(dat.krg)
-r.m <- mask(r, st_as_sf(W))
+r.m <- mask(r, w)
 
 # Plot the map
 tm_shape(r.m["var1.pred"]) + 
-  tm_raster(n=10, palette="RdBu", 
-            title="Predicted precipitation \n(in inches)") +
-  tm_shape(P) + tm_dots(size=0.2) +
-  tm_legend(legend.outside=TRUE)
+  tm_raster(col.scale = tm_scale_intervals(values = "brewer.rd_bu", n = 8),
+            col.legend = tm_legend(position = tm_pos_out(), 
+                                   title = "Predicted precipitation \n(in inches)" )) +
+  tm_shape(p) + tm_dots(size=0.5)
 ```
 
 ### Generate the variance and confidence interval maps {-}
@@ -293,20 +303,22 @@ The `dat.krg` object stores not just the interpolated values, but the variance v
 
 
 ```{r results='hide',  fig.height=3.3}
-tm_shape(r.m["var1.var"]) + 
-  tm_raster(n=7, palette ="Reds",
-            title="Variance map \n(in squared inches)") +tm_shape(P) + tm_dots(size=0.2) +
-  tm_legend(legend.outside=TRUE)
+tm_shape(r.m["var1.var"]) +
+tm_raster(col.scale = tm_scale_intervals(values = "brewer.reds", n = 8),
+            col.legend = tm_legend(position = tm_pos_out(), 
+                                   title = "Predicted precipitation \n(in inches)" )) +
+  tm_shape(p) + tm_dots(size=0.5)
 ```
 
 A more readily interpretable map is the 95% confidence interval map which can be generated from the variance object as follows (the map values should be interpreted as the number of inches above and below the estimated rainfall amount).
 
 ```{r results='hide',  fig.height=3.3}
 r   <- rast(dat.krg)
-r.m <- mask(sqrt(r["var1.var"])* 1.96, st_as_sf(W))
+r.m <- mask(sqrt(r["var1.var"])* 1.96, w)
 
 tm_shape(r.m) + 
-  tm_raster(n=7, palette ="Reds",
-            title="95% CI map \n(in inches)") +tm_shape(P) + tm_dots(size=0.2) +
-  tm_legend(legend.outside=TRUE)
+  tm_raster(col.scale = tm_scale_intervals(values = "reds", n = 6),
+            col.legend = tm_legend(position = tm_pos_out(), na.show = TRUE,
+            title="95% confidence interval \n(in inches)")) +
+  tm_shape(p) + tm_dots(size=0.5)
 ```

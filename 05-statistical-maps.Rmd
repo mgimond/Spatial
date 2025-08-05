@@ -325,8 +325,8 @@ brks1 <- quantile(s1$Income, seq(0,1,0.2))
 brks1[length(brks1)] <- brks1[length(brks1)] + 1
 brks2 <- quantile(s1$IncomeSE, seq(0,1,0.2))
 brks2[length(brks2)] <- brks2[length(brks2)] + 1
-P1 <- spplot(s1, "Income", at=brks1, col.regions=brewer.pal(7,"Greens"))
-P2 <- spplot(s1, "IncomeSE", at=brks2, col.regions=brewer.pal(7,"Reds"))
+P1 <- raster::spplot(s1, "Income", at=brks1, col.regions=brewer.pal(7,"Greens"))
+P2 <- raster::spplot(s1, "IncomeSE", at=brks2, col.regions=brewer.pal(7,"Reds"))
 
 print(P1, split=c(1, 1, 2, 1), more=TRUE) 
 print(P2, split=c(2, 1, 2, 1), more=FALSE) 
@@ -349,8 +349,8 @@ s1$IncMax <- s1$Income + 1.645 * s1$IncomeSE
 s1$IncMin <- s1$Income - 1.645 * s1$IncomeSE
 brks <- quantile(c(s1$IncMax, s1$IncMin), seq(0,1,0.2))
 brks[length(brks)] <- brks[length(brks)] + 1
-P1 <- spplot(s1, "IncMax", at=brks, col.regions=brewer.pal(7,"Greens"))
-P2 <- spplot(s1, "IncMin", at=brks, col.regions=brewer.pal(7,"Greens"))
+P1 <- raster::spplot(s1, "IncMax", at=brks, col.regions=brewer.pal(7,"Greens"))
+P2 <- raster::spplot(s1, "IncMin", at=brks, col.regions=brewer.pal(7,"Greens"))
 
 print(P1, split=c(1, 1, 2, 1), more=TRUE) 
 print(P2, split=c(2, 1, 2, 1), more=FALSE) 
@@ -426,8 +426,8 @@ library(RColorBrewer)
 s1$R1 <- Yrnd
 brks <- quantile(c(s1$Income, s1$R1), seq(0,1,0.2))
 brks[length(brks)] <- brks[length(brks)] + 1
-P1 <- spplot(s1, "Income", at=brks, col.regions=brewer.pal(7,"Greens"))
-P2 <- spplot(s1, "R1", at=brks, col.regions=brewer.pal(7,"Greens"))
+P1 <- raster::spplot(s1, "Income", at=brks, col.regions=brewer.pal(7,"Greens"))
+P2 <- raster::spplot(s1, "R1", at=brks, col.regions=brewer.pal(7,"Greens"))
 
 print(P1, split=c(1, 1, 2, 1), more=TRUE) 
 print(P2, split=c(2, 1, 2, 1), more=FALSE) 
@@ -443,7 +443,7 @@ set.seed(326); s1$R4 <- rnorml(Y, YSE, 1.645)
 set.seed(5441); s1$R5 <- rnorml(Y, YSE, 1.645)
 brks <- quantile(c(s1$R1,s1$R2,s1$R3,s1$R4,s1$R5), seq(0,1,0.2))
 brks[length(brks)] <- brks[length(brks)] + 1
-spplot(s1, c("R1","R2","R3","R4","R5"),at=brks, col.regions=brewer.pal(7,"Greens"))
+raster::spplot(s1, c("R1","R2","R3","R4","R5"),at=brks, col.regions=brewer.pal(7,"Greens"))
 ```
 
 ### Class comparison maps 
@@ -485,8 +485,8 @@ color <- brewer.pal(7,"Greens")
 ang <- (0:3) * 45
 dens <- c(0,10,10, 10)
 OP <- par(mar=c(0,0,0,0))
-plot(s1, col = color[findInterval(s1$Income, brks)])
-plot(s1, density = dens[s1$Comp], angle = ang[s1$Comp], add=TRUE)
+sp::plot(s1, col = color[findInterval(s1$Income, brks)])
+sp::plot(s1, density = dens[s1$Comp], angle = ang[s1$Comp], add=TRUE)
 par(OP)
 ```
 

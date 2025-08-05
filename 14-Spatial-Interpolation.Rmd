@@ -20,11 +20,14 @@ W <- readRDS(z)
 P@bbox <- W@bbox
 
 # Plot the data
-tm_shape(W) +tm_polygons() + 
-  tm_shape(P) +
-  tm_dots(col="Precip_in", size=0.5, palette = "RdBu", title = "Precipitation (in)") +
-  tm_text("Precip_in", just="left", xmod=.5, size = 0.7) +
-  tm_legend(legend.outside=TRUE)
+tm_shape(st_as_sf(W)) + tm_polygons() + 
+  tm_shape(st_as_sf(P)) +
+  tm_dots(fill="Precip_in", size=0.5, 
+          fill.scale = tm_scale_intervals(n=5, values = "brewer.rd_bu", style = "pretty"), 
+          fill.legend = tm_legend(title = "Precipitation (in)")) +
+  tm_text(text = "Precip_in", options = opt_tm_text(just="left"),
+          xmod=.5, 
+          size = 0.7) 
 ```
 
 To help answer this question, we need to clearly define the nature of our point dataset. We've already encountered point data earlier in the course where our interest was in creating point density maps using different kernel windows. However, the point data used represented a complete enumeration of discrete events or observations--i.e. the entity of interest only occurred a discrete locations within a study area and therefore could only be *measured* at those locations. Here, our point data represents **sampled** observations of an entity that can be measured *anywhere* within our study area. So creating a point density raster from this data would only make sense if we were addressing the questions like "*where are the meteorological stations concentrated within the state of Texas?*".
@@ -55,8 +58,10 @@ th.z  <- over(as_Spatial(th), P, fn=mean, na.rm = TRUE)
 th.spdf  <-  SpatialPolygonsDataFrame(as_Spatial(th), th.z)
 th.clp <- terra::intersect(W,th.spdf)
 
-tm_shape(th.clp) + tm_polygons(col="Precip_in", palette="RdBu", auto.palette.mapping=FALSE) +
-  tm_legend(legend.outside=TRUE)
+tm_shape(st_as_sf(th.clp)) + 
+  tm_polygons(fill="Precip_in", 
+              fill.scale = tm_scale_intervals(n=5, values = "brewer.rd_bu", style = "pretty"), 
+              fill.legend = tm_legend(title = "Precipitation (in)")) 
 ```
 
 One problem with this approach is that the surface values change abruptly across the tessellated boundaries. This is not representative of most surfaces in nature.
@@ -104,7 +109,7 @@ r.m <- mask(r, st_as_sf(W))
 # Plot
 tm_shape(r.m) + 
   tm_raster(n=10, palette="RdBu", auto.palette.mapping=FALSE, title="Predicted precip") +
-  tm_shape(P) + tm_dots(size=0.2) +
+  tm_shape(st_as_sf(P)) + tm_dots(size=0.5) +
   tm_legend(legend.outside=TRUE)
 ```
 
@@ -133,7 +138,7 @@ r.m     <- mask(r, st_as_sf(W))
 
 # Plot
 tm_shape(r.m) + tm_raster(n=10, palette="RdBu", auto.palette.mapping=FALSE, title="Predicted precip") +
-  tm_shape(P) + tm_dots(size=0.2) +
+  tm_shape(st_as_sf(P)) + tm_dots(size=0.5) +
   tm_legend(legend.outside=TRUE)
 ```
 
@@ -216,7 +221,10 @@ img.sig$v <- CI /img$var1.pred
 r <- rast(img.sig)$v
 r.m <- mask(r, st_as_sf(W))
 
-tm_shape(r.m) + tm_raster(n=7, title="95% confidence interval (in inches)") +tm_shape(P) + tm_dots(size=0.2) +
+tm_shape(r.m) +  tm_raster(n=7, palette="YlOrRd", 
+            auto.palette.mapping=FALSE,
+            title="95% confidence interval (in inches)") +
+  tm_shape(st_as_sf(P)) + tm_dots(size=0.5) +
   tm_legend(legend.outside=TRUE)
 
 ```
@@ -251,7 +259,13 @@ dat.0th <- SpatialGridDataFrame(grd, data.frame(var1.pred = predict(lm.0, newdat
 r   <- rast(dat.0th)
 r.m <- mask(r, st_as_sf(W))
 
-tm_shape(r.m) + tm_raster( title="Predicted precip") +tm_shape(P) + tm_dots(size=0.2) +
+# tm_shape(r.m) + tm_raster( title="Predicted precip") +tm_shape(P) + tm_dots(size=0.2) +
+#   tm_legend(legend.outside=TRUE)
+
+tm_shape(r.m) +  tm_raster(n=7, palette="RdBu", 
+            auto.palette.mapping=FALSE,
+            title="Predicted precip") +
+  tm_shape(st_as_sf(P)) + tm_dots(size=0.5) +
   tm_legend(legend.outside=TRUE)
  
 ```
@@ -279,7 +293,12 @@ dat.1st <- SpatialGridDataFrame(grd, data.frame(var1.pred = predict(lm.1, newdat
 r   <- rast(dat.1st)
 r.m <- mask(r, st_as_sf(W))
 
-tm_shape(r.m) + tm_raster(n=10, palette="RdBu", auto.palette.mapping=FALSE,title="Predicted precip") +tm_shape(P) + tm_dots(size=0.2) +
+# tm_shape(r.m) + tm_raster(n=10, palette="RdBu", auto.palette.mapping=FALSE,title="Predicted precip") +tm_shape(P) + tm_dots(size=0.2) +
+#   tm_legend(legend.outside=TRUE)
+tm_shape(r.m) +  tm_raster(n=10, palette="RdBu", 
+            auto.palette.mapping=FALSE,
+            title="Predicted precip") +
+  tm_shape(st_as_sf(P)) + tm_dots(size=0.5) +
   tm_legend(legend.outside=TRUE)
  
 ```
@@ -303,9 +322,14 @@ dat.2nd <- SpatialGridDataFrame(grd, data.frame(var1.pred = predict(lm.2, newdat
 r   <- rast(dat.2nd)
 r.m <- mask(r, st_as_sf(W))
 
-tm_shape(r.m) + tm_raster(n=10, palette="RdBu", auto.palette.mapping=FALSE, title="Predicted precip") +tm_shape(P) + tm_dots(size=0.2) +
-  tm_legend(legend.outside=TRUE)
- 
+# tm_shape(r.m) + tm_raster(n=10, palette="RdBu", auto.palette.mapping=FALSE, title="Predicted precip") +tm_shape(P) + tm_dots(size=0.2) +
+#   tm_legend(legend.outside=TRUE)
+
+tm_shape(r.m) +  tm_raster(n=10, palette="RdBu", 
+            auto.palette.mapping=FALSE,
+            title="Predicted precip") +
+  tm_shape(st_as_sf(P)) + tm_dots(size=0.5) +
+  tm_legend(legend.outside=TRUE) 
 ```
 
 
@@ -362,7 +386,7 @@ For example, if we take two meteorological stations (one whose de-trended precip
 OP <- par(mar=c(0,0,0,0))
 plot(W, col=rgb(0,0,0,0.05), border="grey")
 plot(P, pch=20,  cex=( (P$res/61  +1)), col=rgb(0,0,0,0.5), add=T) 
-plot(P[c(2,21), ], pch=20, cex=(P$res/61  +3.5), col=rgb(1,0,0), add=T)
+plot(P[c(2,21), ], pch=20, cex=(P$res/61  +1.5), col=rgb(1,0,0), add=T)
 text(P[c(2,21), ], sprintf("%.1f",P$res[c(2,21)]), pos=4, col="grey40", cex=0.8)
 par(OP)
 ```
@@ -492,7 +516,13 @@ r <- rast(dat.krg)$var1.pred
 r.m <- mask(r, st_as_sf(W))
 
 # Plot the raster and the sampled points
-tm_shape(r.m) + tm_raster(n=10, palette="RdBu", auto.palette.mapping=FALSE,title="Predicted residual \nprecip") +tm_shape(P) + tm_dots(size=0.2) +
+# tm_shape(r.m) + tm_raster(n=10, palette="RdBu", auto.palette.mapping=FALSE,title="Predicted residual \nprecip") +tm_shape(P) + tm_dots(size=0.2) +
+#   tm_legend(legend.outside=TRUE)
+
+tm_shape(r.m) +  tm_raster(n=10, palette="RdBu", 
+            auto.palette.mapping=FALSE,
+            title="Predicted residual \nprecip") +
+  tm_shape(st_as_sf(P)) + tm_dots(size=0.5) +
   tm_legend(legend.outside=TRUE)
 
 ```
@@ -516,8 +546,16 @@ dat.krg <- krige( f.1, P, grd, dat.fit)
 r <- rast(dat.krg)$var1.pred
 r.m <- mask(r, st_as_sf(W))
 
-tm_shape(r.m) + tm_raster(n=10, palette="RdBu", auto.palette.mapping=FALSE, title="Predicted precip") +tm_shape(P) + tm_dots(size=0.2) +
+# tm_shape(r.m) + tm_raster(n=10, palette="RdBu", auto.palette.mapping=FALSE, title="Predicted precip") +tm_shape(P) + tm_dots(size=0.2) +
+#   tm_legend(legend.outside=TRUE)
+
+tm_shape(r.m) +  tm_raster(n=10, palette="RdBu", 
+            auto.palette.mapping=FALSE,
+            title="Predicted precip") +
+  tm_shape(st_as_sf(P)) + tm_dots(size=0.5) +
   tm_legend(legend.outside=TRUE)
+
+
 ```
 
 A valuable by-product of the kriging operation is the variance map which gives us a measure of uncertainty in the interpolated values. The smaller the variance, the better (note that the variance values are in squared units).
@@ -530,6 +568,13 @@ A valuable by-product of the kriging operation is the variance map which gives u
 r <- rast(dat.krg)$var1.var
 r.m <- mask(r, st_as_sf(W))
 
-tm_shape(r.m) + tm_raster(n=7, palette ="Reds", ,title="Variance map \n(in squared inches)") +tm_shape(P) + tm_dots(size=0.2) +
+# tm_shape(r.m) + tm_raster(n=7, palette ="Reds", ,title="Variance map \n(in squared inches)") +tm_shape(P) + tm_dots(size=0.2) +
+#   tm_legend(legend.outside=TRUE)
+
+tm_shape(r.m) +  tm_raster(n=10, palette="Reds", 
+            auto.palette.mapping=FALSE,
+            title="Variance map \n(in squared inches)") +
+  tm_shape(st_as_sf(P)) + tm_dots(size=0.5) +
   tm_legend(legend.outside=TRUE)
+
 ```
