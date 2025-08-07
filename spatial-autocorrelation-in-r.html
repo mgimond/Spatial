@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>I Spatial autocorrelation in R | Intro to GIS and Spatial Analysis</title>
   <meta name="description" content="This is a compilation of lecture notes that accompany my Intro to GIS and Spatial Analysis course." />
-  <meta name="generator" content="bookdown 0.40 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.43 and GitBook 2.6.7" />
 
   <meta property="og:title" content="I Spatial autocorrelation in R | Intro to GIS and Spatial Analysis" />
   <meta property="og:type" content="book" />
@@ -85,7 +85,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -669,7 +669,7 @@ sp
               padding-bottom: 1px;
               padding-left: 4px;
               padding-right: 4px;">
-4.4.0
+4.5.1
 </td>
 <td style="text-align:left;color: white !important;background-color: rgba(170, 170, 170, 255) !important;text-align: center;font-size: 12px !important; 
               margin:5px; 
@@ -679,7 +679,7 @@ sp
               padding-bottom: 1px;
               padding-left: 4px;
               padding-right: 4px;">
-1.0.16
+1.0.21
 </td>
 <td style="text-align:left;color: white !important;background-color: rgba(170, 170, 170, 255) !important;text-align: center;font-size: 12px !important; 
               margin:5px; 
@@ -689,7 +689,7 @@ sp
               padding-bottom: 1px;
               padding-left: 4px;
               padding-right: 4px;">
-3.3.4
+4.1
 </td>
 <td style="text-align:left;color: white !important;background-color: rgba(170, 170, 170, 255) !important;text-align: center;font-size: 12px !important; 
               margin:5px; 
@@ -699,27 +699,7 @@ sp
               padding-bottom: 1px;
               padding-left: 4px;
               padding-right: 4px;">
-3.1.1
-</td>
-<td style="text-align:left;color: white !important;background-color: rgba(170, 170, 170, 255) !important;text-align: center;font-size: 12px !important; 
-              margin:5px; 
-              border-radius: 8px;
-              border: 2px solid white;
-              padding-top: 1px;
-              padding-bottom: 1px;
-              padding-left: 4px;
-              padding-right: 4px;">
-2.1.2
-</td>
-<td style="text-align:left;color: white !important;background-color: rgba(170, 170, 170, 255) !important;text-align: center;font-size: 12px !important; 
-              margin:5px; 
-              border-radius: 8px;
-              border: 2px solid white;
-              padding-top: 1px;
-              padding-bottom: 1px;
-              padding-left: 4px;
-              padding-right: 4px;">
-1.7.78
+3.4.0
 </td>
 <td style="text-align:left;color: white !important;background-color: rgba(170, 170, 170, 255) !important;text-align: center;font-size: 12px !important; 
               margin:5px; 
@@ -730,6 +710,26 @@ sp
               padding-left: 4px;
               padding-right: 4px;">
 2.1.4
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(170, 170, 170, 255) !important;text-align: center;font-size: 12px !important; 
+              margin:5px; 
+              border-radius: 8px;
+              border: 2px solid white;
+              padding-top: 1px;
+              padding-bottom: 1px;
+              padding-left: 4px;
+              padding-right: 4px;">
+1.8.60
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(170, 170, 170, 255) !important;text-align: center;font-size: 12px !important; 
+              margin:5px; 
+              border-radius: 8px;
+              border: 2px solid white;
+              padding-top: 1px;
+              padding-bottom: 1px;
+              padding-left: 4px;
+              padding-right: 4px;">
+2.2.0
 </td>
 </tr>
 </tbody>
@@ -900,9 +900,9 @@ data:  ma$house_inc
 weights: lw  
 number of simulations + 1: 600 
 
-statistic = -0.027383, observed rank = 30, p-value = 0.95
+statistic = -0.027383, observed rank = 32, p-value = 0.9467
 alternative hypothesis: greater</code></pre>
-<p>Since we went with the default alternative parameter of <code>"greater"</code> in the <code>moran.mc</code> function, the output is giving us the fraction of simulated values greater than our observed value–about 95% in our example. Given that our observed statistic is on the left side of the distribution, it’s best to report the p-value as (1 - 0.95) or 0.05 with the alternative hypothesis that the values are more dissimilar than expected.</p>
+<p>Since we went with the default alternative parameter of <code>"greater"</code> in the <code>moran.mc</code> function, the output is giving us the fraction of simulated values greater than our observed value–about 94.7% in our example. Given that our observed statistic is on the left side of the distribution, it’s best to report the p-value as (1 - 0.947) or 0.053 with the alternative hypothesis that the values are more dissimilar than expected.</p>
 </div>
 <div id="app8_7" class="section level2 unnumbered hasAnchor">
 <h2>Local Moran’s I<a href="spatial-autocorrelation-in-r.html#app8_7" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -977,45 +977,45 @@ alternative hypothesis: greater</code></pre>
 <script>
 gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
-"sharing": {
-"github": false,
-"facebook": false,
-"twitter": false,
-"linkedin": false,
-"weibo": false,
-"instapaper": false,
-"vk": false,
-"whatsapp": false,
-"all": false,
-"google": false,
-"instapper": false
-},
-"fontsettings": {
-"theme": "white",
-"family": "sans",
-"size": 2
-},
-"edit": {
-"link": null,
-"text": null
-},
-"history": {
-"link": null,
-"text": null
-},
-"view": {
-"link": null,
-"text": null
-},
-"download": {},
-"search": {
-"engine": "fuse",
-"options": null
-},
-"toc": {
-"collapse": "section",
-"scroll_highlight": true
-}
+  "sharing": {
+    "github": false,
+    "facebook": false,
+    "twitter": false,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": false,
+    "google": false,
+    "instapper": false
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": null,
+    "text": null
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": {},
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "section",
+    "scroll_highlight": true
+  }
 });
 });
 </script>
