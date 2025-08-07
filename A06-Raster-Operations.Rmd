@@ -401,10 +401,6 @@ r2.d <- distance(r2, p1)
 Let's plot the resulting output.
 
 ```{r fig.height=3}
-tm_shape(r2.d) + tm_raster(palette = "Greens", style="order") + 
-  tm_legend(outside = TRUE, text.size = .8) +
-  tm_shape(p1) + tm_bubbles(col="red") 
-
 tm_shape(r2.d) +  
   tm_raster(col.scale = tm_scale_continuous(values = "brewer.greens"),
             col.legend = tm_legend(position = tm_pos_out(), title = "Distance"))  +
