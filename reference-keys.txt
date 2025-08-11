@@ -357,3 +357,8 @@ coordinate-systems-in-r
 point-pattern-analysis-in-r
 spatial-autocorrelation-in-r
 interpolation-in-r
+fig:table-conflict
+tab:table-conflict
+course-roadmap
+part-1-working-with-spatial-data
+part-2-exploratory-spatial-data-analysis
