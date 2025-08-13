@@ -73,6 +73,65 @@
 </script>
 
 
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; } /* Alert */
+code span.an { color: #008000; } /* Annotation */
+code span.at { } /* Attribute */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #0000ff; } /* ControlFlow */
+code span.ch { color: #008080; } /* Char */
+code span.cn { } /* Constant */
+code span.co { color: #008000; } /* Comment */
+code span.cv { color: #008000; } /* CommentVar */
+code span.do { color: #008000; } /* Documentation */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.im { } /* Import */
+code span.in { color: #008000; } /* Information */
+code span.kw { color: #0000ff; } /* Keyword */
+code span.op { } /* Operator */
+code span.ot { color: #ff4000; } /* Other */
+code span.pp { color: #ff4000; } /* Preprocessor */
+code span.sc { color: #008080; } /* SpecialChar */
+code span.ss { color: #008080; } /* SpecialString */
+code span.st { color: #008080; } /* String */
+code span.va { } /* Variable */
+code span.vs { color: #008080; } /* VerbatimString */
+code span.wa { color: #008000; font-weight: bold; } /* Warning */
+</style>
 
 <style type="text/css">
   
@@ -134,53 +193,60 @@ div.csl-indent {
 <li class="part"><span><b>PART 1: Working with spatial data</b></span></li>
 <li class="chapter" data-level="2" data-path="chp02_0.html"><a href="chp02_0.html"><i class="fa fa-check"></i><b>2</b> Feature Representation</a>
 <ul>
-<li class="chapter" data-level="2.1" data-path="chp02_0.html"><a href="chp02_0.html#vector-vs.-raster"><i class="fa fa-check"></i><b>2.1</b> Vector vs. Raster</a>
+<li class="chapter" data-level="2.1" data-path="chp02_0.html"><a href="chp02_0.html#introduction"><i class="fa fa-check"></i><b>2.1</b> Introduction</a></li>
+<li class="chapter" data-level="2.2" data-path="chp02_0.html"><a href="chp02_0.html#vector-vs.-raster"><i class="fa fa-check"></i><b>2.2</b> Vector vs. Raster</a>
 <ul>
-<li class="chapter" data-level="2.1.1" data-path="chp02_0.html"><a href="chp02_0.html#vector"><i class="fa fa-check"></i><b>2.1.1</b> Vector</a></li>
-<li class="chapter" data-level="2.1.2" data-path="chp02_0.html"><a href="chp02_0.html#raster"><i class="fa fa-check"></i><b>2.1.2</b> Raster</a></li>
+<li class="chapter" data-level="2.2.1" data-path="chp02_0.html"><a href="chp02_0.html#vector"><i class="fa fa-check"></i><b>2.2.1</b> Vector</a></li>
+<li class="chapter" data-level="2.2.2" data-path="chp02_0.html"><a href="chp02_0.html#raster"><i class="fa fa-check"></i><b>2.2.2</b> Raster</a></li>
 </ul></li>
-<li class="chapter" data-level="2.2" data-path="chp02_0.html"><a href="chp02_0.html#object-vs.-field"><i class="fa fa-check"></i><b>2.2</b> Object vs. Field</a>
+<li class="chapter" data-level="2.3" data-path="chp02_0.html"><a href="chp02_0.html#object-vs.-field"><i class="fa fa-check"></i><b>2.3</b> Object vs. Field</a>
 <ul>
-<li class="chapter" data-level="2.2.1" data-path="chp02_0.html"><a href="chp02_0.html#object-view"><i class="fa fa-check"></i><b>2.2.1</b> Object View</a></li>
-<li class="chapter" data-level="2.2.2" data-path="chp02_0.html"><a href="chp02_0.html#field-view"><i class="fa fa-check"></i><b>2.2.2</b> Field View</a></li>
+<li class="chapter" data-level="2.3.1" data-path="chp02_0.html"><a href="chp02_0.html#object-view"><i class="fa fa-check"></i><b>2.3.1</b> Object View</a></li>
+<li class="chapter" data-level="2.3.2" data-path="chp02_0.html"><a href="chp02_0.html#field-view"><i class="fa fa-check"></i><b>2.3.2</b> Field View</a></li>
 </ul></li>
-<li class="chapter" data-level="2.3" data-path="chp02_0.html"><a href="chp02_0.html#scale"><i class="fa fa-check"></i><b>2.3</b> Scale</a></li>
-<li class="chapter" data-level="2.4" data-path="chp02_0.html"><a href="chp02_0.html#attribute-tables"><i class="fa fa-check"></i><b>2.4</b> Attribute Tables</a>
+<li class="chapter" data-level="2.4" data-path="chp02_0.html"><a href="chp02_0.html#scale"><i class="fa fa-check"></i><b>2.4</b> Scale</a></li>
+<li class="chapter" data-level="2.5" data-path="chp02_0.html"><a href="chp02_0.html#attribute-tables"><i class="fa fa-check"></i><b>2.5</b> Attribute Tables</a>
 <ul>
-<li class="chapter" data-level="2.4.1" data-path="chp02_0.html"><a href="chp02_0.html#measurement-levels"><i class="fa fa-check"></i><b>2.4.1</b> Measurement Levels</a></li>
-<li class="chapter" data-level="2.4.2" data-path="chp02_0.html"><a href="chp02_0.html#data-type"><i class="fa fa-check"></i><b>2.4.2</b> Data type</a></li>
+<li class="chapter" data-level="2.5.1" data-path="chp02_0.html"><a href="chp02_0.html#measurement-levels"><i class="fa fa-check"></i><b>2.5.1</b> Measurement Levels</a></li>
+<li class="chapter" data-level="2.5.2" data-path="chp02_0.html"><a href="chp02_0.html#data-type"><i class="fa fa-check"></i><b>2.5.2</b> Data type</a></li>
 </ul></li>
+<li class="chapter" data-level="2.6" data-path="chp02_0.html"><a href="chp02_0.html#summary"><i class="fa fa-check"></i><b>2.6</b> Summary</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="gis-data-management.html"><a href="gis-data-management.html"><i class="fa fa-check"></i><b>3</b> GIS Data Management</a>
 <ul>
-<li class="chapter" data-level="3.1" data-path="gis-data-management.html"><a href="gis-data-management.html#gis-file-data-formats"><i class="fa fa-check"></i><b>3.1</b> GIS File Data Formats</a>
+<li class="chapter" data-level="3.1" data-path="gis-data-management.html"><a href="gis-data-management.html#introduction-1"><i class="fa fa-check"></i><b>3.1</b> Introduction</a></li>
+<li class="chapter" data-level="3.2" data-path="gis-data-management.html"><a href="gis-data-management.html#gis-file-data-formats"><i class="fa fa-check"></i><b>3.2</b> GIS File Data Formats</a>
 <ul>
-<li class="chapter" data-level="3.1.1" data-path="gis-data-management.html"><a href="gis-data-management.html#vector-data-file-formats"><i class="fa fa-check"></i><b>3.1.1</b> Vector Data File Formats</a></li>
-<li class="chapter" data-level="3.1.2" data-path="gis-data-management.html"><a href="gis-data-management.html#raster-data-file-formats"><i class="fa fa-check"></i><b>3.1.2</b> Raster Data File Formats</a></li>
+<li class="chapter" data-level="3.2.1" data-path="gis-data-management.html"><a href="gis-data-management.html#vector-data-file-formats"><i class="fa fa-check"></i><b>3.2.1</b> Vector Data File Formats</a></li>
+<li class="chapter" data-level="3.2.2" data-path="gis-data-management.html"><a href="gis-data-management.html#raster-data-file-formats"><i class="fa fa-check"></i><b>3.2.2</b> Raster Data File Formats</a></li>
+<li class="chapter" data-level="3.2.3" data-path="gis-data-management.html"><a href="gis-data-management.html#comparison-table"><i class="fa fa-check"></i><b>3.2.3</b> Comparison table</a></li>
 </ul></li>
-<li class="chapter" data-level="3.2" data-path="gis-data-management.html"><a href="gis-data-management.html#managing-gis-files-in-arcgis"><i class="fa fa-check"></i><b>3.2</b> Managing GIS Files in ArcGIS</a></li>
-<li class="chapter" data-level="3.3" data-path="gis-data-management.html"><a href="gis-data-management.html#managing-a-map-project-in-arcgis"><i class="fa fa-check"></i><b>3.3</b> Managing a Map Project in ArcGIS</a></li>
+<li class="chapter" data-level="3.3" data-path="gis-data-management.html"><a href="gis-data-management.html#managing-gis-files-in-arcgis"><i class="fa fa-check"></i><b>3.3</b> Managing GIS Files in ArcGIS</a></li>
+<li class="chapter" data-level="3.4" data-path="gis-data-management.html"><a href="gis-data-management.html#managing-gis-projects-and-file-references"><i class="fa fa-check"></i><b>3.4</b> Managing GIS Projects and File References</a></li>
+<li class="chapter" data-level="3.5" data-path="gis-data-management.html"><a href="gis-data-management.html#summary-1"><i class="fa fa-check"></i><b>3.5</b> Summary</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="symbolizing-features.html"><a href="symbolizing-features.html"><i class="fa fa-check"></i><b>4</b> Symbolizing features</a>
 <ul>
-<li class="chapter" data-level="4.1" data-path="symbolizing-features.html"><a href="symbolizing-features.html#color"><i class="fa fa-check"></i><b>4.1</b> Color</a>
+<li class="chapter" data-level="4.1" data-path="symbolizing-features.html"><a href="symbolizing-features.html#introduction-2"><i class="fa fa-check"></i><b>4.1</b> Introduction</a></li>
+<li class="chapter" data-level="4.2" data-path="symbolizing-features.html"><a href="symbolizing-features.html#color"><i class="fa fa-check"></i><b>4.2</b> Color</a>
 <ul>
-<li class="chapter" data-level="4.1.1" data-path="symbolizing-features.html"><a href="symbolizing-features.html#hue"><i class="fa fa-check"></i><b>4.1.1</b> Hue</a></li>
-<li class="chapter" data-level="4.1.2" data-path="symbolizing-features.html"><a href="symbolizing-features.html#lightness"><i class="fa fa-check"></i><b>4.1.2</b> Lightness</a></li>
-<li class="chapter" data-level="4.1.3" data-path="symbolizing-features.html"><a href="symbolizing-features.html#saturation"><i class="fa fa-check"></i><b>4.1.3</b> Saturation</a></li>
+<li class="chapter" data-level="4.2.1" data-path="symbolizing-features.html"><a href="symbolizing-features.html#hue"><i class="fa fa-check"></i><b>4.2.1</b> Hue</a></li>
+<li class="chapter" data-level="4.2.2" data-path="symbolizing-features.html"><a href="symbolizing-features.html#lightness"><i class="fa fa-check"></i><b>4.2.2</b> Lightness</a></li>
+<li class="chapter" data-level="4.2.3" data-path="symbolizing-features.html"><a href="symbolizing-features.html#saturation"><i class="fa fa-check"></i><b>4.2.3</b> Saturation</a></li>
 </ul></li>
-<li class="chapter" data-level="4.2" data-path="symbolizing-features.html"><a href="symbolizing-features.html#color-space"><i class="fa fa-check"></i><b>4.2</b> Color Space</a></li>
-<li class="chapter" data-level="4.3" data-path="symbolizing-features.html"><a href="symbolizing-features.html#classification"><i class="fa fa-check"></i><b>4.3</b> Classification</a>
+<li class="chapter" data-level="4.3" data-path="symbolizing-features.html"><a href="symbolizing-features.html#color-space"><i class="fa fa-check"></i><b>4.3</b> Color Space</a></li>
+<li class="chapter" data-level="4.4" data-path="symbolizing-features.html"><a href="symbolizing-features.html#classification"><i class="fa fa-check"></i><b>4.4</b> Classification</a>
 <ul>
-<li class="chapter" data-level="4.3.1" data-path="symbolizing-features.html"><a href="symbolizing-features.html#qualitative-color-scheme"><i class="fa fa-check"></i><b>4.3.1</b> Qualitative color scheme</a></li>
-<li class="chapter" data-level="4.3.2" data-path="symbolizing-features.html"><a href="symbolizing-features.html#sequential-color-scheme"><i class="fa fa-check"></i><b>4.3.2</b> Sequential color scheme</a></li>
-<li class="chapter" data-level="4.3.3" data-path="symbolizing-features.html"><a href="symbolizing-features.html#divergent-color-scheme"><i class="fa fa-check"></i><b>4.3.3</b> Divergent color scheme</a></li>
+<li class="chapter" data-level="4.4.1" data-path="symbolizing-features.html"><a href="symbolizing-features.html#qualitative-color-scheme"><i class="fa fa-check"></i><b>4.4.1</b> Qualitative color scheme</a></li>
+<li class="chapter" data-level="4.4.2" data-path="symbolizing-features.html"><a href="symbolizing-features.html#sequential-color-scheme"><i class="fa fa-check"></i><b>4.4.2</b> Sequential color scheme</a></li>
+<li class="chapter" data-level="4.4.3" data-path="symbolizing-features.html"><a href="symbolizing-features.html#divergent-color-scheme"><i class="fa fa-check"></i><b>4.4.3</b> Divergent color scheme</a></li>
 </ul></li>
-<li class="chapter" data-level="4.4" data-path="symbolizing-features.html"><a href="symbolizing-features.html#so-how-do-i-find-a-proper-color-scheme-for-my-data"><i class="fa fa-check"></i><b>4.4</b> So how do I find a proper color scheme for my data?</a></li>
-<li class="chapter" data-level="4.5" data-path="symbolizing-features.html"><a href="symbolizing-features.html#classification-intervals"><i class="fa fa-check"></i><b>4.5</b> Classification Intervals</a>
+<li class="chapter" data-level="4.5" data-path="symbolizing-features.html"><a href="symbolizing-features.html#choosing-an-appropriate-color-scheme"><i class="fa fa-check"></i><b>4.5</b> Choosing an Appropriate Color Scheme</a></li>
+<li class="chapter" data-level="4.6" data-path="symbolizing-features.html"><a href="symbolizing-features.html#classification-intervals"><i class="fa fa-check"></i><b>4.6</b> Classification Intervals</a>
 <ul>
-<li class="chapter" data-level="4.5.1" data-path="symbolizing-features.html"><a href="symbolizing-features.html#an-interactive-example"><i class="fa fa-check"></i><b>4.5.1</b> An Interactive Example</a></li>
+<li class="chapter" data-level="4.6.1" data-path="symbolizing-features.html"><a href="symbolizing-features.html#an-interactive-example"><i class="fa fa-check"></i><b>4.6.1</b> An Interactive Example</a></li>
 </ul></li>
+<li class="chapter" data-level="4.7" data-path="symbolizing-features.html"><a href="symbolizing-features.html#summary-2"><i class="fa fa-check"></i><b>4.7</b> Summary</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="statistical-maps.html"><a href="statistical-maps.html"><i class="fa fa-check"></i><b>5</b> Statistical maps</a>
 <ul>
@@ -260,90 +326,92 @@ div.csl-indent {
 <li class="chapter" data-level="10.5.4" data-path="chp10_0.html"><a href="chp10_0.html#combining-operations"><i class="fa fa-check"></i><b>10.5.4</b> Combining operations</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="" data-path=""><a href="#part-part-2-spatial-analysis"><i class="fa fa-check"></i>(PART*) PART 2: Spatial Analysis</a>
+<li class="part"><span><b>PART 2: Spatial Analysis</b></span></li>
+<li class="chapter" data-level="11" data-path="chp11_0.html"><a href="chp11_0.html"><i class="fa fa-check"></i><b>11</b> Point Pattern Analysis</a>
 <ul>
-<li class="chapter" data-level="10.6" data-path="chp10_0.html"><a href="chp10_0.html#centrography"><i class="fa fa-check"></i><b>10.6</b> Centrography</a></li>
-<li class="chapter" data-level="10.7" data-path="chp10_0.html"><a href="chp10_0.html#density-based-analysis"><i class="fa fa-check"></i><b>10.7</b> Density based analysis</a>
+<li class="chapter" data-level="11.1" data-path="chp11_0.html"><a href="chp11_0.html#centrography"><i class="fa fa-check"></i><b>11.1</b> Centrography</a></li>
+<li class="chapter" data-level="11.2" data-path="chp11_0.html"><a href="chp11_0.html#density-based-analysis"><i class="fa fa-check"></i><b>11.2</b> Density based analysis</a>
 <ul>
-<li class="chapter" data-level="10.7.1" data-path="chp10_0.html"><a href="chp10_0.html#global-density"><i class="fa fa-check"></i><b>10.7.1</b> Global density</a></li>
-<li class="chapter" data-level="10.7.2" data-path="chp10_0.html"><a href="chp10_0.html#local-density"><i class="fa fa-check"></i><b>10.7.2</b> Local density</a></li>
-<li class="chapter" data-level="10.7.3" data-path="chp10_0.html"><a href="chp10_0.html#modeling-intensity-as-a-function-of-a-covariate"><i class="fa fa-check"></i><b>10.7.3</b> Modeling intensity as a function of a covariate</a></li>
+<li class="chapter" data-level="11.2.1" data-path="chp11_0.html"><a href="chp11_0.html#global-density"><i class="fa fa-check"></i><b>11.2.1</b> Global density</a></li>
+<li class="chapter" data-level="11.2.2" data-path="chp11_0.html"><a href="chp11_0.html#local-density"><i class="fa fa-check"></i><b>11.2.2</b> Local density</a></li>
+<li class="chapter" data-level="11.2.3" data-path="chp11_0.html"><a href="chp11_0.html#modeling-intensity-as-a-function-of-a-covariate"><i class="fa fa-check"></i><b>11.2.3</b> Modeling intensity as a function of a covariate</a></li>
 </ul></li>
-<li class="chapter" data-level="10.8" data-path="chp10_0.html"><a href="chp10_0.html#distance-based-analysis"><i class="fa fa-check"></i><b>10.8</b> Distance based analysis</a>
+<li class="chapter" data-level="11.3" data-path="chp11_0.html"><a href="chp11_0.html#distance-based-analysis"><i class="fa fa-check"></i><b>11.3</b> Distance based analysis</a>
 <ul>
-<li class="chapter" data-level="10.8.1" data-path="chp10_0.html"><a href="chp10_0.html#average-nearest-neighbor"><i class="fa fa-check"></i><b>10.8.1</b> Average Nearest Neighbor</a></li>
-<li class="chapter" data-level="10.8.2" data-path="chp10_0.html"><a href="chp10_0.html#k-and-l-functions"><i class="fa fa-check"></i><b>10.8.2</b> K and L functions</a></li>
-<li class="chapter" data-level="10.8.3" data-path="chp10_0.html"><a href="chp10_0.html#the-pair-correlation-function-g"><i class="fa fa-check"></i><b>10.8.3</b> The Pair Correlation Function <span class="math inline">\(g\)</span></a></li>
+<li class="chapter" data-level="11.3.1" data-path="chp11_0.html"><a href="chp11_0.html#average-nearest-neighbor"><i class="fa fa-check"></i><b>11.3.1</b> Average Nearest Neighbor</a></li>
+<li class="chapter" data-level="11.3.2" data-path="chp11_0.html"><a href="chp11_0.html#k-and-l-functions"><i class="fa fa-check"></i><b>11.3.2</b> K and L functions</a></li>
+<li class="chapter" data-level="11.3.3" data-path="chp11_0.html"><a href="chp11_0.html#the-pair-correlation-function-g"><i class="fa fa-check"></i><b>11.3.3</b> The Pair Correlation Function <span class="math inline">\(g\)</span></a></li>
 </ul></li>
-<li class="chapter" data-level="10.9" data-path="chp10_0.html"><a href="chp10_0.html#first-and-second-order-effects"><i class="fa fa-check"></i><b>10.9</b> First and second order effects</a></li>
+<li class="chapter" data-level="11.4" data-path="chp11_0.html"><a href="chp11_0.html#first-and-second-order-effects"><i class="fa fa-check"></i><b>11.4</b> First and second order effects</a></li>
 </ul></li>
-<li class="chapter" data-level="11" data-path="hypothesis-testing.html"><a href="hypothesis-testing.html"><i class="fa fa-check"></i><b>11</b> Hypothesis testing</a>
+<li class="chapter" data-level="12" data-path="hypothesis-testing.html"><a href="hypothesis-testing.html"><i class="fa fa-check"></i><b>12</b> Hypothesis testing</a>
 <ul>
-<li class="chapter" data-level="11.1" data-path="hypothesis-testing.html"><a href="hypothesis-testing.html#irpcsr"><i class="fa fa-check"></i><b>11.1</b> IRP/CSR</a></li>
-<li class="chapter" data-level="11.2" data-path="hypothesis-testing.html"><a href="hypothesis-testing.html#testing-for-csr-with-the-ann-tool"><i class="fa fa-check"></i><b>11.2</b> Testing for CSR with the ANN tool</a>
+<li class="chapter" data-level="12.1" data-path="hypothesis-testing.html"><a href="hypothesis-testing.html#irpcsr"><i class="fa fa-check"></i><b>12.1</b> IRP/CSR</a></li>
+<li class="chapter" data-level="12.2" data-path="hypothesis-testing.html"><a href="hypothesis-testing.html#testing-for-csr-with-the-ann-tool"><i class="fa fa-check"></i><b>12.2</b> Testing for CSR with the ANN tool</a>
 <ul>
-<li class="chapter" data-level="11.2.1" data-path="hypothesis-testing.html"><a href="hypothesis-testing.html#arcgis-average-nearest-neighbor-tool"><i class="fa fa-check"></i><b>11.2.1</b> ArcGIS’ Average Nearest Neighbor Tool</a></li>
-<li class="chapter" data-level="11.2.2" data-path="hypothesis-testing.html"><a href="hypothesis-testing.html#a-better-approach-a-monte-carlo-test"><i class="fa fa-check"></i><b>11.2.2</b> A better approach: a Monte Carlo test</a></li>
+<li class="chapter" data-level="12.2.1" data-path="hypothesis-testing.html"><a href="hypothesis-testing.html#arcgis-average-nearest-neighbor-tool"><i class="fa fa-check"></i><b>12.2.1</b> ArcGIS’ Average Nearest Neighbor Tool</a></li>
+<li class="chapter" data-level="12.2.2" data-path="hypothesis-testing.html"><a href="hypothesis-testing.html#a-better-approach-a-monte-carlo-test"><i class="fa fa-check"></i><b>12.2.2</b> A better approach: a Monte Carlo test</a></li>
 </ul></li>
-<li class="chapter" data-level="11.3" data-path="hypothesis-testing.html"><a href="hypothesis-testing.html#alternatives-to-csrirp"><i class="fa fa-check"></i><b>11.3</b> Alternatives to CSR/IRP</a></li>
-<li class="chapter" data-level="11.4" data-path="hypothesis-testing.html"><a href="hypothesis-testing.html#monte-carlo-test-with-k-and-l-functions"><i class="fa fa-check"></i><b>11.4</b> Monte Carlo test with K and L functions</a></li>
-<li class="chapter" data-level="11.5" data-path="hypothesis-testing.html"><a href="hypothesis-testing.html#PPM"><i class="fa fa-check"></i><b>11.5</b> Testing for a covariate effect</a></li>
+<li class="chapter" data-level="12.3" data-path="hypothesis-testing.html"><a href="hypothesis-testing.html#alternatives-to-csrirp"><i class="fa fa-check"></i><b>12.3</b> Alternatives to CSR/IRP</a></li>
+<li class="chapter" data-level="12.4" data-path="hypothesis-testing.html"><a href="hypothesis-testing.html#monte-carlo-test-with-k-and-l-functions"><i class="fa fa-check"></i><b>12.4</b> Monte Carlo test with K and L functions</a></li>
+<li class="chapter" data-level="12.5" data-path="hypothesis-testing.html"><a href="hypothesis-testing.html#PPM"><i class="fa fa-check"></i><b>12.5</b> Testing for a covariate effect</a></li>
 </ul></li>
-<li class="chapter" data-level="12" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html"><i class="fa fa-check"></i><b>12</b> Spatial Autocorrelation</a>
+<li class="chapter" data-level="13" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html"><i class="fa fa-check"></i><b>13</b> Spatial Autocorrelation</a>
 <ul>
-<li class="chapter" data-level="12.1" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#global-morans-i"><i class="fa fa-check"></i><b>12.1</b> Global Moran’s <em>I</em></a>
+<li class="chapter" data-level="13.1" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#global-morans-i"><i class="fa fa-check"></i><b>13.1</b> Global Moran’s <em>I</em></a>
 <ul>
-<li class="chapter" data-level="12.1.1" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#computing-the-morans-i"><i class="fa fa-check"></i><b>12.1.1</b> Computing the Moran’s <em>I</em></a></li>
-<li class="chapter" data-level="12.1.2" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#monte-carlo-approach-to-estimating-significance"><i class="fa fa-check"></i><b>12.1.2</b> Monte Carlo approach to estimating significance</a></li>
+<li class="chapter" data-level="13.1.1" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#computing-the-morans-i"><i class="fa fa-check"></i><b>13.1.1</b> Computing the Moran’s <em>I</em></a></li>
+<li class="chapter" data-level="13.1.2" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#monte-carlo-approach-to-estimating-significance"><i class="fa fa-check"></i><b>13.1.2</b> Monte Carlo approach to estimating significance</a></li>
 </ul></li>
-<li class="chapter" data-level="12.2" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#morans-i-at-different-lags"><i class="fa fa-check"></i><b>12.2</b> Moran’s <em>I</em> at different lags</a></li>
-<li class="chapter" data-level="12.3" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#local-morans-i"><i class="fa fa-check"></i><b>12.3</b> Local Moran’s <em>I</em></a>
+<li class="chapter" data-level="13.2" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#morans-i-at-different-lags"><i class="fa fa-check"></i><b>13.2</b> Moran’s <em>I</em> at different lags</a></li>
+<li class="chapter" data-level="13.3" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#local-morans-i"><i class="fa fa-check"></i><b>13.3</b> Local Moran’s <em>I</em></a>
 <ul>
-<li class="chapter" data-level="12.3.1" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#a-note-about-interpreting-the-pseudo-p-value"><i class="fa fa-check"></i><b>12.3.1</b> A note about interpreting the pseudo p-value</a></li>
+<li class="chapter" data-level="13.3.1" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#a-note-about-interpreting-the-pseudo-p-value"><i class="fa fa-check"></i><b>13.3.1</b> A note about interpreting the pseudo p-value</a></li>
 </ul></li>
-<li class="chapter" data-level="12.4" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#morans-i-equation-explained"><i class="fa fa-check"></i><b>12.4</b> Moran’s <em>I</em> equation explained</a>
+<li class="chapter" data-level="13.4" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#morans-i-equation-explained"><i class="fa fa-check"></i><b>13.4</b> Moran’s <em>I</em> equation explained</a>
 <ul>
-<li class="chapter" data-level="12.4.1" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#local-morans-i-1"><i class="fa fa-check"></i><b>12.4.1</b> Local Moran’s I</a></li>
-<li class="chapter" data-level="12.4.2" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#global-morans-i-1"><i class="fa fa-check"></i><b>12.4.2</b> Global Moran’s I</a></li>
-</ul></li>
-</ul></li>
-<li class="chapter" data-level="13" data-path="spatial-interpolation.html"><a href="spatial-interpolation.html"><i class="fa fa-check"></i><b>13</b> Spatial Interpolation</a>
-<ul>
-<li class="chapter" data-level="13.1" data-path="spatial-interpolation.html"><a href="spatial-interpolation.html#deterministic-approach-to-interpolation"><i class="fa fa-check"></i><b>13.1</b> Deterministic Approach to Interpolation</a>
-<ul>
-<li class="chapter" data-level="13.1.1" data-path="spatial-interpolation.html"><a href="spatial-interpolation.html#proximity-interpolation"><i class="fa fa-check"></i><b>13.1.1</b> Proximity interpolation</a></li>
-<li class="chapter" data-level="13.1.2" data-path="spatial-interpolation.html"><a href="spatial-interpolation.html#inverse-distance-weighted-idw"><i class="fa fa-check"></i><b>13.1.2</b> Inverse Distance Weighted (IDW)</a></li>
-<li class="chapter" data-level="13.1.3" data-path="spatial-interpolation.html"><a href="spatial-interpolation.html#fine-tuning-the-interpolation-parameters"><i class="fa fa-check"></i><b>13.1.3</b> Fine tuning the interpolation parameters</a></li>
-</ul></li>
-<li class="chapter" data-level="13.2" data-path="spatial-interpolation.html"><a href="spatial-interpolation.html#statistical-approach-to-interpolation"><i class="fa fa-check"></i><b>13.2</b> Statistical Approach to Interpolation</a>
-<ul>
-<li class="chapter" data-level="13.2.1" data-path="spatial-interpolation.html"><a href="spatial-interpolation.html#trend-surfaces"><i class="fa fa-check"></i><b>13.2.1</b> Trend Surfaces</a></li>
-<li class="chapter" data-level="13.2.2" data-path="spatial-interpolation.html"><a href="spatial-interpolation.html#ordinary-kriging"><i class="fa fa-check"></i><b>13.2.2</b> Ordinary Kriging</a></li>
+<li class="chapter" data-level="13.4.1" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#local-morans-i-1"><i class="fa fa-check"></i><b>13.4.1</b> Local Moran’s I</a></li>
+<li class="chapter" data-level="13.4.2" data-path="spatial-autocorrelation.html"><a href="spatial-autocorrelation.html#global-morans-i-1"><i class="fa fa-check"></i><b>13.4.2</b> Global Moran’s I</a></li>
 </ul></li>
 </ul></li>
+<li class="chapter" data-level="14" data-path="spatial-interpolation.html"><a href="spatial-interpolation.html"><i class="fa fa-check"></i><b>14</b> Spatial Interpolation</a>
+<ul>
+<li class="chapter" data-level="14.1" data-path="spatial-interpolation.html"><a href="spatial-interpolation.html#deterministic-approach-to-interpolation"><i class="fa fa-check"></i><b>14.1</b> Deterministic Approach to Interpolation</a>
+<ul>
+<li class="chapter" data-level="14.1.1" data-path="spatial-interpolation.html"><a href="spatial-interpolation.html#proximity-interpolation"><i class="fa fa-check"></i><b>14.1.1</b> Proximity interpolation</a></li>
+<li class="chapter" data-level="14.1.2" data-path="spatial-interpolation.html"><a href="spatial-interpolation.html#inverse-distance-weighted-idw"><i class="fa fa-check"></i><b>14.1.2</b> Inverse Distance Weighted (IDW)</a></li>
+<li class="chapter" data-level="14.1.3" data-path="spatial-interpolation.html"><a href="spatial-interpolation.html#fine-tuning-the-interpolation-parameters"><i class="fa fa-check"></i><b>14.1.3</b> Fine tuning the interpolation parameters</a></li>
+</ul></li>
+<li class="chapter" data-level="14.2" data-path="spatial-interpolation.html"><a href="spatial-interpolation.html#statistical-approach-to-interpolation"><i class="fa fa-check"></i><b>14.2</b> Statistical Approach to Interpolation</a>
+<ul>
+<li class="chapter" data-level="14.2.1" data-path="spatial-interpolation.html"><a href="spatial-interpolation.html#trend-surfaces"><i class="fa fa-check"></i><b>14.2.1</b> Trend Surfaces</a></li>
+<li class="chapter" data-level="14.2.2" data-path="spatial-interpolation.html"><a href="spatial-interpolation.html#ordinary-kriging"><i class="fa fa-check"></i><b>14.2.2</b> Ordinary Kriging</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>15</b> References</a></li>
 <li class="appendix"><span><b>Appendix</b></span></li>
-<li class="chapter" data-level="A" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>A</b> References</a>
+<li class="chapter" data-level="A" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html"><i class="fa fa-check"></i><b>A</b> Reading and writing spatial data in R</a>
 <ul>
-<li class="chapter" data-level="" data-path="references.html"><a href="references.html#app1_2"><i class="fa fa-check"></i>Sample files for this exercise</a></li>
-<li class="chapter" data-level="" data-path="references.html"><a href="references.html#app1_3"><i class="fa fa-check"></i>Introduction</a></li>
-<li class="chapter" data-level="" data-path="references.html"><a href="references.html#app1_4"><i class="fa fa-check"></i>Creating spatial objects</a>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_2"><i class="fa fa-check"></i>Sample files for this exercise</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_3"><i class="fa fa-check"></i>Introduction</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_4"><i class="fa fa-check"></i>Creating spatial objects</a>
 <ul>
-<li class="chapter" data-level="" data-path="references.html"><a href="references.html#app1_4_1"><i class="fa fa-check"></i>Reading a shapefile</a></li>
-<li class="chapter" data-level="" data-path="references.html"><a href="references.html#app1_4_2"><i class="fa fa-check"></i>Reading a GeoPackage</a></li>
-<li class="chapter" data-level="" data-path="references.html"><a href="references.html#app1_4_3"><i class="fa fa-check"></i>Reading a raster</a></li>
-<li class="chapter" data-level="" data-path="references.html"><a href="references.html#app1_4_5"><i class="fa fa-check"></i>Creating a spatial object from a data frame</a></li>
-<li class="chapter" data-level="" data-path="references.html"><a href="references.html#app1_4_6"><i class="fa fa-check"></i>Geocoding street addresses</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_4_1"><i class="fa fa-check"></i>Reading a shapefile</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_4_2"><i class="fa fa-check"></i>Reading a GeoPackage</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_4_3"><i class="fa fa-check"></i>Reading a raster</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_4_5"><i class="fa fa-check"></i>Creating a spatial object from a data frame</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_4_6"><i class="fa fa-check"></i>Geocoding street addresses</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="references.html"><a href="references.html#app1_5"><i class="fa fa-check"></i>Converting from an <code>sf</code> object</a>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_5"><i class="fa fa-check"></i>Converting from an <code>sf</code> object</a>
 <ul>
-<li class="chapter" data-level="" data-path="references.html"><a href="references.html#app1_5_1"><i class="fa fa-check"></i>Converting an <code>sf</code> object to a <code>Spatial*</code> object (<code>spdep</code>/<code>sp</code>)</a></li>
-<li class="chapter" data-level="" data-path="references.html"><a href="references.html#app1_5_2"><i class="fa fa-check"></i>Converting an <code>sf</code> polygon object to an <code>owin</code> object</a></li>
-<li class="chapter" data-level="" data-path="references.html"><a href="references.html#app1_5_3"><i class="fa fa-check"></i>Converting an <code>sf</code> point object to a <code>ppp</code> object</a></li>
-<li class="chapter" data-level="" data-path="references.html"><a href="references.html#app1_5_4"><i class="fa fa-check"></i>Converting a <code>SpatRaster</code> object to an <code>im</code> object</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_5_1"><i class="fa fa-check"></i>Converting an <code>sf</code> object to a <code>Spatial*</code> object (<code>spdep</code>/<code>sp</code>)</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_5_2"><i class="fa fa-check"></i>Converting an <code>sf</code> polygon object to an <code>owin</code> object</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_5_3"><i class="fa fa-check"></i>Converting an <code>sf</code> point object to a <code>ppp</code> object</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_5_4"><i class="fa fa-check"></i>Converting a <code>SpatRaster</code> object to an <code>im</code> object</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="references.html"><a href="references.html#app1_6"><i class="fa fa-check"></i>Converting to an <code>sf</code> object</a></li>
-<li class="chapter" data-level="" data-path="references.html"><a href="references.html#app1_7"><i class="fa fa-check"></i>Dissecting the <code>sf</code> file object</a></li>
-<li class="chapter" data-level="" data-path="references.html"><a href="references.html#app1_8"><i class="fa fa-check"></i>Exporting to different data file formats</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_6"><i class="fa fa-check"></i>Converting to an <code>sf</code> object</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_7"><i class="fa fa-check"></i>Dissecting the <code>sf</code> file object</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_8"><i class="fa fa-check"></i>Exporting to different data file formats</a></li>
 </ul></li>
 <li class="chapter" data-level="B" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html"><i class="fa fa-check"></i><b>B</b> Mapping data in R</a>
 <ul>
