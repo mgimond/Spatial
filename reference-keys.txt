@@ -375,3 +375,17 @@ standard-deviation-outlier-map
 quantile-otulier-map
 assessing-confidence-in-spatial-patterns
 summary-3
+introduction-4
+empirical-bayes-smoothing
+summary-4
+introduction-5
+summary-5
+introduction-6
+clipping
+intersecting
+unioning
+summary-6
+fig:f09-ellipse-axes0
+summary-7
+introduction-7
+summary-8
