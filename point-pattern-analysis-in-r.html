@@ -831,8 +831,8 @@ spatstat
  1st Qu.:1.207e-03   1st Qu.:0.0002813  
  Median :3.377e-03   Median :0.0015392  
  Mean   :8.473e-03   Mean   :0.0078210  
- 3rd Qu.:1.078e-02   3rd Qu.:0.0059046  
- Max.   :5.693e-02   Max.   :5.0887914  </code></pre>
+ 3rd Qu.:1.078e-02   3rd Qu.:0.0059045  
+ Max.   :5.693e-02   Max.   :5.0866158  </code></pre>
 <p>The predicted maximum intensity value is two orders of magnitude greater than that observed.</p>
 <p>The overestimation of intenstity values can also be observed at lower values. The following plot limits the data to observed intensities less than 0.04. A red one-to-one line is added for reference. If intensities were similar, they would aggregate around this line.</p>
 <div class="sourceCode" id="cb367"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb367-1"><a href="point-pattern-analysis-in-r.html#cb367-1" tabindex="-1"></a><span class="fu">plot</span>(K1_vs_pred<span class="sc">$</span>pred <span class="sc">~</span> K1_vs_pred<span class="sc">$</span>K1, <span class="at">pch=</span><span class="dv">20</span>,</span>
