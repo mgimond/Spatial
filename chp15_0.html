@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 15 Second-Order Point Pattern Analysis: Modeling Distance | Intro to GIS and Spatial Analysis</title>
+  <meta name="description" content="This is a compilation of lecture notes that accompany my Intro to GIS and Spatial Analysis course." />
+  <meta name="generator" content="bookdown 0.43 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 15 Second-Order Point Pattern Analysis: Modeling Distance | Intro to GIS and Spatial Analysis" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="This is a compilation of lecture notes that accompany my Intro to GIS and Spatial Analysis course." />
+  <meta name="github-repo" content="mgimond/spatial" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 15 Second-Order Point Pattern Analysis: Modeling Distance | Intro to GIS and Spatial Analysis" />
+  
+  <meta name="twitter:description" content="This is a compilation of lecture notes that accompany my Intro to GIS and Spatial Analysis course." />
+  
+
+<meta name="author" content="Manuel Gimond" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="chp14_0.html"/>
+<link rel="next" href="chp16_0.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<link href="libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet" />
+<script src="libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/proj4-2.6.2/proj4.min.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.2.2/leaflet.js"></script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-71085TV4MB"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-71085TV4MB');
+</script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; } /* Alert */
+code span.an { color: #008000; } /* Annotation */
+code span.at { } /* Attribute */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #0000ff; } /* ControlFlow */
+code span.ch { color: #008080; } /* Char */
+code span.cn { } /* Constant */
+code span.co { color: #008000; } /* Comment */
+code span.cv { color: #008000; } /* CommentVar */
+code span.do { color: #008000; } /* Documentation */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.im { } /* Import */
+code span.in { color: #008000; } /* Information */
+code span.kw { color: #0000ff; } /* Keyword */
+code span.op { } /* Operator */
+code span.ot { color: #ff4000; } /* Other */
+code span.pp { color: #ff4000; } /* Preprocessor */
+code span.sc { color: #008080; } /* SpecialChar */
+code span.ss { color: #008080; } /* SpecialString */
+code span.st { color: #008080; } /* String */
+code span.va { } /* Variable */
+code span.vs { color: #008080; } /* VerbatimString */
+code span.wa { color: #008000; font-weight: bold; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
+<li class="chapter" data-level="1" data-path="introGIS.html"><a href="introGIS.html"><i class="fa fa-check"></i><b>1</b> Introduction to GIS</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="introGIS.html"><a href="introGIS.html#what-is-a-gis"><i class="fa fa-check"></i><b>1.1</b> What is a GIS?</a>
+<ul>
+<li class="chapter" data-level="1.1.1" data-path="introGIS.html"><a href="introGIS.html#gis-software"><i class="fa fa-check"></i><b>1.1.1</b> GIS software</a></li>
+<li class="chapter" data-level="1.1.2" data-path="introGIS.html"><a href="introGIS.html#qgis"><i class="fa fa-check"></i><b>1.1.2</b> QGIS</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="introGIS.html"><a href="introGIS.html#what-is-spatial-analysis"><i class="fa fa-check"></i><b>1.2</b> What is Spatial Analysis?</a></li>
+<li class="chapter" data-level="1.3" data-path="introGIS.html"><a href="introGIS.html#whats-in-an-acronym"><i class="fa fa-check"></i><b>1.3</b> What’s in an Acronym?</a></li>
+<li class="chapter" data-level="1.4" data-path="introGIS.html"><a href="introGIS.html#course-roadmap"><i class="fa fa-check"></i><b>1.4</b> Course Roadmap</a>
+<ul>
+<li class="chapter" data-level="1.4.1" data-path="introGIS.html"><a href="introGIS.html#part-1-working-with-spatial-data"><i class="fa fa-check"></i><b>1.4.1</b> Part 1: Working with Spatial Data</a></li>
+<li class="chapter" data-level="1.4.2" data-path="introGIS.html"><a href="introGIS.html#part-2-exploratory-spatial-data-analysis"><i class="fa fa-check"></i><b>1.4.2</b> Part 2: Exploratory Spatial Data Analysis</a></li>
+</ul></li>
+</ul></li>
+<li class="part"><span><b>PART 1: Working with spatial data</b></span></li>
+<li class="chapter" data-level="2" data-path="chp02_0.html"><a href="chp02_0.html"><i class="fa fa-check"></i><b>2</b> Feature Representation</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="chp02_0.html"><a href="chp02_0.html#introduction"><i class="fa fa-check"></i><b>2.1</b> Introduction</a></li>
+<li class="chapter" data-level="2.2" data-path="chp02_0.html"><a href="chp02_0.html#vector-vs.-raster"><i class="fa fa-check"></i><b>2.2</b> Vector vs. Raster</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="chp02_0.html"><a href="chp02_0.html#vector"><i class="fa fa-check"></i><b>2.2.1</b> Vector</a></li>
+<li class="chapter" data-level="2.2.2" data-path="chp02_0.html"><a href="chp02_0.html#raster"><i class="fa fa-check"></i><b>2.2.2</b> Raster</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="chp02_0.html"><a href="chp02_0.html#object-vs.-field"><i class="fa fa-check"></i><b>2.3</b> Object vs. Field</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="chp02_0.html"><a href="chp02_0.html#object-view"><i class="fa fa-check"></i><b>2.3.1</b> Object View</a></li>
+<li class="chapter" data-level="2.3.2" data-path="chp02_0.html"><a href="chp02_0.html#field-view"><i class="fa fa-check"></i><b>2.3.2</b> Field View</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="chp02_0.html"><a href="chp02_0.html#scale"><i class="fa fa-check"></i><b>2.4</b> Scale</a></li>
+<li class="chapter" data-level="2.5" data-path="chp02_0.html"><a href="chp02_0.html#attribute-tables"><i class="fa fa-check"></i><b>2.5</b> Attribute Tables</a>
+<ul>
+<li class="chapter" data-level="2.5.1" data-path="chp02_0.html"><a href="chp02_0.html#measurement-levels"><i class="fa fa-check"></i><b>2.5.1</b> Measurement Levels</a></li>
+<li class="chapter" data-level="2.5.2" data-path="chp02_0.html"><a href="chp02_0.html#data-type"><i class="fa fa-check"></i><b>2.5.2</b> Data type</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="chp02_0.html"><a href="chp02_0.html#summary"><i class="fa fa-check"></i><b>2.6</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="gis-data-management.html"><a href="gis-data-management.html"><i class="fa fa-check"></i><b>3</b> GIS Data Management</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="gis-data-management.html"><a href="gis-data-management.html#introduction-1"><i class="fa fa-check"></i><b>3.1</b> Introduction</a></li>
+<li class="chapter" data-level="3.2" data-path="gis-data-management.html"><a href="gis-data-management.html#gis-file-data-formats"><i class="fa fa-check"></i><b>3.2</b> GIS File Data Formats</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="gis-data-management.html"><a href="gis-data-management.html#vector-data-file-formats"><i class="fa fa-check"></i><b>3.2.1</b> Vector Data File Formats</a></li>
+<li class="chapter" data-level="3.2.2" data-path="gis-data-management.html"><a href="gis-data-management.html#raster-data-file-formats"><i class="fa fa-check"></i><b>3.2.2</b> Raster Data File Formats</a></li>
+<li class="chapter" data-level="3.2.3" data-path="gis-data-management.html"><a href="gis-data-management.html#comparison-table"><i class="fa fa-check"></i><b>3.2.3</b> Comparison table</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="gis-data-management.html"><a href="gis-data-management.html#managing-gis-files-in-arcgis"><i class="fa fa-check"></i><b>3.3</b> Managing GIS Files in ArcGIS</a></li>
+<li class="chapter" data-level="3.4" data-path="gis-data-management.html"><a href="gis-data-management.html#managing-gis-projects-and-file-references"><i class="fa fa-check"></i><b>3.4</b> Managing GIS Projects and File References</a></li>
+<li class="chapter" data-level="3.5" data-path="gis-data-management.html"><a href="gis-data-management.html#summary-1"><i class="fa fa-check"></i><b>3.5</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="symbolizing-features.html"><a href="symbolizing-features.html"><i class="fa fa-check"></i><b>4</b> Symbolizing features</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="symbolizing-features.html"><a href="symbolizing-features.html#introduction-2"><i class="fa fa-check"></i><b>4.1</b> Introduction</a></li>
+<li class="chapter" data-level="4.2" data-path="symbolizing-features.html"><a href="symbolizing-features.html#color"><i class="fa fa-check"></i><b>4.2</b> Color</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="symbolizing-features.html"><a href="symbolizing-features.html#hue"><i class="fa fa-check"></i><b>4.2.1</b> Hue</a></li>
+<li class="chapter" data-level="4.2.2" data-path="symbolizing-features.html"><a href="symbolizing-features.html#lightness"><i class="fa fa-check"></i><b>4.2.2</b> Lightness</a></li>
+<li class="chapter" data-level="4.2.3" data-path="symbolizing-features.html"><a href="symbolizing-features.html#saturation"><i class="fa fa-check"></i><b>4.2.3</b> Saturation</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="symbolizing-features.html"><a href="symbolizing-features.html#color-space"><i class="fa fa-check"></i><b>4.3</b> Color Space</a></li>
+<li class="chapter" data-level="4.4" data-path="symbolizing-features.html"><a href="symbolizing-features.html#classification"><i class="fa fa-check"></i><b>4.4</b> Classification</a>
+<ul>
+<li class="chapter" data-level="4.4.1" data-path="symbolizing-features.html"><a href="symbolizing-features.html#qualitative-color-scheme"><i class="fa fa-check"></i><b>4.4.1</b> Qualitative color scheme</a></li>
+<li class="chapter" data-level="4.4.2" data-path="symbolizing-features.html"><a href="symbolizing-features.html#sequential-color-scheme"><i class="fa fa-check"></i><b>4.4.2</b> Sequential color scheme</a></li>
+<li class="chapter" data-level="4.4.3" data-path="symbolizing-features.html"><a href="symbolizing-features.html#divergent-color-scheme"><i class="fa fa-check"></i><b>4.4.3</b> Divergent color scheme</a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="symbolizing-features.html"><a href="symbolizing-features.html#choosing-an-appropriate-color-scheme"><i class="fa fa-check"></i><b>4.5</b> Choosing an Appropriate Color Scheme</a></li>
+<li class="chapter" data-level="4.6" data-path="symbolizing-features.html"><a href="symbolizing-features.html#classification-intervals"><i class="fa fa-check"></i><b>4.6</b> Classification Intervals</a>
+<ul>
+<li class="chapter" data-level="4.6.1" data-path="symbolizing-features.html"><a href="symbolizing-features.html#an-interactive-example"><i class="fa fa-check"></i><b>4.6.1</b> An Interactive Example</a></li>
+</ul></li>
+<li class="chapter" data-level="4.7" data-path="symbolizing-features.html"><a href="symbolizing-features.html#summary-2"><i class="fa fa-check"></i><b>4.7</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="statistical-maps.html"><a href="statistical-maps.html"><i class="fa fa-check"></i><b>5</b> Statistical maps</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="statistical-maps.html"><a href="statistical-maps.html#introduction-3"><i class="fa fa-check"></i><b>5.1</b> Introduction</a></li>
+<li class="chapter" data-level="5.2" data-path="statistical-maps.html"><a href="statistical-maps.html#statistical-distribution-maps"><i class="fa fa-check"></i><b>5.2</b> Statistical distribution maps</a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="statistical-maps.html"><a href="statistical-maps.html#quantile-map"><i class="fa fa-check"></i><b>5.2.1</b> Quantile map</a></li>
+<li class="chapter" data-level="5.2.2" data-path="statistical-maps.html"><a href="statistical-maps.html#boxplot-map"><i class="fa fa-check"></i><b>5.2.2</b> Boxplot map</a></li>
+<li class="chapter" data-level="5.2.3" data-path="statistical-maps.html"><a href="statistical-maps.html#iqr-map"><i class="fa fa-check"></i><b>5.2.3</b> IQR map</a></li>
+<li class="chapter" data-level="5.2.4" data-path="statistical-maps.html"><a href="statistical-maps.html#standard-deviation-map"><i class="fa fa-check"></i><b>5.2.4</b> Standard deviation map</a></li>
+<li class="chapter" data-level="5.2.5" data-path="statistical-maps.html"><a href="statistical-maps.html#outlier-maps"><i class="fa fa-check"></i><b>5.2.5</b> Outlier maps</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="statistical-maps.html"><a href="statistical-maps.html#mapping-uncertainty"><i class="fa fa-check"></i><b>5.3</b> Mapping uncertainty</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="statistical-maps.html"><a href="statistical-maps.html#assessing-confidence-in-spatial-patterns"><i class="fa fa-check"></i><b>5.3.1</b> Assessing confidence in spatial patterns</a></li>
+<li class="chapter" data-level="5.3.2" data-path="statistical-maps.html"><a href="statistical-maps.html#class-comparison-maps"><i class="fa fa-check"></i><b>5.3.2</b> Class comparison maps</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="statistical-maps.html"><a href="statistical-maps.html#summary-3"><i class="fa fa-check"></i><b>5.4</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="pitfalls-to-avoid.html"><a href="pitfalls-to-avoid.html"><i class="fa fa-check"></i><b>6</b> Pitfalls to avoid</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="pitfalls-to-avoid.html"><a href="pitfalls-to-avoid.html#introduction-4"><i class="fa fa-check"></i><b>6.1</b> Introduction</a></li>
+<li class="chapter" data-level="6.2" data-path="pitfalls-to-avoid.html"><a href="pitfalls-to-avoid.html#representing-count"><i class="fa fa-check"></i><b>6.2</b> Representing Count</a></li>
+<li class="chapter" data-level="6.3" data-path="pitfalls-to-avoid.html"><a href="pitfalls-to-avoid.html#maup"><i class="fa fa-check"></i><b>6.3</b> MAUP</a></li>
+<li class="chapter" data-level="6.4" data-path="pitfalls-to-avoid.html"><a href="pitfalls-to-avoid.html#ecological-fallacy"><i class="fa fa-check"></i><b>6.4</b> Ecological Fallacy</a></li>
+<li class="chapter" data-level="6.5" data-path="pitfalls-to-avoid.html"><a href="pitfalls-to-avoid.html#mapping-rates"><i class="fa fa-check"></i><b>6.5</b> Mapping rates</a></li>
+<li class="chapter" data-level="6.6" data-path="pitfalls-to-avoid.html"><a href="pitfalls-to-avoid.html#empirical-bayes-smoothing"><i class="fa fa-check"></i><b>6.6</b> Empirical Bayes Smoothing</a></li>
+<li class="chapter" data-level="6.7" data-path="pitfalls-to-avoid.html"><a href="pitfalls-to-avoid.html#summary-4"><i class="fa fa-check"></i><b>6.7</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="good-map-making-tips.html"><a href="good-map-making-tips.html"><i class="fa fa-check"></i><b>7</b> Good Map Making Tips</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="good-map-making-tips.html"><a href="good-map-making-tips.html#introduction-5"><i class="fa fa-check"></i><b>7.1</b> Introduction</a></li>
+<li class="chapter" data-level="7.2" data-path="good-map-making-tips.html"><a href="good-map-making-tips.html#elements-of-a-map"><i class="fa fa-check"></i><b>7.2</b> Elements of a Map</a></li>
+<li class="chapter" data-level="7.3" data-path="good-map-making-tips.html"><a href="good-map-making-tips.html#how-to-create-a-good-map"><i class="fa fa-check"></i><b>7.3</b> How to Create a <em>Good</em> Map</a></li>
+<li class="chapter" data-level="7.4" data-path="good-map-making-tips.html"><a href="good-map-making-tips.html#typefaces-and-fonts"><i class="fa fa-check"></i><b>7.4</b> Typefaces and Fonts</a></li>
+<li class="chapter" data-level="7.5" data-path="good-map-making-tips.html"><a href="good-map-making-tips.html#summary-5"><i class="fa fa-check"></i><b>7.5</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="spatial-operations-and-vector-overlays.html"><a href="spatial-operations-and-vector-overlays.html"><i class="fa fa-check"></i><b>8</b> Spatial Operations and Vector Overlays</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="spatial-operations-and-vector-overlays.html"><a href="spatial-operations-and-vector-overlays.html#introduction-6"><i class="fa fa-check"></i><b>8.1</b> Introduction</a></li>
+<li class="chapter" data-level="8.2" data-path="spatial-operations-and-vector-overlays.html"><a href="spatial-operations-and-vector-overlays.html#selection-by-attribute"><i class="fa fa-check"></i><b>8.2</b> Selection by Attribute</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="spatial-operations-and-vector-overlays.html"><a href="spatial-operations-and-vector-overlays.html#set-algebra"><i class="fa fa-check"></i><b>8.2.1</b> Set Algebra</a></li>
+<li class="chapter" data-level="8.2.2" data-path="spatial-operations-and-vector-overlays.html"><a href="spatial-operations-and-vector-overlays.html#boolean-algebra"><i class="fa fa-check"></i><b>8.2.2</b> Boolean Algebra</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="spatial-operations-and-vector-overlays.html"><a href="spatial-operations-and-vector-overlays.html#selection-by-location"><i class="fa fa-check"></i><b>8.3</b> Selection by location</a></li>
+<li class="chapter" data-level="8.4" data-path="spatial-operations-and-vector-overlays.html"><a href="spatial-operations-and-vector-overlays.html#vector-overlay"><i class="fa fa-check"></i><b>8.4</b> Vector Overlay</a>
+<ul>
+<li class="chapter" data-level="8.4.1" data-path="spatial-operations-and-vector-overlays.html"><a href="spatial-operations-and-vector-overlays.html#clipping"><i class="fa fa-check"></i><b>8.4.1</b> Clipping</a></li>
+<li class="chapter" data-level="8.4.2" data-path="spatial-operations-and-vector-overlays.html"><a href="spatial-operations-and-vector-overlays.html#intersecting"><i class="fa fa-check"></i><b>8.4.2</b> Intersecting</a></li>
+<li class="chapter" data-level="8.4.3" data-path="spatial-operations-and-vector-overlays.html"><a href="spatial-operations-and-vector-overlays.html#unioning"><i class="fa fa-check"></i><b>8.4.3</b> Unioning</a></li>
+</ul></li>
+<li class="chapter" data-level="8.5" data-path="spatial-operations-and-vector-overlays.html"><a href="spatial-operations-and-vector-overlays.html#summary-6"><i class="fa fa-check"></i><b>8.5</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="chp09_0.html"><a href="chp09_0.html"><i class="fa fa-check"></i><b>9</b> Coordinate Systems</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="chp09_0.html"><a href="chp09_0.html#introduction-7"><i class="fa fa-check"></i><b>9.1</b> Introduction</a></li>
+<li class="chapter" data-level="9.2" data-path="chp09_0.html"><a href="chp09_0.html#geographic-coordinate-systems"><i class="fa fa-check"></i><b>9.2</b> Geographic Coordinate Systems</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="chp09_0.html"><a href="chp09_0.html#sphere-and-ellipsoid"><i class="fa fa-check"></i><b>9.2.1</b> Sphere and Ellipsoid</a></li>
+<li class="chapter" data-level="9.2.2" data-path="chp09_0.html"><a href="chp09_0.html#geoid"><i class="fa fa-check"></i><b>9.2.2</b> Geoid</a></li>
+<li class="chapter" data-level="9.2.3" data-path="chp09_0.html"><a href="chp09_0.html#datum"><i class="fa fa-check"></i><b>9.2.3</b> Datum</a></li>
+<li class="chapter" data-level="9.2.4" data-path="chp09_0.html"><a href="chp09_0.html#building-the-geographic-coordinate-system"><i class="fa fa-check"></i><b>9.2.4</b> Building the Geographic Coordinate System</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="chp09_0.html"><a href="chp09_0.html#projected-coordinate-systems"><i class="fa fa-check"></i><b>9.3</b> Projected Coordinate Systems</a>
+<ul>
+<li class="chapter" data-level="9.3.1" data-path="chp09_0.html"><a href="chp09_0.html#planar-projections"><i class="fa fa-check"></i><b>9.3.1</b> Planar Projections</a></li>
+<li class="chapter" data-level="9.3.2" data-path="chp09_0.html"><a href="chp09_0.html#cylindrical-projection"><i class="fa fa-check"></i><b>9.3.2</b> Cylindrical Projection</a></li>
+<li class="chapter" data-level="9.3.3" data-path="chp09_0.html"><a href="chp09_0.html#conical-projection"><i class="fa fa-check"></i><b>9.3.3</b> Conical Projection</a></li>
+</ul></li>
+<li class="chapter" data-level="9.4" data-path="chp09_0.html"><a href="chp09_0.html#spatial-properties"><i class="fa fa-check"></i><b>9.4</b> Spatial Properties</a></li>
+<li class="chapter" data-level="9.5" data-path="chp09_0.html"><a href="chp09_0.html#geodesic-geometries"><i class="fa fa-check"></i><b>9.5</b> Geodesic geometries</a></li>
+<li class="chapter" data-level="9.6" data-path="chp09_0.html"><a href="chp09_0.html#summary-7"><i class="fa fa-check"></i><b>9.6</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="chp10_0.html"><a href="chp10_0.html"><i class="fa fa-check"></i><b>10</b> Map Algebra</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="chp10_0.html"><a href="chp10_0.html#introduction-8"><i class="fa fa-check"></i><b>10.1</b> Introduction</a></li>
+<li class="chapter" data-level="10.2" data-path="chp10_0.html"><a href="chp10_0.html#local-operations-and-functions"><i class="fa fa-check"></i><b>10.2</b> Local operations and functions</a></li>
+<li class="chapter" data-level="10.3" data-path="chp10_0.html"><a href="chp10_0.html#focal-operations-and-functions"><i class="fa fa-check"></i><b>10.3</b> Focal operations and functions</a></li>
+<li class="chapter" data-level="10.4" data-path="chp10_0.html"><a href="chp10_0.html#zonal-operations-and-functions"><i class="fa fa-check"></i><b>10.4</b> Zonal operations and functions</a></li>
+<li class="chapter" data-level="10.5" data-path="chp10_0.html"><a href="chp10_0.html#global-operations-and-functions"><i class="fa fa-check"></i><b>10.5</b> Global operations and functions</a></li>
+<li class="chapter" data-level="10.6" data-path="chp10_0.html"><a href="chp10_0.html#operators-and-functions"><i class="fa fa-check"></i><b>10.6</b> Operators and functions</a>
+<ul>
+<li class="chapter" data-level="10.6.1" data-path="chp10_0.html"><a href="chp10_0.html#mathematical-operators-and-functions"><i class="fa fa-check"></i><b>10.6.1</b> Mathematical operators and functions</a></li>
+<li class="chapter" data-level="10.6.2" data-path="chp10_0.html"><a href="chp10_0.html#logical-comparison"><i class="fa fa-check"></i><b>10.6.2</b> Logical comparison</a></li>
+<li class="chapter" data-level="10.6.3" data-path="chp10_0.html"><a href="chp10_0.html#boolean-or-logical-operators"><i class="fa fa-check"></i><b>10.6.3</b> Boolean (or Logical) operators</a></li>
+<li class="chapter" data-level="10.6.4" data-path="chp10_0.html"><a href="chp10_0.html#combining-operations"><i class="fa fa-check"></i><b>10.6.4</b> Combining operations</a></li>
+</ul></li>
+<li class="chapter" data-level="10.7" data-path="chp10_0.html"><a href="chp10_0.html#summary-8"><i class="fa fa-check"></i><b>10.7</b> Summary</a></li>
+</ul></li>
+<li class="part"><span><b>PART 2: Spatial Analysis</b></span></li>
+<li class="chapter" data-level="11" data-path="chp11_0.html"><a href="chp11_0.html"><i class="fa fa-check"></i><b>11</b> Analyzing Spatial Patterns</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="chp11_0.html"><a href="chp11_0.html#introduction-9"><i class="fa fa-check"></i><b>11.1</b> Introduction</a></li>
+<li class="chapter" data-level="11.2" data-path="chp11_0.html"><a href="chp11_0.html#from-maps-to-models-defining-spatial-patterns-statistically"><i class="fa fa-check"></i><b>11.2</b> From Maps to Models: Defining Spatial Patterns Statistically</a>
+<ul>
+<li class="chapter" data-level="11.2.1" data-path="chp11_0.html"><a href="chp11_0.html#first-order-effects-spatial-trend-and-intensity"><i class="fa fa-check"></i><b>11.2.1</b> First-Order Effects: Spatial Trend and Intensity</a></li>
+<li class="chapter" data-level="11.2.2" data-path="chp11_0.html"><a href="chp11_0.html#second-order-effects-interaction-and-autocorrelation"><i class="fa fa-check"></i><b>11.2.2</b> Second-Order Effects: Interaction and Autocorrelation</a></li>
+</ul></li>
+<li class="chapter" data-level="11.3" data-path="chp11_0.html"><a href="chp11_0.html#why-distinguishing-these-effects-matters"><i class="fa fa-check"></i><b>11.3</b> Why Distinguishing These Effects Matters</a></li>
+<li class="chapter" data-level="11.4" data-path="chp11_0.html"><a href="chp11_0.html#spatial-data-types-and-applicability-of-first--and-second-order-effects"><i class="fa fa-check"></i><b>11.4</b> Spatial Data Types and Applicability of First- and Second-Order Effects</a></li>
+<li class="chapter" data-level="11.5" data-path="chp11_0.html"><a href="chp11_0.html#quantifying-patterns-vs.-hypothesis-testing"><i class="fa fa-check"></i><b>11.5</b> Quantifying Patterns vs. Hypothesis Testing</a></li>
+<li class="chapter" data-level="11.6" data-path="chp11_0.html"><a href="chp11_0.html#a-note-on-terminology-why-first-order-and-second-order"><i class="fa fa-check"></i><b>11.6</b> A Note on Terminology: Why ‘First-Order’ and ‘Second-Order’?</a></li>
+<li class="chapter" data-level="11.7" data-path="chp11_0.html"><a href="chp11_0.html#suggested-resources"><i class="fa fa-check"></i><b>11.7</b> Suggested resources</a></li>
+<li class="chapter" data-level="11.8" data-path="chp11_0.html"><a href="chp11_0.html#summary-9"><i class="fa fa-check"></i><b>11.8</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="chp12_0.html"><a href="chp12_0.html"><i class="fa fa-check"></i><b>12</b> Modeling Spatial Trends</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="chp12_0.html"><a href="chp12_0.html#introduction-10"><i class="fa fa-check"></i><b>12.1</b> Introduction</a></li>
+<li class="chapter" data-level="12.2" data-path="chp12_0.html"><a href="chp12_0.html#polynomial-functions"><i class="fa fa-check"></i><b>12.2</b> Polynomial functions</a></li>
+<li class="chapter" data-level="12.3" data-path="chp12_0.html"><a href="chp12_0.html#polynomial-functions-in-one-dimension"><i class="fa fa-check"></i><b>12.3</b> Polynomial functions in one dimension</a></li>
+<li class="chapter" data-level="12.4" data-path="chp12_0.html"><a href="chp12_0.html#transitioning-from-a-one-dimensional-to-a-two-dimensional-space"><i class="fa fa-check"></i><b>12.4</b> Transitioning from a one-dimensional to a two-dimensional space</a></li>
+<li class="chapter" data-level="12.5" data-path="chp12_0.html"><a href="chp12_0.html#evaluating-a-models-goodness-of-fit"><i class="fa fa-check"></i><b>12.5</b> Evaluating a model’s goodness of fit</a></li>
+<li class="chapter" data-level="12.6" data-path="chp12_0.html"><a href="chp12_0.html#a-note-about-adopting-traditional-statistical-measures-of-significance-to-spatial-functions"><i class="fa fa-check"></i><b>12.6</b> A note about adopting traditional statistical measures of significance to spatial functions</a></li>
+<li class="chapter" data-level="12.7" data-path="chp12_0.html"><a href="chp12_0.html#summary-10"><i class="fa fa-check"></i><b>12.7</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="chp13_0.html"><a href="chp13_0.html"><i class="fa fa-check"></i><b>13</b> Spatial Autocorrelation</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="chp13_0.html"><a href="chp13_0.html#introduction-11"><i class="fa fa-check"></i><b>13.1</b> Introduction</a></li>
+<li class="chapter" data-level="13.2" data-path="chp13_0.html"><a href="chp13_0.html#global-morans-i"><i class="fa fa-check"></i><b>13.2</b> Global Moran’s <em>I</em></a>
+<ul>
+<li class="chapter" data-level="13.2.1" data-path="chp13_0.html"><a href="chp13_0.html#computing-the-morans-i"><i class="fa fa-check"></i><b>13.2.1</b> Computing the Moran’s <em>I</em></a></li>
+<li class="chapter" data-level="13.2.2" data-path="chp13_0.html"><a href="chp13_0.html#monte-carlo-approach-to-estimating-significance"><i class="fa fa-check"></i><b>13.2.2</b> Monte Carlo approach to estimating significance</a></li>
+</ul></li>
+<li class="chapter" data-level="13.3" data-path="chp13_0.html"><a href="chp13_0.html#morans-i-at-different-distance-bands"><i class="fa fa-check"></i><b>13.3</b> Moran’s <em>I</em> at different distance bands</a></li>
+<li class="chapter" data-level="13.4" data-path="chp13_0.html"><a href="chp13_0.html#local-morans-i"><i class="fa fa-check"></i><b>13.4</b> Local Moran’s <em>I</em></a>
+<ul>
+<li class="chapter" data-level="13.4.1" data-path="chp13_0.html"><a href="chp13_0.html#a-note-about-interpreting-the-permutation-based-p-value"><i class="fa fa-check"></i><b>13.4.1</b> A note about interpreting the permutation-based p-value</a></li>
+</ul></li>
+<li class="chapter" data-level="13.5" data-path="chp13_0.html"><a href="chp13_0.html#morans-i-equation-explained"><i class="fa fa-check"></i><b>13.5</b> Moran’s <em>I</em> equation explained</a>
+<ul>
+<li class="chapter" data-level="13.5.1" data-path="chp13_0.html"><a href="chp13_0.html#local-morans-i-1"><i class="fa fa-check"></i><b>13.5.1</b> Local Moran’s I</a></li>
+<li class="chapter" data-level="13.5.2" data-path="chp13_0.html"><a href="chp13_0.html#global-morans-i-1"><i class="fa fa-check"></i><b>13.5.2</b> Global Moran’s I</a></li>
+</ul></li>
+<li class="chapter" data-level="13.6" data-path="chp13_0.html"><a href="chp13_0.html#summary-11"><i class="fa fa-check"></i><b>13.6</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="chp14_0.html"><a href="chp14_0.html"><i class="fa fa-check"></i><b>14</b> First-Order Point Pattern Analysis: Modeling Spatial Intensity</a>
+<ul>
+<li class="chapter" data-level="14.1" data-path="chp14_0.html"><a href="chp14_0.html#introduction-12"><i class="fa fa-check"></i><b>14.1</b> Introduction</a></li>
+<li class="chapter" data-level="14.2" data-path="chp14_0.html"><a href="chp14_0.html#centrography"><i class="fa fa-check"></i><b>14.2</b> Centrography</a></li>
+<li class="chapter" data-level="14.3" data-path="chp14_0.html"><a href="chp14_0.html#understanding-intensity-and-density-in-point-patterns"><i class="fa fa-check"></i><b>14.3</b> Understanding Intensity and Density in Point Patterns</a></li>
+<li class="chapter" data-level="14.4" data-path="chp14_0.html"><a href="chp14_0.html#global-density"><i class="fa fa-check"></i><b>14.4</b> Global density</a></li>
+<li class="chapter" data-level="14.5" data-path="chp14_0.html"><a href="chp14_0.html#local-density"><i class="fa fa-check"></i><b>14.5</b> Local density</a>
+<ul>
+<li class="chapter" data-level="14.5.1" data-path="chp14_0.html"><a href="chp14_0.html#quadrat-density"><i class="fa fa-check"></i><b>14.5.1</b> Quadrat density</a></li>
+<li class="chapter" data-level="14.5.2" data-path="chp14_0.html"><a href="chp14_0.html#kernel-density"><i class="fa fa-check"></i><b>14.5.2</b> Kernel density</a></li>
+<li class="chapter" data-level="14.5.3" data-path="chp14_0.html"><a href="chp14_0.html#nonparametric-intensity-modeling-with-covariates"><i class="fa fa-check"></i><b>14.5.3</b> Nonparametric Intensity Modeling with Covariates</a></li>
+<li class="chapter" data-level="14.5.4" data-path="chp14_0.html"><a href="chp14_0.html#parametric-intensity-modeling-with-covariates"><i class="fa fa-check"></i><b>14.5.4</b> Parametric Intensity Modeling with Covariates</a></li>
+</ul></li>
+<li class="chapter" data-level="14.6" data-path="chp14_0.html"><a href="chp14_0.html#PPM"><i class="fa fa-check"></i><b>14.6</b> Hypothesis Testing for Covariate Effects</a></li>
+<li class="chapter" data-level="14.7" data-path="chp14_0.html"><a href="chp14_0.html#summary-12"><i class="fa fa-check"></i><b>14.7</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="chp15_0.html"><a href="chp15_0.html"><i class="fa fa-check"></i><b>15</b> Second-Order Point Pattern Analysis: Modeling Distance</a>
+<ul>
+<li class="chapter" data-level="15.1" data-path="chp15_0.html"><a href="chp15_0.html#introduction-13"><i class="fa fa-check"></i><b>15.1</b> Introduction</a></li>
+<li class="chapter" data-level="15.2" data-path="chp15_0.html"><a href="chp15_0.html#average-nearest-neighbor"><i class="fa fa-check"></i><b>15.2</b> Average Nearest Neighbor</a>
+<ul>
+<li class="chapter" data-level="15.2.1" data-path="chp15_0.html"><a href="chp15_0.html#extending-the-concept-higher-order-neighbors"><i class="fa fa-check"></i><b>15.2.1</b> Extending the Concept: Higher-Order Neighbors</a></li>
+<li class="chapter" data-level="15.2.2" data-path="chp15_0.html"><a href="chp15_0.html#testing-for-complete-spatial-randomness"><i class="fa fa-check"></i><b>15.2.2</b> Testing for Complete Spatial Randomness</a></li>
+<li class="chapter" data-level="15.2.3" data-path="chp15_0.html"><a href="chp15_0.html#controlling-for-first-order-effects-in-second-order-analysis"><i class="fa fa-check"></i><b>15.2.3</b> Controlling for First-Order Effects in Second-Order Analysis</a></li>
+<li class="chapter" data-level="15.2.4" data-path="chp15_0.html"><a href="chp15_0.html#controlling-for-second-order-effects-in-first-order-analysis"><i class="fa fa-check"></i><b>15.2.4</b> Controlling for Second-Order Effects in First-Order Analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="15.3" data-path="chp15_0.html"><a href="chp15_0.html#k-and-l-functions"><i class="fa fa-check"></i><b>15.3</b> K and L functions</a>
+<ul>
+<li class="chapter" data-level="15.3.1" data-path="chp15_0.html"><a href="chp15_0.html#k-function"><i class="fa fa-check"></i><b>15.3.1</b> K function</a></li>
+<li class="chapter" data-level="15.3.2" data-path="chp15_0.html"><a href="chp15_0.html#l-function"><i class="fa fa-check"></i><b>15.3.2</b> L function</a></li>
+<li class="chapter" data-level="15.3.3" data-path="chp15_0.html"><a href="chp15_0.html#monte-carlo-test-for-the-k-and-l-functions"><i class="fa fa-check"></i><b>15.3.3</b> Monte Carlo test for the K and L functions</a></li>
+</ul></li>
+<li class="chapter" data-level="15.4" data-path="chp15_0.html"><a href="chp15_0.html#the-pair-correlation-function"><i class="fa fa-check"></i><b>15.4</b> The Pair Correlation Function</a>
+<ul>
+<li class="chapter" data-level="15.4.1" data-path="chp15_0.html"><a href="chp15_0.html#hypothesis-test-for-the-pcf"><i class="fa fa-check"></i><b>15.4.1</b> HYpothesis test for the PCF</a></li>
+</ul></li>
+<li class="chapter" data-level="15.5" data-path="chp15_0.html"><a href="chp15_0.html#summary-13"><i class="fa fa-check"></i><b>15.5</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="16" data-path="chp16_0.html"><a href="chp16_0.html"><i class="fa fa-check"></i><b>16</b> Spatial Interpolation</a>
+<ul>
+<li class="chapter" data-level="16.1" data-path="chp16_0.html"><a href="chp16_0.html#deterministic-approach-to-interpolation"><i class="fa fa-check"></i><b>16.1</b> Deterministic Approach to Interpolation</a>
+<ul>
+<li class="chapter" data-level="16.1.1" data-path="chp16_0.html"><a href="chp16_0.html#proximity-interpolation"><i class="fa fa-check"></i><b>16.1.1</b> Proximity interpolation</a></li>
+<li class="chapter" data-level="16.1.2" data-path="chp16_0.html"><a href="chp16_0.html#inverse-distance-weighted-idw"><i class="fa fa-check"></i><b>16.1.2</b> Inverse Distance Weighted (IDW)</a></li>
+<li class="chapter" data-level="16.1.3" data-path="chp16_0.html"><a href="chp16_0.html#fine-tuning-the-interpolation-parameters"><i class="fa fa-check"></i><b>16.1.3</b> Fine tuning the interpolation parameters</a></li>
+</ul></li>
+<li class="chapter" data-level="16.2" data-path="chp16_0.html"><a href="chp16_0.html#statistical-approach-to-interpolation"><i class="fa fa-check"></i><b>16.2</b> Statistical Approach to Interpolation</a>
+<ul>
+<li class="chapter" data-level="16.2.1" data-path="chp16_0.html"><a href="chp16_0.html#trend-surfaces"><i class="fa fa-check"></i><b>16.2.1</b> Trend Surfaces</a></li>
+<li class="chapter" data-level="16.2.2" data-path="chp16_0.html"><a href="chp16_0.html#ordinary-kriging"><i class="fa fa-check"></i><b>16.2.2</b> Ordinary Kriging</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="17" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>17</b> References</a></li>
+<li class="appendix"><span><b>Appendix</b></span></li>
+<li class="chapter" data-level="A" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html"><i class="fa fa-check"></i><b>A</b> Reading and writing spatial data in R</a>
+<ul>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_2"><i class="fa fa-check"></i>Sample files for this exercise</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_3"><i class="fa fa-check"></i>Introduction</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_4"><i class="fa fa-check"></i>Creating spatial objects</a>
+<ul>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_4_1"><i class="fa fa-check"></i>Reading a shapefile</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_4_2"><i class="fa fa-check"></i>Reading a GeoPackage</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_4_3"><i class="fa fa-check"></i>Reading a raster</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_4_5"><i class="fa fa-check"></i>Creating a spatial object from a data frame</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_4_6"><i class="fa fa-check"></i>Geocoding street addresses</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_5"><i class="fa fa-check"></i>Converting from an <code>sf</code> object</a>
+<ul>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_5_1"><i class="fa fa-check"></i>Converting an <code>sf</code> object to a <code>Spatial*</code> object (<code>spdep</code>/<code>sp</code>)</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_5_2"><i class="fa fa-check"></i>Converting an <code>sf</code> polygon object to an <code>owin</code> object</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_5_3"><i class="fa fa-check"></i>Converting an <code>sf</code> point object to a <code>ppp</code> object</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_5_4"><i class="fa fa-check"></i>Converting a <code>SpatRaster</code> object to an <code>im</code> object</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_6"><i class="fa fa-check"></i>Converting to an <code>sf</code> object</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_7"><i class="fa fa-check"></i>Dissecting the <code>sf</code> file object</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_8"><i class="fa fa-check"></i>Exporting to different data file formats</a></li>
+</ul></li>
+<li class="chapter" data-level="B" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html"><i class="fa fa-check"></i><b>B</b> Mapping data in R</a>
+<ul>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#sample-files-for-this-exercise"><i class="fa fa-check"></i>Sample files for this exercise</a></li>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#tmap"><i class="fa fa-check"></i><code>tmap</code></a>
+<ul>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#the-basics"><i class="fa fa-check"></i>The basics</a></li>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#combining-layers"><i class="fa fa-check"></i>Combining layers</a></li>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#tweaking-classification-schemes"><i class="fa fa-check"></i>Tweaking classification schemes</a></li>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#tweaking-colors"><i class="fa fa-check"></i>Tweaking colors</a></li>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#adding-labels"><i class="fa fa-check"></i>Adding labels</a></li>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#adding-a-grid-or-graticule"><i class="fa fa-check"></i>Adding a grid or graticule</a></li>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#adding-statistical-plots"><i class="fa fa-check"></i>Adding statistical plots</a></li>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#mapping-raster-files"><i class="fa fa-check"></i>Mapping raster files</a></li>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#changing-coordinate-systems"><i class="fa fa-check"></i>Changing coordinate systems</a></li>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#side-by-side-maps"><i class="fa fa-check"></i>Side-by-side maps</a></li>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#splitting-data-by-polygons-or-group-of-polygons"><i class="fa fa-check"></i>Splitting data by polygons or group of polygons</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#ggplot2"><i class="fa fa-check"></i><code>ggplot2</code></a>
+<ul>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#the-basics-1"><i class="fa fa-check"></i>The basics</a></li>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#tweaking-classification-schemes-1"><i class="fa fa-check"></i>Tweaking classification schemes</a></li>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#combining-layers-1"><i class="fa fa-check"></i>Combining layers</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#plot_sf"><i class="fa fa-check"></i><code>plot_sf</code></a>
+<ul>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#the-basics-2"><i class="fa fa-check"></i>The basics</a></li>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#adding-a-graticule"><i class="fa fa-check"></i>Adding a graticule</a></li>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#combining-layers-2"><i class="fa fa-check"></i>Combining layers</a></li>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#tweaking-colors-1"><i class="fa fa-check"></i>Tweaking colors</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="C" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html"><i class="fa fa-check"></i><b>C</b> Anatomy of simple feature objects</a>
+<ul>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#creating-point-sf-objects"><i class="fa fa-check"></i>Creating point ‘sf’ objects</a>
+<ul>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#step-1-create-the-point-geometry-sfg"><i class="fa fa-check"></i>Step 1: Create the point geometry: <code>sfg</code></a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#step-2-create-a-column-of-simple-feature-geometries-sfc"><i class="fa fa-check"></i>Step 2: Create a column of simple feature geometries: <code>sfc</code></a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#step-3-create-the-simple-feature-object-sf"><i class="fa fa-check"></i>Step 3: Create the simple feature object <code>sf</code></a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#renaming-the-geometry-column"><i class="fa fa-check"></i>Renaming the geometry column</a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#adding-attributes-to-an-sf-object"><i class="fa fa-check"></i>Adding attributes to an <code>sf</code> object</a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#adding-a-geometry-column-to-an-existing-non-spatial-dataframe"><i class="fa fa-check"></i>Adding a geometry column to an existing non-spatial dataframe</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#creating-polyline-sf-objects"><i class="fa fa-check"></i>Creating polyline ‘sf’ objects</a>
+<ul>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#creating-branching-polyline-features"><i class="fa fa-check"></i>Creating branching polyline features</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#creating-polygon-sf-objects"><i class="fa fa-check"></i>Creating polygon ‘sf’ objects</a>
+<ul>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#polygon-simple-feature"><i class="fa fa-check"></i><code>POLYGON</code> simple feature</a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#multipolygon-simple-feature-multipart-features"><i class="fa fa-check"></i><code>MULTIPOLYGON</code> simple feature: multipart features</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#extracting-geometry-from-an-sf-object"><i class="fa fa-check"></i>Extracting geometry from an <code>sf</code> object</a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#alternative-syntax"><i class="fa fa-check"></i>Alternative syntax</a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#additional-resources"><i class="fa fa-check"></i>Additional resources</a></li>
+</ul></li>
+<li class="chapter" data-level="D" data-path="vector-operations-in-r.html"><a href="vector-operations-in-r.html"><i class="fa fa-check"></i><b>D</b> Vector operations in R</a>
+<ul>
+<li class="chapter" data-level="" data-path="vector-operations-in-r.html"><a href="vector-operations-in-r.html#dissolving-geometries"><i class="fa fa-check"></i>Dissolving geometries</a>
+<ul>
+<li class="chapter" data-level="" data-path="vector-operations-in-r.html"><a href="vector-operations-in-r.html#dissolving-by-contiguous-shape"><i class="fa fa-check"></i>Dissolving by contiguous shape</a></li>
+<li class="chapter" data-level="" data-path="vector-operations-in-r.html"><a href="vector-operations-in-r.html#dissolving-by-attribute"><i class="fa fa-check"></i>Dissolving by attribute</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="vector-operations-in-r.html"><a href="vector-operations-in-r.html#subsetting-by-attribute"><i class="fa fa-check"></i>Subsetting by attribute</a></li>
+<li class="chapter" data-level="" data-path="vector-operations-in-r.html"><a href="vector-operations-in-r.html#intersecting-layers"><i class="fa fa-check"></i>Intersecting layers</a></li>
+<li class="chapter" data-level="" data-path="vector-operations-in-r.html"><a href="vector-operations-in-r.html#clipping-spatial-objects-using-other-spatial-objects"><i class="fa fa-check"></i>Clipping spatial objects using other spatial objects</a></li>
+<li class="chapter" data-level="" data-path="vector-operations-in-r.html"><a href="vector-operations-in-r.html#unioning-layers"><i class="fa fa-check"></i>Unioning layers</a></li>
+<li class="chapter" data-level="" data-path="vector-operations-in-r.html"><a href="vector-operations-in-r.html#buffering-geometries"><i class="fa fa-check"></i>Buffering geometries</a></li>
+</ul></li>
+<li class="chapter" data-level="E" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html"><i class="fa fa-check"></i><b>E</b> Mapping rates in R</a>
+<ul>
+<li class="chapter" data-level="" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html#raw-rates"><i class="fa fa-check"></i>Raw Rates</a></li>
+<li class="chapter" data-level="" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html#standardized-mortality-ratios-relative-risk"><i class="fa fa-check"></i>Standardized mortality ratios (relative risk)</a></li>
+<li class="chapter" data-level="" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html#dykes-and-unwins-chi-square-statistic"><i class="fa fa-check"></i>Dykes and Unwin’s chi-square statistic</a></li>
+<li class="chapter" data-level="" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html#unstable-ratios"><i class="fa fa-check"></i>Unstable ratios</a>
+<ul>
+<li class="chapter" data-level="" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html#global-empirical-bayes-eb-rate-estimate"><i class="fa fa-check"></i>Global Empirical Bayes (EB) rate estimate</a></li>
+<li class="chapter" data-level="" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html#local-empirical-bayes-eb-rate-estimate"><i class="fa fa-check"></i>Local Empirical Bayes (EB) rate estimate</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="F" data-path="raster-operations-in-r.html"><a href="raster-operations-in-r.html"><i class="fa fa-check"></i><b>F</b> Raster operations in R</a>
+<ul>
+<li class="chapter" data-level="" data-path="raster-operations-in-r.html"><a href="raster-operations-in-r.html#sample-files-for-this-exercise-1"><i class="fa fa-check"></i>Sample files for this exercise</a></li>
+<li class="chapter" data-level="" data-path="raster-operations-in-r.html"><a href="raster-operations-in-r.html#local-operations-and-functions-1"><i class="fa fa-check"></i>Local operations and functions</a>
+<ul>
+<li class="chapter" data-level="" data-path="raster-operations-in-r.html"><a href="raster-operations-in-r.html#unary-operations-and-functions-applied-to-single-rasters"><i class="fa fa-check"></i>Unary operations and functions (applied to single rasters)</a></li>
+<li class="chapter" data-level="" data-path="raster-operations-in-r.html"><a href="raster-operations-in-r.html#binary-operations-and-functions-where-two-rasters-are-used"><i class="fa fa-check"></i>Binary operations and functions (where two rasters are used)</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="raster-operations-in-r.html"><a href="raster-operations-in-r.html#focal-operations-and-functions-1"><i class="fa fa-check"></i>Focal operations and functions</a></li>
+<li class="chapter" data-level="" data-path="raster-operations-in-r.html"><a href="raster-operations-in-r.html#zonal-operations-and-functions-1"><i class="fa fa-check"></i>Zonal operations and functions</a></li>
+<li class="chapter" data-level="" data-path="raster-operations-in-r.html"><a href="raster-operations-in-r.html#global-operations-and-functions-1"><i class="fa fa-check"></i>Global operations and functions</a></li>
+<li class="chapter" data-level="" data-path="raster-operations-in-r.html"><a href="raster-operations-in-r.html#computing-cumulative-distances"><i class="fa fa-check"></i>Computing cumulative distances</a>
+<ul>
+<li class="chapter" data-level="" data-path="raster-operations-in-r.html"><a href="raster-operations-in-r.html#working-example"><i class="fa fa-check"></i>Working example</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="G" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html"><i class="fa fa-check"></i><b>G</b> Coordinate Systems in R</a>
+<ul>
+<li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#a-note-about-the-changes-to-the-proj-environment"><i class="fa fa-check"></i>A note about the changes to the <code>PROJ</code> environment</a></li>
+<li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#sample-files-for-this-exercise-2"><i class="fa fa-check"></i>Sample files for this exercise</a></li>
+<li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#loading-the-sf-package"><i class="fa fa-check"></i>Loading the <code>sf</code> package</a></li>
+<li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#checking-for-a-coordinate-system"><i class="fa fa-check"></i>Checking for a coordinate system</a></li>
+<li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#understanding-the-proj4-coordinate-syntax"><i class="fa fa-check"></i>Understanding the Proj4 coordinate syntax</a></li>
+<li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#assigning-a-coordinate-system"><i class="fa fa-check"></i>Assigning a coordinate system</a></li>
+<li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#transforming-coordinate-systems"><i class="fa fa-check"></i>Transforming coordinate systems</a>
+<ul>
+<li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#reprojecting-to-a-new-meridian-center"><i class="fa fa-check"></i>Reprojecting to a new meridian center</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#a-note-about-containment"><i class="fa fa-check"></i>A note about containment</a></li>
+<li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#creating-tissot-indicatrix-circles"><i class="fa fa-check"></i>Creating Tissot indicatrix circles</a></li>
+</ul></li>
+<li class="chapter" data-level="H" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html"><i class="fa fa-check"></i><b>H</b> Point pattern analysis in R</a>
+<ul>
+<li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#sample-files-for-this-exercise-3"><i class="fa fa-check"></i>Sample files for this exercise</a></li>
+<li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#prepping-the-data"><i class="fa fa-check"></i>Prepping the data</a></li>
+<li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#density-based-analysis"><i class="fa fa-check"></i>Density based analysis</a>
+<ul>
+<li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#quadrat-density-1"><i class="fa fa-check"></i>Quadrat density</a></li>
+<li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#quadrat-density-on-a-tessellated-surface"><i class="fa fa-check"></i>Quadrat density on a tessellated surface</a></li>
+<li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#kernel-density-raster"><i class="fa fa-check"></i>Kernel density raster</a></li>
+<li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#kernel-density-adjusted-for-covariate"><i class="fa fa-check"></i>Kernel density adjusted for covariate</a></li>
+<li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#modeling-intensity-as-a-function-of-a-covariate"><i class="fa fa-check"></i>Modeling intensity as a function of a covariate</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#distance-based-analysis"><i class="fa fa-check"></i>Distance based analysis</a>
+<ul>
+<li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#average-nearest-neighbor-analysis"><i class="fa fa-check"></i>Average nearest neighbor analysis</a></li>
+<li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#k-and-l-functions-1"><i class="fa fa-check"></i>K and L functions</a></li>
+<li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#pair-correlation-function-g"><i class="fa fa-check"></i>Pair correlation function g</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#hypothesis-tests"><i class="fa fa-check"></i>Hypothesis tests</a>
+<ul>
+<li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#test-for-clusteringdispersion"><i class="fa fa-check"></i>Test for clustering/dispersion</a></li>
+<li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#computing-a-pseudo-p-value-from-the-simulation"><i class="fa fa-check"></i>Computing a pseudo p-value from the simulation</a></li>
+<li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#test-for-a-poisson-point-process-model-with-a-covariate-effect"><i class="fa fa-check"></i>Test for a poisson point process model with a covariate effect</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="I" data-path="spatial-autocorrelation-in-r.html"><a href="spatial-autocorrelation-in-r.html"><i class="fa fa-check"></i><b>I</b> Spatial autocorrelation in R</a>
+<ul>
+<li class="chapter" data-level="" data-path="spatial-autocorrelation-in-r.html"><a href="spatial-autocorrelation-in-r.html#app8_1"><i class="fa fa-check"></i>Sample files for this exercise</a></li>
+<li class="chapter" data-level="" data-path="spatial-autocorrelation-in-r.html"><a href="spatial-autocorrelation-in-r.html#app8_2"><i class="fa fa-check"></i>Introduction</a></li>
+<li class="chapter" data-level="" data-path="spatial-autocorrelation-in-r.html"><a href="spatial-autocorrelation-in-r.html#app8_3"><i class="fa fa-check"></i>Define neighboring polygons</a></li>
+<li class="chapter" data-level="" data-path="spatial-autocorrelation-in-r.html"><a href="spatial-autocorrelation-in-r.html#app8_4"><i class="fa fa-check"></i>Generating a Moran’s I scatter plot</a></li>
+<li class="chapter" data-level="" data-path="spatial-autocorrelation-in-r.html"><a href="spatial-autocorrelation-in-r.html#app8_4b"><i class="fa fa-check"></i>Computing the Moran’s I coefficient</a></li>
+<li class="chapter" data-level="" data-path="spatial-autocorrelation-in-r.html"><a href="spatial-autocorrelation-in-r.html#app8_5"><i class="fa fa-check"></i>Assessing statistical significance</a></li>
+<li class="chapter" data-level="" data-path="spatial-autocorrelation-in-r.html"><a href="spatial-autocorrelation-in-r.html#app8_6"><i class="fa fa-check"></i>Moran’s I as a function of a distance band</a></li>
+<li class="chapter" data-level="" data-path="spatial-autocorrelation-in-r.html"><a href="spatial-autocorrelation-in-r.html#app8_7"><i class="fa fa-check"></i>Local Moran’s I</a>
+<ul>
+<li class="chapter" data-level="" data-path="spatial-autocorrelation-in-r.html"><a href="spatial-autocorrelation-in-r.html#app8_7_1"><i class="fa fa-check"></i>Correcting for multiple comparisons</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="J" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html"><i class="fa fa-check"></i><b>J</b> Interpolation in R</a>
+<ul>
+<li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#thiessen-polygons"><i class="fa fa-check"></i>Thiessen polygons</a></li>
+<li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#idw"><i class="fa fa-check"></i>IDW</a>
+<ul>
+<li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#fine-tuning-the-interpolation"><i class="fa fa-check"></i>Fine-tuning the interpolation</a></li>
+<li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#cross-validation"><i class="fa fa-check"></i>Cross-validation</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#st-order-polynomial-fit"><i class="fa fa-check"></i>1<sup>st</sup> order polynomial fit</a></li>
+<li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#nd-order-polynomial"><i class="fa fa-check"></i>2<sup>nd</sup> order polynomial</a></li>
+<li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#kriging"><i class="fa fa-check"></i>Kriging</a>
+<ul>
+<li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#fit-the-variogram-model"><i class="fa fa-check"></i>Fit the variogram model</a></li>
+<li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#generate-kriged-surface"><i class="fa fa-check"></i>Generate Kriged surface</a></li>
+<li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#generate-the-variance-and-confidence-interval-maps"><i class="fa fa-check"></i>Generate the variance and confidence interval maps</a></li>
+</ul></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Intro to GIS and Spatial Analysis</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="chp15_0" class="section level1 hasAnchor" number="15">
+<h1><span class="header-section-number">Chapter 15</span> Second-Order Point Pattern Analysis: Modeling Distance<a href="chp15_0.html#chp15_0" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="introduction-13" class="section level2 hasAnchor" number="15.1">
+<h2><span class="header-section-number">15.1</span> Introduction<a href="chp15_0.html#introduction-13" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>An alternative to the <em>density-based methods</em> explored thus far are the <strong>distance-based methods</strong> for analyzing spatial point patterns. These approaches shift the focus from how points are distributed relative to the study area (a <em>first-order property</em>) to how points are distributed <strong>relative to one another</strong>–a hallmark of <strong>second-order analysis</strong>. This shift allows us to explore whether events exhibit spatial interaction, such as <strong>clustering</strong> or <strong>dispersion</strong>, at various spatial scales.</p>
+<p>Distance-based methods are particularly useful when the goal is to assess whether the observed pattern deviates from what would be expected under complete spatial randomness (CSR), a benchmark model in spatial statistics. Rather than estimating intensity across space, these methods examine the spatial arrangement of points directly through inter-point distances.</p>
+<p>In the sections that follow, we introduce three widely used distance-based techniques:</p>
+<ul>
+<li><strong>Average Nearest Neighbor (ANN)</strong></li>
+<li><strong>Ripley’s K and L functions</strong></li>
+<li><strong>The Pair Correlation Function (PCF)</strong></li>
+</ul>
+<p>Each of these methods provides a different lens through which to assess the spatial structure of a point pattern, and each is sensitive to different aspects of spatial interaction.</p>
+</div>
+<div id="average-nearest-neighbor" class="section level2 hasAnchor" number="15.2">
+<h2><span class="header-section-number">15.2</span> Average Nearest Neighbor<a href="chp15_0.html#average-nearest-neighbor" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><strong>Average Nearest Neighbor (ANN)</strong> analysis measures the average distance from each point in a study area to its nearest neighboring point. This provides a simple yet powerful summary of the spatial arrangement of points, helping to distinguish between clustered, random, or regularly spaced patterns.</p>
+<p>In the example below, the average nearest neighbor distance for all points is 13,295 meters.</p>
+Reading layer <code>Walmarts' from data source</code>C:.shp’
+using driver `ESRI Shapefile’
+Simple feature collection with 44 features and 40 fields
+Geometry type: POINT
+Dimension: XY
+Bounding box: xmin: 640627.2 ymin: 4614803 xmax: 869353.2 ymax: 4738331
+Projected CRS: NAD83 / UTM zone 18N
+<div class="figure"><span style="display:block;" id="fig:f11-ppp-dist"></span>
+<img src="15-Point_Patterns_2nd_files/figure-html/f11-ppp-dist-1.png" alt="A subset of distances between each point and its closest point. For example, fig.height=3.0, fig.width=5, message=FALSE, warning=FALSE, the point closest to point 3 is point 4 which is 16,616 meters away." width="672" />
+<p class="caption">
+Figure 15.1: A subset of distances between each point and its closest point. For example, fig.height=3.0, fig.width=5, message=FALSE, warning=FALSE, the point closest to point 3 is point 4 which is 16,616 meters away.
+</p>
+</div>
+<div id="extending-the-concept-higher-order-neighbors" class="section level3 hasAnchor" number="15.2.1">
+<h3><span class="header-section-number">15.2.1</span> Extending the Concept: Higher-Order Neighbors<a href="chp15_0.html#extending-the-concept-higher-order-neighbors" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>While the basic ANN statistic captures only the nearest neighbor relationship, extending the concept to include second, third, and higher order neighbors reveals more nuanced spatial structures. This produces a curve that reflects how inter-point distances change with neighbor order.</p>
+<div class="figure"><span style="display:block;" id="fig:f11-ANN-plot"></span>
+<img src="15-Point_Patterns_2nd_files/figure-html/f11-ANN-plot-1.png" alt="ANN values for different neighbor order numbers. For example, the ANN for the first closest neighbor for all points is 13,295 meters; the ANN for the 2nd closest neighbor for all points is 18850 meters, and the ANN for the 43rd closest neighbor (the furthest neighbor) for all points is 182,818 meters,and so forth." width="336" />
+<p class="caption">
+Figure 15.2: ANN values for different neighbor order numbers. For example, the ANN for the first closest neighbor for all points is 13,295 meters; the ANN for the 2nd closest neighbor for all points is 18850 meters, and the ANN for the 43rd closest neighbor (the furthest neighbor) for all points is 182,818 meters,and so forth.
+</p>
+</div>
+<p>The shape of the ANN curve provides insight into the spatial structure of the pattern. A steep initial slope followed by a gradual increase may indicate tight clustering, while a more linear increase suggests regular spacing.</p>
+<p>To illustrate how ANN curves vary with different spatial arrangements, consider three point patterns of 20 points each:</p>
+<ul>
+<li>A single cluster</li>
+<li>A dual cluster</li>
+<li>A random scatter</li>
+</ul>
+<div class="figure"><span style="display:block;" id="fig:f11-diff-patterns"></span>
+<img src="15-Point_Patterns_2nd_files/figure-html/f11-diff-patterns-1.png" alt="Three different point patterns: a single cluster, a dual cluster and a randomly scattered pattern." width="432" />
+<p class="caption">
+Figure 15.3: Three different point patterns: a single cluster, a dual cluster and a randomly scattered pattern.
+</p>
+</div>
+<p>The following figure illustrates how the ANN curve varies across three spatial arrangements, highlighting the sensitivity of ANN to clustering structure.</p>
+<div class="figure"><span style="display:block;" id="fig:f11-diff-ANN-plots"></span>
+<img src="15-Point_Patterns_2nd_files/figure-html/f11-diff-ANN-plots-1.png" alt="Three different ANN vs. neighbor order plots. The black ANN line is for the first point pattern (single cluster); the blue line is for the second point pattern (double cluster) and the red line is for the third point pattern." width="384" />
+<p class="caption">
+Figure 15.4: Three different ANN vs. neighbor order plots. The black ANN line is for the first point pattern (single cluster); the blue line is for the second point pattern (double cluster) and the red line is for the third point pattern.
+</p>
+</div>
+<ul>
+<li>The black line (single cluster) shows short distances across all neighbor orders, indicating tight clustering.</li>
+<li>The blue line (dual cluster) shows intermediate distances, reflecting the presence of two separate clusters.</li>
+<li>The red line (random scatter) shows longer distances overall, consistent with a more dispersed arrangement.</li>
+</ul>
+<p>The perceived spatial structure of a point pattern is sensitive to how the study area is defined. In the example below, the same clustered pattern is shown within two different bounding boxes:</p>
+<div class="figure"><span style="display:block;" id="fig:f11-diff-ppp02"></span>
+<img src="15-Point_Patterns_2nd_files/figure-html/f11-diff-ppp02-1.png" alt="The same point pattern presented with two different study areas. How differently would you describe the point pattern in both cases?" width="384" />
+<p class="caption">
+Figure 15.5: The same point pattern presented with two different study areas. How differently would you describe the point pattern in both cases?
+</p>
+</div>
+<p>When the study area is tightly fitted around the cluster, the pattern appears more dispersed. This highlights the modifiable areal unit problem (MAUP)—a key concern in spatial analysis.</p>
+<p>ANN analysis assumes that the underlying point process is stationary—that is, the intensity of the process does not vary across space. If the process is non-stationary, observed clustering may reflect underlying environmental gradients or covariates rather than true inter-point interaction.</p>
+<p>Correcting for non-stationarity when performing hypothesis tests is discussed in the next chapter.</p>
+</div>
+<div id="testing-for-complete-spatial-randomness" class="section level3 hasAnchor" number="15.2.2">
+<h3><span class="header-section-number">15.2.2</span> Testing for Complete Spatial Randomness<a href="chp15_0.html#testing-for-complete-spatial-randomness" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="analytical-approach" class="section level4 hasAnchor" number="15.2.2.1">
+<h4><span class="header-section-number">15.2.2.1</span> Analytical approach<a href="chp15_0.html#analytical-approach" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>The analytical approach to testing for Complete Spatial Randomness (CSR) using the Average Nearest Neighbor (ANN) statistic involves comparing the observed mean nearest neighbor distance to the expected mean distance under a CSR model. The null hypothesis assumes that the observed point pattern is a realization of a spatially uniform and independent process.</p>
+<p>Under CSR, the expected mean nearest neighbor distance is:</p>
+<p><span class="math display">\[
+ANN_{expected}=\dfrac{1}{2\sqrt{n/A}}
+\]</span>
+where:</p>
+<ul>
+<li><span class="math inline">\(n\)</span> is the number of points,</li>
+<li><span class="math inline">\(A\)</span> is the area of the study region</li>
+</ul>
+<p>The test statistic is the ratio:</p>
+<p><span class="math display">\[
+R = \frac{ANN_{observed}}{ANN_{expected]}}
+\]</span></p>
+<p>Interpretation:</p>
+<ul>
+<li><span class="math inline">\(R &lt; 1\)</span>: suggests clustering</li>
+<li><span class="math inline">\(R &gt; 1\)</span>: suggests dispersion</li>
+<li><span class="math inline">\(R \approx 1\)</span> suggests consistent with a completely random process</li>
+</ul>
+<p>To assess statistical significance, a z-score is computed:</p>
+<p><span class="math display">\[
+z = \frac{ANN_observed - ANN_expected}{SE}
+\]</span>
+where the standard error (SE) of the expected distance under CSR is:</p>
+<p><span class="math display">\[
+SE = \frac{0.26136}{\sqrt{n\lambda}}
+\]</span>
+This z-score is then compared to a standard normal distribution to determine whether the observed pattern significantly deviates from CSR.</p>
+<p>While analytically elegant, the ANN hypothesis test has several limitations that constrain its interpretive power:</p>
+<ul>
+<li>Sensitivity to Study Area Definition:
+The expected distance depends on the area <span class="math inline">\(A\)</span> which must be defined explicitly.</li>
+<li>Shape Effects:
+The formula assumes a regular-shaped study region. Irregular boundaries distort the expected distance and introduce edge effects, where points near the boundary have artificially inflated nearest neighbor distances.</li>
+<li>Stationarity Assumption:
+The test assumes a stationary process–i.e., constant intensity across space. If the underlying process is inhomogeneous, with point density varying due to environmental or socioeconomic factors, clustering may reflect first-order effects rather than true inter-point interaction.</li>
+</ul>
+</div>
+<div id="a-better-approach-a-monte-carlo-test" class="section level4 hasAnchor" number="15.2.2.2">
+<h4><span class="header-section-number">15.2.2.2</span> A better approach: a Monte Carlo test<a href="chp15_0.html#a-better-approach-a-monte-carlo-test" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>While the analytical approach to ANN hypothesis testing offers a convenient benchmark for assessing spatial randomness, its reliance on idealized assumptions–such as <strong>uniform study area shape</strong>–can limit its applicability in real-world contexts. When such assumptions are violated, the analytical test may yield misleading results. To address these limitations, spatial analysts often turn to simulation-based methods, such as <strong>Monte Carlo techniques</strong>, which offer a more flexible and empirically grounded framework for hypothesis testing. These methods allow us to generate synthetic point patterns under a specified null model and compare our observed statistic to the distribution of simulated outcomes, providing a more robust basis for inference.</p>
+<p>The Monte Carlo technique involves three steps:</p>
+<ul>
+<li><p>First, we postulate a process–our null hypothesis, <span class="math inline">\(Ho\)</span>. For example, we hypothesize that the distribution of Walmart stores is consistent with a completely random process (CSR).</p></li>
+<li><p>Next, we simulate many realizations of our postulated process and compute a statistic (e.g. ANN) for each realization.</p></li>
+<li><p>Finally, we compare our observed data to the patterns generated by our simulated processes and assess (via a measure of probability) if our pattern is a likely realization of the hypothesized process.</p></li>
+</ul>
+<p>Using the Walmart store distribution example, we randomly re-position the location of the Walmart points 1000 times (or as many times computationally practical) following a completely random process–our <em>hypothesized</em> process, <span class="math inline">\(Ho\)</span>–while making sure to keep the points confined to the study extent (the state of Massachusetts).</p>
+<div class="figure"><span style="display:block;" id="fig:f12-sim-points-example"></span>
+<img src="img/Sample_rnd_pts.png" alt="Three different outcomes from simulated patterns following a CSR point process. These maps help answer the question *how would Walmart stores be distributed if their locations were not influenced by the location of other stores and by any local factors (such as population density, population income, road locations, etc...)*" width="407" />
+<p class="caption">
+Figure 15.6: Three different outcomes from simulated patterns following a CSR point process. These maps help answer the question <em>how would Walmart stores be distributed if their locations were not influenced by the location of other stores and by any local factors (such as population density, population income, road locations, etc…)</em>
+</p>
+</div>
+<p>For each realization of our process, we compute an ANN value. Each simulated pattern results in a different ANN value under CSR. These values form an empirical distribution representing the null hypothesis. We plot the simulated ANN value with a histogram (this is our <span class="math inline">\(Ho\)</span> sample distribution), then compare our observed ANN value of 13,294 m to this distribution.</p>
+<div class="figure"><span style="display:block;" id="fig:f12-walmart-MC-hist"></span>
+<img src="img/ANN_hist.png" alt="Histogram of simulated ANN values (from 1000 simulations). This is the sample distribution of the null hypothesis, ANN~simulated~ (under CSR). The red line shows our observed (Walmart) ANN value. About 32% of the simulated values are greater (more extreme) than our observed ANN value." width="407" />
+<p class="caption">
+Figure 15.7: Histogram of simulated ANN values (from 1000 simulations). This is the sample distribution of the null hypothesis, ANN<sub>simulated</sub> (under CSR). The red line shows our observed (Walmart) ANN value. About 32% of the simulated values are greater (more extreme) than our observed ANN value.
+</p>
+</div>
+<p>By using the same study region in each simulation, Monte Carlo methods automatically account for edge effects and irregular study area shapes—issues that are difficult to correct analytically.</p>
+</div>
+<div id="extracting-a-p-value-from-a-monte-carlo-test" class="section level4 hasAnchor" number="15.2.2.3">
+<h4><span class="header-section-number">15.2.2.3</span> Extracting a p-value from a Monte Carlo test<a href="chp15_0.html#extracting-a-p-value-from-a-monte-carlo-test" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>The <strong>Monte Carlo p-value</strong> represents the proportion of simulated patterns that yield a test statistic more extreme than the observed one, under the null hypothesis. Specifically, we count how many simulated values are <strong>more extreme</strong> than the observed statistic–either greater or smaller, depending on the direction of the test. For a <strong>one-sided</strong> test, the empirical p-value is calculated as:</p>
+<p><span class="math display">\[
+p = \dfrac{N_{extreme}+1}{N+1}
+\]</span></p>
+<p>where <em>N<sub>extreme</sub></em> is the number of simulated values more extreme than our observed statistic, and <span class="math inline">\(N\)</span> is the total number of simulations. The <span class="math inline">\(+1\)</span> is added to ensure that the p-value can never be exactly 0.</p>
+<p>A practical and more generalized form of the equation looks like this:</p>
+<p><span class="math display">\[
+p = \dfrac{min(N_{greater}+1 , N + 1 - N_{greater})}{N+1}
+\]</span></p>
+<p>where <span class="math inline">\(min(N_{greater}+1 , N + 1 - N_{greater})\)</span> is the smallest of the two values <span class="math inline">\(N_{greater}+1\)</span> and <span class="math inline">\(N + 1 - N_{greater}\)</span>, and <span class="math inline">\(N_{greater}\)</span> is the number of simulated values greater than the observed value. It’s best to implement this form of the equation in a scripting program to avoid the need to <em>visually</em> seek the side of the distribution closest to our observed statistic.</p>
+<p>For example, if we ran 1000 simulations in our ANN analysis and found that 319 of those were more extreme (on the right side of the simulated ANN distribution) than our observed ANN value, our p-value would be (319 + 1) / (1000 + 1) or <strong>p = 0.32</strong>. This can be interpreted as <em>“there being a 32% chance of observing a test statistic as extreme as ours if the null hypothesis (CSR) were true.”</em> This suggests that we would be remiss in rejecting the null hypothesis that a CSR process could have generated our observed Walmart point distribution. But this is not to say that the Walmart stores were in fact placed across the state of Massachusetts randomly (it’s doubtful that Walmart executives make such an important decision purely by chance), all we are saying is that a CSR process <em>could</em> have been one of <strong>many</strong> processes that generated the observed point pattern.</p>
+<p>If a two-sided test is desired, then the equation for the <span class="math inline">\(p\)</span> value takes on the following form:</p>
+<p><span class="math display">\[
+2 \times \dfrac{min(N_{greater}+1 , N + 1 - N_{greater})}{N+1}
+\]</span></p>
+<p>where we are simply multiplying the one-sided p-value by two.</p>
+<p>Monte Carlo tests provide a robust alternative to analytical methods, especially when regular study area shape are violated. By simulating point patterns under realistic null models, we can better assess the plausibility of observed spatial structures.</p>
+</div>
+</div>
+<div id="controlling-for-first-order-effects-in-second-order-analysis" class="section level3 hasAnchor" number="15.2.3">
+<h3><span class="header-section-number">15.2.3</span> Controlling for First-Order Effects in Second-Order Analysis<a href="chp15_0.html#controlling-for-first-order-effects-in-second-order-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The assumption of CSR provides a useful baseline for spatial analysis, but it’s often unrealistic in real-world settings. Many real-world spatial processes exhibit both <em>first-order effects</em> and <em>second-order effects</em>. When first-order effects are present, the underlying point process is <em>non-stationary</em> or <strong>inhomogeneous</strong>. In such cases, hypothesis tests must be adjusted to account for this spatial heterogeneity.</p>
+<div class="figure"><span style="display:block;" id="fig:f12-walmart-pop"></span>
+<img src="img/Pop_dens.png" alt="Walmart store distribution overlayed on top of a population density layer. Could population density distribution explain the distribution of Walmart stores?" width="492" />
+<p class="caption">
+Figure 15.8: Walmart store distribution overlayed on top of a population density layer. Could population density distribution explain the distribution of Walmart stores?
+</p>
+</div>
+<p>For example, if there are reasons to believe that the placement of Walmart stores can be influenced by the distribution of the population density (a first order effect) we must account for this spatial heterogeneity when testing for clustering or dispersion. This involves simulating point patterns that follow the same population density distribution and comparing the observed pattern to these simulations using Monte Carlo (MC) techniques.</p>
+<div class="figure"><span style="display:block;" id="fig:f12-walmart-pop-sim"></span>
+<img src="img/Non_hom_2.png" alt="Examples of simulated point patterns generated under a non-stationary process, with population density serving as the spatial intensity function." width="267" />
+<p class="caption">
+Figure 15.9: Examples of simulated point patterns generated under a non-stationary process, with population density serving as the spatial intensity function.
+</p>
+</div>
+<p>Note that even though we are no longer referring to a CSR point process, we are still treating this as a random point process since the points are randomly placed <em>following</em> the underlying population density distribution. Using the Monte Carlo (MC) techniques used with an earlier section, we can simulate thousands of such point patterns (following the population density) and compare our observed ANN value to those computed from our MC simulations.</p>
+<div class="figure"><span style="display:block;" id="fig:f12-ann-hetero-hist"></span>
+<img src="img/ANN_pop_dens.png" alt="Distribution of ANN values under a null model where population density governs point intensity." width="438" />
+<p class="caption">
+Figure 15.10: Distribution of ANN values under a null model where population density governs point intensity.
+</p>
+</div>
+<p>In this example, our observed ANN value falls far to the right of our simulated ANN values indicating that our points are more dispersed than would be expected had population density distribution been the sole driving process. The percentage of simulated values more extreme than our observed value is 0% (i.e. a p-value <span class="math inline">\(\backsimeq\)</span> 0.0).</p>
+<p>Another plausible hypothesis is that median household income influenced the placement of Walmart stores.</p>
+<div class="figure"><span style="display:block;" id="fig:f12-ann-income"></span>
+<img src="img/Median_income_map.png" alt="Observed Walmart store locations overlaid on a map of median household income distribution." width="450" />
+<p class="caption">
+Figure 15.11: Observed Walmart store locations overlaid on a map of median household income distribution.
+</p>
+</div>
+<p>Running an MC simulation using median income distribution as the underlying intensity process yields an ANN distribution where about 16% of the simulated values are more extreme than our observed ANN value (i.e., one-sided p-value = 0.16):</p>
+<div class="figure"><span style="display:block;" id="fig:f12-ann-income-hist"></span>
+<img src="img/Median_income_results.png" alt="Histogram of ANN values from simulated point patterns generated under a median income-based intensity model." width="466" />
+<p class="caption">
+Figure 15.12: Histogram of ANN values from simulated point patterns generated under a median income-based intensity model.
+</p>
+</div>
+<p>Note that we now have two competing hypotheses: a CSR/IRP process and median income distribution process. Both cannot be rejected. This serves as a reminder that a hypothesis test cannot tell us if a <em>particular</em> process is <em>the</em> process involved in the generation of our observed point pattern; instead, it tells us that the hypothesis is one of <em>many</em> plausible processes.</p>
+<p>It’s important to remember that the ANN tool is a <em>distance</em> based approach to point pattern analysis. Even though we are randomly generating points following some underlying probability distribution map we are still concerning ourselves with the <em>repulsive</em>/<em>attractive</em> forces that might dictate the placement of Walmarts <em>relative</em> to one another–i.e. we are <em>not</em> addressing the question “can some underlying process explain the X and Y placement of the stores” (addressed in section <a href="chp14_0.html#PPM">14.6</a>). Instead, we are controlling for the 1<sup>st</sup> order effect defined by population density and income distributions.</p>
+</div>
+<div id="controlling-for-second-order-effects-in-first-order-analysis" class="section level3 hasAnchor" number="15.2.4">
+<h3><span class="header-section-number">15.2.4</span> Controlling for Second-Order Effects in First-Order Analysis<a href="chp15_0.html#controlling-for-second-order-effects-in-first-order-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>While it is common practice to control for first-order effects when testing for second-order spatial interaction, the reverse (testing for first-order effects while accounting for second-order interaction) is far less straightforward. Most hypothesis tests for first-order effects assume that points are independently distributed, an assumption that is violated when second-order effects (such as clustering or inhibition) are present.</p>
+<p>In such cases, model-based approaches offer a more appropriate framework. These methods jointly estimate both the intensity (first-order structure) and the interaction between points (second-order structure). One example involves models where “parent” points are first generated (often following a homogeneous or inhomogeneous Poisson process) and “child” points are then clustered around each parent. However, in practice, only the child locations are used in the Monte Carlo tests.</p>
+<p>These techniques go beyond the scope of this course. For now, it is important to recognize that second-order effects can confound first-order inference and that careful model specification is essential when both types of spatial structure are present.</p>
+</div>
+</div>
+<div id="k-and-l-functions" class="section level2 hasAnchor" number="15.3">
+<h2><span class="header-section-number">15.3</span> K and L functions<a href="chp15_0.html#k-and-l-functions" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The ANN statistic is one of several distance-based measures used to describe spatial point patterns. While ANN focuses on the distance to the n<sup>th</sup> closest neighbor, the <strong>K and L functions</strong> offer a more comprehensive view by considering <strong>all inter-point distances</strong> up to a given threshold. This makes it particularly useful for detecting clustering or regularity across multiple spatial scales.</p>
+<p>In the sections that follow, we explore how the K and L functions are computed, interpreted, and used in hypothesis testing.</p>
+<div id="k-function" class="section level3 hasAnchor" number="15.3.1">
+<h3><span class="header-section-number">15.3.1</span> K function<a href="chp15_0.html#k-function" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The <strong>K function</strong> summarizes the spatial dependence between points by measuring the expected number of points within a given distance of each point, normalized by the overall point density.</p>
+<p>The K function is a theoretical property of the underlying point process. However, as is the case with a theoretical property of a process, we rely on the observed pattern (one of many realizations of the underlying process) to <strong>estimate</strong> this function.</p>
+<div class="figure"><span style="display:block;" id="fig:f11-K0"></span>
+<img src="img/K_bands.png" alt="Illustration of how the K function summarizes the number of points within a specified distance: Three concentric circles are drawn around point $i$, and the number of neighboring points within each radius is tallied. In this example, no points fall within 10 km of $i$, three points fall within 30 km, and seven points fall within 50 km. " width="538" />
+<p class="caption">
+Figure 15.13: Illustration of how the K function summarizes the number of points within a specified distance: Three concentric circles are drawn around point <span class="math inline">\(i\)</span>, and the number of neighboring points within each radius is tallied. In this example, no points fall within 10 km of <span class="math inline">\(i\)</span>, three points fall within 30 km, and seven points fall within 50 km.
+</p>
+</div>
+<p>The K function estimate, <span class="math inline">\(\hat{\lambda}\)</span>, can be computed from an observed point pattern as follows:</p>
+<p><span class="math display">\[
+\hat{K}(d) = \frac{A}{n(n-1)} \sum_{i=1}^{n} \sum_{j \neq i}^n I(d_{ij} \leq d)
+\]</span></p>
+<p>where:</p>
+<ul>
+<li><span class="math inline">\(i\)</span> refers to the <strong>reference point</strong> from which distanced <span class="math inline">\(d\)</span> are measured.</li>
+<li><span class="math inline">\(j\)</span> refers to the <strong>other points</strong> in the pattern that are being evaluated to see whether they fall within a circle of radius <span class="math inline">\(d\)</span> centered on <span class="math inline">\(i\)</span>.</li>
+<li><span class="math inline">\(d\)</span> is the search distance for which we are counting neighboring points.</li>
+<li><span class="math inline">\(d_{ij}\)</span> is the distance between point <span class="math inline">\(i\)</span> and point <span class="math inline">\(j\)</span>.</li>
+<li><span class="math inline">\(I(d_{ij} \le d)\)</span> is an indicator function that equals 1 if <span class="math inline">\(d_{ij} \le d\)</span> and 0 otherwise.</li>
+<li><span class="math inline">\(\sum_{i=1}^{n}\)</span> is the outer summation It means “for each point <span class="math inline">\(i\)</span> from the first point to the <span class="math inline">\(n\)</span>^th point, do the following …”</li>
+<li><span class="math inline">\(\sum_{j \neq i}\)</span> is the inner summation. For the current point <span class="math inline">\(i\)</span> selected by the outer summation, sum the results of the indicator function over all points <span class="math inline">\(j\)</span> in the dataset, excluding the case where <span class="math inline">\(j\)</span> is the same as <span class="math inline">\(i\)</span>.</li>
+<li><span class="math inline">\(n(n-1)\)</span> in the denominator is normalizing factor. It represents the <strong>total number of ordered pairs of distinct points</strong> in the dataset. Dividing the total count from the double summation by <span class="math inline">\(n(n-1)\)</span> gives the observed fraction of pairs separated by a distance less than or equal to <span class="math inline">\(d\)</span>.</li>
+<li><span class="math inline">\(A\)</span> is the area of the study region. Multiplying the proportion by <span class="math inline">\(A\)</span> <strong>scales the result into units of area</strong>, which makes comparison of the K function between datasest and theoretical K functions possible.</li>
+</ul>
+<p>The units of the K function is area whose units are usually defined by the point layer’s coordinate system.</p>
+<p>You might see K function sometimes expressed as,</p>
+<p><span class="math display">\[ \widehat{K}(d) = \frac{1}{\widehat\lambda n} \sum_{i=1}^{n} \sum_{j \neq i} I(d_{ij} \leq d) \]</span>
+Note that the intensity estimator used here, <span class="math inline">\(\hat{\lambda} = (n-1) / A\)</span>, is slightly different from the more intuitive “natural” estimator, <span class="math inline">\(\hat{\lambda} = n/A\)</span>, that we’ve used previously. This is a deliberate statistical adjustment related to the goal of the K-function. The K-function describes the characteristics of a pattern <strong>from the perspective of the events themselves</strong>, looking at the distances between them. Think of it this way: when we stand at a specific event <span class="math inline">\(i\)</span> and count its neighbors, we are looking at the density of the other <span class="math inline">\(n-1\)</span> events in the study area <span class="math inline">\(A\)</span>.</p>
+<div class="figure"><span style="display:block;" id="fig:f11-K1"></span>
+<img src="img/K_function.png" alt="The K function estimated from the Walmart stores point distribution in MA for 512 distinct distances $d$ ranging from 0 km to 50 km" width="253" />
+<p class="caption">
+Figure 15.14: The K function estimated from the Walmart stores point distribution in MA for 512 distinct distances <span class="math inline">\(d\)</span> ranging from 0 km to 50 km
+</p>
+</div>
+<p>A few important considerations are to be taken:</p>
+<ul>
+<li>The K function, as presented here, assumes a homogeneous underlying first order process given that <span class="math inline">\(\hat{\lambda}\)</span> is assumed uniform for all locations with the study extent.</li>
+<li>The underlying process is assumed <strong>isotropic</strong> meaning that the relationship between points is a function of distance and not direction.</li>
+<li>Given that distance measurements are to be performed, coordinate systems used with the point pattern needs to preserve distance unless geodesic distances are to be computed.</li>
+</ul>
+<p>The K-function can be quite sensitive to edge effects. A correction is often applied to <span class="math inline">\(\hat{K}\)</span> to correct for this bias. A standard and widely used method applies an <strong>isotropic correction</strong> weight that is the proportion of the <strong>circumference</strong> of the circle centered on reference point <span class="math inline">\(i\)</span> with radius <span class="math inline">\(d\)</span> that lies within the study area (e.g. the state of Massachusetts in our working example). The corrected K function estimator takes the form:</p>
+<p><span class="math display">\[
+\hat{K}(d) = \frac{A}{n(n-1)} \sum_{i=1}^{n} \sum_{j \neq i} \frac{I(d_{ij} \leq d)}{w_{ij}}
+\]</span></p>
+<p>where <span class="math inline">\(w_{ij}\)</span> is the isotropic correct weight that is the proportion of the circumference of the circle centered at <span class="math inline">\(i\)</span> with radius <span class="math inline">\(d\)</span> that lies within the study area <span class="math inline">\(A\)</span>. Note that the proportion is that of the circle’s <strong>perimeter length</strong> and not the circle’s area.</p>
+<div class="figure"><span style="display:block;" id="fig:f11-K2"></span>
+<img src="img/K_function_iso.png" alt="The K-function estimated from the Walmart stores point distribution in MA (shown in black), and the isotropic edge corrected K function for the same point layer (shown in red) " width="253" />
+<p class="caption">
+Figure 15.15: The K-function estimated from the Walmart stores point distribution in MA (shown in black), and the isotropic edge corrected K function for the same point layer (shown in red)
+</p>
+</div>
+<p>Under the assumption of <strong>Complete Spatial Randomness (CSR)</strong>, the expected value of the K function is:</p>
+<p><span class="math display">\[
+K_{expected}(d) = \pi d^2
+\]</span></p>
+<p>This provides a benchmark for comparison.</p>
+<p>If the observed K function exceeds this expected value, it suggests <strong>clustering</strong> of points at distance <span class="math inline">\(d\)</span>. If it falls below, it suggests or <strong>dispersion</strong> of points at distance <span class="math inline">\(d\)</span>.</p>
+<div class="figure"><span style="display:block;" id="fig:f11-K3"></span>
+<img src="img/K_function_iso_theo.png" alt="The K-function estimated from the Walmart stores point distribution in MA (shown in black), and the isotropic edge corrected K function for the same point layer (shown in red). The thick grey line represents the theoretical K function under the assumption of **Complete Spatial Randomness. Note how not correcting for edge effect can mis-charactterize the nature of the point pattern. The uncorrectted K function suggests a pattern more disperesed than expected under CSR assumption for all distance values while the isotropic weighted K function suggests clustering," width="266" />
+<p class="caption">
+Figure 15.16: The K-function estimated from the Walmart stores point distribution in MA (shown in black), and the isotropic edge corrected K function for the same point layer (shown in red). The thick grey line represents the theoretical K function under the assumption of **Complete Spatial Randomness. Note how not correcting for edge effect can mis-charactterize the nature of the point pattern. The uncorrectted K function suggests a pattern more disperesed than expected under CSR assumption for all distance values while the isotropic weighted K function suggests clustering,
+</p>
+</div>
+</div>
+<div id="l-function" class="section level3 hasAnchor" number="15.3.2">
+<h3><span class="header-section-number">15.3.2</span> L function<a href="chp15_0.html#l-function" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>One limitation with the K function is that the shape of the function tends to curve upward (quadratically) making it difficult to see small differences between <span class="math inline">\(K\)</span> and <span class="math inline">\(K_{expected}\)</span>. To address this, the <strong>L function</strong> is used as a variance-stabilizing transformation. A form of the L function follows:</p>
+<p><span class="math display">\[
+L=\sqrt{\dfrac{K(d)}{\pi}}-d
+\]</span>
+Technically, the fundamental L function is written as <span class="math inline">\(L=\sqrt{\dfrac{K(d)}{\pi}}\)</span>, however, the <strong>centered</strong> version of the function presented above has the benefit of rotating the plot such that the baseline under CSR is rendered horizontal. This provides more separation between the estimated K functions an and the theoretical K function across the range of distances.</p>
+<p>Under CSR, <span class="math inline">\(L_{expected}(d) \approx 0\)</span>. Deviations from zero indicate departures from randomness:</p>
+<ul>
+<li><span class="math inline">\(L(d) &gt; 0\)</span>: clustering at distance <span class="math inline">\(d\)</span></li>
+<li><span class="math inline">\(L(d) &lt; 0\)</span>: dispersion at distance <span class="math inline">\(d\)</span></li>
+</ul>
+<div class="figure"><span style="display:block;" id="fig:f11-L"></span>
+<img src="img/L_function.png" alt="L function rendering of the K function plot shown above. Both the edge corrected (red line) and standard L functions (black line) are shown. The theoretical L function under CSR is shown as a horizontal line centered on 0. " width="266" />
+<p class="caption">
+Figure 15.17: L function rendering of the K function plot shown above. Both the edge corrected (red line) and standard L functions (black line) are shown. The theoretical L function under CSR is shown as a horizontal line centered on 0.
+</p>
+</div>
+<p>The L function suggests that Walmart locations are more dispersed than expected under CSR up to a distance of 12 km but more clustered at distances greater than 12 km.</p>
+</div>
+<div id="monte-carlo-test-for-the-k-and-l-functions" class="section level3 hasAnchor" number="15.3.3">
+<h3><span class="header-section-number">15.3.3</span> Monte Carlo test for the K and L functions<a href="chp15_0.html#monte-carlo-test-for-the-k-and-l-functions" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>MC techniques are not unique to average nearest neighbor analysis. In fact, they can be implemented with many other statistical measures including the K and L functions. However, unlike the ANN analysis, the K and L functions consist of multiple test statistics (one for each distance <span class="math inline">\(d\)</span>). This results in not one but in as many number of simulated distributions as there are distances for which K and L are computed. Typically, these distributions are presented as <em>envelopes</em> superimposed on the estimated <span class="math inline">\(K\)</span> or <span class="math inline">\(L\)</span> functions. However, since we cannot easily display the full distribution at each <span class="math inline">\(d\)</span> interval, we usually limit the envelope to a pre-defined acceptance interval. For example, if we choose a two-sided significance level of 0.05, then we eliminate the smallest and largest 2.5% of the simulated K values computed for <strong>for each <span class="math inline">\(d\)</span> interval</strong> (hence the reason you might sometimes see such envelopes referred to as <strong>pointwise</strong> envelopes). This tends to generate a “saw-tooth” like envelope.</p>
+<div class="figure"><span style="display:block;" id="fig:f12-k-l-MC-IRP"></span>
+<img src="img/K_MC_sim_results_CSR.png" alt="Simulation results for the CSR hypothesized process. The yellow line shows the edge corrected L function. The gray envelope in the plot covers the 95% significance level. If the observed L lies outside of this envelope at distance $d$, then there is less than a 5% chance that our observed point pattern resulted from the simulated process at that distance." width="664" />
+<p class="caption">
+Figure 15.18: Simulation results for the CSR hypothesized process. The yellow line shows the edge corrected L function. The gray envelope in the plot covers the 95% significance level. If the observed L lies outside of this envelope at distance <span class="math inline">\(d\)</span>, then there is less than a 5% chance that our observed point pattern resulted from the simulated process at that distance.
+</p>
+</div>
+<p>The interpretation of these plots is straightforward: if <span class="math inline">\(\hat K\)</span> or <span class="math inline">\(\hat L\)</span> lies outside of the envelope at some distance <span class="math inline">\(d\)</span>, then this suggests that the point pattern may not be consistent with <span class="math inline">\(H_o\)</span> (the hypothesized process) at distance <span class="math inline">\(d\)</span> at the significance level defined for that envelope (0.05 in this example).</p>
+<p>One important assumption underlying the K and L functions is that the process is uniform across the region. If there is reason to believe this is not the case, then the K function analysis needs to be controlled for inhomogeneity in the process. For example, we might hypothesize that population density dictates the spatial distribution of the Walmart stores across the region. We therefore run an MC test by randomly re-assigning Walmart point locations using the population distribution map as the underlying point density distribution (in other words, we expect the MC simulation to locate a greater proportion of the points where population density is the greatest).</p>
+<div class="figure"><span style="display:block;" id="fig:f12-k-l-MC-inhom"></span>
+<img src="img/K_MC_sim_results_inhomogeneous.png" alt="The L-function plot and simulation results for an inhomogeneous hypothesized process. When controlled for population density, the significance test suggests that the inter-distance of Walmarts is more dispersed than expected under the null up to a distance of 30 km." width="682" />
+<p class="caption">
+Figure 15.19: The L-function plot and simulation results for an inhomogeneous hypothesized process. When controlled for population density, the significance test suggests that the inter-distance of Walmarts is more dispersed than expected under the null up to a distance of 30 km.
+</p>
+</div>
+<p>It may be tempting to scan across a K or L function plot with pointwise envelopes, identify distances <span class="math inline">\(d\)</span> where the observed function deviates from the null model, and report those intervals as statistically significant. However, this approach can be misleading. For example, based on the results in the previous figure, we might be inclined to conclude that the pattern is more dispersed than expected between distances of 5 and 30 kilometers at the <em>5% significance level</em>. In reality, such a conclusion may only be justified at a <em>higher significance level</em> due to the increased chance of false positives when making multiple comparisons across distance bands. This issue is known as the <a href="https://en.wikipedia.org/wiki/Multiple_comparisons_problem">multiple comparison problem</a>–a statistical concern that arises when testing many hypotheses simultaneously. To address this, global envelopes are constructed, which provide a single, valid significance test across the entire range of distances by summarizing the maximum deviation from the null model.</p>
+</div>
+</div>
+<div id="the-pair-correlation-function" class="section level2 hasAnchor" number="15.4">
+<h2><span class="header-section-number">15.4</span> The Pair Correlation Function<a href="chp15_0.html#the-pair-correlation-function" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>While Ripley’s K and L functions provide cumulative measures of spatial dependence, the <strong>Pair Correlation Function (PCF)</strong> offers a more localized, non-cumulative view of spatial structure. It is particularly useful for identifying the specific distances at which clustering or regularity occurs in a point pattern.</p>
+<p>The PCF, denoted <span class="math inline">\(g(d)\)</span>, describes the density of point pairs separated by a distance <span class="math inline">\(d\)</span>, relative to what would be expected under CSR. It is derived from the K function as:</p>
+<p><span class="math display">\[
+g(d) = \frac{1}{2\pi d}\frac{dK(d)}{dd}
+\]</span>
+Here, <span class="math inline">\(\frac{dK(d)}{dd}\)</span> denotes the first derivative of the K-function with respect to the distance <span class="math inline">\(d\)</span>, representing its instantaneous rate of change. The notation <span class="math inline">\(dd\)</span> in the denominator is a single, indivisible symbol indicating differentiation with respect to <span class="math inline">\(d\)</span>, and <em>not</em> a product.</p>
+<p>This formulation normalizes the rate of change in the cumulative K function by the circumference of a ring at distance <span class="math inline">\(d\)</span>, yielding a measure of point interaction at that specific scale.</p>
+<ul>
+<li><span class="math inline">\(g(d) = 1\)</span>: The number of point pairs at distance <span class="math inline">\(d\)</span> matches CSR expectations.</li>
+<li><span class="math inline">\(g(d) &gt; 1\)</span>: More point pairs than expected at distance <span class="math inline">\(d\)</span> suggesting <strong>clustering</strong>.</li>
+<li><span class="math inline">\(g(d) &lt; 1\)</span>: Fewer point pairs than expected at distance <span class="math inline">\(d\)</span> suggesting <strong>dispersion</strong>.</li>
+</ul>
+<div class="figure"><span style="display:block;" id="fig:f11-k-g"></span>
+<img src="img/K_vs_g_bands.png" alt="Difference in how the $K$ and $g$ functions aggregate points at distance $d$ ($d$ = 30 km in this example). *All* points *up to* $d$ contribute to $K$ whereas just the points in the *annulus band* at $d$ contribute to $g$." width="632" />
+<p class="caption">
+Figure 15.20: Difference in how the <span class="math inline">\(K\)</span> and <span class="math inline">\(g\)</span> functions aggregate points at distance <span class="math inline">\(d\)</span> (<span class="math inline">\(d\)</span> = 30 km in this example). <em>All</em> points <em>up to</em> <span class="math inline">\(d\)</span> contribute to <span class="math inline">\(K\)</span> whereas just the points in the <em>annulus band</em> at <span class="math inline">\(d\)</span> contribute to <span class="math inline">\(g\)</span>.
+</p>
+</div>
+<p>It is important to acknowledge that, much like the K function from which it is derived, the pair correlation function <span class="math inline">\(g\)</span> is also susceptible to edge effects. These arise because observations close to the study area’s boundaries have an incomplete neighborhood compared to those in the interior. When counting pairs of events within a certain distance <span class="math inline">\(d\)</span>, circles centered on boundary points may extend outside the observed region, leading to an underestimation of interactions at those distances. Since <span class="math inline">\(g\)</span> is essentially a normalized derivative of the K function, any biases introduced in the K function due to these edge phenomena will inherently affect the pair correlation function as well. Therefore, similar to K-function estimation, methods like edge corrections or the use of guard areas are often necessary to ensure accurate and unbiased estimates of <span class="math inline">\(g\)</span>, especially at larger distance.</p>
+<p>The plot of the <span class="math inline">\(g\)</span> function for Walmart stores follows. Both the edge uncorrected and corrected <span class="math inline">\(g\)</span> functions are shown.</p>
+<div class="figure"><span style="display:block;" id="fig:f11-g"></span>
+<img src="img/g_function.png" alt="Estimated $g$ function of the Massachusets Walmart point data. Its interpretation is  similar to that of the $K$ function. Here, we observe distances between stores greater than expected under CSR up to about 5 km. Note that this cutoff is less than the 12 km cutoff observed with the $K$ function. The edge uncorrected $g$ function is depicted by a black line, while the corrected $g$ function is shown in a red line." width="300" />
+<p class="caption">
+Figure 15.21: Estimated <span class="math inline">\(g\)</span> function of the Massachusets Walmart point data. Its interpretation is similar to that of the <span class="math inline">\(K\)</span> function. Here, we observe distances between stores greater than expected under CSR up to about 5 km. Note that this cutoff is less than the 12 km cutoff observed with the <span class="math inline">\(K\)</span> function. The edge uncorrected <span class="math inline">\(g\)</span> function is depicted by a black line, while the corrected <span class="math inline">\(g\)</span> function is shown in a red line.
+</p>
+</div>
+<p>The analysis of the <span class="math inline">\(g\)</span> function suggests that Walmart stores exhibit greater clustering than expected at distances exceeding 5 kilometers.</p>
+<p>Like its <span class="math inline">\(K\)</span>, <span class="math inline">\(L\)</span> and ANN counterparts, the <span class="math inline">\(g\)</span>-function assumes <em>stationarity</em> and <em>isotropy</em> in the underlying point process.</p>
+<div id="hypothesis-test-for-the-pcf" class="section level3 hasAnchor" number="15.4.1">
+<h3><span class="header-section-number">15.4.1</span> HYpothesis test for the PCF<a href="chp15_0.html#hypothesis-test-for-the-pcf" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Monte Carlo (MC) simulation techniques provide a robust framework for hypothesis testing with the pair correlation function (<span class="math inline">\(g(d)\)</span>), similar to their application with the K function and ANN analyses. To assess whether an observed point pattern deviates significantly from a specified null hypothesis (e.g, CRS), you can generate numerous simulated point patterns under that null model. For each simulation, the <span class="math inline">\(g\)</span> function is computed, creating a distribution of expected <span class="math inline">\(g\)</span> values at each distance <span class="math inline">\(d\)</span>.</p>
+<p>These simulated distributions are also visualized as simulation envelopes (or bands) that depict the range of <span class="math inline">\(g\)</span> values expected under the null hypothesis, often representing minimum and maximum values or specific percentiles (e.g., 5th and 95th) at each distance. If the observed <span class="math inline">\(g\)</span> curve falls outside these envelopes at certain distances, it suggests a statistically significant departure from the null hypothesis at those spatial scales. When interpreting these graphical tests, here too caution is necessary as simply scanning pointwise envelopes across multiple distances can lead to an inflated Type I error rate (multiple comparison problem). Global envelopes can be used to address this.</p>
+</div>
+</div>
+<div id="summary-13" class="section level2 hasAnchor" number="15.5">
+<h2><span class="header-section-number">15.5</span> Summary<a href="chp15_0.html#summary-13" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>It is crucial to recognize that different distance-based spatial statistics, fundamental to second-order point pattern analysis, may yield varying interpretations of the same point pattern by focusing on distinct aspects of spatial interaction. For instance, the K-function provides a cumulative summary of all point pairs up to a given distance, which can effectively detect patterns across multiple spatial scales but may smooth over more localized effects. In contrast, the pair correlation function (<span class="math inline">\(g(d)\)</span>) offers a non-cumulative view, isolating interactions at specific distances, thus providing a more granular understanding of clustering or dispersion at particular scales. Similarly, Average Nearest Neighbor (ANN) statistics are sensitive to short-range interactions but might overlook broader spatial structures within the pattern.</p>
+<p>A critical consideration for all these methods is the reliance on underlying assumptions, most notably <strong>stationarity</strong> and <strong>isotropy</strong>. The assumption of stationarity is particularly vital as observed patterns can otherwise be confounded by first-order spatial variation (inhomogeneity) rather than true inter-event interaction. Another challenge is edge effects where observations near study boundaries can lead to biased estimates, especially at larger distances, necessitating appropriate corrections to ensure accurate results. These inherent differences and sensitivities underscore that no single statistic provides a complete picture of a spatial point pattern. Therefore, you should employ multiple complementary measures, examine their underlying assumptions, and, where possible, utilize simulation envelopes or hypothesis tests to robustly assess the statistical significance and nature of observed patterns across various spatial scales</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="chp14_0.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="chp16_0.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+  "sharing": {
+    "github": false,
+    "facebook": false,
+    "twitter": false,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": false,
+    "google": false,
+    "instapper": false
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": null,
+    "text": null
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": {},
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "section",
+    "scroll_highlight": true
+  }
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

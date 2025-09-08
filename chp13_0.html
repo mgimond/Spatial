@@ -1,0 +1,2873 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 13 Spatial Autocorrelation | Intro to GIS and Spatial Analysis</title>
+  <meta name="description" content="This is a compilation of lecture notes that accompany my Intro to GIS and Spatial Analysis course." />
+  <meta name="generator" content="bookdown 0.43 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 13 Spatial Autocorrelation | Intro to GIS and Spatial Analysis" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="This is a compilation of lecture notes that accompany my Intro to GIS and Spatial Analysis course." />
+  <meta name="github-repo" content="mgimond/spatial" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 13 Spatial Autocorrelation | Intro to GIS and Spatial Analysis" />
+  
+  <meta name="twitter:description" content="This is a compilation of lecture notes that accompany my Intro to GIS and Spatial Analysis course." />
+  
+
+<meta name="author" content="Manuel Gimond" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="chp12_0.html"/>
+<link rel="next" href="chp14_0.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<link href="libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet" />
+<script src="libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/proj4-2.6.2/proj4.min.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.2.2/leaflet.js"></script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-71085TV4MB"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-71085TV4MB');
+</script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; } /* Alert */
+code span.an { color: #008000; } /* Annotation */
+code span.at { } /* Attribute */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #0000ff; } /* ControlFlow */
+code span.ch { color: #008080; } /* Char */
+code span.cn { } /* Constant */
+code span.co { color: #008000; } /* Comment */
+code span.cv { color: #008000; } /* CommentVar */
+code span.do { color: #008000; } /* Documentation */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.im { } /* Import */
+code span.in { color: #008000; } /* Information */
+code span.kw { color: #0000ff; } /* Keyword */
+code span.op { } /* Operator */
+code span.ot { color: #ff4000; } /* Other */
+code span.pp { color: #ff4000; } /* Preprocessor */
+code span.sc { color: #008080; } /* SpecialChar */
+code span.ss { color: #008080; } /* SpecialString */
+code span.st { color: #008080; } /* String */
+code span.va { } /* Variable */
+code span.vs { color: #008080; } /* VerbatimString */
+code span.wa { color: #008000; font-weight: bold; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
+<li class="chapter" data-level="1" data-path="introGIS.html"><a href="introGIS.html"><i class="fa fa-check"></i><b>1</b> Introduction to GIS</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="introGIS.html"><a href="introGIS.html#what-is-a-gis"><i class="fa fa-check"></i><b>1.1</b> What is a GIS?</a>
+<ul>
+<li class="chapter" data-level="1.1.1" data-path="introGIS.html"><a href="introGIS.html#gis-software"><i class="fa fa-check"></i><b>1.1.1</b> GIS software</a></li>
+<li class="chapter" data-level="1.1.2" data-path="introGIS.html"><a href="introGIS.html#qgis"><i class="fa fa-check"></i><b>1.1.2</b> QGIS</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="introGIS.html"><a href="introGIS.html#what-is-spatial-analysis"><i class="fa fa-check"></i><b>1.2</b> What is Spatial Analysis?</a></li>
+<li class="chapter" data-level="1.3" data-path="introGIS.html"><a href="introGIS.html#whats-in-an-acronym"><i class="fa fa-check"></i><b>1.3</b> What’s in an Acronym?</a></li>
+<li class="chapter" data-level="1.4" data-path="introGIS.html"><a href="introGIS.html#course-roadmap"><i class="fa fa-check"></i><b>1.4</b> Course Roadmap</a>
+<ul>
+<li class="chapter" data-level="1.4.1" data-path="introGIS.html"><a href="introGIS.html#part-1-working-with-spatial-data"><i class="fa fa-check"></i><b>1.4.1</b> Part 1: Working with Spatial Data</a></li>
+<li class="chapter" data-level="1.4.2" data-path="introGIS.html"><a href="introGIS.html#part-2-exploratory-spatial-data-analysis"><i class="fa fa-check"></i><b>1.4.2</b> Part 2: Exploratory Spatial Data Analysis</a></li>
+</ul></li>
+</ul></li>
+<li class="part"><span><b>PART 1: Working with spatial data</b></span></li>
+<li class="chapter" data-level="2" data-path="chp02_0.html"><a href="chp02_0.html"><i class="fa fa-check"></i><b>2</b> Feature Representation</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="chp02_0.html"><a href="chp02_0.html#introduction"><i class="fa fa-check"></i><b>2.1</b> Introduction</a></li>
+<li class="chapter" data-level="2.2" data-path="chp02_0.html"><a href="chp02_0.html#vector-vs.-raster"><i class="fa fa-check"></i><b>2.2</b> Vector vs. Raster</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="chp02_0.html"><a href="chp02_0.html#vector"><i class="fa fa-check"></i><b>2.2.1</b> Vector</a></li>
+<li class="chapter" data-level="2.2.2" data-path="chp02_0.html"><a href="chp02_0.html#raster"><i class="fa fa-check"></i><b>2.2.2</b> Raster</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="chp02_0.html"><a href="chp02_0.html#object-vs.-field"><i class="fa fa-check"></i><b>2.3</b> Object vs. Field</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="chp02_0.html"><a href="chp02_0.html#object-view"><i class="fa fa-check"></i><b>2.3.1</b> Object View</a></li>
+<li class="chapter" data-level="2.3.2" data-path="chp02_0.html"><a href="chp02_0.html#field-view"><i class="fa fa-check"></i><b>2.3.2</b> Field View</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="chp02_0.html"><a href="chp02_0.html#scale"><i class="fa fa-check"></i><b>2.4</b> Scale</a></li>
+<li class="chapter" data-level="2.5" data-path="chp02_0.html"><a href="chp02_0.html#attribute-tables"><i class="fa fa-check"></i><b>2.5</b> Attribute Tables</a>
+<ul>
+<li class="chapter" data-level="2.5.1" data-path="chp02_0.html"><a href="chp02_0.html#measurement-levels"><i class="fa fa-check"></i><b>2.5.1</b> Measurement Levels</a></li>
+<li class="chapter" data-level="2.5.2" data-path="chp02_0.html"><a href="chp02_0.html#data-type"><i class="fa fa-check"></i><b>2.5.2</b> Data type</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="chp02_0.html"><a href="chp02_0.html#summary"><i class="fa fa-check"></i><b>2.6</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="gis-data-management.html"><a href="gis-data-management.html"><i class="fa fa-check"></i><b>3</b> GIS Data Management</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="gis-data-management.html"><a href="gis-data-management.html#introduction-1"><i class="fa fa-check"></i><b>3.1</b> Introduction</a></li>
+<li class="chapter" data-level="3.2" data-path="gis-data-management.html"><a href="gis-data-management.html#gis-file-data-formats"><i class="fa fa-check"></i><b>3.2</b> GIS File Data Formats</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="gis-data-management.html"><a href="gis-data-management.html#vector-data-file-formats"><i class="fa fa-check"></i><b>3.2.1</b> Vector Data File Formats</a></li>
+<li class="chapter" data-level="3.2.2" data-path="gis-data-management.html"><a href="gis-data-management.html#raster-data-file-formats"><i class="fa fa-check"></i><b>3.2.2</b> Raster Data File Formats</a></li>
+<li class="chapter" data-level="3.2.3" data-path="gis-data-management.html"><a href="gis-data-management.html#comparison-table"><i class="fa fa-check"></i><b>3.2.3</b> Comparison table</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="gis-data-management.html"><a href="gis-data-management.html#managing-gis-files-in-arcgis"><i class="fa fa-check"></i><b>3.3</b> Managing GIS Files in ArcGIS</a></li>
+<li class="chapter" data-level="3.4" data-path="gis-data-management.html"><a href="gis-data-management.html#managing-gis-projects-and-file-references"><i class="fa fa-check"></i><b>3.4</b> Managing GIS Projects and File References</a></li>
+<li class="chapter" data-level="3.5" data-path="gis-data-management.html"><a href="gis-data-management.html#summary-1"><i class="fa fa-check"></i><b>3.5</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="symbolizing-features.html"><a href="symbolizing-features.html"><i class="fa fa-check"></i><b>4</b> Symbolizing features</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="symbolizing-features.html"><a href="symbolizing-features.html#introduction-2"><i class="fa fa-check"></i><b>4.1</b> Introduction</a></li>
+<li class="chapter" data-level="4.2" data-path="symbolizing-features.html"><a href="symbolizing-features.html#color"><i class="fa fa-check"></i><b>4.2</b> Color</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="symbolizing-features.html"><a href="symbolizing-features.html#hue"><i class="fa fa-check"></i><b>4.2.1</b> Hue</a></li>
+<li class="chapter" data-level="4.2.2" data-path="symbolizing-features.html"><a href="symbolizing-features.html#lightness"><i class="fa fa-check"></i><b>4.2.2</b> Lightness</a></li>
+<li class="chapter" data-level="4.2.3" data-path="symbolizing-features.html"><a href="symbolizing-features.html#saturation"><i class="fa fa-check"></i><b>4.2.3</b> Saturation</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="symbolizing-features.html"><a href="symbolizing-features.html#color-space"><i class="fa fa-check"></i><b>4.3</b> Color Space</a></li>
+<li class="chapter" data-level="4.4" data-path="symbolizing-features.html"><a href="symbolizing-features.html#classification"><i class="fa fa-check"></i><b>4.4</b> Classification</a>
+<ul>
+<li class="chapter" data-level="4.4.1" data-path="symbolizing-features.html"><a href="symbolizing-features.html#qualitative-color-scheme"><i class="fa fa-check"></i><b>4.4.1</b> Qualitative color scheme</a></li>
+<li class="chapter" data-level="4.4.2" data-path="symbolizing-features.html"><a href="symbolizing-features.html#sequential-color-scheme"><i class="fa fa-check"></i><b>4.4.2</b> Sequential color scheme</a></li>
+<li class="chapter" data-level="4.4.3" data-path="symbolizing-features.html"><a href="symbolizing-features.html#divergent-color-scheme"><i class="fa fa-check"></i><b>4.4.3</b> Divergent color scheme</a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="symbolizing-features.html"><a href="symbolizing-features.html#choosing-an-appropriate-color-scheme"><i class="fa fa-check"></i><b>4.5</b> Choosing an Appropriate Color Scheme</a></li>
+<li class="chapter" data-level="4.6" data-path="symbolizing-features.html"><a href="symbolizing-features.html#classification-intervals"><i class="fa fa-check"></i><b>4.6</b> Classification Intervals</a>
+<ul>
+<li class="chapter" data-level="4.6.1" data-path="symbolizing-features.html"><a href="symbolizing-features.html#an-interactive-example"><i class="fa fa-check"></i><b>4.6.1</b> An Interactive Example</a></li>
+</ul></li>
+<li class="chapter" data-level="4.7" data-path="symbolizing-features.html"><a href="symbolizing-features.html#summary-2"><i class="fa fa-check"></i><b>4.7</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="statistical-maps.html"><a href="statistical-maps.html"><i class="fa fa-check"></i><b>5</b> Statistical maps</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="statistical-maps.html"><a href="statistical-maps.html#introduction-3"><i class="fa fa-check"></i><b>5.1</b> Introduction</a></li>
+<li class="chapter" data-level="5.2" data-path="statistical-maps.html"><a href="statistical-maps.html#statistical-distribution-maps"><i class="fa fa-check"></i><b>5.2</b> Statistical distribution maps</a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="statistical-maps.html"><a href="statistical-maps.html#quantile-map"><i class="fa fa-check"></i><b>5.2.1</b> Quantile map</a></li>
+<li class="chapter" data-level="5.2.2" data-path="statistical-maps.html"><a href="statistical-maps.html#boxplot-map"><i class="fa fa-check"></i><b>5.2.2</b> Boxplot map</a></li>
+<li class="chapter" data-level="5.2.3" data-path="statistical-maps.html"><a href="statistical-maps.html#iqr-map"><i class="fa fa-check"></i><b>5.2.3</b> IQR map</a></li>
+<li class="chapter" data-level="5.2.4" data-path="statistical-maps.html"><a href="statistical-maps.html#standard-deviation-map"><i class="fa fa-check"></i><b>5.2.4</b> Standard deviation map</a></li>
+<li class="chapter" data-level="5.2.5" data-path="statistical-maps.html"><a href="statistical-maps.html#outlier-maps"><i class="fa fa-check"></i><b>5.2.5</b> Outlier maps</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="statistical-maps.html"><a href="statistical-maps.html#mapping-uncertainty"><i class="fa fa-check"></i><b>5.3</b> Mapping uncertainty</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="statistical-maps.html"><a href="statistical-maps.html#assessing-confidence-in-spatial-patterns"><i class="fa fa-check"></i><b>5.3.1</b> Assessing confidence in spatial patterns</a></li>
+<li class="chapter" data-level="5.3.2" data-path="statistical-maps.html"><a href="statistical-maps.html#class-comparison-maps"><i class="fa fa-check"></i><b>5.3.2</b> Class comparison maps</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="statistical-maps.html"><a href="statistical-maps.html#summary-3"><i class="fa fa-check"></i><b>5.4</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="pitfalls-to-avoid.html"><a href="pitfalls-to-avoid.html"><i class="fa fa-check"></i><b>6</b> Pitfalls to avoid</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="pitfalls-to-avoid.html"><a href="pitfalls-to-avoid.html#introduction-4"><i class="fa fa-check"></i><b>6.1</b> Introduction</a></li>
+<li class="chapter" data-level="6.2" data-path="pitfalls-to-avoid.html"><a href="pitfalls-to-avoid.html#representing-count"><i class="fa fa-check"></i><b>6.2</b> Representing Count</a></li>
+<li class="chapter" data-level="6.3" data-path="pitfalls-to-avoid.html"><a href="pitfalls-to-avoid.html#maup"><i class="fa fa-check"></i><b>6.3</b> MAUP</a></li>
+<li class="chapter" data-level="6.4" data-path="pitfalls-to-avoid.html"><a href="pitfalls-to-avoid.html#ecological-fallacy"><i class="fa fa-check"></i><b>6.4</b> Ecological Fallacy</a></li>
+<li class="chapter" data-level="6.5" data-path="pitfalls-to-avoid.html"><a href="pitfalls-to-avoid.html#mapping-rates"><i class="fa fa-check"></i><b>6.5</b> Mapping rates</a></li>
+<li class="chapter" data-level="6.6" data-path="pitfalls-to-avoid.html"><a href="pitfalls-to-avoid.html#empirical-bayes-smoothing"><i class="fa fa-check"></i><b>6.6</b> Empirical Bayes Smoothing</a></li>
+<li class="chapter" data-level="6.7" data-path="pitfalls-to-avoid.html"><a href="pitfalls-to-avoid.html#summary-4"><i class="fa fa-check"></i><b>6.7</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="good-map-making-tips.html"><a href="good-map-making-tips.html"><i class="fa fa-check"></i><b>7</b> Good Map Making Tips</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="good-map-making-tips.html"><a href="good-map-making-tips.html#introduction-5"><i class="fa fa-check"></i><b>7.1</b> Introduction</a></li>
+<li class="chapter" data-level="7.2" data-path="good-map-making-tips.html"><a href="good-map-making-tips.html#elements-of-a-map"><i class="fa fa-check"></i><b>7.2</b> Elements of a Map</a></li>
+<li class="chapter" data-level="7.3" data-path="good-map-making-tips.html"><a href="good-map-making-tips.html#how-to-create-a-good-map"><i class="fa fa-check"></i><b>7.3</b> How to Create a <em>Good</em> Map</a></li>
+<li class="chapter" data-level="7.4" data-path="good-map-making-tips.html"><a href="good-map-making-tips.html#typefaces-and-fonts"><i class="fa fa-check"></i><b>7.4</b> Typefaces and Fonts</a></li>
+<li class="chapter" data-level="7.5" data-path="good-map-making-tips.html"><a href="good-map-making-tips.html#summary-5"><i class="fa fa-check"></i><b>7.5</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="spatial-operations-and-vector-overlays.html"><a href="spatial-operations-and-vector-overlays.html"><i class="fa fa-check"></i><b>8</b> Spatial Operations and Vector Overlays</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="spatial-operations-and-vector-overlays.html"><a href="spatial-operations-and-vector-overlays.html#introduction-6"><i class="fa fa-check"></i><b>8.1</b> Introduction</a></li>
+<li class="chapter" data-level="8.2" data-path="spatial-operations-and-vector-overlays.html"><a href="spatial-operations-and-vector-overlays.html#selection-by-attribute"><i class="fa fa-check"></i><b>8.2</b> Selection by Attribute</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="spatial-operations-and-vector-overlays.html"><a href="spatial-operations-and-vector-overlays.html#set-algebra"><i class="fa fa-check"></i><b>8.2.1</b> Set Algebra</a></li>
+<li class="chapter" data-level="8.2.2" data-path="spatial-operations-and-vector-overlays.html"><a href="spatial-operations-and-vector-overlays.html#boolean-algebra"><i class="fa fa-check"></i><b>8.2.2</b> Boolean Algebra</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="spatial-operations-and-vector-overlays.html"><a href="spatial-operations-and-vector-overlays.html#selection-by-location"><i class="fa fa-check"></i><b>8.3</b> Selection by location</a></li>
+<li class="chapter" data-level="8.4" data-path="spatial-operations-and-vector-overlays.html"><a href="spatial-operations-and-vector-overlays.html#vector-overlay"><i class="fa fa-check"></i><b>8.4</b> Vector Overlay</a>
+<ul>
+<li class="chapter" data-level="8.4.1" data-path="spatial-operations-and-vector-overlays.html"><a href="spatial-operations-and-vector-overlays.html#clipping"><i class="fa fa-check"></i><b>8.4.1</b> Clipping</a></li>
+<li class="chapter" data-level="8.4.2" data-path="spatial-operations-and-vector-overlays.html"><a href="spatial-operations-and-vector-overlays.html#intersecting"><i class="fa fa-check"></i><b>8.4.2</b> Intersecting</a></li>
+<li class="chapter" data-level="8.4.3" data-path="spatial-operations-and-vector-overlays.html"><a href="spatial-operations-and-vector-overlays.html#unioning"><i class="fa fa-check"></i><b>8.4.3</b> Unioning</a></li>
+</ul></li>
+<li class="chapter" data-level="8.5" data-path="spatial-operations-and-vector-overlays.html"><a href="spatial-operations-and-vector-overlays.html#summary-6"><i class="fa fa-check"></i><b>8.5</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="chp09_0.html"><a href="chp09_0.html"><i class="fa fa-check"></i><b>9</b> Coordinate Systems</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="chp09_0.html"><a href="chp09_0.html#introduction-7"><i class="fa fa-check"></i><b>9.1</b> Introduction</a></li>
+<li class="chapter" data-level="9.2" data-path="chp09_0.html"><a href="chp09_0.html#geographic-coordinate-systems"><i class="fa fa-check"></i><b>9.2</b> Geographic Coordinate Systems</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="chp09_0.html"><a href="chp09_0.html#sphere-and-ellipsoid"><i class="fa fa-check"></i><b>9.2.1</b> Sphere and Ellipsoid</a></li>
+<li class="chapter" data-level="9.2.2" data-path="chp09_0.html"><a href="chp09_0.html#geoid"><i class="fa fa-check"></i><b>9.2.2</b> Geoid</a></li>
+<li class="chapter" data-level="9.2.3" data-path="chp09_0.html"><a href="chp09_0.html#datum"><i class="fa fa-check"></i><b>9.2.3</b> Datum</a></li>
+<li class="chapter" data-level="9.2.4" data-path="chp09_0.html"><a href="chp09_0.html#building-the-geographic-coordinate-system"><i class="fa fa-check"></i><b>9.2.4</b> Building the Geographic Coordinate System</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="chp09_0.html"><a href="chp09_0.html#projected-coordinate-systems"><i class="fa fa-check"></i><b>9.3</b> Projected Coordinate Systems</a>
+<ul>
+<li class="chapter" data-level="9.3.1" data-path="chp09_0.html"><a href="chp09_0.html#planar-projections"><i class="fa fa-check"></i><b>9.3.1</b> Planar Projections</a></li>
+<li class="chapter" data-level="9.3.2" data-path="chp09_0.html"><a href="chp09_0.html#cylindrical-projection"><i class="fa fa-check"></i><b>9.3.2</b> Cylindrical Projection</a></li>
+<li class="chapter" data-level="9.3.3" data-path="chp09_0.html"><a href="chp09_0.html#conical-projection"><i class="fa fa-check"></i><b>9.3.3</b> Conical Projection</a></li>
+</ul></li>
+<li class="chapter" data-level="9.4" data-path="chp09_0.html"><a href="chp09_0.html#spatial-properties"><i class="fa fa-check"></i><b>9.4</b> Spatial Properties</a></li>
+<li class="chapter" data-level="9.5" data-path="chp09_0.html"><a href="chp09_0.html#geodesic-geometries"><i class="fa fa-check"></i><b>9.5</b> Geodesic geometries</a></li>
+<li class="chapter" data-level="9.6" data-path="chp09_0.html"><a href="chp09_0.html#summary-7"><i class="fa fa-check"></i><b>9.6</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="chp10_0.html"><a href="chp10_0.html"><i class="fa fa-check"></i><b>10</b> Map Algebra</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="chp10_0.html"><a href="chp10_0.html#introduction-8"><i class="fa fa-check"></i><b>10.1</b> Introduction</a></li>
+<li class="chapter" data-level="10.2" data-path="chp10_0.html"><a href="chp10_0.html#local-operations-and-functions"><i class="fa fa-check"></i><b>10.2</b> Local operations and functions</a></li>
+<li class="chapter" data-level="10.3" data-path="chp10_0.html"><a href="chp10_0.html#focal-operations-and-functions"><i class="fa fa-check"></i><b>10.3</b> Focal operations and functions</a></li>
+<li class="chapter" data-level="10.4" data-path="chp10_0.html"><a href="chp10_0.html#zonal-operations-and-functions"><i class="fa fa-check"></i><b>10.4</b> Zonal operations and functions</a></li>
+<li class="chapter" data-level="10.5" data-path="chp10_0.html"><a href="chp10_0.html#global-operations-and-functions"><i class="fa fa-check"></i><b>10.5</b> Global operations and functions</a></li>
+<li class="chapter" data-level="10.6" data-path="chp10_0.html"><a href="chp10_0.html#operators-and-functions"><i class="fa fa-check"></i><b>10.6</b> Operators and functions</a>
+<ul>
+<li class="chapter" data-level="10.6.1" data-path="chp10_0.html"><a href="chp10_0.html#mathematical-operators-and-functions"><i class="fa fa-check"></i><b>10.6.1</b> Mathematical operators and functions</a></li>
+<li class="chapter" data-level="10.6.2" data-path="chp10_0.html"><a href="chp10_0.html#logical-comparison"><i class="fa fa-check"></i><b>10.6.2</b> Logical comparison</a></li>
+<li class="chapter" data-level="10.6.3" data-path="chp10_0.html"><a href="chp10_0.html#boolean-or-logical-operators"><i class="fa fa-check"></i><b>10.6.3</b> Boolean (or Logical) operators</a></li>
+<li class="chapter" data-level="10.6.4" data-path="chp10_0.html"><a href="chp10_0.html#combining-operations"><i class="fa fa-check"></i><b>10.6.4</b> Combining operations</a></li>
+</ul></li>
+<li class="chapter" data-level="10.7" data-path="chp10_0.html"><a href="chp10_0.html#summary-8"><i class="fa fa-check"></i><b>10.7</b> Summary</a></li>
+</ul></li>
+<li class="part"><span><b>PART 2: Spatial Analysis</b></span></li>
+<li class="chapter" data-level="11" data-path="chp11_0.html"><a href="chp11_0.html"><i class="fa fa-check"></i><b>11</b> Analyzing Spatial Patterns</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="chp11_0.html"><a href="chp11_0.html#introduction-9"><i class="fa fa-check"></i><b>11.1</b> Introduction</a></li>
+<li class="chapter" data-level="11.2" data-path="chp11_0.html"><a href="chp11_0.html#from-maps-to-models-defining-spatial-patterns-statistically"><i class="fa fa-check"></i><b>11.2</b> From Maps to Models: Defining Spatial Patterns Statistically</a>
+<ul>
+<li class="chapter" data-level="11.2.1" data-path="chp11_0.html"><a href="chp11_0.html#first-order-effects-spatial-trend-and-intensity"><i class="fa fa-check"></i><b>11.2.1</b> First-Order Effects: Spatial Trend and Intensity</a></li>
+<li class="chapter" data-level="11.2.2" data-path="chp11_0.html"><a href="chp11_0.html#second-order-effects-interaction-and-autocorrelation"><i class="fa fa-check"></i><b>11.2.2</b> Second-Order Effects: Interaction and Autocorrelation</a></li>
+</ul></li>
+<li class="chapter" data-level="11.3" data-path="chp11_0.html"><a href="chp11_0.html#why-distinguishing-these-effects-matters"><i class="fa fa-check"></i><b>11.3</b> Why Distinguishing These Effects Matters</a></li>
+<li class="chapter" data-level="11.4" data-path="chp11_0.html"><a href="chp11_0.html#spatial-data-types-and-applicability-of-first--and-second-order-effects"><i class="fa fa-check"></i><b>11.4</b> Spatial Data Types and Applicability of First- and Second-Order Effects</a></li>
+<li class="chapter" data-level="11.5" data-path="chp11_0.html"><a href="chp11_0.html#quantifying-patterns-vs.-hypothesis-testing"><i class="fa fa-check"></i><b>11.5</b> Quantifying Patterns vs. Hypothesis Testing</a></li>
+<li class="chapter" data-level="11.6" data-path="chp11_0.html"><a href="chp11_0.html#a-note-on-terminology-why-first-order-and-second-order"><i class="fa fa-check"></i><b>11.6</b> A Note on Terminology: Why ‘First-Order’ and ‘Second-Order’?</a></li>
+<li class="chapter" data-level="11.7" data-path="chp11_0.html"><a href="chp11_0.html#suggested-resources"><i class="fa fa-check"></i><b>11.7</b> Suggested resources</a></li>
+<li class="chapter" data-level="11.8" data-path="chp11_0.html"><a href="chp11_0.html#summary-9"><i class="fa fa-check"></i><b>11.8</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="chp12_0.html"><a href="chp12_0.html"><i class="fa fa-check"></i><b>12</b> Modeling Spatial Trends</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="chp12_0.html"><a href="chp12_0.html#introduction-10"><i class="fa fa-check"></i><b>12.1</b> Introduction</a></li>
+<li class="chapter" data-level="12.2" data-path="chp12_0.html"><a href="chp12_0.html#polynomial-functions"><i class="fa fa-check"></i><b>12.2</b> Polynomial functions</a></li>
+<li class="chapter" data-level="12.3" data-path="chp12_0.html"><a href="chp12_0.html#polynomial-functions-in-one-dimension"><i class="fa fa-check"></i><b>12.3</b> Polynomial functions in one dimension</a></li>
+<li class="chapter" data-level="12.4" data-path="chp12_0.html"><a href="chp12_0.html#transitioning-from-a-one-dimensional-to-a-two-dimensional-space"><i class="fa fa-check"></i><b>12.4</b> Transitioning from a one-dimensional to a two-dimensional space</a></li>
+<li class="chapter" data-level="12.5" data-path="chp12_0.html"><a href="chp12_0.html#evaluating-a-models-goodness-of-fit"><i class="fa fa-check"></i><b>12.5</b> Evaluating a model’s goodness of fit</a></li>
+<li class="chapter" data-level="12.6" data-path="chp12_0.html"><a href="chp12_0.html#a-note-about-adopting-traditional-statistical-measures-of-significance-to-spatial-functions"><i class="fa fa-check"></i><b>12.6</b> A note about adopting traditional statistical measures of significance to spatial functions</a></li>
+<li class="chapter" data-level="12.7" data-path="chp12_0.html"><a href="chp12_0.html#summary-10"><i class="fa fa-check"></i><b>12.7</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="chp13_0.html"><a href="chp13_0.html"><i class="fa fa-check"></i><b>13</b> Spatial Autocorrelation</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="chp13_0.html"><a href="chp13_0.html#introduction-11"><i class="fa fa-check"></i><b>13.1</b> Introduction</a></li>
+<li class="chapter" data-level="13.2" data-path="chp13_0.html"><a href="chp13_0.html#global-morans-i"><i class="fa fa-check"></i><b>13.2</b> Global Moran’s <em>I</em></a>
+<ul>
+<li class="chapter" data-level="13.2.1" data-path="chp13_0.html"><a href="chp13_0.html#computing-the-morans-i"><i class="fa fa-check"></i><b>13.2.1</b> Computing the Moran’s <em>I</em></a></li>
+<li class="chapter" data-level="13.2.2" data-path="chp13_0.html"><a href="chp13_0.html#monte-carlo-approach-to-estimating-significance"><i class="fa fa-check"></i><b>13.2.2</b> Monte Carlo approach to estimating significance</a></li>
+</ul></li>
+<li class="chapter" data-level="13.3" data-path="chp13_0.html"><a href="chp13_0.html#morans-i-at-different-distance-bands"><i class="fa fa-check"></i><b>13.3</b> Moran’s <em>I</em> at different distance bands</a></li>
+<li class="chapter" data-level="13.4" data-path="chp13_0.html"><a href="chp13_0.html#local-morans-i"><i class="fa fa-check"></i><b>13.4</b> Local Moran’s <em>I</em></a>
+<ul>
+<li class="chapter" data-level="13.4.1" data-path="chp13_0.html"><a href="chp13_0.html#a-note-about-interpreting-the-permutation-based-p-value"><i class="fa fa-check"></i><b>13.4.1</b> A note about interpreting the permutation-based p-value</a></li>
+</ul></li>
+<li class="chapter" data-level="13.5" data-path="chp13_0.html"><a href="chp13_0.html#morans-i-equation-explained"><i class="fa fa-check"></i><b>13.5</b> Moran’s <em>I</em> equation explained</a>
+<ul>
+<li class="chapter" data-level="13.5.1" data-path="chp13_0.html"><a href="chp13_0.html#local-morans-i-1"><i class="fa fa-check"></i><b>13.5.1</b> Local Moran’s I</a></li>
+<li class="chapter" data-level="13.5.2" data-path="chp13_0.html"><a href="chp13_0.html#global-morans-i-1"><i class="fa fa-check"></i><b>13.5.2</b> Global Moran’s I</a></li>
+</ul></li>
+<li class="chapter" data-level="13.6" data-path="chp13_0.html"><a href="chp13_0.html#summary-11"><i class="fa fa-check"></i><b>13.6</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="chp14_0.html"><a href="chp14_0.html"><i class="fa fa-check"></i><b>14</b> First-Order Point Pattern Analysis: Modeling Spatial Intensity</a>
+<ul>
+<li class="chapter" data-level="14.1" data-path="chp14_0.html"><a href="chp14_0.html#introduction-12"><i class="fa fa-check"></i><b>14.1</b> Introduction</a></li>
+<li class="chapter" data-level="14.2" data-path="chp14_0.html"><a href="chp14_0.html#centrography"><i class="fa fa-check"></i><b>14.2</b> Centrography</a></li>
+<li class="chapter" data-level="14.3" data-path="chp14_0.html"><a href="chp14_0.html#understanding-intensity-and-density-in-point-patterns"><i class="fa fa-check"></i><b>14.3</b> Understanding Intensity and Density in Point Patterns</a></li>
+<li class="chapter" data-level="14.4" data-path="chp14_0.html"><a href="chp14_0.html#global-density"><i class="fa fa-check"></i><b>14.4</b> Global density</a></li>
+<li class="chapter" data-level="14.5" data-path="chp14_0.html"><a href="chp14_0.html#local-density"><i class="fa fa-check"></i><b>14.5</b> Local density</a>
+<ul>
+<li class="chapter" data-level="14.5.1" data-path="chp14_0.html"><a href="chp14_0.html#quadrat-density"><i class="fa fa-check"></i><b>14.5.1</b> Quadrat density</a></li>
+<li class="chapter" data-level="14.5.2" data-path="chp14_0.html"><a href="chp14_0.html#kernel-density"><i class="fa fa-check"></i><b>14.5.2</b> Kernel density</a></li>
+<li class="chapter" data-level="14.5.3" data-path="chp14_0.html"><a href="chp14_0.html#nonparametric-intensity-modeling-with-covariates"><i class="fa fa-check"></i><b>14.5.3</b> Nonparametric Intensity Modeling with Covariates</a></li>
+<li class="chapter" data-level="14.5.4" data-path="chp14_0.html"><a href="chp14_0.html#parametric-intensity-modeling-with-covariates"><i class="fa fa-check"></i><b>14.5.4</b> Parametric Intensity Modeling with Covariates</a></li>
+</ul></li>
+<li class="chapter" data-level="14.6" data-path="chp14_0.html"><a href="chp14_0.html#PPM"><i class="fa fa-check"></i><b>14.6</b> Hypothesis Testing for Covariate Effects</a></li>
+<li class="chapter" data-level="14.7" data-path="chp14_0.html"><a href="chp14_0.html#summary-12"><i class="fa fa-check"></i><b>14.7</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="chp15_0.html"><a href="chp15_0.html"><i class="fa fa-check"></i><b>15</b> Second-Order Point Pattern Analysis: Modeling Distance</a>
+<ul>
+<li class="chapter" data-level="15.1" data-path="chp15_0.html"><a href="chp15_0.html#introduction-13"><i class="fa fa-check"></i><b>15.1</b> Introduction</a></li>
+<li class="chapter" data-level="15.2" data-path="chp15_0.html"><a href="chp15_0.html#average-nearest-neighbor"><i class="fa fa-check"></i><b>15.2</b> Average Nearest Neighbor</a>
+<ul>
+<li class="chapter" data-level="15.2.1" data-path="chp15_0.html"><a href="chp15_0.html#extending-the-concept-higher-order-neighbors"><i class="fa fa-check"></i><b>15.2.1</b> Extending the Concept: Higher-Order Neighbors</a></li>
+<li class="chapter" data-level="15.2.2" data-path="chp15_0.html"><a href="chp15_0.html#testing-for-complete-spatial-randomness"><i class="fa fa-check"></i><b>15.2.2</b> Testing for Complete Spatial Randomness</a></li>
+<li class="chapter" data-level="15.2.3" data-path="chp15_0.html"><a href="chp15_0.html#controlling-for-first-order-effects-in-second-order-analysis"><i class="fa fa-check"></i><b>15.2.3</b> Controlling for First-Order Effects in Second-Order Analysis</a></li>
+<li class="chapter" data-level="15.2.4" data-path="chp15_0.html"><a href="chp15_0.html#controlling-for-second-order-effects-in-first-order-analysis"><i class="fa fa-check"></i><b>15.2.4</b> Controlling for Second-Order Effects in First-Order Analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="15.3" data-path="chp15_0.html"><a href="chp15_0.html#k-and-l-functions"><i class="fa fa-check"></i><b>15.3</b> K and L functions</a>
+<ul>
+<li class="chapter" data-level="15.3.1" data-path="chp15_0.html"><a href="chp15_0.html#k-function"><i class="fa fa-check"></i><b>15.3.1</b> K function</a></li>
+<li class="chapter" data-level="15.3.2" data-path="chp15_0.html"><a href="chp15_0.html#l-function"><i class="fa fa-check"></i><b>15.3.2</b> L function</a></li>
+<li class="chapter" data-level="15.3.3" data-path="chp15_0.html"><a href="chp15_0.html#monte-carlo-test-for-the-k-and-l-functions"><i class="fa fa-check"></i><b>15.3.3</b> Monte Carlo test for the K and L functions</a></li>
+</ul></li>
+<li class="chapter" data-level="15.4" data-path="chp15_0.html"><a href="chp15_0.html#the-pair-correlation-function"><i class="fa fa-check"></i><b>15.4</b> The Pair Correlation Function</a>
+<ul>
+<li class="chapter" data-level="15.4.1" data-path="chp15_0.html"><a href="chp15_0.html#hypothesis-test-for-the-pcf"><i class="fa fa-check"></i><b>15.4.1</b> HYpothesis test for the PCF</a></li>
+</ul></li>
+<li class="chapter" data-level="15.5" data-path="chp15_0.html"><a href="chp15_0.html#summary-13"><i class="fa fa-check"></i><b>15.5</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="16" data-path="chp16_0.html"><a href="chp16_0.html"><i class="fa fa-check"></i><b>16</b> Spatial Interpolation</a>
+<ul>
+<li class="chapter" data-level="16.1" data-path="chp16_0.html"><a href="chp16_0.html#deterministic-approach-to-interpolation"><i class="fa fa-check"></i><b>16.1</b> Deterministic Approach to Interpolation</a>
+<ul>
+<li class="chapter" data-level="16.1.1" data-path="chp16_0.html"><a href="chp16_0.html#proximity-interpolation"><i class="fa fa-check"></i><b>16.1.1</b> Proximity interpolation</a></li>
+<li class="chapter" data-level="16.1.2" data-path="chp16_0.html"><a href="chp16_0.html#inverse-distance-weighted-idw"><i class="fa fa-check"></i><b>16.1.2</b> Inverse Distance Weighted (IDW)</a></li>
+<li class="chapter" data-level="16.1.3" data-path="chp16_0.html"><a href="chp16_0.html#fine-tuning-the-interpolation-parameters"><i class="fa fa-check"></i><b>16.1.3</b> Fine tuning the interpolation parameters</a></li>
+</ul></li>
+<li class="chapter" data-level="16.2" data-path="chp16_0.html"><a href="chp16_0.html#statistical-approach-to-interpolation"><i class="fa fa-check"></i><b>16.2</b> Statistical Approach to Interpolation</a>
+<ul>
+<li class="chapter" data-level="16.2.1" data-path="chp16_0.html"><a href="chp16_0.html#trend-surfaces"><i class="fa fa-check"></i><b>16.2.1</b> Trend Surfaces</a></li>
+<li class="chapter" data-level="16.2.2" data-path="chp16_0.html"><a href="chp16_0.html#ordinary-kriging"><i class="fa fa-check"></i><b>16.2.2</b> Ordinary Kriging</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="17" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>17</b> References</a></li>
+<li class="appendix"><span><b>Appendix</b></span></li>
+<li class="chapter" data-level="A" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html"><i class="fa fa-check"></i><b>A</b> Reading and writing spatial data in R</a>
+<ul>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_2"><i class="fa fa-check"></i>Sample files for this exercise</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_3"><i class="fa fa-check"></i>Introduction</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_4"><i class="fa fa-check"></i>Creating spatial objects</a>
+<ul>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_4_1"><i class="fa fa-check"></i>Reading a shapefile</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_4_2"><i class="fa fa-check"></i>Reading a GeoPackage</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_4_3"><i class="fa fa-check"></i>Reading a raster</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_4_5"><i class="fa fa-check"></i>Creating a spatial object from a data frame</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_4_6"><i class="fa fa-check"></i>Geocoding street addresses</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_5"><i class="fa fa-check"></i>Converting from an <code>sf</code> object</a>
+<ul>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_5_1"><i class="fa fa-check"></i>Converting an <code>sf</code> object to a <code>Spatial*</code> object (<code>spdep</code>/<code>sp</code>)</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_5_2"><i class="fa fa-check"></i>Converting an <code>sf</code> polygon object to an <code>owin</code> object</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_5_3"><i class="fa fa-check"></i>Converting an <code>sf</code> point object to a <code>ppp</code> object</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_5_4"><i class="fa fa-check"></i>Converting a <code>SpatRaster</code> object to an <code>im</code> object</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_6"><i class="fa fa-check"></i>Converting to an <code>sf</code> object</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_7"><i class="fa fa-check"></i>Dissecting the <code>sf</code> file object</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_8"><i class="fa fa-check"></i>Exporting to different data file formats</a></li>
+</ul></li>
+<li class="chapter" data-level="B" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html"><i class="fa fa-check"></i><b>B</b> Mapping data in R</a>
+<ul>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#sample-files-for-this-exercise"><i class="fa fa-check"></i>Sample files for this exercise</a></li>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#tmap"><i class="fa fa-check"></i><code>tmap</code></a>
+<ul>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#the-basics"><i class="fa fa-check"></i>The basics</a></li>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#combining-layers"><i class="fa fa-check"></i>Combining layers</a></li>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#tweaking-classification-schemes"><i class="fa fa-check"></i>Tweaking classification schemes</a></li>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#tweaking-colors"><i class="fa fa-check"></i>Tweaking colors</a></li>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#adding-labels"><i class="fa fa-check"></i>Adding labels</a></li>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#adding-a-grid-or-graticule"><i class="fa fa-check"></i>Adding a grid or graticule</a></li>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#adding-statistical-plots"><i class="fa fa-check"></i>Adding statistical plots</a></li>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#mapping-raster-files"><i class="fa fa-check"></i>Mapping raster files</a></li>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#changing-coordinate-systems"><i class="fa fa-check"></i>Changing coordinate systems</a></li>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#side-by-side-maps"><i class="fa fa-check"></i>Side-by-side maps</a></li>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#splitting-data-by-polygons-or-group-of-polygons"><i class="fa fa-check"></i>Splitting data by polygons or group of polygons</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#ggplot2"><i class="fa fa-check"></i><code>ggplot2</code></a>
+<ul>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#the-basics-1"><i class="fa fa-check"></i>The basics</a></li>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#tweaking-classification-schemes-1"><i class="fa fa-check"></i>Tweaking classification schemes</a></li>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#combining-layers-1"><i class="fa fa-check"></i>Combining layers</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#plot_sf"><i class="fa fa-check"></i><code>plot_sf</code></a>
+<ul>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#the-basics-2"><i class="fa fa-check"></i>The basics</a></li>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#adding-a-graticule"><i class="fa fa-check"></i>Adding a graticule</a></li>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#combining-layers-2"><i class="fa fa-check"></i>Combining layers</a></li>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#tweaking-colors-1"><i class="fa fa-check"></i>Tweaking colors</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="C" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html"><i class="fa fa-check"></i><b>C</b> Anatomy of simple feature objects</a>
+<ul>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#creating-point-sf-objects"><i class="fa fa-check"></i>Creating point ‘sf’ objects</a>
+<ul>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#step-1-create-the-point-geometry-sfg"><i class="fa fa-check"></i>Step 1: Create the point geometry: <code>sfg</code></a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#step-2-create-a-column-of-simple-feature-geometries-sfc"><i class="fa fa-check"></i>Step 2: Create a column of simple feature geometries: <code>sfc</code></a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#step-3-create-the-simple-feature-object-sf"><i class="fa fa-check"></i>Step 3: Create the simple feature object <code>sf</code></a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#renaming-the-geometry-column"><i class="fa fa-check"></i>Renaming the geometry column</a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#adding-attributes-to-an-sf-object"><i class="fa fa-check"></i>Adding attributes to an <code>sf</code> object</a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#adding-a-geometry-column-to-an-existing-non-spatial-dataframe"><i class="fa fa-check"></i>Adding a geometry column to an existing non-spatial dataframe</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#creating-polyline-sf-objects"><i class="fa fa-check"></i>Creating polyline ‘sf’ objects</a>
+<ul>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#creating-branching-polyline-features"><i class="fa fa-check"></i>Creating branching polyline features</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#creating-polygon-sf-objects"><i class="fa fa-check"></i>Creating polygon ‘sf’ objects</a>
+<ul>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#polygon-simple-feature"><i class="fa fa-check"></i><code>POLYGON</code> simple feature</a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#multipolygon-simple-feature-multipart-features"><i class="fa fa-check"></i><code>MULTIPOLYGON</code> simple feature: multipart features</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#extracting-geometry-from-an-sf-object"><i class="fa fa-check"></i>Extracting geometry from an <code>sf</code> object</a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#alternative-syntax"><i class="fa fa-check"></i>Alternative syntax</a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#additional-resources"><i class="fa fa-check"></i>Additional resources</a></li>
+</ul></li>
+<li class="chapter" data-level="D" data-path="vector-operations-in-r.html"><a href="vector-operations-in-r.html"><i class="fa fa-check"></i><b>D</b> Vector operations in R</a>
+<ul>
+<li class="chapter" data-level="" data-path="vector-operations-in-r.html"><a href="vector-operations-in-r.html#dissolving-geometries"><i class="fa fa-check"></i>Dissolving geometries</a>
+<ul>
+<li class="chapter" data-level="" data-path="vector-operations-in-r.html"><a href="vector-operations-in-r.html#dissolving-by-contiguous-shape"><i class="fa fa-check"></i>Dissolving by contiguous shape</a></li>
+<li class="chapter" data-level="" data-path="vector-operations-in-r.html"><a href="vector-operations-in-r.html#dissolving-by-attribute"><i class="fa fa-check"></i>Dissolving by attribute</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="vector-operations-in-r.html"><a href="vector-operations-in-r.html#subsetting-by-attribute"><i class="fa fa-check"></i>Subsetting by attribute</a></li>
+<li class="chapter" data-level="" data-path="vector-operations-in-r.html"><a href="vector-operations-in-r.html#intersecting-layers"><i class="fa fa-check"></i>Intersecting layers</a></li>
+<li class="chapter" data-level="" data-path="vector-operations-in-r.html"><a href="vector-operations-in-r.html#clipping-spatial-objects-using-other-spatial-objects"><i class="fa fa-check"></i>Clipping spatial objects using other spatial objects</a></li>
+<li class="chapter" data-level="" data-path="vector-operations-in-r.html"><a href="vector-operations-in-r.html#unioning-layers"><i class="fa fa-check"></i>Unioning layers</a></li>
+<li class="chapter" data-level="" data-path="vector-operations-in-r.html"><a href="vector-operations-in-r.html#buffering-geometries"><i class="fa fa-check"></i>Buffering geometries</a></li>
+</ul></li>
+<li class="chapter" data-level="E" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html"><i class="fa fa-check"></i><b>E</b> Mapping rates in R</a>
+<ul>
+<li class="chapter" data-level="" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html#raw-rates"><i class="fa fa-check"></i>Raw Rates</a></li>
+<li class="chapter" data-level="" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html#standardized-mortality-ratios-relative-risk"><i class="fa fa-check"></i>Standardized mortality ratios (relative risk)</a></li>
+<li class="chapter" data-level="" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html#dykes-and-unwins-chi-square-statistic"><i class="fa fa-check"></i>Dykes and Unwin’s chi-square statistic</a></li>
+<li class="chapter" data-level="" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html#unstable-ratios"><i class="fa fa-check"></i>Unstable ratios</a>
+<ul>
+<li class="chapter" data-level="" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html#global-empirical-bayes-eb-rate-estimate"><i class="fa fa-check"></i>Global Empirical Bayes (EB) rate estimate</a></li>
+<li class="chapter" data-level="" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html#local-empirical-bayes-eb-rate-estimate"><i class="fa fa-check"></i>Local Empirical Bayes (EB) rate estimate</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="F" data-path="raster-operations-in-r.html"><a href="raster-operations-in-r.html"><i class="fa fa-check"></i><b>F</b> Raster operations in R</a>
+<ul>
+<li class="chapter" data-level="" data-path="raster-operations-in-r.html"><a href="raster-operations-in-r.html#sample-files-for-this-exercise-1"><i class="fa fa-check"></i>Sample files for this exercise</a></li>
+<li class="chapter" data-level="" data-path="raster-operations-in-r.html"><a href="raster-operations-in-r.html#local-operations-and-functions-1"><i class="fa fa-check"></i>Local operations and functions</a>
+<ul>
+<li class="chapter" data-level="" data-path="raster-operations-in-r.html"><a href="raster-operations-in-r.html#unary-operations-and-functions-applied-to-single-rasters"><i class="fa fa-check"></i>Unary operations and functions (applied to single rasters)</a></li>
+<li class="chapter" data-level="" data-path="raster-operations-in-r.html"><a href="raster-operations-in-r.html#binary-operations-and-functions-where-two-rasters-are-used"><i class="fa fa-check"></i>Binary operations and functions (where two rasters are used)</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="raster-operations-in-r.html"><a href="raster-operations-in-r.html#focal-operations-and-functions-1"><i class="fa fa-check"></i>Focal operations and functions</a></li>
+<li class="chapter" data-level="" data-path="raster-operations-in-r.html"><a href="raster-operations-in-r.html#zonal-operations-and-functions-1"><i class="fa fa-check"></i>Zonal operations and functions</a></li>
+<li class="chapter" data-level="" data-path="raster-operations-in-r.html"><a href="raster-operations-in-r.html#global-operations-and-functions-1"><i class="fa fa-check"></i>Global operations and functions</a></li>
+<li class="chapter" data-level="" data-path="raster-operations-in-r.html"><a href="raster-operations-in-r.html#computing-cumulative-distances"><i class="fa fa-check"></i>Computing cumulative distances</a>
+<ul>
+<li class="chapter" data-level="" data-path="raster-operations-in-r.html"><a href="raster-operations-in-r.html#working-example"><i class="fa fa-check"></i>Working example</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="G" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html"><i class="fa fa-check"></i><b>G</b> Coordinate Systems in R</a>
+<ul>
+<li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#a-note-about-the-changes-to-the-proj-environment"><i class="fa fa-check"></i>A note about the changes to the <code>PROJ</code> environment</a></li>
+<li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#sample-files-for-this-exercise-2"><i class="fa fa-check"></i>Sample files for this exercise</a></li>
+<li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#loading-the-sf-package"><i class="fa fa-check"></i>Loading the <code>sf</code> package</a></li>
+<li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#checking-for-a-coordinate-system"><i class="fa fa-check"></i>Checking for a coordinate system</a></li>
+<li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#understanding-the-proj4-coordinate-syntax"><i class="fa fa-check"></i>Understanding the Proj4 coordinate syntax</a></li>
+<li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#assigning-a-coordinate-system"><i class="fa fa-check"></i>Assigning a coordinate system</a></li>
+<li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#transforming-coordinate-systems"><i class="fa fa-check"></i>Transforming coordinate systems</a>
+<ul>
+<li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#reprojecting-to-a-new-meridian-center"><i class="fa fa-check"></i>Reprojecting to a new meridian center</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#a-note-about-containment"><i class="fa fa-check"></i>A note about containment</a></li>
+<li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#creating-tissot-indicatrix-circles"><i class="fa fa-check"></i>Creating Tissot indicatrix circles</a></li>
+</ul></li>
+<li class="chapter" data-level="H" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html"><i class="fa fa-check"></i><b>H</b> Point pattern analysis in R</a>
+<ul>
+<li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#sample-files-for-this-exercise-3"><i class="fa fa-check"></i>Sample files for this exercise</a></li>
+<li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#prepping-the-data"><i class="fa fa-check"></i>Prepping the data</a></li>
+<li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#density-based-analysis"><i class="fa fa-check"></i>Density based analysis</a>
+<ul>
+<li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#quadrat-density-1"><i class="fa fa-check"></i>Quadrat density</a></li>
+<li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#quadrat-density-on-a-tessellated-surface"><i class="fa fa-check"></i>Quadrat density on a tessellated surface</a></li>
+<li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#kernel-density-raster"><i class="fa fa-check"></i>Kernel density raster</a></li>
+<li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#kernel-density-adjusted-for-covariate"><i class="fa fa-check"></i>Kernel density adjusted for covariate</a></li>
+<li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#modeling-intensity-as-a-function-of-a-covariate"><i class="fa fa-check"></i>Modeling intensity as a function of a covariate</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#distance-based-analysis"><i class="fa fa-check"></i>Distance based analysis</a>
+<ul>
+<li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#average-nearest-neighbor-analysis"><i class="fa fa-check"></i>Average nearest neighbor analysis</a></li>
+<li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#k-and-l-functions-1"><i class="fa fa-check"></i>K and L functions</a></li>
+<li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#pair-correlation-function-g"><i class="fa fa-check"></i>Pair correlation function g</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#hypothesis-tests"><i class="fa fa-check"></i>Hypothesis tests</a>
+<ul>
+<li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#test-for-clusteringdispersion"><i class="fa fa-check"></i>Test for clustering/dispersion</a></li>
+<li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#computing-a-pseudo-p-value-from-the-simulation"><i class="fa fa-check"></i>Computing a pseudo p-value from the simulation</a></li>
+<li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#test-for-a-poisson-point-process-model-with-a-covariate-effect"><i class="fa fa-check"></i>Test for a poisson point process model with a covariate effect</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="I" data-path="spatial-autocorrelation-in-r.html"><a href="spatial-autocorrelation-in-r.html"><i class="fa fa-check"></i><b>I</b> Spatial autocorrelation in R</a>
+<ul>
+<li class="chapter" data-level="" data-path="spatial-autocorrelation-in-r.html"><a href="spatial-autocorrelation-in-r.html#app8_1"><i class="fa fa-check"></i>Sample files for this exercise</a></li>
+<li class="chapter" data-level="" data-path="spatial-autocorrelation-in-r.html"><a href="spatial-autocorrelation-in-r.html#app8_2"><i class="fa fa-check"></i>Introduction</a></li>
+<li class="chapter" data-level="" data-path="spatial-autocorrelation-in-r.html"><a href="spatial-autocorrelation-in-r.html#app8_3"><i class="fa fa-check"></i>Define neighboring polygons</a></li>
+<li class="chapter" data-level="" data-path="spatial-autocorrelation-in-r.html"><a href="spatial-autocorrelation-in-r.html#app8_4"><i class="fa fa-check"></i>Generating a Moran’s I scatter plot</a></li>
+<li class="chapter" data-level="" data-path="spatial-autocorrelation-in-r.html"><a href="spatial-autocorrelation-in-r.html#app8_4b"><i class="fa fa-check"></i>Computing the Moran’s I coefficient</a></li>
+<li class="chapter" data-level="" data-path="spatial-autocorrelation-in-r.html"><a href="spatial-autocorrelation-in-r.html#app8_5"><i class="fa fa-check"></i>Assessing statistical significance</a></li>
+<li class="chapter" data-level="" data-path="spatial-autocorrelation-in-r.html"><a href="spatial-autocorrelation-in-r.html#app8_6"><i class="fa fa-check"></i>Moran’s I as a function of a distance band</a></li>
+<li class="chapter" data-level="" data-path="spatial-autocorrelation-in-r.html"><a href="spatial-autocorrelation-in-r.html#app8_7"><i class="fa fa-check"></i>Local Moran’s I</a>
+<ul>
+<li class="chapter" data-level="" data-path="spatial-autocorrelation-in-r.html"><a href="spatial-autocorrelation-in-r.html#app8_7_1"><i class="fa fa-check"></i>Correcting for multiple comparisons</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="J" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html"><i class="fa fa-check"></i><b>J</b> Interpolation in R</a>
+<ul>
+<li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#thiessen-polygons"><i class="fa fa-check"></i>Thiessen polygons</a></li>
+<li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#idw"><i class="fa fa-check"></i>IDW</a>
+<ul>
+<li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#fine-tuning-the-interpolation"><i class="fa fa-check"></i>Fine-tuning the interpolation</a></li>
+<li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#cross-validation"><i class="fa fa-check"></i>Cross-validation</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#st-order-polynomial-fit"><i class="fa fa-check"></i>1<sup>st</sup> order polynomial fit</a></li>
+<li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#nd-order-polynomial"><i class="fa fa-check"></i>2<sup>nd</sup> order polynomial</a></li>
+<li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#kriging"><i class="fa fa-check"></i>Kriging</a>
+<ul>
+<li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#fit-the-variogram-model"><i class="fa fa-check"></i>Fit the variogram model</a></li>
+<li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#generate-kriged-surface"><i class="fa fa-check"></i>Generate Kriged surface</a></li>
+<li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#generate-the-variance-and-confidence-interval-maps"><i class="fa fa-check"></i>Generate the variance and confidence interval maps</a></li>
+</ul></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Intro to GIS and Spatial Analysis</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="chp13_0" class="section level1 hasAnchor" number="13">
+<h1><span class="header-section-number">Chapter 13</span> Spatial Autocorrelation<a href="chp13_0.html#chp13_0" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div class="note">
+<p>
+<em>“The first law of geography: Everything is related to everything
+else, but near things are more related than distant things.”</em> Waldo
+R. Tobler <span class="citation"><span class="citation">(<a href="#ref-Tobler1970">Tobler 1970</a>)</span></span>
+</p>
+</div>
+<div id="introduction-11" class="section level2 hasAnchor" number="13.1">
+<h2><span class="header-section-number">13.1</span> Introduction<a href="chp13_0.html#introduction-11" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>In the previous chapter, we explored how polynomial functions can be used to model spatial trend—capturing broad, location-driven variation in continuous spatial fields. By fitting and removing global trends, we revealed residuals that may still exhibit spatial structure. This chapter builds on that foundation by introducing <strong>spatial autocorrelation</strong>, a second-order property that describes how values at one location relate to values at nearby locations.</p>
+<p>This concept is rooted in <strong>Tobler’s First Law of Geography</strong>:</p>
+<div class="note">
+<p>
+<em>“The first law of geography: Everything is related to everything
+else, but near things are more related than distant things.”</em> Waldo
+R. Tobler <span class="citation"><span class="citation">(<a href="#ref-Tobler1970">Tobler 1970</a>)</span></span>
+</p>
+</div>
+<p>This principle underpins much of spatial analysis. It suggests that spatial data often exhibit <strong>non-random patterns</strong>, where nearby features tend to have similar attribute values. Spatial autocorrelation provides a formal way to quantify this tendency.</p>
+<p><img src="img/Random_maps.png" width="1662" /></p>
+<p>To make the mathematical foundations of autocorrelation more accessible, we shift from raster-based data to a simpler dataset composed of <strong>polygonal areal units</strong> (e.g., counties). This allows us to clearly illustrate how spatial relationships are defined, how spatial weights are constructed, and how measures like <strong>Moran’s I</strong> are computed.</p>
+<p>This chapter focuses on:
+- Defining spatial autocorrelation and its role in spatial statistics.
+- Constructing spatial weights to represent neighborhood relationships.
+- Computing and interpreting <strong>global</strong> and <strong>local Moran’s I</strong> statistics.
+- Using permutation-based hypothesis testing to assess significance.</p>
+</div>
+<div id="global-morans-i" class="section level2 hasAnchor" number="13.2">
+<h2><span class="header-section-number">13.2</span> Global Moran’s <em>I</em><a href="chp13_0.html#global-morans-i" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>While maps can sometimes reveal clusters of similar values, our visual interpretation is often limited—especially when patterns are subtle or complex. To move beyond subjective impressions, we need a <strong>quantitative and objective measure</strong> of spatial patterning. Specifically, we want to quantify the degree to which similar attribute values are clustered or dispersed across space.</p>
+<p>One widely used statistic for this purpose is **Moran’s *I<strong> , a measure of </strong>global spatial autocorrelation**. It quantifies the overall tendency for features with similar values to be located near one another, based on a defined spatial relationship (e.g., contiguity or distance). In essence, Moran’s <em>I</em> is a correlation coefficient between a variable and its spatially lagged counterpart.</p>
+<div id="computing-the-morans-i" class="section level3 hasAnchor" number="13.2.1">
+<h3><span class="header-section-number">13.2.1</span> Computing the Moran’s <em>I</em><a href="chp13_0.html#computing-the-morans-i" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Let’s start with a working example: 2020 median per capita income for the state of Maine.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig03"></span>
+<img src="13-Spatial-Autocorrelation_files/figure-html/fig03-1.png" alt="Map of 2020 median per capita income for Maine counties (USA)." width="672" />
+<p class="caption">
+Figure 13.1: Map of 2020 median per capita income for Maine counties (USA).
+</p>
+</div>
+<p>It may seem apparent that, when aggregated at the county level, the income distribution appears clustered with high counties surrounded by high counties and low counties surrounded by low counties. But a qualitative description may not be sufficient; we might want to quantify the degree to which similar (or dissimilar) counties are clustered. One measure of this type or relationship is the <strong>Moran’s I statistic</strong>.</p>
+<p>The Moran’s <em>I</em> statsitic is a measure of spatial autocorrelation that quantifies the degree to which similar values (like income) cluster together in space. It is computed as the correlation between a variable and its spatially lagged counterpart, based on a defined spatial weights matrix.</p>
+<p>But before we go about computing this correlation, we need to come up with a way to define a neighbor. One approach is to define a neighbor as being any contiguous polygon. For example, the northern most county (Aroostook), has four contiguous neighbors while the southern most county (York) has just two contiguous counties. Other neighborhood definitions can include distance bands (e.g. counties within 100 km) and k nearest neighbors (e.g. the 2 closest neighbors). Note that distance bands and k nearest neighbors are usually measured using the polygon’s centroids and not their boundaries.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig04"></span>
+<img src="img/Diff_neighbors.png" alt="Maps show the links between each polygon and their respective neighbor(s) based on the neighborhood definition. A contiguous neighbor is defined as one that shares a boundary or a vertex with the polygon of interest.  Orange numbers indicate the number of neighbors for each polygon. Note that the top most county has no neighbors when a neighborhood definition of a 100 km distance band is used (i.e. no centroids are within a 100 km search radius)" width="600" />
+<p class="caption">
+Figure 13.2: Maps show the links between each polygon and their respective neighbor(s) based on the neighborhood definition. A contiguous neighbor is defined as one that shares a boundary or a vertex with the polygon of interest. Orange numbers indicate the number of neighbors for each polygon. Note that the top most county has no neighbors when a neighborhood definition of a 100 km distance band is used (i.e. no centroids are within a 100 km search radius)
+</p>
+</div>
+<p>Once we’ve defined a neighborhood for our analysis, we identify the neighbors for each polygon in our dataset then summaries the values for each neighborhood cluster (by computing their mean values, for example). This summarized neighborhood value is sometimes referred to as a spatially lagged value (<em>X<sub>lag</sub></em>). In our working example, we adopt a contiguity neighborhood and compute the average neighboring income value (<em>Income<sub>lag</sub></em>) for each county in our dataset. We then plot <em>Income<sub>lag</sub></em> vs. <em>Income</em> for each county. The Moran’s <em>I</em> coefficient between <em>Income<sub>lag</sub></em> and <em>Income</em> is nothing more than the slope of the least squares regression line that best fits the points <em>after</em> standardizing both variables (i.e., converting them to z-scores), which centers them on the mean and scales them by their standard deviation.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig05"></span>
+<img src="13-Spatial-Autocorrelation_files/figure-html/fig05-1.png" alt="Scatter plot of spatially lagged income (neighboring income) vs. each countie's income. If we equalize the spread between both axes (i.e. convert to a z-value) the slope of the regression line represents the Moran's *I* statistic." width="336" />
+<p class="caption">
+Figure 13.3: Scatter plot of spatially lagged income (neighboring income) vs. each countie’s income. If we equalize the spread between both axes (i.e. convert to a z-value) the slope of the regression line represents the Moran’s <em>I</em> statistic.
+</p>
+</div>
+<p>If there is no degree of association between <em>Income</em> and <em>Income<sub>lag</sub></em>, the slope will be close to flat (resulting in a Moran’s <em>I</em> value near 0). In our working example, the slope is far from flat with a Moran’s <em>I</em> value is 0.28. So this begs the question, how significant is this Moran’s <em>I</em> value (i.e. is the computed slope significantly different from 0)? There are two approaches to estimating the significance: an analytical solution and a Monte Carlo solution. The analytical solution makes some restrictive assumptions about the data and thus cannot always be reliable. Another approach (and the one favored here) is a Monte Carlo test. This approach avoids parametric assumptions about the data distribution or spatial layout, relying instead on the assumption that values are exchangeable under the null hypothesis.</p>
+</div>
+<div id="monte-carlo-approach-to-estimating-significance" class="section level3 hasAnchor" number="13.2.2">
+<h3><span class="header-section-number">13.2.2</span> Monte Carlo approach to estimating significance<a href="chp13_0.html#monte-carlo-approach-to-estimating-significance" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>In a Monte Carlo test–specifically a permutation-based bootstrap test–we assess the significance of an observed Moran’s <em>I</em> statistic by comparing it to a distribution of values generated under the null hypothesis of spatial randomness. This is done by <strong>permuting</strong> the attribute values across spatial units while keeping the spatial structure (e.g., neighborhood relationships) fixed.</p>
+<p>For each permutation, the attribute values are shuffled among the polygons and a new Moran’s <em>I</em> value is computed.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig06"></span>
+<img src="13-Spatial-Autocorrelation_files/figure-html/fig06-1.png" alt="Results from 199 permutations. Plot shows Moran's *I* lines (in gray) computed from each random permutation of income values. The observed Moran's *I* line for the original dataset is shown in red." width="384" />
+<p class="caption">
+Figure 13.4: Results from 199 permutations. Plot shows Moran’s <em>I</em> lines (in gray) computed from each random permutation of income values. The observed Moran’s <em>I</em> line for the original dataset is shown in red.
+</p>
+</div>
+<p>Repeating this process many times yields a <strong>sampling distribution</strong> of Moran’s <em>I</em> values that would be expected if the observed values were randomly distributed across space.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig07"></span>
+<img src="13-Spatial-Autocorrelation_files/figure-html/fig07-1.png" alt="Histogram shows the distribution of Moran's *I* values for all 199 permutations; red vertical line shows our observed Moran's *I* value of 0.28." width="288" />
+<p class="caption">
+Figure 13.5: Histogram shows the distribution of Moran’s <em>I</em> values for all 199 permutations; red vertical line shows our observed Moran’s <em>I</em> value of 0.28.
+</p>
+</div>
+<p>In our working example, 199 simulations indicate that our observed Moran’s <em>I</em> value of 0.28 is not a value we would expect to compute if the income values were randomly distributed across each county. A pseudo <em>p-value</em> can easily be computed from the simulation results:</p>
+<p><span class="math display">\[
+\dfrac{N_{extreme}+1}{N+1}
+\]</span></p>
+<p>where <span class="math inline">\(N_{extreme}\)</span> is the number of simulated Moran’s <em>I</em> values more extreme than our observed statistic and <span class="math inline">\(N\)</span> is the total number of simulations. Here, out of 199 simulations, just three simulated <em>I</em> values were more extreme than our observed statistic, <span class="math inline">\(N_{extreme}\)</span> = 3, so <span class="math inline">\(p\)</span> is equal to (3 + 1) / (199 + 1) = 0.02. This is interpreted as “<em>there is a 2% probability that we would be wrong in rejecting the null hypothesis H<sub>o</sub>.</em>”</p>
+<p>Note that in this permutation example, we shuffled the observed income values among polygons without replacement–this is referred to as a <strong>permutation-based randomization</strong>. This should not be confused with <strong>distribution-based simulation</strong> where new values are randomly generated from a theoretical distribution and assigned to features.</p>
+<p>Alternatively, one can choose to randomly assign a set of values to each feature in a data layer from a <em>theorized distribution</em> (for example, a <em>Normal</em> distribution). This may result in a completely different set of values for each permutation outcome. Note that you would only adopt this approach if the theorized distribution underpinning the value of interest is known <em>a priori</em>.</p>
+<p>Another important consideration when computing a permutation-based p-value from a permutation test is the number of simulations to perform. In the above example we ran 199 permutations, thus, the smallest p-value we could possibly come up with is 1 / (199 + 1) or a p-value of 0.005. You should therefore chose a number of permutations, <span class="math inline">\(N\)</span>, large enough to allow for finer resolution of p-values and more robust inference.</p>
+</div>
+</div>
+<div id="morans-i-at-different-distance-bands" class="section level2 hasAnchor" number="13.3">
+<h2><span class="header-section-number">13.3</span> Moran’s <em>I</em> at different distance bands<a href="chp13_0.html#morans-i-at-different-distance-bands" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>So far we have looked at spatial autocorrelation where we define neighbors as all polygons sharing a boundary with the polygon of interest. We may also be interested in studying the <em>ranges</em> of autocorrelation values as a function of distance. The steps for this type of analysis are straightforward:</p>
+<ol style="list-style-type: decimal">
+<li><p>Define a neighborhood structure based on a specific distance band</p></li>
+<li><p>Compute lagged values for the defined set of neighbors.</p></li>
+<li><p>Calculate the Moran’s <em>I</em> value for the defined neighborhood.</p></li>
+<li><p>Repeat for additional distance bands to observe how autocorrelation changes with spatial scale.</p></li>
+</ol>
+<p>For example, the Moran’s <em>I</em> values for income distribution in the state of Maine at distances of 75, 125, up to 325 km are presented in the following plot:</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:f13-MC-distance"></span>
+<img src="img/MoranI_distance_band.png" alt="Moran's *I* at different spatial lags defined by a 50 km width annulus at 50 km distance increments. Red dots indicate Moran *I* values for which a P-value was 0.05 or less." width="500" />
+<p class="caption">
+Figure 13.6: Moran’s <em>I</em> at different spatial lags defined by a 50 km width annulus at 50 km distance increments. Red dots indicate Moran <em>I</em> values for which a P-value was 0.05 or less.
+</p>
+</div>
+<p>The plot suggests that there is significant spatial autocorrelation between counties within 25 km of one another, but as the distances between counties increases, autocorrelation shifts from positive to negative, indicating that nearby counties tend to have similar income levels, while counties farther apart tend to be more dissimilar.</p>
+</div>
+<div id="local-morans-i" class="section level2 hasAnchor" number="13.4">
+<h2><span class="header-section-number">13.4</span> Local Moran’s <em>I</em><a href="chp13_0.html#local-morans-i" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>We can decompose the global Moran’s <em>I</em> into a <em>localized</em> measure of autocorrelation–i.e. a map of “hot spots” and “cold spots”.</p>
+<p>A local Moran’s <em>I</em> analysis is best suited for relatively large datasets, especially if a hypothesis test is to be implemented. We’ll therefor switch to another dataset: Massachusetts household income data.</p>
+<p><img src="13-Spatial-Autocorrelation_files/figure-html/ma-dataset-1.png" width="480" style="display: block; margin: auto;" /></p>
+<p>Applying a contiguity based definition of a neighbor, we get the following scatter plot of spatially lagged income vs. income.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:chunk10"></span>
+<img src="13-Spatial-Autocorrelation_files/figure-html/chunk10-1.png" alt="Grey vertical and horizontal lines define the mean values for both axes values. Red points highlight counties with relatively high income values (i.e. greater than the mean) surrounded by counties whose average income value is relatively high. Likewise, dark blue points highlight counties with relatively low income values surrounded by counties whose average income value is relatively low." width="384" />
+<p class="caption">
+Figure 13.7: Grey vertical and horizontal lines define the mean values for both axes values. Red points highlight counties with relatively high income values (i.e. greater than the mean) surrounded by counties whose average income value is relatively high. Likewise, dark blue points highlight counties with relatively low income values surrounded by counties whose average income value is relatively low.
+</p>
+</div>
+<p>You’ll note that the mean value for <em>Income</em>, highlighted as light grey vertical and horizontal lines in the above plot, carve up the four quadrant defining the low-low, high-low, high-high and low-high quadrants when starting from the bottom-left quadrant and working counterclockwise. Note that other measures of centrality, such as the median, could be used to delineate these quadrants.</p>
+<p>The values in the above scatter plot can be mapped to each polygon in the dataset as shown in the following figure.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig08"></span>
+<img src="13-Spatial-Autocorrelation_files/figure-html/fig08-1.png" alt="A map view of the low-low (blue), high-low (light-blue), high-high (red) and low-high (orange) counties. " width="432" />
+<p class="caption">
+Figure 13.8: A map view of the low-low (blue), high-low (light-blue), high-high (red) and low-high (orange) counties.
+</p>
+</div>
+<p>Each spatial unit (e.g., polygon) has its own Local Moran’s I statistic, denoted <span class="math inline">\(I_i\)</span>, which quantifies the degree of spatial autocorrelation around that unit. The calculation of <span class="math inline">\(I_i\)</span> is shown later in the chapter.</p>
+<p>While the scatterplot helps visually identify potential clusters, statistical significance must be assessed to determine whether these patterns are likely to have occurred by chance.</p>
+<p>As with the global Moran’s <em>I</em>, there is both an analytical and Monte Carlo approach to computing significance of <span class="math inline">\(I_i\)</span>. In the case of a Monte Carlo approach, the values of all other units are shuffled while keeping the value of unit <span class="math inline">\(i\)</span> fixed. For each permutation, a new <span class="math inline">\(I_i\)</span> is computed based on the randomized neighborhood values. For each permutation, we compare the value at <span class="math inline">\(y_i\)</span> to the average value of its neighboring values. From the permutations, we generate a distribution of <span class="math inline">\(I_i\)</span> values (for each <span class="math inline">\(y_i\)</span> feature) we would expect to get if the values were randomly distributed across all features.</p>
+<p>To illustrate, consider a polygon in eastern Massachusetts with a high observed <span class="math inline">\(I_i\)</span> value. We assess its significance by comparing it to a distribution of <span class="math inline">\(I_i\)</span> values generated through permutation.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig09"></span>
+<img src="13-Spatial-Autocorrelation_files/figure-html/fig09-1.png" alt="Polygon whose *signifcance* value we are asessing in  this example." width="336" />
+<p class="caption">
+Figure 13.9: Polygon whose <em>signifcance</em> value we are asessing in this example.
+</p>
+</div>
+<p>Its local Moran’s <em>I</em> statistic is 0.85. A permutation test shuffles the income values around it, all the while keeping its value constant. An example of an outcome of a few permutations follows:</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig10"></span>
+<img src="13-Spatial-Autocorrelation_files/figure-html/fig10-1.png" alt="Local Moran's I outcomes of a few permutations of income values." width="864" />
+<p class="caption">
+Figure 13.10: Local Moran’s I outcomes of a few permutations of income values.
+</p>
+</div>
+<p>You’ll note that even though the income value remains the same in the polygon of interest, its local Moran’s <em>I</em> statistic will change because of the changing income values in its surrounding polygons.</p>
+<p>If we perform many more permutations, we come up with a distribution of <span class="math inline">\(I_i\)</span> values under the null that the income values are randomly distributed across the state of Massachusetts. The distribution of <span class="math inline">\(I_i\)</span> for the above example is plotted using a histogram.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig11"></span>
+<img src="13-Spatial-Autocorrelation_files/figure-html/fig11-1.png" alt="Distribution of $I_i$ values under the null hypothesis that income values are randomly distributed across the study extent. The red vertical line shows the observed $I_i$ for comparison." width="288" />
+<p class="caption">
+Figure 13.11: Distribution of <span class="math inline">\(I_i\)</span> values under the null hypothesis that income values are randomly distributed across the study extent. The red vertical line shows the observed <span class="math inline">\(I_i\)</span> for comparison.
+</p>
+</div>
+<p>About 9.3% of the simulated values are more extreme than our observed <span class="math inline">\(I_i\)</span> giving us a permutation-based p-value of 0.09.</p>
+<p>If we perform this permutation for all polygons in our dataset, we can map the permutation-based p-values for each polygon. Note that here, we are mapping the probability that the observed <span class="math inline">\(I_i\)</span> value is more extreme than expected (equivalent to a one-tail test).</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig12"></span>
+<img src="13-Spatial-Autocorrelation_files/figure-html/fig12-1.png" alt="Map of the permutation-based p-values for each polygons' $I_i$ statistic." width="480" />
+<p class="caption">
+Figure 13.12: Map of the permutation-based p-values for each polygons’ <span class="math inline">\(I_i\)</span> statistic.
+</p>
+</div>
+<p>One can use the computed permutation-based p-values to filter the <span class="math inline">\(I_i\)</span> values based on a desired level of significance. For example, the following scatter plot and map shows the high/low “hotspots” for which a permutation-based p-value of 0.05 or less was computed from the above simulation.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig13"></span>
+<img src="13-Spatial-Autocorrelation_files/figure-html/fig13-1.png" alt="Local Moran's *I* values having a signifcance level of 0.05 or less." width="864" />
+<p class="caption">
+Figure 13.13: Local Moran’s <em>I</em> values having a signifcance level of 0.05 or less.
+</p>
+</div>
+<p>You’ll note that the levels of significance do not apply to just the high-high and low-low regions, they can apply to <em>all</em> combinations of highs and lows.</p>
+<p>Another example, where the <span class="math inline">\(I_i\)</span> values are filtered based on a more stringent significance level of 0.01, is shown in the following figure.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig14"></span>
+<img src="13-Spatial-Autocorrelation_files/figure-html/fig14-1.png" alt="Local Moran's *I* values having a signifcance level of 0.01 or less." width="864" />
+<p class="caption">
+Figure 13.14: Local Moran’s <em>I</em> values having a signifcance level of 0.01 or less.
+</p>
+</div>
+<div id="a-note-about-interpreting-the-permutation-based-p-value" class="section level3 hasAnchor" number="13.4.1">
+<h3><span class="header-section-number">13.4.1</span> A note about interpreting the permutation-based p-value<a href="chp13_0.html#a-note-about-interpreting-the-permutation-based-p-value" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>While the permutation technique highlighted in the previous section used in assessing the significance of localized spatial autocorrelation does a good job in circumventing limitations found in a parametric approach to inference (e.g. skewness in the data, irregular grids, etc…), it still has some limitations when one interprets this level of significance across <em>all</em> features. For example, if the underlying process that generated the distribution of income values was truly random, the outcome of such a realization could look like this:</p>
+<div class="figure"><span style="display:block;" id="fig:fig14a"></span>
+<img src="13-Spatial-Autocorrelation_files/figure-html/fig14a-1.png" alt="Realization of a random process. Left map is the distribution of income values under a random process. Right map is the outcome of a permutation test showing the computed permutation-based p-values. Each permutation test runs 9999 permutations." width="768" />
+<p class="caption">
+Figure 13.15: Realization of a random process. Left map is the distribution of income values under a random process. Right map is the outcome of a permutation test showing the computed permutation-based p-values. Each permutation test runs 9999 permutations.
+</p>
+</div>
+<p>Note how some <span class="math inline">\(I_i\)</span> values are associated with low permutation-based p-value. In fact, one polygon’s <span class="math inline">\(I_i\)</span> value is associated with permutation-based p-value of 0.001 or less! This is to be expected since the likelihood of finding a significant <span class="math inline">\(I_i\)</span> increases the more permutation tests are performed. Here we have 343 polygons, thus we ran 343 tests. This is analogous to having multiple opportunities to picking an ace of spades from a deck of cards–the more opportunities you have, the greater the chance of grabbing an ace of spades.</p>
+<p>Another example of a local Moran’s I test on a realization of a randomly reshuffled set of income values is shown next:</p>
+<div class="figure"><span style="display:block;" id="fig:fig14b"></span>
+<img src="13-Spatial-Autocorrelation_files/figure-html/fig14b-1.png" alt="Another realization of a random process. Left map is the distribution of income values under a random process. Right map is the outcome of a permutation test showing computed permutation-based p-values. " width="768" />
+<p class="caption">
+Figure 13.16: Another realization of a random process. Left map is the distribution of income values under a random process. Right map is the outcome of a permutation test showing computed permutation-based p-values.
+</p>
+</div>
+<p>We have quite a few <span class="math inline">\(I_i\)</span> values associated with a very low permutation-based p-value (The smallest p-value in this example is 0.0006). This would lead one to assume that several polygons exhibit significant levels of spatial autocorrelation with their neighbors when in fact this is due to chance–a classic example of a Type I error resulting from multiple comparisons.</p>
+<p>To further illustrate the issue, consider generating 200 independent realizations of a random spatial process. Each realization involves computing permutation-based p-values for all polygons, resulting in a large number of tests and an increased likelihood of false positives. This generates 200 x 323 permutation-based p-values. With this working example, about 10% of the outcomes result in a permutation-based p-value of 0.05 or less.</p>
+<div class="figure"><span style="display:block;" id="fig:fig14c"></span>
+<img src="13-Spatial-Autocorrelation_files/figure-html/fig14c-1.png" alt="Distribution of permutation-based p-values following 200 realizations of a random process. Blue numbers are the p-value bins, red numbers under each bins are calculated percentages." width="768" />
+<p class="caption">
+Figure 13.17: Distribution of permutation-based p-values following 200 realizations of a random process. Blue numbers are the p-value bins, red numbers under each bins are calculated percentages.
+</p>
+</div>
+<p>This problem is known in the field of statistics as the <strong>multiple comparison problem</strong>. Several solutions have been offered, each with their pros and cons. One solution that seems to have gained traction as of late is the <em>False Discoverer Rate</em> correction (FDR). The FDR correction aims to control the expected proportion of false positives among the set of features deemed significant.</p>
+<p>There are at least a couple different implementation of FDR. One implementation starts by ranking the permutation-based p-values, <span class="math inline">\(p\)</span>, from smallest to largest and assigning a rank, <span class="math inline">\(i\)</span>, to each value. Next, a reference value is computed for each rank as <span class="math inline">\(i(\alpha/n)\)</span> where <span class="math inline">\(\alpha\)</span> is the desired significance cutoff value (0.05, for example) and <span class="math inline">\(n\)</span> is the total number of observations (e.g. polygons) for which a permutation-based p-value has been computed (343 in our working example). All computed <span class="math inline">\(p_i\)</span> values that are less than <span class="math inline">\(i(\alpha/n)\)</span> are deemed significant at the desired <span class="math inline">\(\alpha\)</span> value.</p>
+<p>Applying the FDR correction to the permutation-based p-value cutoff of 0.05 in the household income data gives us the following cluster map.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig14d"></span>
+<img src="13-Spatial-Autocorrelation_files/figure-html/fig14d-1.png" alt="Clusters deemed significant at the p=0.05 level when applying the FDR correction." width="864" />
+<p class="caption">
+Figure 13.18: Clusters deemed significant at the p=0.05 level when applying the FDR correction.
+</p>
+</div>
+<p>Applying the FDR correction to the permutation-based p-value cutoff of 0.01 generates even fewer clusters:</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig14e"></span>
+<img src="13-Spatial-Autocorrelation_files/figure-html/fig14e-1.png" alt="Clusters deemed significant at the p=0.01 level when applying the FDR correction." width="864" />
+<p class="caption">
+Figure 13.19: Clusters deemed significant at the p=0.01 level when applying the FDR correction.
+</p>
+</div>
+<p>It’s important to note that there is no one perfect solution to the multiple comparison problem. This, and other challenges facing inferential interpretation in a spatial framework such as the potential for overlapping neighbors (i.e. same polygons used in separate permutation tests) make traditional approaches to interpreting significance challenging. It is thus recommended to interpret these tests with caution.</p>
+</div>
+</div>
+<div id="morans-i-equation-explained" class="section level2 hasAnchor" number="13.5">
+<h2><span class="header-section-number">13.5</span> Moran’s <em>I</em> equation explained<a href="chp13_0.html#morans-i-equation-explained" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The Moran’s <em>I</em> statistic can be expressed in several mathematically equivalent forms, each offering different insights into its structure and interpretation. One commonly used formulation is:</p>
+<p><span class="math display">\[
+I = \frac{N}{\sum\limits_i (X_i-\bar X)^2}
+    \frac{\sum\limits_i \sum\limits_j w_{ij}(X_i-\bar X)(X_j-\bar X)}{\sum\limits_i \sum\limits_j w_{ij}} \tag{1}
+\]</span></p>
+<p>Here, <span class="math inline">\(N\)</span> is the total number of spatial units, <span class="math inline">\(X_i\)</span> and <span class="math inline">\(X_j\)</span> are the attribute values at locations <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span>, <span class="math inline">\(\bar{X}\)</span> is the mean of <span class="math inline">\(X\)</span>, and <span class="math inline">\(w_{ij}\)</span> is the spatial weight between locations <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span>–typically defined by contiguity, distance, or other spatial relationships.</p>
+<p>There a few key components of Equation (1) worth highlighting. First, you’ll note the standardization of both sets of values by the subtraction of each value in <span class="math inline">\(X_i\)</span> or <span class="math inline">\(X_j\)</span> by the mean of <span class="math inline">\(X\)</span>. This highlights the fact that we are seeking to compare the deviation of each value from an overall mean and not the deviation of their absolute values.</p>
+<p>Second, you’ll note an inverted variance term on the left-hand side of equation (1)–this is a measure of spread. You might recall from an introductory statistics course that the variance can be computed as:</p>
+<p><span class="math display">\[
+s^2 = \frac{\sum\limits_i (X_i-\bar X)^2}{N}\tag{2}
+\]</span>
+Note that a more common measure of variance, the sample variance, where one divides the above numerator by <span class="math inline">\((n-1)\)</span> can also be adopted in the Moran’s <em>I</em> calculation.</p>
+<p>Equation (1) is thus dividing the large fraction on the right-hand side by the variance. This has for effect of limiting the range of possible Moran’s <em>I</em> values between -1 and 1 (note that in some extreme cases, <span class="math inline">\(I\)</span> can take on a value more extreme than [-1; 1]). We can re-write the Moran’s I equation by plugging in <span class="math inline">\(s^2\)</span> as follows:</p>
+<p><span class="math display">\[
+I = \frac{\sum\limits_i \sum\limits_j w_{ij}\frac{(X_i-\bar X)}{s}\frac{(X_j-\bar X)}{s}}{\sum\limits_i \sum\limits_j w_{ij}} \tag{3}
+\]</span>
+Note that here <span class="math inline">\(s\times s = s^2\)</span>. You might recognize the numerator as a sum of the product of standardized <em>z</em>-values between neighboring features. If we let <span class="math inline">\(z_i = \frac{(X_i-\bar X)}{s}\)</span> and <span class="math inline">\(z_j = \frac{(X_j-\bar X)}{s}\)</span>, The Moran’s I equation can be reduced to:</p>
+<p><span class="math display">\[
+I = \frac{\sum\limits_i \sum\limits_j w_{ij}(z_i\ z_j)}{\sum\limits_i \sum\limits_j w_{ij}} \tag{4}
+\]</span></p>
+<p>Recall that we are comparing a variable <span class="math inline">\(X\)</span> at <span class="math inline">\(i\)</span> to all of its neighboring values at <span class="math inline">\(j\)</span>. More specifically, we are computing a summary value (such as the mean) of the neighboring values at <span class="math inline">\(j\)</span> and multiplying that by <span class="math inline">\(X_i\)</span>. So, if we let <span class="math inline">\(y_i = \sum\limits_j w_{ij} z_j\)</span>, the Moran’s I coefficient can be rewritten as:</p>
+<p><span class="math display">\[
+I = \frac{\sum\limits_i z_i y_i}{\sum\limits_i \sum\limits_j w_{ij}}  \tag{5}
+\]</span></p>
+<p>So, <span class="math inline">\(y_i\)</span> is the average z-value for the neighboring features thus making the product <span class="math inline">\(z_i y_i\)</span> nothing more than a <em>correlation coefficient</em>.</p>
+<p>The product <span class="math inline">\(z_iy_i\)</span> is a local measure of spatial autocorrelation, <span class="math inline">\(I_i\)</span>. If we <em>don’t</em> summarize across all locations <span class="math inline">\(i\)</span>, we get our local I statistic, <span class="math inline">\(I_i\)</span>:</p>
+<p><span class="math display">\[
+I_i = z_iy_i  \tag{6}
+\]</span>
+The global Moran’s <em>I</em> statistic, <span class="math inline">\(I\)</span>, is thus the average of all <span class="math inline">\(I_i\)</span> values.</p>
+<p><span class="math display">\[
+I = \frac{\sum\limits_i I_i}{\sum\limits_i \sum\limits_j w_{ij}}  \tag{5}
+\]</span></p>
+<p>Let’s explore elements of the Moran’s <em>I</em> equation using the following sample dataset.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig15"></span>
+<img src="13-Spatial-Autocorrelation_files/figure-html/fig15-1.png" alt="Simulated spatial layer. The figure on the left shows each cell's ID value. The figure in the middle shows the values for each cell. The figure on the right shows the standardized values using equation (2)." width="672" />
+<p class="caption">
+Figure 13.20: Simulated spatial layer. The figure on the left shows each cell’s ID value. The figure in the middle shows the values for each cell. The figure on the right shows the standardized values using equation (2).
+</p>
+</div>
+<p>The first step in the computation of a Moran’s <em>I</em> index is the generation of a spatial weights matrix. The weights can take on many different values. For example, one could assign a value of <code>1</code> to a neighboring cell as shown in the following matrix.</p>
+<table class="table table-striped" style="font-size: 11px; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:left;">
+1
+</th>
+<th style="text-align:left;">
+2
+</th>
+<th style="text-align:left;">
+3
+</th>
+<th style="text-align:left;">
+4
+</th>
+<th style="text-align:left;">
+5
+</th>
+<th style="text-align:left;">
+6
+</th>
+<th style="text-align:left;">
+7
+</th>
+<th style="text-align:left;">
+8
+</th>
+<th style="text-align:left;">
+9
+</th>
+<th style="text-align:left;">
+10
+</th>
+<th style="text-align:left;">
+11
+</th>
+<th style="text-align:left;">
+12
+</th>
+<th style="text-align:left;">
+13
+</th>
+<th style="text-align:left;">
+14
+</th>
+<th style="text-align:left;">
+15
+</th>
+<th style="text-align:left;">
+16
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;font-weight: bold;padding: 5px;line-height: 4px;">
+1
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;padding: 5px;line-height: 4px;">
+2
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;padding: 5px;line-height: 4px;">
+3
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;padding: 5px;line-height: 4px;">
+4
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;padding: 5px;line-height: 4px;">
+5
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;padding: 5px;line-height: 4px;">
+6
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;padding: 5px;line-height: 4px;">
+7
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;padding: 5px;line-height: 4px;">
+8
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;padding: 5px;line-height: 4px;">
+9
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;padding: 5px;line-height: 4px;">
+10
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;padding: 5px;line-height: 4px;">
+11
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;padding: 5px;line-height: 4px;">
+12
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;padding: 5px;line-height: 4px;">
+13
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;padding: 5px;line-height: 4px;">
+14
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;padding: 5px;line-height: 4px;">
+15
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;padding: 5px;line-height: 4px;">
+16
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">1</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+</tr>
+</tbody>
+</table>
+<p>For example, cell ID <code>1</code> (whose value is 25 and whose standardized value, <span class="math inline">\(z_1\)</span>, is 0.21) has for neighbors cells <code>2</code>, <code>5</code> and <code>6</code>. Computationally (working with the standardized values), this gives us a summarized neighboring value (aka lagged value), <span class="math inline">\(y_1(lag)\)</span> of:</p>
+<p><span class="math display">\[
+\begin{align*}
+y_1 =  \sum\limits_j w_{1j} z_j {}={} &amp; (0)(0.21)+(1)(1.17)+(0)(1.5)+ ... + \\
+                                      &amp; (1)(0.69)+(1)(0.93)+(0)(-0.36)+...+ \\
+                                      &amp; (0)(-0.76) = 2.79
+\end{align*}                                  
+\]</span></p>
+<p>Computing the spatially lagged values for the other 15 cells generates the following scatterplot:</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig17"></span>
+<img src="13-Spatial-Autocorrelation_files/figure-html/fig17-1.png" alt="Moran's *I* scatterplot using a binary weight. The red point is the ($z_1$, $y_1$) pair computed for cell `1`." width="384" />
+<p class="caption">
+Figure 13.21: Moran’s <em>I</em> scatterplot using a binary weight. The red point is the (<span class="math inline">\(z_1\)</span>, <span class="math inline">\(y_1\)</span>) pair computed for cell <code>1</code>.
+</p>
+</div>
+<p>You’ll note that the range of neighboring values along the <span class="math inline">\(y\)</span>-axis is much greater than that of the original values on the <span class="math inline">\(x\)</span>-axis. This is not necessarily an issue given that the Moran’s <span class="math inline">\(I\)</span> correlation coefficient standardizes the values by recentering them on the overall mean <span class="math inline">\((X - \bar{X})/s\)</span>. This is simply to re-emphasize that we are interested in how a neighboring value varies relative to a feature’s value, regardless of the scale of values in either batches.</p>
+<p>If there is a downside to adopting a binary weight, it’s the bias that the different number of neighbors can introduce in the calculation of the spatially lagged values. In other words, a feature with <code>5</code> polygons (such as feature ID <code>12</code>) will have a larger neighboring value than a feature with <code>3</code> neighbors (such as feature ID <code>1</code>) whose neighboring value will be less if there was no spatial autocorrelation in the dataset.</p>
+<p>A more natural weight is one where the values are standardized across each row of the weights matrix such that the weights across each row sum to one. For example:</p>
+<table class="table table-striped" style="font-size: 11px; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:left;">
+1
+</th>
+<th style="text-align:left;">
+2
+</th>
+<th style="text-align:left;">
+3
+</th>
+<th style="text-align:left;">
+4
+</th>
+<th style="text-align:left;">
+5
+</th>
+<th style="text-align:left;">
+6
+</th>
+<th style="text-align:left;">
+7
+</th>
+<th style="text-align:left;">
+8
+</th>
+<th style="text-align:left;">
+9
+</th>
+<th style="text-align:left;">
+10
+</th>
+<th style="text-align:left;">
+11
+</th>
+<th style="text-align:left;">
+12
+</th>
+<th style="text-align:left;">
+13
+</th>
+<th style="text-align:left;">
+14
+</th>
+<th style="text-align:left;">
+15
+</th>
+<th style="text-align:left;">
+16
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;font-weight: bold;padding: 5px;line-height: 4px;">
+1
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.333</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.333</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.333</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;padding: 5px;line-height: 4px;">
+2
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;padding: 5px;line-height: 4px;">
+3
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;padding: 5px;line-height: 4px;">
+4
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.333</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.333</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.333</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;padding: 5px;line-height: 4px;">
+5
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;padding: 5px;line-height: 4px;">
+6
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.125</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.125</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.125</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.125</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.125</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.125</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.125</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.125</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;padding: 5px;line-height: 4px;">
+7
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.125</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.125</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.125</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.125</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.125</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.125</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.125</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.125</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;padding: 5px;line-height: 4px;">
+8
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;padding: 5px;line-height: 4px;">
+9
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;padding: 5px;line-height: 4px;">
+10
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.125</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.125</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.125</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.125</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.125</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.125</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.125</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.125</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;padding: 5px;line-height: 4px;">
+11
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.125</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.125</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.125</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.125</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.125</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.125</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.125</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.125</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;padding: 5px;line-height: 4px;">
+12
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;padding: 5px;line-height: 4px;">
+13
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.333</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.333</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.333</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;padding: 5px;line-height: 4px;">
+14
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;padding: 5px;line-height: 4px;">
+15
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.2</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;padding: 5px;line-height: 4px;">
+16
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.333</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.333</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: red !important;">0.333</span>
+</td>
+<td style="text-align:left;padding: 5px;line-height: 4px;">
+<span style="     color: rgba(77, 77, 77, 255) !important;">0</span>
+</td>
+</tr>
+</tbody>
+</table>
+<p>The spatially lagged value for cell ID <code>1</code> is thus computed as:</p>
+<p><span class="math display">\[
+\begin{align*}
+y_1 =  \sum\limits_j w_{1j} z_j {}={} &amp; (0)(0.21)+(0.333)(1.17)+(0)(1.5)+...+ \\
+                                      &amp; (0.333)(0.69)+(0.333)(0.93)+(0)(-0.36)+...+ \\
+                                      &amp; (0)(-0.76) = 0.93
+\end{align*}
+\]</span></p>
+<p>Multiplying each neighbor by the standardized weight, then summing these values, is simply computing the neighbor’s mean value.</p>
+<p>Using the standardized weights generates the following scatter plot. Plot on the left shows the raw values on the <em>x</em> and <em>y</em> axes; plot on the right shows the standardized values <span class="math inline">\(z_i\)</span> and <span class="math inline">\(y_i = \sum\limits_j w_{ij} z_j\)</span>. You’ll note that the shape of the point cloud is the same in both plots given that the axes on the left plot are scaled such as to match the standardized scales in both axes.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig19"></span>
+<img src="13-Spatial-Autocorrelation_files/figure-html/fig19-1.png" alt="Moran's scatter plot with original values on the left and same Moran's I scatter plot on the right using the standardzied values $z_i$ and $y_i$." width="672" />
+<p class="caption">
+Figure 13.22: Moran’s scatter plot with original values on the left and same Moran’s I scatter plot on the right using the standardzied values <span class="math inline">\(z_i\)</span> and <span class="math inline">\(y_i\)</span>.
+</p>
+</div>
+<p>Note the difference in the point cloud pattern in the above plot from the one generated using the binary weights. Other weights can be used such as inverse distance and k-nearest neighbors to name just a few. However, must software implementations of the Moran’s <em>I</em> statistic will adopt the row standardized weights.</p>
+<div id="local-morans-i-1" class="section level3 hasAnchor" number="13.5.1">
+<h3><span class="header-section-number">13.5.1</span> Local Moran’s I<a href="chp13_0.html#local-morans-i-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Once a spatial weight is chosen, and both <span class="math inline">\(z_i\)</span> and <span class="math inline">\(y_i\)</span> are computed. We can compute the <span class="math inline">\(z_iy_i\)</span> product for all locations of <span class="math inline">\(i\)</span> thus giving us a measure of the local Moran’s I statistic. Taking feature ID of <code>1</code> in our example, we compute <span class="math inline">\(I_1(lag) = 0.21 \times 0.93 = 0.19\)</span>. Computing <span class="math inline">\(I_i\)</span> for all cells gives us the following plot.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig20"></span>
+<img src="13-Spatial-Autocorrelation_files/figure-html/fig20-1.png" alt="The left plot shows the Moran's I scatter plot with the point colors symbolizing the $I_i$ values. The figure on the right shows the matching $I_i$ values mapped to each respective cell." width="672" />
+<p class="caption">
+Figure 13.23: The left plot shows the Moran’s I scatter plot with the point colors symbolizing the <span class="math inline">\(I_i\)</span> values. The figure on the right shows the matching <span class="math inline">\(I_i\)</span> values mapped to each respective cell.
+</p>
+</div>
+<p>Here, we are adopting a different color scheme from that used earlier. Green colors highlight features whose values are surrounded by similar values. These can be either positive values surrounded by standardized values that tend to be positive or negative values surrounded by values that tend to be negative. In both cases, the calculated <span class="math inline">\(I_i\)</span> will be positive. Red colors highlight features whose values are surrounded by dissimilar values. These can be either negative values surrounded by values that tend to be positive or positive values surrounded by values that tend to be negative. In both cases, the calculated <span class="math inline">\(I_i\)</span> will be negative. In our example, two features have a negative Moran’s <em>I</em> coefficient: cell IDs <code>7</code> and <code>12</code>.</p>
+</div>
+<div id="global-morans-i-1" class="section level3 hasAnchor" number="13.5.2">
+<h3><span class="header-section-number">13.5.2</span> Global Moran’s I<a href="chp13_0.html#global-morans-i-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The Global Moran’s <em>I</em> coefficient, <span class="math inline">\(I\)</span> is nothing more than a summary of the local Moran’s <em>I</em> coefficients. Using a standardized weight, <span class="math inline">\(I\)</span> is the average of all <span class="math inline">\(I_i\)</span> values.</p>
+<p><span class="math display">\[
+\begin{pmatrix}
+\frac{0.19+0.7+1.15+0.68+0.18+0.15+-0.24+0.44+0.25+0.12+0.14+-0.29+1.18+1.39+0.71+0.39}{\sum\limits_i\sum\limits_j w_{ij}} = 0.446
+\end{pmatrix}
+\]</span>
+In this example, <span class="math inline">\(\sum\limits_i \sum\limits_j w_{ij}\)</span> is the sum of all 256 values in Table (2) which, using standardized weights, sums to 16.</p>
+<p><span class="math inline">\(I\)</span> is thus the slope that best fits the data. This can be plotted using either the standardized values or the raw values.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig21"></span>
+<img src="13-Spatial-Autocorrelation_files/figure-html/fig21-1.png" alt="Moran's scatter with fitted Moran's *I* slope (red line).  The left plot uses the raw values $(X_i,X_i(lag))$ for its axes labels. Right plot uses the standardized values $(z_i,y_i)$ for its axes labels." width="672" />
+<p class="caption">
+Figure 13.24: Moran’s scatter with fitted Moran’s <em>I</em> slope (red line). The left plot uses the raw values <span class="math inline">\((X_i,X_i(lag))\)</span> for its axes labels. Right plot uses the standardized values <span class="math inline">\((z_i,y_i)\)</span> for its axes labels.
+</p>
+</div>
+</div>
+</div>
+<div id="summary-11" class="section level2 hasAnchor" number="13.6">
+<h2><span class="header-section-number">13.6</span> Summary<a href="chp13_0.html#summary-11" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>This chapter introduced spatial autocorrelation as a key concept for understanding second-order spatial structure–how values at one location relate to values at nearby locations. Using Moran’s I as a central tool, we explored both global and local measures of spatial association, emphasizing the importance of spatial weights and neighborhood definitions. Through examples and permutation-based inference, we demonstrated how spatial autocorrelation can be quantified, tested, and interpreted across scales. The chapter concluded with a detailed breakdown of the Moran’s I equation, reinforcing its interpretation as a spatially weighted correlation and laying the groundwork for more advanced spatial statistical techniques.</p>
+
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
+<div id="ref-Tobler1970" class="csl-entry">
+Tobler, Waldo R. 1970. <span>“<span class="nocase">A Computer Movie Simulating Urban Growth in the Detroit Region</span>.”</span> <em>Economic Geography</em> 46 (2): 234–40. <a href="http://www.geog.ucsb.edu/~tobler/publications/pdf_docs/A-Computer-Movie.pdf">http://www.geog.ucsb.edu/~tobler/publications/pdf_docs/A-Computer-Movie.pdf</a>.
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="chp12_0.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="chp14_0.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+  "sharing": {
+    "github": false,
+    "facebook": false,
+    "twitter": false,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": false,
+    "google": false,
+    "instapper": false
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": null,
+    "text": null
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": {},
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "section",
+    "scroll_highlight": true
+  }
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

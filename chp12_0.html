@@ -1,0 +1,1092 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 12 Modeling Spatial Trends | Intro to GIS and Spatial Analysis</title>
+  <meta name="description" content="This is a compilation of lecture notes that accompany my Intro to GIS and Spatial Analysis course." />
+  <meta name="generator" content="bookdown 0.43 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 12 Modeling Spatial Trends | Intro to GIS and Spatial Analysis" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="This is a compilation of lecture notes that accompany my Intro to GIS and Spatial Analysis course." />
+  <meta name="github-repo" content="mgimond/spatial" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 12 Modeling Spatial Trends | Intro to GIS and Spatial Analysis" />
+  
+  <meta name="twitter:description" content="This is a compilation of lecture notes that accompany my Intro to GIS and Spatial Analysis course." />
+  
+
+<meta name="author" content="Manuel Gimond" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="chp11_0.html"/>
+<link rel="next" href="chp13_0.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<link href="libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet" />
+<script src="libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/proj4-2.6.2/proj4.min.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.2.2/leaflet.js"></script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-71085TV4MB"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-71085TV4MB');
+</script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; } /* Alert */
+code span.an { color: #008000; } /* Annotation */
+code span.at { } /* Attribute */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #0000ff; } /* ControlFlow */
+code span.ch { color: #008080; } /* Char */
+code span.cn { } /* Constant */
+code span.co { color: #008000; } /* Comment */
+code span.cv { color: #008000; } /* CommentVar */
+code span.do { color: #008000; } /* Documentation */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.im { } /* Import */
+code span.in { color: #008000; } /* Information */
+code span.kw { color: #0000ff; } /* Keyword */
+code span.op { } /* Operator */
+code span.ot { color: #ff4000; } /* Other */
+code span.pp { color: #ff4000; } /* Preprocessor */
+code span.sc { color: #008080; } /* SpecialChar */
+code span.ss { color: #008080; } /* SpecialString */
+code span.st { color: #008080; } /* String */
+code span.va { } /* Variable */
+code span.vs { color: #008080; } /* VerbatimString */
+code span.wa { color: #008000; font-weight: bold; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
+<li class="chapter" data-level="1" data-path="introGIS.html"><a href="introGIS.html"><i class="fa fa-check"></i><b>1</b> Introduction to GIS</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="introGIS.html"><a href="introGIS.html#what-is-a-gis"><i class="fa fa-check"></i><b>1.1</b> What is a GIS?</a>
+<ul>
+<li class="chapter" data-level="1.1.1" data-path="introGIS.html"><a href="introGIS.html#gis-software"><i class="fa fa-check"></i><b>1.1.1</b> GIS software</a></li>
+<li class="chapter" data-level="1.1.2" data-path="introGIS.html"><a href="introGIS.html#qgis"><i class="fa fa-check"></i><b>1.1.2</b> QGIS</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="introGIS.html"><a href="introGIS.html#what-is-spatial-analysis"><i class="fa fa-check"></i><b>1.2</b> What is Spatial Analysis?</a></li>
+<li class="chapter" data-level="1.3" data-path="introGIS.html"><a href="introGIS.html#whats-in-an-acronym"><i class="fa fa-check"></i><b>1.3</b> What’s in an Acronym?</a></li>
+<li class="chapter" data-level="1.4" data-path="introGIS.html"><a href="introGIS.html#course-roadmap"><i class="fa fa-check"></i><b>1.4</b> Course Roadmap</a>
+<ul>
+<li class="chapter" data-level="1.4.1" data-path="introGIS.html"><a href="introGIS.html#part-1-working-with-spatial-data"><i class="fa fa-check"></i><b>1.4.1</b> Part 1: Working with Spatial Data</a></li>
+<li class="chapter" data-level="1.4.2" data-path="introGIS.html"><a href="introGIS.html#part-2-exploratory-spatial-data-analysis"><i class="fa fa-check"></i><b>1.4.2</b> Part 2: Exploratory Spatial Data Analysis</a></li>
+</ul></li>
+</ul></li>
+<li class="part"><span><b>PART 1: Working with spatial data</b></span></li>
+<li class="chapter" data-level="2" data-path="chp02_0.html"><a href="chp02_0.html"><i class="fa fa-check"></i><b>2</b> Feature Representation</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="chp02_0.html"><a href="chp02_0.html#introduction"><i class="fa fa-check"></i><b>2.1</b> Introduction</a></li>
+<li class="chapter" data-level="2.2" data-path="chp02_0.html"><a href="chp02_0.html#vector-vs.-raster"><i class="fa fa-check"></i><b>2.2</b> Vector vs. Raster</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="chp02_0.html"><a href="chp02_0.html#vector"><i class="fa fa-check"></i><b>2.2.1</b> Vector</a></li>
+<li class="chapter" data-level="2.2.2" data-path="chp02_0.html"><a href="chp02_0.html#raster"><i class="fa fa-check"></i><b>2.2.2</b> Raster</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="chp02_0.html"><a href="chp02_0.html#object-vs.-field"><i class="fa fa-check"></i><b>2.3</b> Object vs. Field</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="chp02_0.html"><a href="chp02_0.html#object-view"><i class="fa fa-check"></i><b>2.3.1</b> Object View</a></li>
+<li class="chapter" data-level="2.3.2" data-path="chp02_0.html"><a href="chp02_0.html#field-view"><i class="fa fa-check"></i><b>2.3.2</b> Field View</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="chp02_0.html"><a href="chp02_0.html#scale"><i class="fa fa-check"></i><b>2.4</b> Scale</a></li>
+<li class="chapter" data-level="2.5" data-path="chp02_0.html"><a href="chp02_0.html#attribute-tables"><i class="fa fa-check"></i><b>2.5</b> Attribute Tables</a>
+<ul>
+<li class="chapter" data-level="2.5.1" data-path="chp02_0.html"><a href="chp02_0.html#measurement-levels"><i class="fa fa-check"></i><b>2.5.1</b> Measurement Levels</a></li>
+<li class="chapter" data-level="2.5.2" data-path="chp02_0.html"><a href="chp02_0.html#data-type"><i class="fa fa-check"></i><b>2.5.2</b> Data type</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="chp02_0.html"><a href="chp02_0.html#summary"><i class="fa fa-check"></i><b>2.6</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="gis-data-management.html"><a href="gis-data-management.html"><i class="fa fa-check"></i><b>3</b> GIS Data Management</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="gis-data-management.html"><a href="gis-data-management.html#introduction-1"><i class="fa fa-check"></i><b>3.1</b> Introduction</a></li>
+<li class="chapter" data-level="3.2" data-path="gis-data-management.html"><a href="gis-data-management.html#gis-file-data-formats"><i class="fa fa-check"></i><b>3.2</b> GIS File Data Formats</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="gis-data-management.html"><a href="gis-data-management.html#vector-data-file-formats"><i class="fa fa-check"></i><b>3.2.1</b> Vector Data File Formats</a></li>
+<li class="chapter" data-level="3.2.2" data-path="gis-data-management.html"><a href="gis-data-management.html#raster-data-file-formats"><i class="fa fa-check"></i><b>3.2.2</b> Raster Data File Formats</a></li>
+<li class="chapter" data-level="3.2.3" data-path="gis-data-management.html"><a href="gis-data-management.html#comparison-table"><i class="fa fa-check"></i><b>3.2.3</b> Comparison table</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="gis-data-management.html"><a href="gis-data-management.html#managing-gis-files-in-arcgis"><i class="fa fa-check"></i><b>3.3</b> Managing GIS Files in ArcGIS</a></li>
+<li class="chapter" data-level="3.4" data-path="gis-data-management.html"><a href="gis-data-management.html#managing-gis-projects-and-file-references"><i class="fa fa-check"></i><b>3.4</b> Managing GIS Projects and File References</a></li>
+<li class="chapter" data-level="3.5" data-path="gis-data-management.html"><a href="gis-data-management.html#summary-1"><i class="fa fa-check"></i><b>3.5</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="symbolizing-features.html"><a href="symbolizing-features.html"><i class="fa fa-check"></i><b>4</b> Symbolizing features</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="symbolizing-features.html"><a href="symbolizing-features.html#introduction-2"><i class="fa fa-check"></i><b>4.1</b> Introduction</a></li>
+<li class="chapter" data-level="4.2" data-path="symbolizing-features.html"><a href="symbolizing-features.html#color"><i class="fa fa-check"></i><b>4.2</b> Color</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="symbolizing-features.html"><a href="symbolizing-features.html#hue"><i class="fa fa-check"></i><b>4.2.1</b> Hue</a></li>
+<li class="chapter" data-level="4.2.2" data-path="symbolizing-features.html"><a href="symbolizing-features.html#lightness"><i class="fa fa-check"></i><b>4.2.2</b> Lightness</a></li>
+<li class="chapter" data-level="4.2.3" data-path="symbolizing-features.html"><a href="symbolizing-features.html#saturation"><i class="fa fa-check"></i><b>4.2.3</b> Saturation</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="symbolizing-features.html"><a href="symbolizing-features.html#color-space"><i class="fa fa-check"></i><b>4.3</b> Color Space</a></li>
+<li class="chapter" data-level="4.4" data-path="symbolizing-features.html"><a href="symbolizing-features.html#classification"><i class="fa fa-check"></i><b>4.4</b> Classification</a>
+<ul>
+<li class="chapter" data-level="4.4.1" data-path="symbolizing-features.html"><a href="symbolizing-features.html#qualitative-color-scheme"><i class="fa fa-check"></i><b>4.4.1</b> Qualitative color scheme</a></li>
+<li class="chapter" data-level="4.4.2" data-path="symbolizing-features.html"><a href="symbolizing-features.html#sequential-color-scheme"><i class="fa fa-check"></i><b>4.4.2</b> Sequential color scheme</a></li>
+<li class="chapter" data-level="4.4.3" data-path="symbolizing-features.html"><a href="symbolizing-features.html#divergent-color-scheme"><i class="fa fa-check"></i><b>4.4.3</b> Divergent color scheme</a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="symbolizing-features.html"><a href="symbolizing-features.html#choosing-an-appropriate-color-scheme"><i class="fa fa-check"></i><b>4.5</b> Choosing an Appropriate Color Scheme</a></li>
+<li class="chapter" data-level="4.6" data-path="symbolizing-features.html"><a href="symbolizing-features.html#classification-intervals"><i class="fa fa-check"></i><b>4.6</b> Classification Intervals</a>
+<ul>
+<li class="chapter" data-level="4.6.1" data-path="symbolizing-features.html"><a href="symbolizing-features.html#an-interactive-example"><i class="fa fa-check"></i><b>4.6.1</b> An Interactive Example</a></li>
+</ul></li>
+<li class="chapter" data-level="4.7" data-path="symbolizing-features.html"><a href="symbolizing-features.html#summary-2"><i class="fa fa-check"></i><b>4.7</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="statistical-maps.html"><a href="statistical-maps.html"><i class="fa fa-check"></i><b>5</b> Statistical maps</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="statistical-maps.html"><a href="statistical-maps.html#introduction-3"><i class="fa fa-check"></i><b>5.1</b> Introduction</a></li>
+<li class="chapter" data-level="5.2" data-path="statistical-maps.html"><a href="statistical-maps.html#statistical-distribution-maps"><i class="fa fa-check"></i><b>5.2</b> Statistical distribution maps</a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="statistical-maps.html"><a href="statistical-maps.html#quantile-map"><i class="fa fa-check"></i><b>5.2.1</b> Quantile map</a></li>
+<li class="chapter" data-level="5.2.2" data-path="statistical-maps.html"><a href="statistical-maps.html#boxplot-map"><i class="fa fa-check"></i><b>5.2.2</b> Boxplot map</a></li>
+<li class="chapter" data-level="5.2.3" data-path="statistical-maps.html"><a href="statistical-maps.html#iqr-map"><i class="fa fa-check"></i><b>5.2.3</b> IQR map</a></li>
+<li class="chapter" data-level="5.2.4" data-path="statistical-maps.html"><a href="statistical-maps.html#standard-deviation-map"><i class="fa fa-check"></i><b>5.2.4</b> Standard deviation map</a></li>
+<li class="chapter" data-level="5.2.5" data-path="statistical-maps.html"><a href="statistical-maps.html#outlier-maps"><i class="fa fa-check"></i><b>5.2.5</b> Outlier maps</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="statistical-maps.html"><a href="statistical-maps.html#mapping-uncertainty"><i class="fa fa-check"></i><b>5.3</b> Mapping uncertainty</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="statistical-maps.html"><a href="statistical-maps.html#assessing-confidence-in-spatial-patterns"><i class="fa fa-check"></i><b>5.3.1</b> Assessing confidence in spatial patterns</a></li>
+<li class="chapter" data-level="5.3.2" data-path="statistical-maps.html"><a href="statistical-maps.html#class-comparison-maps"><i class="fa fa-check"></i><b>5.3.2</b> Class comparison maps</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="statistical-maps.html"><a href="statistical-maps.html#summary-3"><i class="fa fa-check"></i><b>5.4</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="pitfalls-to-avoid.html"><a href="pitfalls-to-avoid.html"><i class="fa fa-check"></i><b>6</b> Pitfalls to avoid</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="pitfalls-to-avoid.html"><a href="pitfalls-to-avoid.html#introduction-4"><i class="fa fa-check"></i><b>6.1</b> Introduction</a></li>
+<li class="chapter" data-level="6.2" data-path="pitfalls-to-avoid.html"><a href="pitfalls-to-avoid.html#representing-count"><i class="fa fa-check"></i><b>6.2</b> Representing Count</a></li>
+<li class="chapter" data-level="6.3" data-path="pitfalls-to-avoid.html"><a href="pitfalls-to-avoid.html#maup"><i class="fa fa-check"></i><b>6.3</b> MAUP</a></li>
+<li class="chapter" data-level="6.4" data-path="pitfalls-to-avoid.html"><a href="pitfalls-to-avoid.html#ecological-fallacy"><i class="fa fa-check"></i><b>6.4</b> Ecological Fallacy</a></li>
+<li class="chapter" data-level="6.5" data-path="pitfalls-to-avoid.html"><a href="pitfalls-to-avoid.html#mapping-rates"><i class="fa fa-check"></i><b>6.5</b> Mapping rates</a></li>
+<li class="chapter" data-level="6.6" data-path="pitfalls-to-avoid.html"><a href="pitfalls-to-avoid.html#empirical-bayes-smoothing"><i class="fa fa-check"></i><b>6.6</b> Empirical Bayes Smoothing</a></li>
+<li class="chapter" data-level="6.7" data-path="pitfalls-to-avoid.html"><a href="pitfalls-to-avoid.html#summary-4"><i class="fa fa-check"></i><b>6.7</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="good-map-making-tips.html"><a href="good-map-making-tips.html"><i class="fa fa-check"></i><b>7</b> Good Map Making Tips</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="good-map-making-tips.html"><a href="good-map-making-tips.html#introduction-5"><i class="fa fa-check"></i><b>7.1</b> Introduction</a></li>
+<li class="chapter" data-level="7.2" data-path="good-map-making-tips.html"><a href="good-map-making-tips.html#elements-of-a-map"><i class="fa fa-check"></i><b>7.2</b> Elements of a Map</a></li>
+<li class="chapter" data-level="7.3" data-path="good-map-making-tips.html"><a href="good-map-making-tips.html#how-to-create-a-good-map"><i class="fa fa-check"></i><b>7.3</b> How to Create a <em>Good</em> Map</a></li>
+<li class="chapter" data-level="7.4" data-path="good-map-making-tips.html"><a href="good-map-making-tips.html#typefaces-and-fonts"><i class="fa fa-check"></i><b>7.4</b> Typefaces and Fonts</a></li>
+<li class="chapter" data-level="7.5" data-path="good-map-making-tips.html"><a href="good-map-making-tips.html#summary-5"><i class="fa fa-check"></i><b>7.5</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="spatial-operations-and-vector-overlays.html"><a href="spatial-operations-and-vector-overlays.html"><i class="fa fa-check"></i><b>8</b> Spatial Operations and Vector Overlays</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="spatial-operations-and-vector-overlays.html"><a href="spatial-operations-and-vector-overlays.html#introduction-6"><i class="fa fa-check"></i><b>8.1</b> Introduction</a></li>
+<li class="chapter" data-level="8.2" data-path="spatial-operations-and-vector-overlays.html"><a href="spatial-operations-and-vector-overlays.html#selection-by-attribute"><i class="fa fa-check"></i><b>8.2</b> Selection by Attribute</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="spatial-operations-and-vector-overlays.html"><a href="spatial-operations-and-vector-overlays.html#set-algebra"><i class="fa fa-check"></i><b>8.2.1</b> Set Algebra</a></li>
+<li class="chapter" data-level="8.2.2" data-path="spatial-operations-and-vector-overlays.html"><a href="spatial-operations-and-vector-overlays.html#boolean-algebra"><i class="fa fa-check"></i><b>8.2.2</b> Boolean Algebra</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="spatial-operations-and-vector-overlays.html"><a href="spatial-operations-and-vector-overlays.html#selection-by-location"><i class="fa fa-check"></i><b>8.3</b> Selection by location</a></li>
+<li class="chapter" data-level="8.4" data-path="spatial-operations-and-vector-overlays.html"><a href="spatial-operations-and-vector-overlays.html#vector-overlay"><i class="fa fa-check"></i><b>8.4</b> Vector Overlay</a>
+<ul>
+<li class="chapter" data-level="8.4.1" data-path="spatial-operations-and-vector-overlays.html"><a href="spatial-operations-and-vector-overlays.html#clipping"><i class="fa fa-check"></i><b>8.4.1</b> Clipping</a></li>
+<li class="chapter" data-level="8.4.2" data-path="spatial-operations-and-vector-overlays.html"><a href="spatial-operations-and-vector-overlays.html#intersecting"><i class="fa fa-check"></i><b>8.4.2</b> Intersecting</a></li>
+<li class="chapter" data-level="8.4.3" data-path="spatial-operations-and-vector-overlays.html"><a href="spatial-operations-and-vector-overlays.html#unioning"><i class="fa fa-check"></i><b>8.4.3</b> Unioning</a></li>
+</ul></li>
+<li class="chapter" data-level="8.5" data-path="spatial-operations-and-vector-overlays.html"><a href="spatial-operations-and-vector-overlays.html#summary-6"><i class="fa fa-check"></i><b>8.5</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="chp09_0.html"><a href="chp09_0.html"><i class="fa fa-check"></i><b>9</b> Coordinate Systems</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="chp09_0.html"><a href="chp09_0.html#introduction-7"><i class="fa fa-check"></i><b>9.1</b> Introduction</a></li>
+<li class="chapter" data-level="9.2" data-path="chp09_0.html"><a href="chp09_0.html#geographic-coordinate-systems"><i class="fa fa-check"></i><b>9.2</b> Geographic Coordinate Systems</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="chp09_0.html"><a href="chp09_0.html#sphere-and-ellipsoid"><i class="fa fa-check"></i><b>9.2.1</b> Sphere and Ellipsoid</a></li>
+<li class="chapter" data-level="9.2.2" data-path="chp09_0.html"><a href="chp09_0.html#geoid"><i class="fa fa-check"></i><b>9.2.2</b> Geoid</a></li>
+<li class="chapter" data-level="9.2.3" data-path="chp09_0.html"><a href="chp09_0.html#datum"><i class="fa fa-check"></i><b>9.2.3</b> Datum</a></li>
+<li class="chapter" data-level="9.2.4" data-path="chp09_0.html"><a href="chp09_0.html#building-the-geographic-coordinate-system"><i class="fa fa-check"></i><b>9.2.4</b> Building the Geographic Coordinate System</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="chp09_0.html"><a href="chp09_0.html#projected-coordinate-systems"><i class="fa fa-check"></i><b>9.3</b> Projected Coordinate Systems</a>
+<ul>
+<li class="chapter" data-level="9.3.1" data-path="chp09_0.html"><a href="chp09_0.html#planar-projections"><i class="fa fa-check"></i><b>9.3.1</b> Planar Projections</a></li>
+<li class="chapter" data-level="9.3.2" data-path="chp09_0.html"><a href="chp09_0.html#cylindrical-projection"><i class="fa fa-check"></i><b>9.3.2</b> Cylindrical Projection</a></li>
+<li class="chapter" data-level="9.3.3" data-path="chp09_0.html"><a href="chp09_0.html#conical-projection"><i class="fa fa-check"></i><b>9.3.3</b> Conical Projection</a></li>
+</ul></li>
+<li class="chapter" data-level="9.4" data-path="chp09_0.html"><a href="chp09_0.html#spatial-properties"><i class="fa fa-check"></i><b>9.4</b> Spatial Properties</a></li>
+<li class="chapter" data-level="9.5" data-path="chp09_0.html"><a href="chp09_0.html#geodesic-geometries"><i class="fa fa-check"></i><b>9.5</b> Geodesic geometries</a></li>
+<li class="chapter" data-level="9.6" data-path="chp09_0.html"><a href="chp09_0.html#summary-7"><i class="fa fa-check"></i><b>9.6</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="chp10_0.html"><a href="chp10_0.html"><i class="fa fa-check"></i><b>10</b> Map Algebra</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="chp10_0.html"><a href="chp10_0.html#introduction-8"><i class="fa fa-check"></i><b>10.1</b> Introduction</a></li>
+<li class="chapter" data-level="10.2" data-path="chp10_0.html"><a href="chp10_0.html#local-operations-and-functions"><i class="fa fa-check"></i><b>10.2</b> Local operations and functions</a></li>
+<li class="chapter" data-level="10.3" data-path="chp10_0.html"><a href="chp10_0.html#focal-operations-and-functions"><i class="fa fa-check"></i><b>10.3</b> Focal operations and functions</a></li>
+<li class="chapter" data-level="10.4" data-path="chp10_0.html"><a href="chp10_0.html#zonal-operations-and-functions"><i class="fa fa-check"></i><b>10.4</b> Zonal operations and functions</a></li>
+<li class="chapter" data-level="10.5" data-path="chp10_0.html"><a href="chp10_0.html#global-operations-and-functions"><i class="fa fa-check"></i><b>10.5</b> Global operations and functions</a></li>
+<li class="chapter" data-level="10.6" data-path="chp10_0.html"><a href="chp10_0.html#operators-and-functions"><i class="fa fa-check"></i><b>10.6</b> Operators and functions</a>
+<ul>
+<li class="chapter" data-level="10.6.1" data-path="chp10_0.html"><a href="chp10_0.html#mathematical-operators-and-functions"><i class="fa fa-check"></i><b>10.6.1</b> Mathematical operators and functions</a></li>
+<li class="chapter" data-level="10.6.2" data-path="chp10_0.html"><a href="chp10_0.html#logical-comparison"><i class="fa fa-check"></i><b>10.6.2</b> Logical comparison</a></li>
+<li class="chapter" data-level="10.6.3" data-path="chp10_0.html"><a href="chp10_0.html#boolean-or-logical-operators"><i class="fa fa-check"></i><b>10.6.3</b> Boolean (or Logical) operators</a></li>
+<li class="chapter" data-level="10.6.4" data-path="chp10_0.html"><a href="chp10_0.html#combining-operations"><i class="fa fa-check"></i><b>10.6.4</b> Combining operations</a></li>
+</ul></li>
+<li class="chapter" data-level="10.7" data-path="chp10_0.html"><a href="chp10_0.html#summary-8"><i class="fa fa-check"></i><b>10.7</b> Summary</a></li>
+</ul></li>
+<li class="part"><span><b>PART 2: Spatial Analysis</b></span></li>
+<li class="chapter" data-level="11" data-path="chp11_0.html"><a href="chp11_0.html"><i class="fa fa-check"></i><b>11</b> Analyzing Spatial Patterns</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="chp11_0.html"><a href="chp11_0.html#introduction-9"><i class="fa fa-check"></i><b>11.1</b> Introduction</a></li>
+<li class="chapter" data-level="11.2" data-path="chp11_0.html"><a href="chp11_0.html#from-maps-to-models-defining-spatial-patterns-statistically"><i class="fa fa-check"></i><b>11.2</b> From Maps to Models: Defining Spatial Patterns Statistically</a>
+<ul>
+<li class="chapter" data-level="11.2.1" data-path="chp11_0.html"><a href="chp11_0.html#first-order-effects-spatial-trend-and-intensity"><i class="fa fa-check"></i><b>11.2.1</b> First-Order Effects: Spatial Trend and Intensity</a></li>
+<li class="chapter" data-level="11.2.2" data-path="chp11_0.html"><a href="chp11_0.html#second-order-effects-interaction-and-autocorrelation"><i class="fa fa-check"></i><b>11.2.2</b> Second-Order Effects: Interaction and Autocorrelation</a></li>
+</ul></li>
+<li class="chapter" data-level="11.3" data-path="chp11_0.html"><a href="chp11_0.html#why-distinguishing-these-effects-matters"><i class="fa fa-check"></i><b>11.3</b> Why Distinguishing These Effects Matters</a></li>
+<li class="chapter" data-level="11.4" data-path="chp11_0.html"><a href="chp11_0.html#spatial-data-types-and-applicability-of-first--and-second-order-effects"><i class="fa fa-check"></i><b>11.4</b> Spatial Data Types and Applicability of First- and Second-Order Effects</a></li>
+<li class="chapter" data-level="11.5" data-path="chp11_0.html"><a href="chp11_0.html#quantifying-patterns-vs.-hypothesis-testing"><i class="fa fa-check"></i><b>11.5</b> Quantifying Patterns vs. Hypothesis Testing</a></li>
+<li class="chapter" data-level="11.6" data-path="chp11_0.html"><a href="chp11_0.html#a-note-on-terminology-why-first-order-and-second-order"><i class="fa fa-check"></i><b>11.6</b> A Note on Terminology: Why ‘First-Order’ and ‘Second-Order’?</a></li>
+<li class="chapter" data-level="11.7" data-path="chp11_0.html"><a href="chp11_0.html#suggested-resources"><i class="fa fa-check"></i><b>11.7</b> Suggested resources</a></li>
+<li class="chapter" data-level="11.8" data-path="chp11_0.html"><a href="chp11_0.html#summary-9"><i class="fa fa-check"></i><b>11.8</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="chp12_0.html"><a href="chp12_0.html"><i class="fa fa-check"></i><b>12</b> Modeling Spatial Trends</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="chp12_0.html"><a href="chp12_0.html#introduction-10"><i class="fa fa-check"></i><b>12.1</b> Introduction</a></li>
+<li class="chapter" data-level="12.2" data-path="chp12_0.html"><a href="chp12_0.html#polynomial-functions"><i class="fa fa-check"></i><b>12.2</b> Polynomial functions</a></li>
+<li class="chapter" data-level="12.3" data-path="chp12_0.html"><a href="chp12_0.html#polynomial-functions-in-one-dimension"><i class="fa fa-check"></i><b>12.3</b> Polynomial functions in one dimension</a></li>
+<li class="chapter" data-level="12.4" data-path="chp12_0.html"><a href="chp12_0.html#transitioning-from-a-one-dimensional-to-a-two-dimensional-space"><i class="fa fa-check"></i><b>12.4</b> Transitioning from a one-dimensional to a two-dimensional space</a></li>
+<li class="chapter" data-level="12.5" data-path="chp12_0.html"><a href="chp12_0.html#evaluating-a-models-goodness-of-fit"><i class="fa fa-check"></i><b>12.5</b> Evaluating a model’s goodness of fit</a></li>
+<li class="chapter" data-level="12.6" data-path="chp12_0.html"><a href="chp12_0.html#a-note-about-adopting-traditional-statistical-measures-of-significance-to-spatial-functions"><i class="fa fa-check"></i><b>12.6</b> A note about adopting traditional statistical measures of significance to spatial functions</a></li>
+<li class="chapter" data-level="12.7" data-path="chp12_0.html"><a href="chp12_0.html#summary-10"><i class="fa fa-check"></i><b>12.7</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="chp13_0.html"><a href="chp13_0.html"><i class="fa fa-check"></i><b>13</b> Spatial Autocorrelation</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="chp13_0.html"><a href="chp13_0.html#introduction-11"><i class="fa fa-check"></i><b>13.1</b> Introduction</a></li>
+<li class="chapter" data-level="13.2" data-path="chp13_0.html"><a href="chp13_0.html#global-morans-i"><i class="fa fa-check"></i><b>13.2</b> Global Moran’s <em>I</em></a>
+<ul>
+<li class="chapter" data-level="13.2.1" data-path="chp13_0.html"><a href="chp13_0.html#computing-the-morans-i"><i class="fa fa-check"></i><b>13.2.1</b> Computing the Moran’s <em>I</em></a></li>
+<li class="chapter" data-level="13.2.2" data-path="chp13_0.html"><a href="chp13_0.html#monte-carlo-approach-to-estimating-significance"><i class="fa fa-check"></i><b>13.2.2</b> Monte Carlo approach to estimating significance</a></li>
+</ul></li>
+<li class="chapter" data-level="13.3" data-path="chp13_0.html"><a href="chp13_0.html#morans-i-at-different-distance-bands"><i class="fa fa-check"></i><b>13.3</b> Moran’s <em>I</em> at different distance bands</a></li>
+<li class="chapter" data-level="13.4" data-path="chp13_0.html"><a href="chp13_0.html#local-morans-i"><i class="fa fa-check"></i><b>13.4</b> Local Moran’s <em>I</em></a>
+<ul>
+<li class="chapter" data-level="13.4.1" data-path="chp13_0.html"><a href="chp13_0.html#a-note-about-interpreting-the-permutation-based-p-value"><i class="fa fa-check"></i><b>13.4.1</b> A note about interpreting the permutation-based p-value</a></li>
+</ul></li>
+<li class="chapter" data-level="13.5" data-path="chp13_0.html"><a href="chp13_0.html#morans-i-equation-explained"><i class="fa fa-check"></i><b>13.5</b> Moran’s <em>I</em> equation explained</a>
+<ul>
+<li class="chapter" data-level="13.5.1" data-path="chp13_0.html"><a href="chp13_0.html#local-morans-i-1"><i class="fa fa-check"></i><b>13.5.1</b> Local Moran’s I</a></li>
+<li class="chapter" data-level="13.5.2" data-path="chp13_0.html"><a href="chp13_0.html#global-morans-i-1"><i class="fa fa-check"></i><b>13.5.2</b> Global Moran’s I</a></li>
+</ul></li>
+<li class="chapter" data-level="13.6" data-path="chp13_0.html"><a href="chp13_0.html#summary-11"><i class="fa fa-check"></i><b>13.6</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="chp14_0.html"><a href="chp14_0.html"><i class="fa fa-check"></i><b>14</b> First-Order Point Pattern Analysis: Modeling Spatial Intensity</a>
+<ul>
+<li class="chapter" data-level="14.1" data-path="chp14_0.html"><a href="chp14_0.html#introduction-12"><i class="fa fa-check"></i><b>14.1</b> Introduction</a></li>
+<li class="chapter" data-level="14.2" data-path="chp14_0.html"><a href="chp14_0.html#centrography"><i class="fa fa-check"></i><b>14.2</b> Centrography</a></li>
+<li class="chapter" data-level="14.3" data-path="chp14_0.html"><a href="chp14_0.html#understanding-intensity-and-density-in-point-patterns"><i class="fa fa-check"></i><b>14.3</b> Understanding Intensity and Density in Point Patterns</a></li>
+<li class="chapter" data-level="14.4" data-path="chp14_0.html"><a href="chp14_0.html#global-density"><i class="fa fa-check"></i><b>14.4</b> Global density</a></li>
+<li class="chapter" data-level="14.5" data-path="chp14_0.html"><a href="chp14_0.html#local-density"><i class="fa fa-check"></i><b>14.5</b> Local density</a>
+<ul>
+<li class="chapter" data-level="14.5.1" data-path="chp14_0.html"><a href="chp14_0.html#quadrat-density"><i class="fa fa-check"></i><b>14.5.1</b> Quadrat density</a></li>
+<li class="chapter" data-level="14.5.2" data-path="chp14_0.html"><a href="chp14_0.html#kernel-density"><i class="fa fa-check"></i><b>14.5.2</b> Kernel density</a></li>
+<li class="chapter" data-level="14.5.3" data-path="chp14_0.html"><a href="chp14_0.html#nonparametric-intensity-modeling-with-covariates"><i class="fa fa-check"></i><b>14.5.3</b> Nonparametric Intensity Modeling with Covariates</a></li>
+<li class="chapter" data-level="14.5.4" data-path="chp14_0.html"><a href="chp14_0.html#parametric-intensity-modeling-with-covariates"><i class="fa fa-check"></i><b>14.5.4</b> Parametric Intensity Modeling with Covariates</a></li>
+</ul></li>
+<li class="chapter" data-level="14.6" data-path="chp14_0.html"><a href="chp14_0.html#PPM"><i class="fa fa-check"></i><b>14.6</b> Hypothesis Testing for Covariate Effects</a></li>
+<li class="chapter" data-level="14.7" data-path="chp14_0.html"><a href="chp14_0.html#summary-12"><i class="fa fa-check"></i><b>14.7</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="chp15_0.html"><a href="chp15_0.html"><i class="fa fa-check"></i><b>15</b> Second-Order Point Pattern Analysis: Modeling Distance</a>
+<ul>
+<li class="chapter" data-level="15.1" data-path="chp15_0.html"><a href="chp15_0.html#introduction-13"><i class="fa fa-check"></i><b>15.1</b> Introduction</a></li>
+<li class="chapter" data-level="15.2" data-path="chp15_0.html"><a href="chp15_0.html#average-nearest-neighbor"><i class="fa fa-check"></i><b>15.2</b> Average Nearest Neighbor</a>
+<ul>
+<li class="chapter" data-level="15.2.1" data-path="chp15_0.html"><a href="chp15_0.html#extending-the-concept-higher-order-neighbors"><i class="fa fa-check"></i><b>15.2.1</b> Extending the Concept: Higher-Order Neighbors</a></li>
+<li class="chapter" data-level="15.2.2" data-path="chp15_0.html"><a href="chp15_0.html#testing-for-complete-spatial-randomness"><i class="fa fa-check"></i><b>15.2.2</b> Testing for Complete Spatial Randomness</a></li>
+<li class="chapter" data-level="15.2.3" data-path="chp15_0.html"><a href="chp15_0.html#controlling-for-first-order-effects-in-second-order-analysis"><i class="fa fa-check"></i><b>15.2.3</b> Controlling for First-Order Effects in Second-Order Analysis</a></li>
+<li class="chapter" data-level="15.2.4" data-path="chp15_0.html"><a href="chp15_0.html#controlling-for-second-order-effects-in-first-order-analysis"><i class="fa fa-check"></i><b>15.2.4</b> Controlling for Second-Order Effects in First-Order Analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="15.3" data-path="chp15_0.html"><a href="chp15_0.html#k-and-l-functions"><i class="fa fa-check"></i><b>15.3</b> K and L functions</a>
+<ul>
+<li class="chapter" data-level="15.3.1" data-path="chp15_0.html"><a href="chp15_0.html#k-function"><i class="fa fa-check"></i><b>15.3.1</b> K function</a></li>
+<li class="chapter" data-level="15.3.2" data-path="chp15_0.html"><a href="chp15_0.html#l-function"><i class="fa fa-check"></i><b>15.3.2</b> L function</a></li>
+<li class="chapter" data-level="15.3.3" data-path="chp15_0.html"><a href="chp15_0.html#monte-carlo-test-for-the-k-and-l-functions"><i class="fa fa-check"></i><b>15.3.3</b> Monte Carlo test for the K and L functions</a></li>
+</ul></li>
+<li class="chapter" data-level="15.4" data-path="chp15_0.html"><a href="chp15_0.html#the-pair-correlation-function"><i class="fa fa-check"></i><b>15.4</b> The Pair Correlation Function</a>
+<ul>
+<li class="chapter" data-level="15.4.1" data-path="chp15_0.html"><a href="chp15_0.html#hypothesis-test-for-the-pcf"><i class="fa fa-check"></i><b>15.4.1</b> HYpothesis test for the PCF</a></li>
+</ul></li>
+<li class="chapter" data-level="15.5" data-path="chp15_0.html"><a href="chp15_0.html#summary-13"><i class="fa fa-check"></i><b>15.5</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="16" data-path="chp16_0.html"><a href="chp16_0.html"><i class="fa fa-check"></i><b>16</b> Spatial Interpolation</a>
+<ul>
+<li class="chapter" data-level="16.1" data-path="chp16_0.html"><a href="chp16_0.html#deterministic-approach-to-interpolation"><i class="fa fa-check"></i><b>16.1</b> Deterministic Approach to Interpolation</a>
+<ul>
+<li class="chapter" data-level="16.1.1" data-path="chp16_0.html"><a href="chp16_0.html#proximity-interpolation"><i class="fa fa-check"></i><b>16.1.1</b> Proximity interpolation</a></li>
+<li class="chapter" data-level="16.1.2" data-path="chp16_0.html"><a href="chp16_0.html#inverse-distance-weighted-idw"><i class="fa fa-check"></i><b>16.1.2</b> Inverse Distance Weighted (IDW)</a></li>
+<li class="chapter" data-level="16.1.3" data-path="chp16_0.html"><a href="chp16_0.html#fine-tuning-the-interpolation-parameters"><i class="fa fa-check"></i><b>16.1.3</b> Fine tuning the interpolation parameters</a></li>
+</ul></li>
+<li class="chapter" data-level="16.2" data-path="chp16_0.html"><a href="chp16_0.html#statistical-approach-to-interpolation"><i class="fa fa-check"></i><b>16.2</b> Statistical Approach to Interpolation</a>
+<ul>
+<li class="chapter" data-level="16.2.1" data-path="chp16_0.html"><a href="chp16_0.html#trend-surfaces"><i class="fa fa-check"></i><b>16.2.1</b> Trend Surfaces</a></li>
+<li class="chapter" data-level="16.2.2" data-path="chp16_0.html"><a href="chp16_0.html#ordinary-kriging"><i class="fa fa-check"></i><b>16.2.2</b> Ordinary Kriging</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="17" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>17</b> References</a></li>
+<li class="appendix"><span><b>Appendix</b></span></li>
+<li class="chapter" data-level="A" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html"><i class="fa fa-check"></i><b>A</b> Reading and writing spatial data in R</a>
+<ul>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_2"><i class="fa fa-check"></i>Sample files for this exercise</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_3"><i class="fa fa-check"></i>Introduction</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_4"><i class="fa fa-check"></i>Creating spatial objects</a>
+<ul>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_4_1"><i class="fa fa-check"></i>Reading a shapefile</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_4_2"><i class="fa fa-check"></i>Reading a GeoPackage</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_4_3"><i class="fa fa-check"></i>Reading a raster</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_4_5"><i class="fa fa-check"></i>Creating a spatial object from a data frame</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_4_6"><i class="fa fa-check"></i>Geocoding street addresses</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_5"><i class="fa fa-check"></i>Converting from an <code>sf</code> object</a>
+<ul>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_5_1"><i class="fa fa-check"></i>Converting an <code>sf</code> object to a <code>Spatial*</code> object (<code>spdep</code>/<code>sp</code>)</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_5_2"><i class="fa fa-check"></i>Converting an <code>sf</code> polygon object to an <code>owin</code> object</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_5_3"><i class="fa fa-check"></i>Converting an <code>sf</code> point object to a <code>ppp</code> object</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_5_4"><i class="fa fa-check"></i>Converting a <code>SpatRaster</code> object to an <code>im</code> object</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_6"><i class="fa fa-check"></i>Converting to an <code>sf</code> object</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_7"><i class="fa fa-check"></i>Dissecting the <code>sf</code> file object</a></li>
+<li class="chapter" data-level="" data-path="reading-and-writing-spatial-data-in-r.html"><a href="reading-and-writing-spatial-data-in-r.html#app1_8"><i class="fa fa-check"></i>Exporting to different data file formats</a></li>
+</ul></li>
+<li class="chapter" data-level="B" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html"><i class="fa fa-check"></i><b>B</b> Mapping data in R</a>
+<ul>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#sample-files-for-this-exercise"><i class="fa fa-check"></i>Sample files for this exercise</a></li>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#tmap"><i class="fa fa-check"></i><code>tmap</code></a>
+<ul>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#the-basics"><i class="fa fa-check"></i>The basics</a></li>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#combining-layers"><i class="fa fa-check"></i>Combining layers</a></li>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#tweaking-classification-schemes"><i class="fa fa-check"></i>Tweaking classification schemes</a></li>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#tweaking-colors"><i class="fa fa-check"></i>Tweaking colors</a></li>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#adding-labels"><i class="fa fa-check"></i>Adding labels</a></li>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#adding-a-grid-or-graticule"><i class="fa fa-check"></i>Adding a grid or graticule</a></li>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#adding-statistical-plots"><i class="fa fa-check"></i>Adding statistical plots</a></li>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#mapping-raster-files"><i class="fa fa-check"></i>Mapping raster files</a></li>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#changing-coordinate-systems"><i class="fa fa-check"></i>Changing coordinate systems</a></li>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#side-by-side-maps"><i class="fa fa-check"></i>Side-by-side maps</a></li>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#splitting-data-by-polygons-or-group-of-polygons"><i class="fa fa-check"></i>Splitting data by polygons or group of polygons</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#ggplot2"><i class="fa fa-check"></i><code>ggplot2</code></a>
+<ul>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#the-basics-1"><i class="fa fa-check"></i>The basics</a></li>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#tweaking-classification-schemes-1"><i class="fa fa-check"></i>Tweaking classification schemes</a></li>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#combining-layers-1"><i class="fa fa-check"></i>Combining layers</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#plot_sf"><i class="fa fa-check"></i><code>plot_sf</code></a>
+<ul>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#the-basics-2"><i class="fa fa-check"></i>The basics</a></li>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#adding-a-graticule"><i class="fa fa-check"></i>Adding a graticule</a></li>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#combining-layers-2"><i class="fa fa-check"></i>Combining layers</a></li>
+<li class="chapter" data-level="" data-path="mapping-data-in-r.html"><a href="mapping-data-in-r.html#tweaking-colors-1"><i class="fa fa-check"></i>Tweaking colors</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="C" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html"><i class="fa fa-check"></i><b>C</b> Anatomy of simple feature objects</a>
+<ul>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#creating-point-sf-objects"><i class="fa fa-check"></i>Creating point ‘sf’ objects</a>
+<ul>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#step-1-create-the-point-geometry-sfg"><i class="fa fa-check"></i>Step 1: Create the point geometry: <code>sfg</code></a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#step-2-create-a-column-of-simple-feature-geometries-sfc"><i class="fa fa-check"></i>Step 2: Create a column of simple feature geometries: <code>sfc</code></a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#step-3-create-the-simple-feature-object-sf"><i class="fa fa-check"></i>Step 3: Create the simple feature object <code>sf</code></a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#renaming-the-geometry-column"><i class="fa fa-check"></i>Renaming the geometry column</a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#adding-attributes-to-an-sf-object"><i class="fa fa-check"></i>Adding attributes to an <code>sf</code> object</a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#adding-a-geometry-column-to-an-existing-non-spatial-dataframe"><i class="fa fa-check"></i>Adding a geometry column to an existing non-spatial dataframe</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#creating-polyline-sf-objects"><i class="fa fa-check"></i>Creating polyline ‘sf’ objects</a>
+<ul>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#creating-branching-polyline-features"><i class="fa fa-check"></i>Creating branching polyline features</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#creating-polygon-sf-objects"><i class="fa fa-check"></i>Creating polygon ‘sf’ objects</a>
+<ul>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#polygon-simple-feature"><i class="fa fa-check"></i><code>POLYGON</code> simple feature</a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#multipolygon-simple-feature-multipart-features"><i class="fa fa-check"></i><code>MULTIPOLYGON</code> simple feature: multipart features</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#extracting-geometry-from-an-sf-object"><i class="fa fa-check"></i>Extracting geometry from an <code>sf</code> object</a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#alternative-syntax"><i class="fa fa-check"></i>Alternative syntax</a></li>
+<li class="chapter" data-level="" data-path="anatomy-of-simple-feature-objects.html"><a href="anatomy-of-simple-feature-objects.html#additional-resources"><i class="fa fa-check"></i>Additional resources</a></li>
+</ul></li>
+<li class="chapter" data-level="D" data-path="vector-operations-in-r.html"><a href="vector-operations-in-r.html"><i class="fa fa-check"></i><b>D</b> Vector operations in R</a>
+<ul>
+<li class="chapter" data-level="" data-path="vector-operations-in-r.html"><a href="vector-operations-in-r.html#dissolving-geometries"><i class="fa fa-check"></i>Dissolving geometries</a>
+<ul>
+<li class="chapter" data-level="" data-path="vector-operations-in-r.html"><a href="vector-operations-in-r.html#dissolving-by-contiguous-shape"><i class="fa fa-check"></i>Dissolving by contiguous shape</a></li>
+<li class="chapter" data-level="" data-path="vector-operations-in-r.html"><a href="vector-operations-in-r.html#dissolving-by-attribute"><i class="fa fa-check"></i>Dissolving by attribute</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="vector-operations-in-r.html"><a href="vector-operations-in-r.html#subsetting-by-attribute"><i class="fa fa-check"></i>Subsetting by attribute</a></li>
+<li class="chapter" data-level="" data-path="vector-operations-in-r.html"><a href="vector-operations-in-r.html#intersecting-layers"><i class="fa fa-check"></i>Intersecting layers</a></li>
+<li class="chapter" data-level="" data-path="vector-operations-in-r.html"><a href="vector-operations-in-r.html#clipping-spatial-objects-using-other-spatial-objects"><i class="fa fa-check"></i>Clipping spatial objects using other spatial objects</a></li>
+<li class="chapter" data-level="" data-path="vector-operations-in-r.html"><a href="vector-operations-in-r.html#unioning-layers"><i class="fa fa-check"></i>Unioning layers</a></li>
+<li class="chapter" data-level="" data-path="vector-operations-in-r.html"><a href="vector-operations-in-r.html#buffering-geometries"><i class="fa fa-check"></i>Buffering geometries</a></li>
+</ul></li>
+<li class="chapter" data-level="E" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html"><i class="fa fa-check"></i><b>E</b> Mapping rates in R</a>
+<ul>
+<li class="chapter" data-level="" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html#raw-rates"><i class="fa fa-check"></i>Raw Rates</a></li>
+<li class="chapter" data-level="" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html#standardized-mortality-ratios-relative-risk"><i class="fa fa-check"></i>Standardized mortality ratios (relative risk)</a></li>
+<li class="chapter" data-level="" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html#dykes-and-unwins-chi-square-statistic"><i class="fa fa-check"></i>Dykes and Unwin’s chi-square statistic</a></li>
+<li class="chapter" data-level="" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html#unstable-ratios"><i class="fa fa-check"></i>Unstable ratios</a>
+<ul>
+<li class="chapter" data-level="" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html#global-empirical-bayes-eb-rate-estimate"><i class="fa fa-check"></i>Global Empirical Bayes (EB) rate estimate</a></li>
+<li class="chapter" data-level="" data-path="mapping-rates-in-r.html"><a href="mapping-rates-in-r.html#local-empirical-bayes-eb-rate-estimate"><i class="fa fa-check"></i>Local Empirical Bayes (EB) rate estimate</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="F" data-path="raster-operations-in-r.html"><a href="raster-operations-in-r.html"><i class="fa fa-check"></i><b>F</b> Raster operations in R</a>
+<ul>
+<li class="chapter" data-level="" data-path="raster-operations-in-r.html"><a href="raster-operations-in-r.html#sample-files-for-this-exercise-1"><i class="fa fa-check"></i>Sample files for this exercise</a></li>
+<li class="chapter" data-level="" data-path="raster-operations-in-r.html"><a href="raster-operations-in-r.html#local-operations-and-functions-1"><i class="fa fa-check"></i>Local operations and functions</a>
+<ul>
+<li class="chapter" data-level="" data-path="raster-operations-in-r.html"><a href="raster-operations-in-r.html#unary-operations-and-functions-applied-to-single-rasters"><i class="fa fa-check"></i>Unary operations and functions (applied to single rasters)</a></li>
+<li class="chapter" data-level="" data-path="raster-operations-in-r.html"><a href="raster-operations-in-r.html#binary-operations-and-functions-where-two-rasters-are-used"><i class="fa fa-check"></i>Binary operations and functions (where two rasters are used)</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="raster-operations-in-r.html"><a href="raster-operations-in-r.html#focal-operations-and-functions-1"><i class="fa fa-check"></i>Focal operations and functions</a></li>
+<li class="chapter" data-level="" data-path="raster-operations-in-r.html"><a href="raster-operations-in-r.html#zonal-operations-and-functions-1"><i class="fa fa-check"></i>Zonal operations and functions</a></li>
+<li class="chapter" data-level="" data-path="raster-operations-in-r.html"><a href="raster-operations-in-r.html#global-operations-and-functions-1"><i class="fa fa-check"></i>Global operations and functions</a></li>
+<li class="chapter" data-level="" data-path="raster-operations-in-r.html"><a href="raster-operations-in-r.html#computing-cumulative-distances"><i class="fa fa-check"></i>Computing cumulative distances</a>
+<ul>
+<li class="chapter" data-level="" data-path="raster-operations-in-r.html"><a href="raster-operations-in-r.html#working-example"><i class="fa fa-check"></i>Working example</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="G" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html"><i class="fa fa-check"></i><b>G</b> Coordinate Systems in R</a>
+<ul>
+<li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#a-note-about-the-changes-to-the-proj-environment"><i class="fa fa-check"></i>A note about the changes to the <code>PROJ</code> environment</a></li>
+<li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#sample-files-for-this-exercise-2"><i class="fa fa-check"></i>Sample files for this exercise</a></li>
+<li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#loading-the-sf-package"><i class="fa fa-check"></i>Loading the <code>sf</code> package</a></li>
+<li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#checking-for-a-coordinate-system"><i class="fa fa-check"></i>Checking for a coordinate system</a></li>
+<li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#understanding-the-proj4-coordinate-syntax"><i class="fa fa-check"></i>Understanding the Proj4 coordinate syntax</a></li>
+<li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#assigning-a-coordinate-system"><i class="fa fa-check"></i>Assigning a coordinate system</a></li>
+<li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#transforming-coordinate-systems"><i class="fa fa-check"></i>Transforming coordinate systems</a>
+<ul>
+<li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#reprojecting-to-a-new-meridian-center"><i class="fa fa-check"></i>Reprojecting to a new meridian center</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#a-note-about-containment"><i class="fa fa-check"></i>A note about containment</a></li>
+<li class="chapter" data-level="" data-path="coordinate-systems-in-r.html"><a href="coordinate-systems-in-r.html#creating-tissot-indicatrix-circles"><i class="fa fa-check"></i>Creating Tissot indicatrix circles</a></li>
+</ul></li>
+<li class="chapter" data-level="H" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html"><i class="fa fa-check"></i><b>H</b> Point pattern analysis in R</a>
+<ul>
+<li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#sample-files-for-this-exercise-3"><i class="fa fa-check"></i>Sample files for this exercise</a></li>
+<li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#prepping-the-data"><i class="fa fa-check"></i>Prepping the data</a></li>
+<li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#density-based-analysis"><i class="fa fa-check"></i>Density based analysis</a>
+<ul>
+<li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#quadrat-density-1"><i class="fa fa-check"></i>Quadrat density</a></li>
+<li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#quadrat-density-on-a-tessellated-surface"><i class="fa fa-check"></i>Quadrat density on a tessellated surface</a></li>
+<li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#kernel-density-raster"><i class="fa fa-check"></i>Kernel density raster</a></li>
+<li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#kernel-density-adjusted-for-covariate"><i class="fa fa-check"></i>Kernel density adjusted for covariate</a></li>
+<li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#modeling-intensity-as-a-function-of-a-covariate"><i class="fa fa-check"></i>Modeling intensity as a function of a covariate</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#distance-based-analysis"><i class="fa fa-check"></i>Distance based analysis</a>
+<ul>
+<li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#average-nearest-neighbor-analysis"><i class="fa fa-check"></i>Average nearest neighbor analysis</a></li>
+<li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#k-and-l-functions-1"><i class="fa fa-check"></i>K and L functions</a></li>
+<li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#pair-correlation-function-g"><i class="fa fa-check"></i>Pair correlation function g</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#hypothesis-tests"><i class="fa fa-check"></i>Hypothesis tests</a>
+<ul>
+<li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#test-for-clusteringdispersion"><i class="fa fa-check"></i>Test for clustering/dispersion</a></li>
+<li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#computing-a-pseudo-p-value-from-the-simulation"><i class="fa fa-check"></i>Computing a pseudo p-value from the simulation</a></li>
+<li class="chapter" data-level="" data-path="point-pattern-analysis-in-r.html"><a href="point-pattern-analysis-in-r.html#test-for-a-poisson-point-process-model-with-a-covariate-effect"><i class="fa fa-check"></i>Test for a poisson point process model with a covariate effect</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="I" data-path="spatial-autocorrelation-in-r.html"><a href="spatial-autocorrelation-in-r.html"><i class="fa fa-check"></i><b>I</b> Spatial autocorrelation in R</a>
+<ul>
+<li class="chapter" data-level="" data-path="spatial-autocorrelation-in-r.html"><a href="spatial-autocorrelation-in-r.html#app8_1"><i class="fa fa-check"></i>Sample files for this exercise</a></li>
+<li class="chapter" data-level="" data-path="spatial-autocorrelation-in-r.html"><a href="spatial-autocorrelation-in-r.html#app8_2"><i class="fa fa-check"></i>Introduction</a></li>
+<li class="chapter" data-level="" data-path="spatial-autocorrelation-in-r.html"><a href="spatial-autocorrelation-in-r.html#app8_3"><i class="fa fa-check"></i>Define neighboring polygons</a></li>
+<li class="chapter" data-level="" data-path="spatial-autocorrelation-in-r.html"><a href="spatial-autocorrelation-in-r.html#app8_4"><i class="fa fa-check"></i>Generating a Moran’s I scatter plot</a></li>
+<li class="chapter" data-level="" data-path="spatial-autocorrelation-in-r.html"><a href="spatial-autocorrelation-in-r.html#app8_4b"><i class="fa fa-check"></i>Computing the Moran’s I coefficient</a></li>
+<li class="chapter" data-level="" data-path="spatial-autocorrelation-in-r.html"><a href="spatial-autocorrelation-in-r.html#app8_5"><i class="fa fa-check"></i>Assessing statistical significance</a></li>
+<li class="chapter" data-level="" data-path="spatial-autocorrelation-in-r.html"><a href="spatial-autocorrelation-in-r.html#app8_6"><i class="fa fa-check"></i>Moran’s I as a function of a distance band</a></li>
+<li class="chapter" data-level="" data-path="spatial-autocorrelation-in-r.html"><a href="spatial-autocorrelation-in-r.html#app8_7"><i class="fa fa-check"></i>Local Moran’s I</a>
+<ul>
+<li class="chapter" data-level="" data-path="spatial-autocorrelation-in-r.html"><a href="spatial-autocorrelation-in-r.html#app8_7_1"><i class="fa fa-check"></i>Correcting for multiple comparisons</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="J" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html"><i class="fa fa-check"></i><b>J</b> Interpolation in R</a>
+<ul>
+<li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#thiessen-polygons"><i class="fa fa-check"></i>Thiessen polygons</a></li>
+<li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#idw"><i class="fa fa-check"></i>IDW</a>
+<ul>
+<li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#fine-tuning-the-interpolation"><i class="fa fa-check"></i>Fine-tuning the interpolation</a></li>
+<li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#cross-validation"><i class="fa fa-check"></i>Cross-validation</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#st-order-polynomial-fit"><i class="fa fa-check"></i>1<sup>st</sup> order polynomial fit</a></li>
+<li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#nd-order-polynomial"><i class="fa fa-check"></i>2<sup>nd</sup> order polynomial</a></li>
+<li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#kriging"><i class="fa fa-check"></i>Kriging</a>
+<ul>
+<li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#fit-the-variogram-model"><i class="fa fa-check"></i>Fit the variogram model</a></li>
+<li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#generate-kriged-surface"><i class="fa fa-check"></i>Generate Kriged surface</a></li>
+<li class="chapter" data-level="" data-path="interpolation-in-r.html"><a href="interpolation-in-r.html#generate-the-variance-and-confidence-interval-maps"><i class="fa fa-check"></i>Generate the variance and confidence interval maps</a></li>
+</ul></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Intro to GIS and Spatial Analysis</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="chp12_0" class="section level1 hasAnchor" number="12">
+<h1><span class="header-section-number">Chapter 12</span> Modeling Spatial Trends<a href="chp12_0.html#chp12_0" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="introduction-10" class="section level2 hasAnchor" number="12.1">
+<h2><span class="header-section-number">12.1</span> Introduction<a href="chp12_0.html#introduction-10" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Polynomial functions are a foundational tool for modeling spatial trends—particularly <strong>first-order effects</strong>—in spatial data. These models help describe how a variable changes across space due to absolute location, rather than proximity to neighboring values. In spatial statistics, modeling trend is often a critical first step before exploring second-order properties such as spatial autocorrelation.</p>
+<p>Polynomial functions are parametric: their form is predefined, and their coefficients are estimated by fitting the model to data. In practice, they are used to:
+- Describe broad spatial variation in a variable.
+- Remove global trend to expose residuals for further analysis.
+- Support interpolation across unsampled locations.</p>
+<p>In spatial analysis, polynomial functions typically consist of non-negative integer powers of the x and y coordinates. These models are most appropriate for <strong>spatially continuous fields</strong>–phenomena that can be measured at any location within the study area using ratio or interval scales (e.g., precipitation, elevation, population density). They are not suitable for discrete features such as crime events or tree locations.</p>
+<p>While this chapter focuses on raster data, the principles of polynomial trend modeling apply across spatial data models, including point and polygon formats. The goal is to capture the <strong>overall spatial pattern</strong> without overfitting local variation. To that end, it is best to use the lowest polynomial order necessary to represent the trend.</p>
+<p>In the sections that follow, we will:
+- Explore polynomial functions in one and two dimensions.
+- Learn how to fit and evaluate models using regression techniques.
+- Use residuals to assess model fit.</p>
+</div>
+<div id="polynomial-functions" class="section level2 hasAnchor" number="12.2">
+<h2><span class="header-section-number">12.2</span> Polynomial functions<a href="chp12_0.html#polynomial-functions" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Polynomial functions are mathematical models that seek to describe global trends in a dataset using the general form:</p>
+<p><span class="math display">\[
+\begin{equation}
+\tag{1}
+z_i = \beta \boldsymbol{s_i} + \varepsilon_i
+\end{equation}
+\]</span></p>
+<p>where <span class="math inline">\(z_i\)</span> is a scalar of interest (e.g., precipitation, income, elevations, etc.) and <span class="math inline">\(\boldsymbol{s_i}\)</span> denotes location in one, two or n-dimensional space. The term <span class="math inline">\(\varepsilon\)</span> refers to the residuals–i.e., parts of the observed data not explained by the model (sometimes described as the error term in the field of statistics). The subscript <span class="math inline">\(i\)</span> reminds us that the value <span class="math inline">\(z\)</span> and its residual are a function of location <span class="math inline">\(i\)</span>.</p>
+<p>In spatial analysis, we usually work in two-dimensional space, hence location <span class="math inline">\(s\)</span> is defined by the coordinate pair (x, y). Thus, equation (1) can be expressed as a multivariate regression with the x and y coordinate values being two independent variables.</p>
+<p><span class="math display">\[
+\begin{equation}
+\tag{2}
+z_i = \beta_0 + \beta_1 x_i + \beta_2 y_i + \beta_3 x_i^2 + \beta_4 y_i^2 + ... + \varepsilon_i
+\end{equation}
+\]</span></p>
+<p>Here, the ellipsis “…” is a placeholder for higher order polynomial values and interactive terms.</p>
+<p>Fitting a polynomial function requires two steps: (1) defining the model (in this case the polynomial order)–this can be linear, quadratic, cubic, quartic, quintic, etc., (2) then fitting the model to the data using, for example, ordinary least squares regression methods.</p>
+<p>Because the distances in x and y directions are assumed to be in the same dimension and scale (i.e., a unit change in x is equal to a unit change in y), it is best to work off a projected (aka Cartesian) coordinate system. Hence, the projected coordinates system should do a decent job in preserving distance within the study extent.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="chp12_0.html#cb4-1" tabindex="-1"></a><span class="fu">library</span>(terra)</span>
+<span id="cb4-2"><a href="chp12_0.html#cb4-2" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
+<span id="cb4-3"><a href="chp12_0.html#cb4-3" tabindex="-1"></a><span class="fu">library</span>(tukeyedar)</span>
+<span id="cb4-4"><a href="chp12_0.html#cb4-4" tabindex="-1"></a><span class="fu">library</span>(RColorBrewer)</span>
+<span id="cb4-5"><a href="chp12_0.html#cb4-5" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb4-6"><a href="chp12_0.html#cb4-6" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="chp12_0.html#cb4-7" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="st">&quot;./Data/kansas_precip_2020.tif&quot;</span>)</span>
+<span id="cb4-8"><a href="chp12_0.html#cb4-8" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="chp12_0.html#cb4-9" tabindex="-1"></a>grid <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="at">nrows=</span><span class="dv">46</span>, <span class="at">ncols=</span><span class="dv">88</span>, <span class="at">extent =</span> <span class="fu">ext</span>(r), <span class="at">crs =</span> <span class="fu">crs</span>(r))</span>
+<span id="cb4-10"><a href="chp12_0.html#cb4-10" tabindex="-1"></a>r2 <span class="ot">&lt;-</span> <span class="fu">resample</span>(r, grid, <span class="at">method =</span> <span class="st">&quot;bilinear&quot;</span>)</span>
+<span id="cb4-11"><a href="chp12_0.html#cb4-11" tabindex="-1"></a></span>
+<span id="cb4-12"><a href="chp12_0.html#cb4-12" tabindex="-1"></a>c1 <span class="ot">&lt;-</span> <span class="fu">xFromCol</span>(r2, <span class="dv">3</span>)</span>
+<span id="cb4-13"><a href="chp12_0.html#cb4-13" tabindex="-1"></a>c2 <span class="ot">&lt;-</span> <span class="fu">xFromCol</span>(r2, <span class="fu">ncol</span>(r2)<span class="sc">-</span><span class="dv">9</span>)</span>
+<span id="cb4-14"><a href="chp12_0.html#cb4-14" tabindex="-1"></a>c3 <span class="ot">&lt;-</span> <span class="fu">yFromRow</span>(r2, <span class="fu">nrow</span>(r2) <span class="sc">-</span><span class="dv">1</span>)</span>
+<span id="cb4-15"><a href="chp12_0.html#cb4-15" tabindex="-1"></a>c4 <span class="ot">&lt;-</span> <span class="fu">yFromRow</span>(r2,  <span class="dv">2</span>)</span>
+<span id="cb4-16"><a href="chp12_0.html#cb4-16" tabindex="-1"></a>crop_reg <span class="ot">&lt;-</span> <span class="fu">ext</span>(c1, c2, c3, c4)</span>
+<span id="cb4-17"><a href="chp12_0.html#cb4-17" tabindex="-1"></a>r2_crop  <span class="ot">&lt;-</span> <span class="fu">crop</span>(r2, crop_reg)</span>
+<span id="cb4-18"><a href="chp12_0.html#cb4-18" tabindex="-1"></a><span class="co"># writeRaster(r2_crop, &quot;kansas_precip_2020_crop.tif&quot;)</span></span>
+<span id="cb4-19"><a href="chp12_0.html#cb4-19" tabindex="-1"></a></span>
+<span id="cb4-20"><a href="chp12_0.html#cb4-20" tabindex="-1"></a><span class="co"># Rescale axes to generate distances in km from lower-left corner</span></span>
+<span id="cb4-21"><a href="chp12_0.html#cb4-21" tabindex="-1"></a>ext_orig <span class="ot">&lt;-</span> <span class="fu">ext</span>(r2_crop)</span>
+<span id="cb4-22"><a href="chp12_0.html#cb4-22" tabindex="-1"></a><span class="fu">ext</span>(r2_crop) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">diff</span>(<span class="fu">ext</span>(r2_crop)[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]), <span class="dv">0</span>, <span class="fu">diff</span>(<span class="fu">ext</span>(r2_crop)[<span class="dv">3</span><span class="sc">:</span><span class="dv">4</span>]) ) <span class="sc">/</span> <span class="dv">1000</span></span>
+<span id="cb4-23"><a href="chp12_0.html#cb4-23" tabindex="-1"></a></span>
+<span id="cb4-24"><a href="chp12_0.html#cb4-24" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="fu">as.vector</span>(r2_crop[])</span>
+<span id="cb4-25"><a href="chp12_0.html#cb4-25" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">xFromCell</span>(r2_crop, <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(z))</span>
+<span id="cb4-26"><a href="chp12_0.html#cb4-26" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">yFromCell</span>(r2_crop, <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(z))</span>
+<span id="cb4-27"><a href="chp12_0.html#cb4-27" tabindex="-1"></a></span>
+<span id="cb4-28"><a href="chp12_0.html#cb4-28" tabindex="-1"></a>dat <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x=</span>x, <span class="at">y=</span>y, <span class="at">z=</span>z)</span></code></pre></div>
+</div>
+<div id="polynomial-functions-in-one-dimension" class="section level2 hasAnchor" number="12.3">
+<h2><span class="header-section-number">12.3</span> Polynomial functions in one dimension<a href="chp12_0.html#polynomial-functions-in-one-dimension" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>It may be best to first explore a polynomial function in one dimension. In what follows, we will work with the distribution of 2020 total precipitation for the state of Kansas (USA). Figure 1 shows a raster representation of the 2020 total precipitation (in mm) for Kansas.</p>
+<div class="float">
+<img src="img/poly_fig1.png" style="width:6in" alt="Fig. 1 Map of the total 2020 precipitation distribution for Kansas (USA)." />
+<div class="figcaption">Fig. 1 Map of the total 2020 precipitation distribution for Kansas (USA).</div>
+</div>
+<p>We will, however, first focus on the bottom row of pixels which will provide us with a one-dimensional (east-west) dataset (Figure 2).</p>
+<div class="float">
+<img src="img/poly_fig2.png" style="width:6in" alt="Fig. 2 Row of pixels used to explore the trend along a one-dimensional space." />
+<div class="figcaption">Fig. 2 Row of pixels used to explore the trend along a one-dimensional space.</div>
+</div>
+<p>Figure 3 is a scatter plot of the precipitation values along the east-west gradient. Each point represents precipitation values at each pixel location.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="chp12_0.html#cb5-1" tabindex="-1"></a><span class="co"># One dimensional plot  (bottom) row ----------</span></span>
+<span id="cb5-2"><a href="chp12_0.html#cb5-2" tabindex="-1"></a>dat2 <span class="ot">&lt;-</span> dat[dat<span class="sc">$</span>y <span class="sc">==</span> <span class="fl">3.75</span>, ]</span>
+<span id="cb5-3"><a href="chp12_0.html#cb5-3" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="chp12_0.html#cb5-4" tabindex="-1"></a><span class="co"># Fit 0th order polynomial (figure 3)</span></span>
+<span id="cb5-5"><a href="chp12_0.html#cb5-5" tabindex="-1"></a><span class="fu">eda_lm</span>(dat2, <span class="at">x=</span>x, <span class="at">y=</span>z, <span class="at">loe=</span><span class="cn">FALSE</span>, <span class="at">reg =</span> <span class="cn">FALSE</span>, <span class="at">robust =</span> <span class="cn">FALSE</span>, <span class="at">lm.col =</span> <span class="st">&quot;blue&quot;</span>,</span>
+<span id="cb5-6"><a href="chp12_0.html#cb5-6" tabindex="-1"></a>       <span class="at">sd =</span> <span class="cn">FALSE</span>, <span class="at">mean.l =</span> <span class="cn">FALSE</span>, <span class="at">ylab =</span> <span class="st">&quot;Precip&quot;</span>, <span class="at">xlab =</span> <span class="st">&quot;x distance (km)&quot;</span>,</span>
+<span id="cb5-7"><a href="chp12_0.html#cb5-7" tabindex="-1"></a>       <span class="at">show.par =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-2"></span>
+<img src="12-polynomial_functions_files/figure-html/unnamed-chunk-2-1.png" alt="Fig 3. Scatter plot of precipitation along the east-west gradient defined in figure 2. " width="336" />
+<p class="caption">
+Figure 2.3: Fig 3. Scatter plot of precipitation along the east-west gradient defined in figure 2.
+</p>
+</div>
+<p>The simplest model that can be fitted to the data is the mean precipitation value–a constant. It can be visualized as a horizontal line (Figure 4). This is also known as a 0<sup>th</sup> order polynomial model where:</p>
+<p><span class="math display">\[
+\begin{equation}
+\tag{3}
+Precipitation_i = \beta_0  x_i^0 + \varepsilon = \beta_0 + \varepsilon
+\end{equation}
+\]</span></p>
+<p>Here, <span class="math inline">\(\beta_0\)</span> is nothing more than the mean precipitation value–756.8 mm in our working example. Recall that we are only focusing on the east-west precipitation values hence the <span class="math inline">\(y\)</span> coordinate value is ignored in equation (3).</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="chp12_0.html#cb6-1" tabindex="-1"></a><span class="co"># One dimensional plot  (bottom) row ----------</span></span>
+<span id="cb6-2"><a href="chp12_0.html#cb6-2" tabindex="-1"></a>dat2 <span class="ot">&lt;-</span> dat[dat<span class="sc">$</span>y <span class="sc">==</span> <span class="fl">3.75</span>, ]</span>
+<span id="cb6-3"><a href="chp12_0.html#cb6-3" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="chp12_0.html#cb6-4" tabindex="-1"></a><span class="co"># Fit 0th order polynomial (figure 3)</span></span>
+<span id="cb6-5"><a href="chp12_0.html#cb6-5" tabindex="-1"></a><span class="fu">eda_lm</span>(dat2, <span class="at">x=</span>x, <span class="at">y=</span>z, <span class="at">loe=</span><span class="cn">FALSE</span>, <span class="at">reg =</span> <span class="cn">FALSE</span>, <span class="at">robust =</span> <span class="cn">FALSE</span>, <span class="at">lm.col =</span> <span class="st">&quot;blue&quot;</span>,</span>
+<span id="cb6-6"><a href="chp12_0.html#cb6-6" tabindex="-1"></a>       <span class="at">sd =</span> <span class="cn">FALSE</span>, <span class="at">mean.l =</span> <span class="cn">FALSE</span>, <span class="at">ylab =</span> <span class="st">&quot;Precip&quot;</span>, <span class="at">xlab =</span> <span class="st">&quot;x distance (km)&quot;</span>,</span>
+<span id="cb6-7"><a href="chp12_0.html#cb6-7" tabindex="-1"></a>       <span class="at">show.par =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb6-8"><a href="chp12_0.html#cb6-8" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="fu">mean</span>(dat2<span class="sc">$</span>z), <span class="at">col =</span> <span class="st">&quot;blue&quot;</span>, <span class="at">lw =</span> <span class="dv">2</span>)</span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-3"></span>
+<img src="12-polynomial_functions_files/figure-html/unnamed-chunk-3-1.png" alt="Fig 4. The mean precipitation fitted to the data. This is the simplest form of a polynomial function where the power is set to 0." width="336" />
+<p class="caption">
+Figure 2.4: Fig 4. The mean precipitation fitted to the data. This is the simplest form of a polynomial function where the power is set to 0.
+</p>
+</div>
+<p>While such a simple model may not prove useful in modeling trends, it serves as a reference for how well other polynomial models perform. Model evaluation will be addressed later in this chapter.</p>
+<p>It is clear from the plot that the precipitation is far from constant across the east-west slice of the data. It shows a distinct upward trend that may be better represented using a sloped line. We can modify the above model by augmenting the polynomial order:</p>
+<p><span class="math display">\[
+\begin{equation}
+\tag{4}
+Precipitation_i = \beta_0 + \beta_1 x_i^1 + \varepsilon_i
+\end{equation}
+\]</span></p>
+<p>Equation 4 is mathematically defined as a first order polynomial model, but it is more often described as a linear model. With the model defined a priori, the model is then fitted to the points (Figure 5).</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="chp12_0.html#cb7-1" tabindex="-1"></a><span class="co"># Fit first order polynomial</span></span>
+<span id="cb7-2"><a href="chp12_0.html#cb7-2" tabindex="-1"></a>M1b <span class="ot">&lt;-</span> <span class="fu">lm</span>(z <span class="sc">~</span> x, dat2)</span>
+<span id="cb7-3"><a href="chp12_0.html#cb7-3" tabindex="-1"></a>dat2<span class="sc">$</span>res1 <span class="ot">&lt;-</span> M1b<span class="sc">$</span>residuals</span>
+<span id="cb7-4"><a href="chp12_0.html#cb7-4" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="chp12_0.html#cb7-5" tabindex="-1"></a><span class="fu">eda_lm</span>(dat2, <span class="at">x=</span>x, <span class="at">y=</span>z, <span class="at">loe=</span><span class="cn">FALSE</span>, <span class="at">reg =</span> <span class="cn">TRUE</span>, <span class="at">robust =</span> <span class="cn">FALSE</span>, <span class="at">lm.col =</span> <span class="st">&quot;blue&quot;</span>,</span>
+<span id="cb7-6"><a href="chp12_0.html#cb7-6" tabindex="-1"></a>       <span class="at">sd =</span> <span class="cn">FALSE</span>, <span class="at">mean.l =</span> <span class="cn">FALSE</span>, <span class="at">ylab =</span> <span class="st">&quot;Precip&quot;</span>, <span class="at">xlab =</span> <span class="st">&quot;x distance (km)&quot;</span>,</span>
+<span id="cb7-7"><a href="chp12_0.html#cb7-7" tabindex="-1"></a>       <span class="at">show.par =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-4"></span>
+<img src="12-polynomial_functions_files/figure-html/unnamed-chunk-4-1.png" alt="Fig 5. A first order polynomial function being fitted to the precipitation data. This is often referred to as a “linear trend” model." width="336" />
+<p class="caption">
+Figure 2.5: Fig 5. A first order polynomial function being fitted to the precipitation data. This is often referred to as a “linear trend” model.
+</p>
+</div>
+<p>There are many approaches to finding the “best fit” with the most popular being the ordinary least squares method (Montgomery et al., 2007). This approach seeks to minimize the distance between the points and the fitted model when measured parallel to the y-axis. Figure 6 shows those distances using red colored line segments.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="chp12_0.html#cb8-1" tabindex="-1"></a><span class="fu">eda_lm</span>(dat2, <span class="at">x=</span>x, <span class="at">y=</span>z, <span class="at">loe=</span><span class="cn">FALSE</span>, <span class="at">reg =</span> <span class="cn">TRUE</span>, <span class="at">robust =</span> <span class="cn">FALSE</span>, <span class="at">lm.col =</span> <span class="st">&quot;blue&quot;</span>,</span>
+<span id="cb8-2"><a href="chp12_0.html#cb8-2" tabindex="-1"></a>       <span class="at">sd =</span> <span class="cn">FALSE</span>, <span class="at">mean.l =</span> <span class="cn">FALSE</span>, <span class="at">ylab =</span> <span class="st">&quot;Precip&quot;</span>, <span class="at">xlab =</span> <span class="st">&quot;x distance (km)&quot;</span>,</span>
+<span id="cb8-3"><a href="chp12_0.html#cb8-3" tabindex="-1"></a>       <span class="at">show.par =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb8-4"><a href="chp12_0.html#cb8-4" tabindex="-1"></a>error_segs <span class="ot">&lt;-</span> <span class="fu">lapply</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(dat2),</span>
+<span id="cb8-5"><a href="chp12_0.html#cb8-5" tabindex="-1"></a>       <span class="at">FUN =</span> \(i) <span class="fu">data.frame</span>(<span class="at">x =</span> dat2<span class="sc">$</span>x[i], <span class="at">y =</span> <span class="fu">c</span>(<span class="fu">predict</span>(M1b)[i], dat2<span class="sc">$</span>z[i]),</span>
+<span id="cb8-6"><a href="chp12_0.html#cb8-6" tabindex="-1"></a>                             <span class="at">row.names =</span> <span class="cn">NULL</span>))</span>
+<span id="cb8-7"><a href="chp12_0.html#cb8-7" tabindex="-1"></a><span class="fu">lapply</span>(error_segs, \(x) <span class="fu">lines</span>(x, <span class="at">col =</span> <span class="st">&quot;red&quot;</span>))</span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-5"></span>
+<img src="12-polynomial_functions_files/figure-html/unnamed-chunk-5-1.png" alt="Fig 6. The first order polynomial function (blue line) is shown with the residual lines (in red). The function is fitted to the data in such a way  to reduce the sum of the squared residual values." width="336" />
+<p class="caption">
+Figure 2.7: Fig 6. The first order polynomial function (blue line) is shown with the residual lines (in red). The function is fitted to the data in such a way to reduce the sum of the squared residual values.
+</p>
+</div>
+<p>The distance between the modeled line and each precipitation value is the residual (<span class="math inline">\(\varepsilon_i\)</span>). This is part of the data not explained by the model.</p>
+<p>Fitting the first order polynomial to the data gives us the coefficients of 305.8 and 1.6 for <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> respectively.</p>
+<p>The <span class="math inline">\(\beta_1\)</span> coefficient tells us that for every km increase in the (positive) x direction, precipitation increases by 1.6 mm. Note that the interpretation of the coefficient is dependent on the mapping units used. Typically, projection units are in meters or feet. But, when working at a scale like the State of Kansas, it is best to report changes in value as a function of larger mapping units such kilometers or miles.</p>
+<p>Statisticians will seldom stop here when fitting a model to the data. It is good practice to plot the residuals against the x value. This diagnostic plot is useful in assessing if the overall trend in the data was properly characterized by our polynomial model. To help guide our eyes, we add a non-parametric curve to the data which does not make any assumptions about the pattern in the data. Here, we make use of a loess fit but note that many other non-parametric models can be used for this purpose (Figure 7).</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="chp12_0.html#cb9-1" tabindex="-1"></a><span class="fu">eda_lm</span>(dat2, <span class="at">x=</span>x, <span class="at">y=</span>res1, <span class="at">loe=</span><span class="cn">TRUE</span>, <span class="at">reg =</span> <span class="cn">FALSE</span>, <span class="at">robust =</span> <span class="cn">FALSE</span>, <span class="at">lm.col =</span> <span class="st">&quot;blue&quot;</span>,</span>
+<span id="cb9-2"><a href="chp12_0.html#cb9-2" tabindex="-1"></a>       <span class="at">sd =</span> <span class="cn">FALSE</span>, <span class="at">mean.l =</span> <span class="cn">FALSE</span>, <span class="at">ylab =</span> <span class="st">&quot;Residuals&quot;</span>, <span class="at">xlab =</span> <span class="st">&quot;x distance (km)&quot;</span>,</span>
+<span id="cb9-3"><a href="chp12_0.html#cb9-3" tabindex="-1"></a>       <span class="at">show.par =</span> <span class="cn">FALSE</span>, <span class="at">asp =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-6"></span>
+<img src="12-polynomial_functions_files/figure-html/unnamed-chunk-6-1.png" alt="Fig 7. The residuals are checked for any lingering pattern that may have been missed by the first order polynomial function. A non-parametric line such as a loess is used to identify any pattern in the data." width="336" />
+<p class="caption">
+Figure 2.8: Fig 7. The residuals are checked for any lingering pattern that may have been missed by the first order polynomial function. A non-parametric line such as a loess is used to identify any pattern in the data.
+</p>
+</div>
+<p>The diagnostic plot suggests that the first order polynomial model we adopted does not fully capture the overall trend in the data. There appears to be some curvature in the residuals. This may suggest that we increase the polynomial order by an extra degree.</p>
+<p>A second order polynomial model in a one-dimensional space takes on the form:</p>
+<p><span class="math display">\[
+\begin{equation}
+\tag{5}
+Precipitation_i = \beta_0 + \beta_1 x_i + \beta_2 x_i^2 + \varepsilon_i
+\end{equation}
+\]</span></p>
+<p>This model generates a curved fit often called a quadratic model (Figure 8).</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="chp12_0.html#cb10-1" tabindex="-1"></a><span class="co"># Is second order polynomial a better fit?</span></span>
+<span id="cb10-2"><a href="chp12_0.html#cb10-2" tabindex="-1"></a>M2b <span class="ot">&lt;-</span> <span class="fu">lm</span>(z <span class="sc">~</span> x <span class="sc">+</span> <span class="fu">I</span>(x<span class="sc">^</span><span class="dv">2</span>), dat2)</span>
+<span id="cb10-3"><a href="chp12_0.html#cb10-3" tabindex="-1"></a>dat2<span class="sc">$</span>res2 <span class="ot">&lt;-</span> M2b<span class="sc">$</span>residuals</span>
+<span id="cb10-4"><a href="chp12_0.html#cb10-4" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="chp12_0.html#cb10-5" tabindex="-1"></a><span class="fu">eda_lm</span>(dat2, <span class="at">x=</span>x, <span class="at">y=</span>z, <span class="at">loe=</span><span class="cn">FALSE</span>, <span class="at">reg =</span> <span class="cn">TRUE</span>, <span class="at">robust =</span> <span class="cn">FALSE</span>, <span class="at">lm.col =</span> <span class="st">&quot;blue&quot;</span>,</span>
+<span id="cb10-6"><a href="chp12_0.html#cb10-6" tabindex="-1"></a>       <span class="at">sd =</span> <span class="cn">FALSE</span>, <span class="at">mean.l =</span> <span class="cn">FALSE</span>, <span class="at">ylab =</span> <span class="st">&quot;Precip&quot;</span>, <span class="at">xlab =</span> <span class="st">&quot;x distance (km)&quot;</span>,</span>
+<span id="cb10-7"><a href="chp12_0.html#cb10-7" tabindex="-1"></a>       <span class="at">show.par =</span> <span class="cn">FALSE</span>, <span class="at">poly =</span> <span class="dv">2</span>)</span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-7"></span>
+<img src="12-polynomial_functions_files/figure-html/unnamed-chunk-7-1.png" alt="Fig 8. A second order polynomial function is fitted to the data. This is also referred to as a quadratic function." width="336" />
+<p class="caption">
+Figure 2.9: Fig 8. A second order polynomial function is fitted to the data. This is also referred to as a quadratic function.
+</p>
+</div>
+<p>The residual diagnostic plot for this model shows a significant improvement in that the non-parametric fit (dashed blue line) does not show an overall trend in the data suggesting that a second order polynomial model is a good fit for our data (Figure 9).</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="chp12_0.html#cb11-1" tabindex="-1"></a><span class="fu">eda_lm</span>(dat2, x, res2, <span class="at">loe=</span><span class="cn">TRUE</span>, <span class="at">reg =</span> <span class="cn">FALSE</span>, <span class="at">lm.col =</span> <span class="st">&quot;blue&quot;</span>,</span>
+<span id="cb11-2"><a href="chp12_0.html#cb11-2" tabindex="-1"></a>       <span class="at">sd =</span> <span class="cn">FALSE</span>, <span class="at">mean.l =</span> <span class="cn">FALSE</span>, <span class="at">ylab =</span> <span class="st">&quot;Residuals&quot;</span>, <span class="at">xlab =</span> <span class="st">&quot;x distance (km)&quot;</span>,</span>
+<span id="cb11-3"><a href="chp12_0.html#cb11-3" tabindex="-1"></a>       <span class="at">show.par =</span> <span class="cn">FALSE</span>, <span class="at">asp =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-8"></span>
+<img src="12-polynomial_functions_files/figure-html/unnamed-chunk-8-1.png" alt="Fig 9. The lack of an overall pattern in the residuals suggests that the second order polynomial function does a decent job in capturing the trend in precipitation." width="336" />
+<p class="caption">
+Figure 2.10: Fig 9. The lack of an overall pattern in the residuals suggests that the second order polynomial function does a decent job in capturing the trend in precipitation.
+</p>
+</div>
+<p>A unique characteristic of spatial data is the presence of autocorrelation which is very much apparent in both the original scatter plot and the diagnostic plot. One might be tempted to try and capture this non-random pattern in a polynomial model. For example, fitting a 20<sup>th</sup> order polynomial model would do a decent job in capturing both the overall trend and localized variation as shown in Figure 10.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="chp12_0.html#cb12-1" tabindex="-1"></a><span class="co"># Avoid high order polynomials</span></span>
+<span id="cb12-2"><a href="chp12_0.html#cb12-2" tabindex="-1"></a><span class="fu">eda_lm</span>(dat2, <span class="at">x=</span>x, <span class="at">y=</span>z, <span class="at">loe=</span><span class="cn">FALSE</span>, <span class="at">reg =</span> <span class="cn">TRUE</span>, <span class="at">robust =</span> <span class="cn">FALSE</span>, <span class="at">lm.col =</span> <span class="st">&quot;blue&quot;</span>,</span>
+<span id="cb12-3"><a href="chp12_0.html#cb12-3" tabindex="-1"></a>       <span class="at">sd =</span> <span class="cn">FALSE</span>, <span class="at">mean.l =</span> <span class="cn">FALSE</span>, <span class="at">ylab =</span> <span class="st">&quot;Precip&quot;</span>, <span class="at">xlab =</span> <span class="st">&quot;x distance (km)&quot;</span>,</span>
+<span id="cb12-4"><a href="chp12_0.html#cb12-4" tabindex="-1"></a>       <span class="at">show.par =</span> <span class="cn">FALSE</span>, <span class="at">poly =</span> <span class="dv">20</span>)</span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-9"></span>
+<img src="12-polynomial_functions_files/figure-html/unnamed-chunk-9-1.png" alt="Fig 10. An example of a higher polynomial order function fitted to the data. This is an example of an overfitted model." width="336" />
+<p class="caption">
+Figure 12.1: Fig 10. An example of a higher polynomial order function fitted to the data. This is an example of an overfitted model.
+</p>
+</div>
+<p>But, doing so is ill advised–the model has 20 coefficients! Polynomial models are intended to capture general trends in the data. There are more sophisticated and specialized statistical methods used to capture localized spatial autocorrelation. A general rule of thumb is to avoid going above a 3<sup>rd</sup> order polynomial model. Any higher order model is likely to capture some aspects of spatial autocorrelation.</p>
+</div>
+<div id="transitioning-from-a-one-dimensional-to-a-two-dimensional-space" class="section level2 hasAnchor" number="12.4">
+<h2><span class="header-section-number">12.4</span> Transitioning from a one-dimensional to a two-dimensional space<a href="chp12_0.html#transitioning-from-a-one-dimensional-to-a-two-dimensional-space" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The polynomial functions described in the earlier section can easily be extended to a two-dimensional space. Next, we fit polynomial functions to the full precipitation extent for the state of Kansas. This adds the y-coordinate variable to the model.</p>
+<p>We learned that the 0<sup>th</sup> order polynomial is a horizontal line in one dimensional space. For a two-dimensional space, this is a horizontal plane that can be defined as:</p>
+<p><span class="math display">\[
+\begin{equation}
+\tag{6}
+Precipitation_i = \beta_0 + \beta_1 x_i^0  + \beta_2 y_i^0  + \varepsilon_i = \beta^{&#39;} + \varepsilon_i
+\end{equation}
+\]</span></p>
+<p>where <span class="math inline">\(\beta^{&#39;} = (\beta_0 + \beta_1 + \beta_2)\)</span> is the mean precipitation for the entire study extent–660 mm in our working example. Figure 11 shows this plane in a three-dimensional space.</p>
+<div class="float">
+<img src="img/poly_fig3.png" style="width:6in" alt="Fig. 11 A 0th order polynomial function fitted to the full two-dimensional precipitation data. The z-axis is assigned the precipitation variable." />
+<div class="figcaption">Fig. 11 A 0th order polynomial function fitted to the full two-dimensional precipitation data. The z-axis is assigned the precipitation variable.</div>
+</div>
+<p>An east west trend is apparent in the three-dimensional scatter plot suggesting that we should seek a first order polynomial, at the very least. The model takes on the form:</p>
+<p><span class="math display">\[
+\begin{equation}
+\tag{7}
+Precipitation_i = \beta_0 + \beta_1 x_i  + \beta_2 y_i  + \varepsilon_i
+\end{equation}
+\]</span></p>
+<p>The model defines a plane that can be tilted in any direction. As was the case with the one-dimensional dataset, we can leverage the least squares method to fit the model to the data. This results in the following coefficients:</p>
+<p><span class="math display">\[
+\begin{equation}
+\tag{8}
+Precipitation_i = 402 + 1.15 x_i - 0.45 y_i  + \varepsilon_i
+\end{equation}
+\]</span></p>
+<p>The coefficients tell us by how much the precipitation changes along the x and y coordinate directions. In our working example, precipitation increases by 1.15 mm in the x direction (west to east) and decreases by 0.45 mm in the y direction (south to north). The precipitation gradient is greater in the x-direction than in the y direction. Figure 12 shows a three-dimensional rendering of the plane.</p>
+<div class="float">
+<img src="img/poly_fig4.png" style="width:6in" alt="Fig. 12 A first order polynomial function fitted to the two-dimensional precipitation data." />
+<div class="figcaption">Fig. 12 A first order polynomial function fitted to the two-dimensional precipitation data.</div>
+</div>
+<p>The same model can be viewed as a two-dimensional raster where each pixel represents the modeled precipitation (Figure 13).</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="chp12_0.html#cb13-1" tabindex="-1"></a>M1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(z <span class="sc">~</span> x <span class="sc">+</span> y, dat)</span>
+<span id="cb13-2"><a href="chp12_0.html#cb13-2" tabindex="-1"></a>dat<span class="sc">$</span>res1 <span class="ot">&lt;-</span> <span class="fu">resid</span>(M1)</span>
+<span id="cb13-3"><a href="chp12_0.html#cb13-3" tabindex="-1"></a>fit1 <span class="ot">&lt;-</span> r2_crop</span>
+<span id="cb13-4"><a href="chp12_0.html#cb13-4" tabindex="-1"></a>fit1[] <span class="ot">&lt;-</span> M1<span class="sc">$</span>fitted.values</span>
+<span id="cb13-5"><a href="chp12_0.html#cb13-5" tabindex="-1"></a><span class="fu">plot</span>(fit1, <span class="at">col =</span> <span class="fu">colorRampPalette</span>(<span class="fu">c</span>(<span class="st">&quot;#E14533&quot;</span>,<span class="st">&quot;#FAFDCB&quot;</span>, <span class="st">&quot;#5E87C2&quot;</span>))( <span class="dv">100</span> ) )</span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-10"></span>
+<img src="12-polynomial_functions_files/figure-html/unnamed-chunk-10-1.png" alt="Fig 13. A raster view of the first order polynomial function shown in figure 12." width="672" />
+<p class="caption">
+Figure 12.2: Fig 13. A raster view of the first order polynomial function shown in figure 12.
+</p>
+</div>
+<p>How well does the first order polynomial fit our data? We may first want to look at the residuals (Figure 14).</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="chp12_0.html#cb14-1" tabindex="-1"></a>res1 <span class="ot">&lt;-</span> r2_crop</span>
+<span id="cb14-2"><a href="chp12_0.html#cb14-2" tabindex="-1"></a>res1[] <span class="ot">&lt;-</span> M1<span class="sc">$</span>residuals</span>
+<span id="cb14-3"><a href="chp12_0.html#cb14-3" tabindex="-1"></a><span class="fu">plot</span>(res1, <span class="at">col =</span> <span class="fu">colorRampPalette</span>(<span class="fu">c</span>(<span class="st">&quot;#E14533&quot;</span>,<span class="st">&quot;#FAFDCB&quot;</span>, <span class="st">&quot;#5E87C2&quot;</span>))( <span class="dv">100</span> ))</span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-11"></span>
+<img src="12-polynomial_functions_files/figure-html/unnamed-chunk-11-1.png" alt="Fig 14. The residuals from the fitting of the first order polynomial function. Note the cluster of low precipitation values revealed by removing the trend." width="672" />
+<p class="caption">
+Figure 12.3: Fig 14. The residuals from the fitting of the first order polynomial function. Note the cluster of low precipitation values revealed by removing the trend.
+</p>
+</div>
+<p>The overall trend observed in the original raster is no longer obvious. However, subtle trends are more difficult to make out when viewing a two-dimensional dataset than a one-dimensional dataset. A more effective way to assess model fit in two-dimensional space is to split the residuals into their x and y coordinate components by plotting the residuals as a function of x and y respectively (Figure 15).</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="chp12_0.html#cb15-1" tabindex="-1"></a>OP <span class="ot">&lt;-</span> <span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
+<span id="cb15-2"><a href="chp12_0.html#cb15-2" tabindex="-1"></a><span class="fu">eda_lm</span>(dat, x, res1, <span class="at">asp =</span> <span class="cn">FALSE</span>, <span class="at">reg =</span> <span class="cn">FALSE</span>, <span class="at">loe =</span> <span class="cn">TRUE</span>, <span class="at">xlab=</span><span class="st">&quot;X-coordinate&quot;</span>,</span>
+<span id="cb15-3"><a href="chp12_0.html#cb15-3" tabindex="-1"></a>       <span class="at">show.par =</span> <span class="cn">FALSE</span>,<span class="at">sd =</span> <span class="cn">FALSE</span>, <span class="at">mean.l =</span> <span class="cn">FALSE</span>, <span class="at">ylab =</span> <span class="st">&quot;Residuals&quot;</span>,</span>
+<span id="cb15-4"><a href="chp12_0.html#cb15-4" tabindex="-1"></a>       <span class="at">loess.d =</span> <span class="fu">list</span>(<span class="at">span =</span> <span class="fl">0.5</span>, <span class="at">family =</span> <span class="st">&quot;symmetric&quot;</span>) )</span>
+<span id="cb15-5"><a href="chp12_0.html#cb15-5" tabindex="-1"></a><span class="fu">eda_lm</span>(dat, y, res1, <span class="at">asp =</span> <span class="cn">FALSE</span>, <span class="at">reg =</span> <span class="cn">FALSE</span>, <span class="at">loe =</span> <span class="cn">TRUE</span>, <span class="at">xlab=</span><span class="st">&quot;Y-coordinate&quot;</span> ,</span>
+<span id="cb15-6"><a href="chp12_0.html#cb15-6" tabindex="-1"></a>       <span class="at">show.par =</span> <span class="cn">FALSE</span>,<span class="at">sd =</span> <span class="cn">FALSE</span>, <span class="at">mean.l =</span> <span class="cn">FALSE</span>, <span class="at">ylab =</span> <span class="st">&quot;Residuals&quot;</span>,</span>
+<span id="cb15-7"><a href="chp12_0.html#cb15-7" tabindex="-1"></a>       <span class="at">loess.d =</span> <span class="fu">list</span>(<span class="at">span =</span> <span class="fl">0.5</span>, <span class="at">family =</span> <span class="st">&quot;symmetric&quot;</span>))</span>
+<span id="cb15-8"><a href="chp12_0.html#cb15-8" tabindex="-1"></a><span class="fu">par</span>(OP)</span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-12"></span>
+<img src="12-polynomial_functions_files/figure-html/unnamed-chunk-12-1.png" alt="Fig 15. The residuals from the fitting of the first order polynomial function as viewed from the x-coordinate axis and the y-coordinate axis." width="672" />
+<p class="caption">
+Figure 12.4: Fig 15. The residuals from the fitting of the first order polynomial function as viewed from the x-coordinate axis and the y-coordinate axis.
+</p>
+</div>
+<p>The plots suggest a very mild curvature in the residuals along the x coordinate. A similar, but more complex curvature can be observed along the y-coordinate. It may be worthwhile to augment the function by another polynomial order giving us a second order polynomial function to see if it removes some of these trends. Such a function is also called a quadratic polynomial function. It takes on the form:</p>
+<p><span class="math display">\[
+\begin{equation}
+\tag{9}
+Precipitation_i = \beta_0 + \beta_1 x_i  + \beta_2 y_i + \beta_3 x_i^2  + \beta_4 y_i^2 + \beta_5 x_iy_i + \varepsilon_i
+\end{equation}
+\]</span></p>
+<p>Note that in addition to adding the squared coordinate values, the function also adds the interactive terms <span class="math inline">\(xy\)</span>. The interaction term captures situations where the coefficients for <span class="math inline">\(x\)</span> or <span class="math inline">\(y\)</span> are no longer a constant. For example, if the effect of the x coordinate value on precipitation changes as a function of changing y coordinate values, then x’s coefficient can no longer be deemed a constant (James et al., 2013). This is captured by the <span class="math inline">\(xy\)</span> term in equation 9.</p>
+<p>The least squares method can be used to fit the function to the data. In our example, this gives us:</p>
+<p><span class="math display">\[
+\begin{equation}
+\tag{10}
+Precipitation_i = 378 + 1.43 x_i -0.66 y_i -0.0003 x_i^2 +0.0013 y_i^2 -0.0005 x_iy_i + \varepsilon_i
+\end{equation}
+\]</span></p>
+<p>The coefficients suggest that the <span class="math inline">\(x_i\)</span> and <span class="math inline">\(y_i\)</span> coordinate values have a greater influence on the estimate of precipitation than their <span class="math inline">\(x_i^2\)</span> and <span class="math inline">\(y_i^2\)</span> counterparts. Note too that the exceedingly small <span class="math inline">\(x_iy_i\)</span> coefficient suggests little to no interaction between the <span class="math inline">\(x_i\)</span> and <span class="math inline">\(y_i\)</span> coordinate values.</p>
+<p>Figure 16 shows this curved surface in a three-dimensional space.</p>
+<div class="float">
+<img src="img/poly_fig5.png" style="width:6in" alt="Fig. 16 A second order polynomial function fitted to the precipitation data. Note the slight curvature in the trend." />
+<div class="figcaption">Fig. 16 A second order polynomial function fitted to the precipitation data. Note the slight curvature in the trend.</div>
+</div>
+<p>Figure 17 shows the quadratic surface as a two-dimensional raster.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="chp12_0.html#cb16-1" tabindex="-1"></a>M2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(z <span class="sc">~</span> x <span class="sc">+</span> y <span class="sc">+</span> <span class="fu">I</span>(x<span class="sc">^</span><span class="dv">2</span>) <span class="sc">+</span> <span class="fu">I</span>(y<span class="sc">^</span><span class="dv">2</span>) <span class="sc">+</span> x<span class="sc">*</span>y, dat)</span>
+<span id="cb16-2"><a href="chp12_0.html#cb16-2" tabindex="-1"></a>dat<span class="sc">$</span>res2 <span class="ot">&lt;-</span> <span class="fu">resid</span>(M2)</span>
+<span id="cb16-3"><a href="chp12_0.html#cb16-3" tabindex="-1"></a>fit2 <span class="ot">&lt;-</span> r2_crop</span>
+<span id="cb16-4"><a href="chp12_0.html#cb16-4" tabindex="-1"></a>fit2[] <span class="ot">&lt;-</span> M2<span class="sc">$</span>fitted.values</span>
+<span id="cb16-5"><a href="chp12_0.html#cb16-5" tabindex="-1"></a><span class="fu">plot</span>(fit2, <span class="at">col =</span> <span class="fu">colorRampPalette</span>(<span class="fu">c</span>(<span class="st">&quot;#E14533&quot;</span>,<span class="st">&quot;#FAFDCB&quot;</span>, <span class="st">&quot;#5E87C2&quot;</span>))( <span class="dv">100</span> ) )</span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-13"></span>
+<img src="12-polynomial_functions_files/figure-html/unnamed-chunk-13-1.png" alt="Fig 17. A raster view of the second order polynomial function shown in figure 16." width="672" />
+<p class="caption">
+Figure 12.5: Fig 17. A raster view of the second order polynomial function shown in figure 16.
+</p>
+</div>
+<p>Note that the resulting residuals look barely different from those of the 1st order polynomial (Figure 18).</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="chp12_0.html#cb17-1" tabindex="-1"></a>res2 <span class="ot">&lt;-</span> r2_crop</span>
+<span id="cb17-2"><a href="chp12_0.html#cb17-2" tabindex="-1"></a>res2[] <span class="ot">&lt;-</span> M2<span class="sc">$</span>residuals</span>
+<span id="cb17-3"><a href="chp12_0.html#cb17-3" tabindex="-1"></a><span class="fu">plot</span>(res2, <span class="at">col =</span> <span class="fu">colorRampPalette</span>(<span class="fu">c</span>(<span class="st">&quot;#E14533&quot;</span>,<span class="st">&quot;#FAFDCB&quot;</span>, <span class="st">&quot;#5E87C2&quot;</span>))( <span class="dv">100</span> ))</span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-14"></span>
+<img src="12-polynomial_functions_files/figure-html/unnamed-chunk-14-1.png" alt="Fig 18. The residuals from the fitting of the second order polynomial function." width="672" />
+<p class="caption">
+Figure 12.6: Fig 18. The residuals from the fitting of the second order polynomial function.
+</p>
+</div>
+<p>It is therefore best to assess the goodness of fit by plotting the residuals against the x and y coordinate values (Figure 19).</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="chp12_0.html#cb18-1" tabindex="-1"></a>OP <span class="ot">&lt;-</span> <span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
+<span id="cb18-2"><a href="chp12_0.html#cb18-2" tabindex="-1"></a><span class="fu">eda_lm</span>(dat, x, res2, <span class="at">asp =</span> <span class="cn">FALSE</span>, <span class="at">reg =</span> <span class="cn">FALSE</span>, <span class="at">loe =</span> <span class="cn">TRUE</span>, <span class="at">xlab=</span><span class="st">&quot;X-coordinate&quot;</span>,</span>
+<span id="cb18-3"><a href="chp12_0.html#cb18-3" tabindex="-1"></a>       <span class="at">show.par =</span> <span class="cn">FALSE</span>,<span class="at">sd =</span> <span class="cn">FALSE</span>, <span class="at">mean.l =</span> <span class="cn">FALSE</span>, <span class="at">ylab =</span> <span class="st">&quot;Residuals&quot;</span>,</span>
+<span id="cb18-4"><a href="chp12_0.html#cb18-4" tabindex="-1"></a>       <span class="at">loess.d =</span> <span class="fu">list</span>(<span class="at">span =</span> <span class="fl">0.5</span>, <span class="at">family =</span> <span class="st">&quot;symmetric&quot;</span>) )</span>
+<span id="cb18-5"><a href="chp12_0.html#cb18-5" tabindex="-1"></a><span class="fu">eda_lm</span>(dat, y, res2, <span class="at">asp =</span> <span class="cn">FALSE</span>, <span class="at">reg =</span> <span class="cn">FALSE</span>, <span class="at">loe =</span> <span class="cn">TRUE</span>, <span class="at">xlab=</span><span class="st">&quot;Y-coordinate&quot;</span> ,</span>
+<span id="cb18-6"><a href="chp12_0.html#cb18-6" tabindex="-1"></a>       <span class="at">show.par =</span> <span class="cn">FALSE</span>,<span class="at">sd =</span> <span class="cn">FALSE</span>, <span class="at">mean.l =</span> <span class="cn">FALSE</span>, <span class="at">ylab =</span> <span class="st">&quot;Residuals&quot;</span>,</span>
+<span id="cb18-7"><a href="chp12_0.html#cb18-7" tabindex="-1"></a>       <span class="at">loess.d =</span> <span class="fu">list</span>(<span class="at">span =</span> <span class="fl">0.5</span>, <span class="at">family =</span> <span class="st">&quot;symmetric&quot;</span>))</span>
+<span id="cb18-8"><a href="chp12_0.html#cb18-8" tabindex="-1"></a><span class="fu">par</span>(OP)</span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-15"></span>
+<img src="12-polynomial_functions_files/figure-html/unnamed-chunk-15-1.png" alt="Fig 19. The residuals from the fitting of the first order polynomial function as viewed from the x-coordinate axis and the y-coordinate axis." width="672" />
+<p class="caption">
+Figure 12.7: Fig 19. The residuals from the fitting of the first order polynomial function as viewed from the x-coordinate axis and the y-coordinate axis.
+</p>
+</div>
+<p>The second order polynomial is an improvement over the first order polynomial, especially along the x-coordinate axis where the slight curvature observed in the first order polynomial model’s residuals is no longer apparent. Note that the range of residual values are also slightly less with the 2<sup>nd</sup> order function versus the first order function.</p>
+<p>Mathematically, there is no limit to the polynomial order you choose. For example, you could explore a third order polynomial function (a cubic polynomial) or even a fourth order polynomial function (a quartic polynomial). But, doing so increases the chance of overfitting the data. Recall that the purpose of modeling the trend is to capture the data’s <em>overall</em> pattern. Polynomial functions are not well suited to capturing <em>local</em> variability in the data.</p>
+<p>One option that may help eliminate the need for higher polynomial orders is to transform (aka re-express) the variable <span class="math inline">\(z_i\)</span> (Montgomery et al). Transforming the data can render a curvilinear function straight (or flat in a two-dimensional space). Transforming the variable may also be scientifically justifiable. There are many datasets that benefit from a non-linear scale. For example, earthquake magnitudes are measured on a log scale and some count datasets can benefit from a square root transformation.</p>
+</div>
+<div id="evaluating-a-models-goodness-of-fit" class="section level2 hasAnchor" number="12.5">
+<h2><span class="header-section-number">12.5</span> Evaluating a model’s goodness of fit<a href="chp12_0.html#evaluating-a-models-goodness-of-fit" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The diagnostic plots have, so far, been visual. We can adopt a more rigorous and systematic approach to evaluating how well the functions fit the data. A popular statistical measure of “fit” is the coefficient of determination, <span class="math inline">\(R^2\)</span>. It is computed by subtracting one from the ratio of the sum of residuals squared in the fitted model to the sum of residuals squared one would get if we had fitted the mean value (Unwin, 1981).</p>
+<p><span class="math display">\[
+\begin{equation}
+\tag{11}
+R^2 = 1 - \frac{\sum(residuals_{model})^2}{\sum(residuals_{mean})^2}
+\end{equation}
+\]</span></p>
+<p>If the residuals from the model are smaller than those we would have gotten if we adopted the simpler mean model, <span class="math inline">\(R^2\)</span> ends up being large. <span class="math inline">\(R^2\)</span> ranges from 0 (no improvement whatsoever over the mean) to 1 (a perfect fit where the residuals from the fitted model are zero). In our working example, the first order polynomial model resulted in an <span class="math inline">\(R^2\)</span> of 0.87. The second order polynomial resulted in an <span class="math inline">\(R^2\)</span> of 0.90–a slight improvement over the first order polynomial. Note that the <span class="math inline">\(R^2\)</span> value is sometimes reported as a percentage as opposed to a fraction.</p>
+</div>
+<div id="a-note-about-adopting-traditional-statistical-measures-of-significance-to-spatial-functions" class="section level2 hasAnchor" number="12.6">
+<h2><span class="header-section-number">12.6</span> A note about adopting traditional statistical measures of significance to spatial functions<a href="chp12_0.html#a-note-about-adopting-traditional-statistical-measures-of-significance-to-spatial-functions" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Because underlying residuals are likely to exhibit spatial autocorrelation, traditional methods used to assess “statistical significance” of a model and its coefficient should be avoided. For example, the cluster of low residual values in the eastern part of Kansas is a good indication that spatial autocorrelation is present in our data.</p>
+</div>
+<div id="summary-10" class="section level2 hasAnchor" number="12.7">
+<h2><span class="header-section-number">12.7</span> Summary<a href="chp12_0.html#summary-10" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>This chapter introduces polynomial functions as a parametric tool for modeling first-order spatial effects–the broad, location-driven variation in spatial data. Polynomial models help describe global trends in continuous fields such as precipitation or elevation, and are commonly used to:</p>
+<ul>
+<li>Quantify spatial trend across one- or two-dimensional space.</li>
+<li>Remove global variation to expose residuals for further analysis.</li>
+<li>Support interpolation at unsampled locations.</li>
+</ul>
+<p>Modeling spatial trend can be a critical first step in spatial statistics. Once global variation is accounted for using polynomial functions, the residuals can be analyzed to uncover second-order properties such as spatial autocorrelation.</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="chp11_0.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="chp13_0.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+  "sharing": {
+    "github": false,
+    "facebook": false,
+    "twitter": false,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": false,
+    "google": false,
+    "instapper": false
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": null,
+    "text": null
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": {},
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "section",
+    "scroll_highlight": true
+  }
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
