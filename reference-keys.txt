@@ -131,6 +131,7 @@ fig:fig05
 fig:fig06
 fig:fig07
 fig:f13-MC-distance
+fig:ma-dataset
 fig:chunk10
 fig:fig08
 fig:fig09
@@ -158,8 +159,10 @@ fig:f11-quad05
 fig:f11-kernel01
 fig:f11-kernel02
 fig:f11-kernel03
+fig:f11-kernel04
 fig:f11-starbucks
 fig:f11-pppm01
+fig:f11-walmarts
 fig:f11-ppp-dist
 fig:f11-ANN-plot
 fig:f11-diff-patterns

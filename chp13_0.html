@@ -648,7 +648,7 @@ div.csl-indent {
 <h1><span class="header-section-number">Chapter 13</span> Spatial Autocorrelation<a href="chp13_0.html#chp13_0" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <div id="introduction-11" class="section level2 hasAnchor" number="13.1">
 <h2><span class="header-section-number">13.1</span> Introduction<a href="chp13_0.html#introduction-11" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>In the previous chapter, we explored how polynomial functions can be used to model spatial trend—capturing broad, location-driven variation in continuous spatial fields. By fitting and removing global trends, we revealed residuals that may still exhibit spatial structure. This chapter builds on that foundation by introducing <strong>spatial autocorrelation</strong>, a second-order property that describes how values at one location relate to values at nearby locations.</p>
+<p>In the previous chapter, we explored how polynomial functions can be used to model spatial trends that capture broad, location-driven variation in continuous spatial fields. By fitting and removing global trends, we revealed residuals that may still exhibit spatial structure. This chapter builds on that foundation by introducing <strong>spatial autocorrelation</strong>, a second-order property that describes how values at one location relate to values at nearby locations.</p>
 <p>This concept is rooted in <strong>Tobler’s First Law of Geography</strong> which states:</p>
 <div class="note">
 <p>
@@ -659,17 +659,19 @@ R. Tobler <span class="citation"><span class="citation">(<a href="#ref-Tobler197
 </div>
 <p>This principle underpins much of spatial analysis. It suggests that spatial data often exhibit <strong>non-random patterns</strong>, where nearby features tend to have similar attribute values. Spatial autocorrelation provides a formal way to quantify this tendency.</p>
 <p><img src="img/Random_maps.png" width="1662" /></p>
-<p>To make the mathematical foundations of autocorrelation more accessible, we shift from raster-based data to a simpler dataset composed of <strong>polygonal areal units</strong> (e.g., counties). This allows us to clearly illustrate how spatial relationships are defined, how spatial weights are constructed, and how measures like <strong>Moran’s I</strong> are computed.</p>
-<p>This chapter focuses on:
-- Defining spatial autocorrelation and its role in spatial statistics.
-- Constructing spatial weights to represent neighborhood relationships.
-- Computing and interpreting <strong>global</strong> and <strong>local Moran’s I</strong> statistics.
-- Using permutation-based hypothesis testing to assess significance.</p>
+<p>To make the mathematical foundations of autocorrelation more accessible, we shift from the raster-based data used in the previous chapter to a simpler dataset composed of <strong>polygonal areal units</strong> (e.g., counties). This allows us to clearly illustrate how spatial relationships are defined, how spatial weights are constructed, and how measures like <strong>Moran’s I</strong> are computed.</p>
+<p>This chapter focuses on:</p>
+<ul>
+<li>Defining spatial autocorrelation and its role in spatial statistics.</li>
+<li>Constructing spatial weights to represent neighborhood relationships.</li>
+<li>Computing and interpreting <strong>global</strong> and <strong>local Moran’s I</strong> statistics.</li>
+<li>Using permutation-based hypothesis testing to assess significance.</li>
+</ul>
 </div>
 <div id="global-morans-i" class="section level2 hasAnchor" number="13.2">
 <h2><span class="header-section-number">13.2</span> Global Moran’s <em>I</em><a href="chp13_0.html#global-morans-i" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>While maps can sometimes reveal clusters of similar values, our visual interpretation is often limited—especially when patterns are subtle or complex. To move beyond subjective impressions, we need a <strong>quantitative and objective measure</strong> of spatial patterning. Specifically, we want to quantify the degree to which similar attribute values are clustered or dispersed across space.</p>
-<p>One widely used statistic for this purpose is **Moran’s *I<strong> , a measure of </strong>global spatial autocorrelation**. It quantifies the overall tendency for features with similar values to be located near one another, based on a defined spatial relationship (e.g., contiguity or distance). In essence, Moran’s <em>I</em> is a correlation coefficient between a variable and its spatially lagged counterpart.</p>
+<p>While maps can sometimes reveal clusters of similar values, our visual interpretation is often limited, especially when patterns are subtle or complex. To move beyond subjective impressions, we need a <strong>quantitative and objective measure</strong> of spatial patterning. Specifically, we want to quantify the degree to which similar attribute values are clustered or dispersed across space.</p>
+<p>One widely used statistic for this purpose is <strong>Moran’s I</strong> , a measure of <strong>global spatial autocorrelation</strong>. It quantifies the overall tendency for features with similar values to be located near one another, based on a defined spatial relationship (e.g., contiguity or distance). In essence, Moran’s <em>I</em> is a correlation coefficient between a variable and its spatially lagged counterpart.</p>
 <div id="computing-the-morans-i" class="section level3 hasAnchor" number="13.2.1">
 <h3><span class="header-section-number">13.2.1</span> Computing the Moran’s <em>I</em><a href="chp13_0.html#computing-the-morans-i" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Let’s start with a working example: 2020 median per capita income for the state of Maine.</p>
@@ -679,7 +681,7 @@ R. Tobler <span class="citation"><span class="citation">(<a href="#ref-Tobler197
 Figure 13.1: Map of 2020 median per capita income for Maine counties (USA).
 </p>
 </div>
-<p>It may seem apparent that, when aggregated at the county level, the income distribution appears clustered with high counties surrounded by high counties and low counties surrounded by low counties. But a qualitative description may not be sufficient; we might want to quantify the degree to which similar (or dissimilar) counties are clustered. One measure of this type of relationship is the <strong>Moran’s I statistic</strong>.</p>
+<p>It may seem apparent that, when aggregated at the county level, the income distribution appears clustered with high counties surrounded by high counties and low counties surrounded by low counties (note that we are ignoring potential first-order trends here for pedagogical clarity; a spatial trend model could have been discerned). But a qualitative description may not be sufficient; we might want to quantify the degree to which similar (or dissimilar) counties are clustered. One measure of this type of relationship is the <strong>Moran’s I statistic</strong>.</p>
 <p>The Moran’s <em>I</em> statistic is a measure of spatial autocorrelation that quantifies the degree to which similar values (like income) cluster together in space. It is computed as the correlation between a variable and its spatially lagged counterpart, based on a defined spatial weights matrix.</p>
 <p>But before we go about computing this correlation, we need to come up with a way to define a neighbor. One approach is to define a neighbor as being any contiguous polygon. For example, the northern most county (Aroostook), has four contiguous neighbors while the southern most county (York) has just two contiguous counties. Other neighborhood definitions can include distance bands (e.g. counties within 100 km) and k nearest neighbors (e.g. the 2 closest neighbors). Note that distance bands and k nearest neighbors are usually measured using the polygon’s centroids and not their boundaries.</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig04"></span>
@@ -695,11 +697,11 @@ Figure 13.2: Maps show the links between each polygon and their respective neigh
 Figure 13.3: Scatter plot of spatially lagged income (neighboring income) vs. each countie’s income. If we equalize the spread between both axes (i.e. convert to a z-value) the slope of the regression line represents the Moran’s <em>I</em> statistic.
 </p>
 </div>
-<p>If there is no degree of association between <em>Income</em> and <em>Income<sub>lag</sub></em>, the slope will be close to flat (resulting in a Moran’s <em>I</em> value near 0). In our working example, the slope is far from flat with a Moran’s <em>I</em> value is 0.28. So this raises the question: how significant is this Moran’s <em>I</em> value (i.e. is the computed slope significantly different from 0)? There are two approaches to estimating the significance: an analytical solution and a Monte Carlo solution. The analytical solution makes some restrictive assumptions about the data and thus cannot always be reliable. Another approach (and the one favored here) is a Monte Carlo test. This approach avoids parametric assumptions about the data distribution or spatial layout, relying instead on the assumption that values are exchangeable under the null hypothesis.</p>
+<p>If there is no degree of association between <em>Income</em> and <em>Income<sub>lag</sub></em>, the slope will be close to flat (resulting in a Moran’s <em>I</em> value near 0). In our working example, the slope is far from flat with a Moran’s <em>I</em> value of 0.28. So this raises the question: how significant is this Moran’s <em>I</em> value (i.e. is the computed slope significantly different from 0)? There are two approaches to estimating the significance: an analytical solution and a Monte Carlo solution. The analytical solution makes some restrictive assumptions about the data and thus cannot always be reliable. The other approach (and the one favored here) is a Monte Carlo test. This approach avoids parametric assumptions about the data distribution or spatial layout, relying instead on the assumption that values are exchangeable under the null hypothesis.</p>
 </div>
 <div id="monte-carlo-approach-to-estimating-significance" class="section level3 hasAnchor" number="13.2.2">
 <h3><span class="header-section-number">13.2.2</span> Monte Carlo approach to estimating significance<a href="chp13_0.html#monte-carlo-approach-to-estimating-significance" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>In a Monte Carlo test–specifically a permutation-based bootstrap test–we assess the significance of an observed Moran’s <em>I</em> statistic by comparing it to a distribution of values generated under the null hypothesis of spatial randomness. This is done by <strong>permuting</strong> the attribute values across spatial units while keeping the spatial structure (e.g., neighborhood relationships) fixed.</p>
+<p>In a Monte Carlo test (specifically, a permutation-based bootstrap test) we assess the significance of an observed Moran’s <em>I</em> statistic by comparing it to a distribution of values generated under the null hypothesis of spatial randomness. This is done by <strong>permuting</strong> the attribute values across spatial units while keeping the spatial structure (e.g., neighborhood relationships) fixed.</p>
 <p>For each permutation, the attribute values are shuffled among the polygons and a new Moran’s <em>I</em> value is computed.</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig06"></span>
 <img src="13-Spatial-Autocorrelation_files/figure-html/fig06-1.png" alt="Results from 199 permutations. Plot shows Moran's *I* lines (in gray) computed from each random permutation of income values. The observed Moran's *I* line for the original dataset is shown in red." width="384" />
@@ -740,18 +742,23 @@ Figure 13.5: Histogram shows the distribution of Moran’s <em>I</em> values for
 Figure 13.6: Moran’s <em>I</em> at different spatial lags defined by a 50 km width annulus at 50 km distance increments. Red dots indicate Moran <em>I</em> values for which a P-value was 0.05 or less.
 </p>
 </div>
-<p>The plot suggests that there is significant spatial autocorrelation between counties within 25 km of one another, but as the distances between counties increases, autocorrelation shifts from positive to negative, indicating that nearby counties tend to have similar income levels, while counties farther apart tend to be more dissimilar.</p>
+<p>The plot suggests that there is significant spatial autocorrelation between counties within 75 km of one another, but as the distances between counties increases, autocorrelation shifts from positive to negative, indicating that nearby counties tend to have similar income levels, while counties farther apart tend to be more dissimilar.</p>
 </div>
 <div id="local-morans-i" class="section level2 hasAnchor" number="13.4">
 <h2><span class="header-section-number">13.4</span> Local Moran’s <em>I</em><a href="chp13_0.html#local-morans-i" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>We can decompose the global Moran’s <em>I</em> into a <em>localized</em> measure of autocorrelation–i.e. a map of “hot spots” and “cold spots”.</p>
-<p>A local Moran’s <em>I</em> analysis is best suited for relatively large datasets, especially if a hypothesis test is to be implemented. We’ll therefore switch to another dataset: Massachusetts household income data.</p>
-<p><img src="13-Spatial-Autocorrelation_files/figure-html/ma-dataset-1.png" width="480" style="display: block; margin: auto;" /></p>
+<p>A local Moran’s <em>I</em> analysis is best suited for relatively large datasets, especially if a hypothesis test is to be implemented. We’ll therefore switch to another dataset: Massachusetts (USA) household income data aggregated at the U.S. Census’ county subdivision level (as with the Maine dataset, we ignore potential first-order trends here for pedagogical clarity).</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:ma-dataset"></span>
+<img src="13-Spatial-Autocorrelation_files/figure-html/ma-dataset-1.png" alt="Map of 2020 median household income for Massachusetts county subdivisions." width="480" />
+<p class="caption">
+Figure 13.7: Map of 2020 median household income for Massachusetts county subdivisions.
+</p>
+</div>
 <p>Applying a contiguity based definition of a neighbor, we get the following scatter plot of spatially lagged income vs. income.</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:chunk10"></span>
 <img src="13-Spatial-Autocorrelation_files/figure-html/chunk10-1.png" alt="Grey vertical and horizontal lines define the mean values for both axes values. Red points highlight counties with relatively high income values (i.e. greater than the mean) surrounded by counties whose average income value is relatively high. Likewise, dark blue points highlight counties with relatively low income values surrounded by counties whose average income value is relatively low." width="384" />
 <p class="caption">
-Figure 13.7: Grey vertical and horizontal lines define the mean values for both axes values. Red points highlight counties with relatively high income values (i.e. greater than the mean) surrounded by counties whose average income value is relatively high. Likewise, dark blue points highlight counties with relatively low income values surrounded by counties whose average income value is relatively low.
+Figure 13.8: Grey vertical and horizontal lines define the mean values for both axes values. Red points highlight counties with relatively high income values (i.e. greater than the mean) surrounded by counties whose average income value is relatively high. Likewise, dark blue points highlight counties with relatively low income values surrounded by counties whose average income value is relatively low.
 </p>
 </div>
 <p>Note that the mean value for <em>Income</em>, highlighted as light grey vertical and horizontal lines in the above plot, carve up the four quadrant defining the low-low, high-low, high-high and low-high quadrants when starting from the bottom-left quadrant and working counterclockwise. Note that other measures of centrality, such as the median, could be used to delineate these quadrants.</p>
@@ -759,7 +766,7 @@ Figure 13.7: Grey vertical and horizontal lines define the mean values for both 
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig08"></span>
 <img src="13-Spatial-Autocorrelation_files/figure-html/fig08-1.png" alt="A map view of the low-low (blue), high-low (light-blue), high-high (red) and low-high (orange) counties. " width="432" />
 <p class="caption">
-Figure 13.8: A map view of the low-low (blue), high-low (light-blue), high-high (red) and low-high (orange) counties.
+Figure 13.9: A map view of the low-low (blue), high-low (light-blue), high-high (red) and low-high (orange) counties.
 </p>
 </div>
 <p>Each spatial unit (e.g., polygon) has its own Local Moran’s I statistic, denoted <span class="math inline">\(I_i\)</span>, which quantifies the degree of spatial autocorrelation around that unit. The calculation of <span class="math inline">\(I_i\)</span> is shown later in the chapter.</p>
@@ -769,14 +776,14 @@ Figure 13.8: A map view of the low-low (blue), high-low (light-blue), high-high 
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig09"></span>
 <img src="13-Spatial-Autocorrelation_files/figure-html/fig09-1.png" alt="Polygon whose *significance* value we are asessing in  this example." width="336" />
 <p class="caption">
-Figure 13.9: Polygon whose <em>significance</em> value we are asessing in this example.
+Figure 13.10: Polygon whose <em>significance</em> value we are asessing in this example.
 </p>
 </div>
 <p>Its local Moran’s <em>I</em> statistic is 0.85. A permutation test shuffles the income values around it, all the while keeping its value constant. An example of an outcome of a few permutations follows:</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig10"></span>
 <img src="13-Spatial-Autocorrelation_files/figure-html/fig10-1.png" alt="Local Moran's I outcomes of a few permutations of income values." width="864" />
 <p class="caption">
-Figure 13.10: Local Moran’s I outcomes of a few permutations of income values.
+Figure 13.11: Local Moran’s I outcomes of a few permutations of income values.
 </p>
 </div>
 <p>You’ll note that even though the income value remains the same in the polygon of interest, its local Moran’s <em>I</em> statistic will change because of the changing income values in its surrounding polygons.</p>
@@ -784,7 +791,7 @@ Figure 13.10: Local Moran’s I outcomes of a few permutations of income values.
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig11"></span>
 <img src="13-Spatial-Autocorrelation_files/figure-html/fig11-1.png" alt="Distribution of $I_i$ values under the null hypothesis that income values are randomly distributed across the study extent. The red vertical line shows the observed $I_i$ for comparison." width="288" />
 <p class="caption">
-Figure 13.11: Distribution of <span class="math inline">\(I_i\)</span> values under the null hypothesis that income values are randomly distributed across the study extent. The red vertical line shows the observed <span class="math inline">\(I_i\)</span> for comparison.
+Figure 13.12: Distribution of <span class="math inline">\(I_i\)</span> values under the null hypothesis that income values are randomly distributed across the study extent. The red vertical line shows the observed <span class="math inline">\(I_i\)</span> for comparison.
 </p>
 </div>
 <p>About 9.3% of the simulated values are more extreme than our observed <span class="math inline">\(I_i\)</span> giving us a permutation-based p-value of 0.09.</p>
@@ -792,14 +799,14 @@ Figure 13.11: Distribution of <span class="math inline">\(I_i\)</span> values un
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig12"></span>
 <img src="13-Spatial-Autocorrelation_files/figure-html/fig12-1.png" alt="Map of the permutation-based p-values for each polygons' $I_i$ statistic." width="480" />
 <p class="caption">
-Figure 13.12: Map of the permutation-based p-values for each polygons’ <span class="math inline">\(I_i\)</span> statistic.
+Figure 13.13: Map of the permutation-based p-values for each polygons’ <span class="math inline">\(I_i\)</span> statistic.
 </p>
 </div>
 <p>One can use the computed permutation-based p-values to filter the <span class="math inline">\(I_i\)</span> values based on a desired level of significance. For example, the following scatter plot and map shows the high/low “hotspots” for which a permutation-based p-value of 0.05 or less was computed from the above simulation.</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig13"></span>
 <img src="13-Spatial-Autocorrelation_files/figure-html/fig13-1.png" alt="Local Moran's *I* values having a signifcance level of 0.05 or less." width="864" />
 <p class="caption">
-Figure 13.13: Local Moran’s <em>I</em> values having a signifcance level of 0.05 or less.
+Figure 13.14: Local Moran’s <em>I</em> values having a signifcance level of 0.05 or less.
 </p>
 </div>
 <p>You’ll note that the levels of significance do not apply to just the high-high and low-low regions, they can apply to <em>all</em> combinations of highs and lows.</p>
@@ -807,7 +814,7 @@ Figure 13.13: Local Moran’s <em>I</em> values having a signifcance level of 0.
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig14"></span>
 <img src="13-Spatial-Autocorrelation_files/figure-html/fig14-1.png" alt="Local Moran's *I* values having a signifcance level of 0.01 or less." width="864" />
 <p class="caption">
-Figure 13.14: Local Moran’s <em>I</em> values having a signifcance level of 0.01 or less.
+Figure 13.15: Local Moran’s <em>I</em> values having a signifcance level of 0.01 or less.
 </p>
 </div>
 <div id="a-note-about-interpreting-the-permutation-based-p-value" class="section level3 hasAnchor" number="13.4.1">
@@ -816,7 +823,7 @@ Figure 13.14: Local Moran’s <em>I</em> values having a signifcance level of 0.
 <div class="figure"><span style="display:block;" id="fig:fig14a"></span>
 <img src="13-Spatial-Autocorrelation_files/figure-html/fig14a-1.png" alt="Realization of a random process. Left map is the distribution of income values under a random process. Right map is the outcome of a permutation test showing the computed permutation-based p-values. Each permutation test runs 9999 permutations." width="768" />
 <p class="caption">
-Figure 13.15: Realization of a random process. Left map is the distribution of income values under a random process. Right map is the outcome of a permutation test showing the computed permutation-based p-values. Each permutation test runs 9999 permutations.
+Figure 13.16: Realization of a random process. Left map is the distribution of income values under a random process. Right map is the outcome of a permutation test showing the computed permutation-based p-values. Each permutation test runs 9999 permutations.
 </p>
 </div>
 <p>Note how some <span class="math inline">\(I_i\)</span> values are associated with low permutation-based p-value. In fact, one polygon’s <span class="math inline">\(I_i\)</span> value is associated with permutation-based p-value of 0.001 or less! This is to be expected since the likelihood of finding a significant <span class="math inline">\(I_i\)</span> increases the more permutation tests are performed. Here we have 343 polygons, thus we ran 343 tests. This is analogous to having multiple opportunities to pick an ace of spades from a deck of cards–the more opportunities you have, the greater the chance of grabbing an ace of spades.</p>
@@ -824,7 +831,7 @@ Figure 13.15: Realization of a random process. Left map is the distribution of i
 <div class="figure"><span style="display:block;" id="fig:fig14b"></span>
 <img src="13-Spatial-Autocorrelation_files/figure-html/fig14b-1.png" alt="Another realization of a random process. Left map is the distribution of income values under a random process. Right map is the outcome of a permutation test showing computed permutation-based p-values. " width="768" />
 <p class="caption">
-Figure 13.16: Another realization of a random process. Left map is the distribution of income values under a random process. Right map is the outcome of a permutation test showing computed permutation-based p-values.
+Figure 13.17: Another realization of a random process. Left map is the distribution of income values under a random process. Right map is the outcome of a permutation test showing computed permutation-based p-values.
 </p>
 </div>
 <p>We have quite a few <span class="math inline">\(I_i\)</span> values associated with a very low permutation-based p-value (The smallest p-value in this example is 0.0006). This would lead one to assume that several polygons exhibit significant levels of spatial autocorrelation with their neighbors when in fact this is due to chance–a classic example of a Type I error resulting from multiple comparisons.</p>
@@ -832,7 +839,7 @@ Figure 13.16: Another realization of a random process. Left map is the distribut
 <div class="figure"><span style="display:block;" id="fig:fig14c"></span>
 <img src="13-Spatial-Autocorrelation_files/figure-html/fig14c-1.png" alt="Distribution of permutation-based p-values following 200 realizations of a random process. Blue numbers are the p-value bins, red numbers under each bins are calculated percentages." width="768" />
 <p class="caption">
-Figure 13.17: Distribution of permutation-based p-values following 200 realizations of a random process. Blue numbers are the p-value bins, red numbers under each bins are calculated percentages.
+Figure 13.18: Distribution of permutation-based p-values following 200 realizations of a random process. Blue numbers are the p-value bins, red numbers under each bins are calculated percentages.
 </p>
 </div>
 <p>This problem is known in the field of statistics as the <strong>multiple comparison problem</strong>. Several solutions have been offered, each with their pros and cons. One solution that seems to have gained traction as of late is the <em>False Discoverer Rate</em> correction (FDR). The FDR correction aims to control the expected proportion of false positives among the set of features deemed significant.</p>
@@ -841,14 +848,14 @@ Figure 13.17: Distribution of permutation-based p-values following 200 realizati
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig14d"></span>
 <img src="13-Spatial-Autocorrelation_files/figure-html/fig14d-1.png" alt="Clusters deemed significant at the p=0.05 level when applying the FDR correction." width="864" />
 <p class="caption">
-Figure 13.18: Clusters deemed significant at the p=0.05 level when applying the FDR correction.
+Figure 13.19: Clusters deemed significant at the p=0.05 level when applying the FDR correction.
 </p>
 </div>
 <p>Applying the FDR correction to the permutation-based p-value cutoff of 0.01 generates even fewer clusters:</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig14e"></span>
 <img src="13-Spatial-Autocorrelation_files/figure-html/fig14e-1.png" alt="Clusters deemed significant at the p=0.01 level when applying the FDR correction." width="864" />
 <p class="caption">
-Figure 13.19: Clusters deemed significant at the p=0.01 level when applying the FDR correction.
+Figure 13.20: Clusters deemed significant at the p=0.01 level when applying the FDR correction.
 </p>
 </div>
 <p>It’s important to note that there is no one perfect solution to the multiple comparison problem. This, and other challenges facing inferential interpretation in a spatial framework such as the potential for overlapping neighbors (i.e. same polygons used in separate permutation tests) make traditional approaches to interpreting significance challenging. It is thus recommended to interpret these tests with caution.</p>
@@ -862,8 +869,8 @@ I = \frac{N}{\sum\limits_i (X_i-\bar X)^2}
     \frac{\sum\limits_i \sum\limits_j w_{ij}(X_i-\bar X)(X_j-\bar X)}{\sum\limits_i \sum\limits_j w_{ij}} \tag{1}
 \]</span></p>
 <p>Here, <span class="math inline">\(N\)</span> is the total number of spatial units, <span class="math inline">\(X_i\)</span> and <span class="math inline">\(X_j\)</span> are the attribute values at locations <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span>, <span class="math inline">\(\bar{X}\)</span> is the mean of <span class="math inline">\(X\)</span>, and <span class="math inline">\(w_{ij}\)</span> is the spatial weight between locations <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span>–typically defined by contiguity, distance, or other spatial relationships.</p>
-<p>There a few key components of Equation (1) worth highlighting. First, you’ll note the standardization of both sets of values by the subtraction of each value in <span class="math inline">\(X_i\)</span> or <span class="math inline">\(X_j\)</span> by the mean of <span class="math inline">\(X\)</span>. This highlights the fact that we are seeking to compare the deviation of each value from an overall mean and not the deviation of their absolute values.</p>
-<p>Second, you’ll note an inverted variance term on the left-hand side of equation (1)–this is a measure of spread. You might recall from an introductory statistics course that the variance can be computed as:</p>
+<p>There are a few key components of Equation (1) worth highlighting. First, you’ll note the standardization of both sets of values by the subtraction of each value in <span class="math inline">\(X_i\)</span> or <span class="math inline">\(X_j\)</span> by the mean of <span class="math inline">\(X\)</span>. This highlights the fact that we are seeking to compare the deviation of each value from an overall mean and not the deviation of their absolute values.</p>
+<p>Second, you’ll note an inverted variance term on the left-hand side of equation (1): this is a measure of spread. You might recall from an introductory statistics course that the variance can be computed as:</p>
 <p><span class="math display">\[
 s^2 = \frac{\sum\limits_i (X_i-\bar X)^2}{N}\tag{2}
 \]</span>
@@ -893,7 +900,7 @@ I = \frac{\sum\limits_i I_i}{\sum\limits_i \sum\limits_j w_{ij}}  \tag{5}
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig15"></span>
 <img src="13-Spatial-Autocorrelation_files/figure-html/fig15-1.png" alt="Simulated spatial layer. The figure on the left shows each cell's ID value. The figure in the middle shows the values for each cell. The figure on the right shows the standardized values using equation (2)." width="672" />
 <p class="caption">
-Figure 13.20: Simulated spatial layer. The figure on the left shows each cell’s ID value. The figure in the middle shows the values for each cell. The figure on the right shows the standardized values using equation (2).
+Figure 13.21: Simulated spatial layer. The figure on the left shows each cell’s ID value. The figure in the middle shows the values for each cell. The figure on the right shows the standardized values using equation (2).
 </p>
 </div>
 <p>The first step in the computation of a Moran’s <em>I</em> index is the generation of a spatial weights matrix. The weights can take on many different values. For example, one could assign a value of <code>1</code> to a neighboring cell as shown in the following matrix.</p>
@@ -1815,7 +1822,7 @@ y_1 =  \sum\limits_j w_{1j} z_j {}={} &amp; (0)(0.21)+(1)(1.17)+(0)(1.5)+ ... + 
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig17"></span>
 <img src="13-Spatial-Autocorrelation_files/figure-html/fig17-1.png" alt="Moran's *I* scatterplot using a binary weight. The red point is the ($z_1$, $y_1$) pair computed for cell `1`." width="384" />
 <p class="caption">
-Figure 13.21: Moran’s <em>I</em> scatterplot using a binary weight. The red point is the (<span class="math inline">\(z_1\)</span>, <span class="math inline">\(y_1\)</span>) pair computed for cell <code>1</code>.
+Figure 13.22: Moran’s <em>I</em> scatterplot using a binary weight. The red point is the (<span class="math inline">\(z_1\)</span>, <span class="math inline">\(y_1\)</span>) pair computed for cell <code>1</code>.
 </p>
 </div>
 <p>You’ll note that the range of neighboring values along the <span class="math inline">\(y\)</span>-axis is much greater than that of the original values on the <span class="math inline">\(x\)</span>-axis. This is not necessarily an issue given that the Moran’s <span class="math inline">\(I\)</span> correlation coefficient standardizes the values by recentering them on the overall mean <span class="math inline">\((X - \bar{X})/s\)</span>. This is simply to re-emphasize that we are interested in how a neighboring value varies relative to a feature’s value, regardless of the scale of values in either batches.</p>
@@ -2740,7 +2747,7 @@ y_1 =  \sum\limits_j w_{1j} z_j {}={} &amp; (0)(0.21)+(0.333)(1.17)+(0)(1.5)+...
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig19"></span>
 <img src="13-Spatial-Autocorrelation_files/figure-html/fig19-1.png" alt="Moran's scatter plot with original values on the left and same Moran's I scatter plot on the right using the standardized values $z_i$ and $y_i$." width="672" />
 <p class="caption">
-Figure 13.22: Moran’s scatter plot with original values on the left and same Moran’s I scatter plot on the right using the standardized values <span class="math inline">\(z_i\)</span> and <span class="math inline">\(y_i\)</span>.
+Figure 13.23: Moran’s scatter plot with original values on the left and same Moran’s I scatter plot on the right using the standardized values <span class="math inline">\(z_i\)</span> and <span class="math inline">\(y_i\)</span>.
 </p>
 </div>
 <p>Note the difference in the point cloud pattern in the above plot from the one generated using the binary weights. Other weights can be used such as inverse distance and k-nearest neighbors to name just a few. However, must software implementations of the Moran’s <em>I</em> statistic will adopt the row standardized weights.</p>
@@ -2750,7 +2757,7 @@ Figure 13.22: Moran’s scatter plot with original values on the left and same M
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig20"></span>
 <img src="13-Spatial-Autocorrelation_files/figure-html/fig20-1.png" alt="The left plot shows the Moran's I scatter plot with the point colors symbolizing the $I_i$ values. The figure on the right shows the matching $I_i$ values mapped to each respective cell." width="672" />
 <p class="caption">
-Figure 13.23: The left plot shows the Moran’s I scatter plot with the point colors symbolizing the <span class="math inline">\(I_i\)</span> values. The figure on the right shows the matching <span class="math inline">\(I_i\)</span> values mapped to each respective cell.
+Figure 13.24: The left plot shows the Moran’s I scatter plot with the point colors symbolizing the <span class="math inline">\(I_i\)</span> values. The figure on the right shows the matching <span class="math inline">\(I_i\)</span> values mapped to each respective cell.
 </p>
 </div>
 <p>Here, we are adopting a different color scheme from that used earlier. Green colors highlight features whose values are surrounded by similar values. These can be either positive values surrounded by standardized values that tend to be positive or negative values surrounded by values that tend to be negative. In both cases, the calculated <span class="math inline">\(I_i\)</span> will be positive. Red colors highlight features whose values are surrounded by dissimilar values. These can be either negative values surrounded by values that tend to be positive or positive values surrounded by values that tend to be negative. In both cases, the calculated <span class="math inline">\(I_i\)</span> will be negative. In our example, two features have a negative Moran’s <em>I</em> coefficient: cell IDs <code>7</code> and <code>12</code>.</p>
@@ -2768,14 +2775,14 @@ In this example, <span class="math inline">\(\sum\limits_i \sum\limits_j w_{ij}\
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig21"></span>
 <img src="13-Spatial-Autocorrelation_files/figure-html/fig21-1.png" alt="Moran's scatter with fitted Moran's *I* slope (red line).  The left plot uses the raw values $(X_i,X_i(lag))$ for its axes labels. Right plot uses the standardized values $(z_i,y_i)$ for its axes labels." width="672" />
 <p class="caption">
-Figure 13.24: Moran’s scatter with fitted Moran’s <em>I</em> slope (red line). The left plot uses the raw values <span class="math inline">\((X_i,X_i(lag))\)</span> for its axes labels. Right plot uses the standardized values <span class="math inline">\((z_i,y_i)\)</span> for its axes labels.
+Figure 13.25: Moran’s scatter with fitted Moran’s <em>I</em> slope (red line). The left plot uses the raw values <span class="math inline">\((X_i,X_i(lag))\)</span> for its axes labels. Right plot uses the standardized values <span class="math inline">\((z_i,y_i)\)</span> for its axes labels.
 </p>
 </div>
 </div>
 </div>
 <div id="summary-11" class="section level2 hasAnchor" number="13.6">
 <h2><span class="header-section-number">13.6</span> Summary<a href="chp13_0.html#summary-11" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>This chapter introduced spatial autocorrelation as a key concept for understanding second-order spatial structure–how values at one location relate to values at nearby locations. Using Moran’s I as a central tool, we explored both global and local measures of spatial association, emphasizing the importance of spatial weights and neighborhood definitions. Through examples and permutation-based inference, we demonstrated how spatial autocorrelation can be quantified, tested, and interpreted across scales. The chapter concluded with a detailed breakdown of the Moran’s I equation, reinforcing its interpretation as a spatially weighted correlation and laying the groundwork for more advanced spatial statistical techniques.</p>
+<p>This chapter introduced spatial autocorrelation as a key concept for understanding second-order spatial structure: how values at one location relate to values at nearby locations. Using Moran’s I as a central tool, we explored both global and local measures of spatial association, emphasizing the importance of spatial weights and neighborhood definitions. Through examples and permutation-based inference, we demonstrated how spatial autocorrelation can be quantified, tested, and interpreted across scales. The chapter concluded with a detailed breakdown of the Moran’s I equation, reinforcing its interpretation as a spatially weighted correlation.</p>
 
 </div>
 </div>

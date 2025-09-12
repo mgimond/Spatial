@@ -648,9 +648,9 @@ div.csl-indent {
 <h1><span class="header-section-number">Chapter 15</span> Second-Order Point Pattern Analysis: Modeling Distance<a href="chp15_0.html#chp15_0" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <div id="introduction-13" class="section level2 hasAnchor" number="15.1">
 <h2><span class="header-section-number">15.1</span> Introduction<a href="chp15_0.html#introduction-13" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>An alternative to the <em>density-based methods</em> explored thus far are the <strong>distance-based methods</strong> for analyzing spatial point patterns. These approaches shift the focus from how points are distributed relative to the study area (a <em>first-order property</em>) to how points are distributed <strong>relative to one another</strong>–a hallmark of <strong>second-order analysis</strong>. This shift enables us to explore whether events exhibit spatial interaction, such as <strong>clustering</strong> or <strong>dispersion</strong>, across various spatial scales.</p>
+<p>An alternative to the <em>density-based methods</em> explored thus far are the <strong>distance-based methods</strong> for analyzing spatial point patterns. These approaches shift the focus from how points are distributed relative to the study area (a <em>first-order property</em>) to how points are distributed <strong>relative to one another</strong> (a <strong>second-order property</strong>). This shift enables us to explore whether events exhibit spatial interaction, such as <strong>clustering</strong> or <strong>dispersion</strong>, across various spatial scales.</p>
 <p>Distance-based methods are particularly useful when the goal is to assess whether the observed pattern deviates from what would be expected under complete spatial randomness (CSR), a benchmark model in spatial statistics. Rather than estimating intensity across space, these methods examine the spatial arrangement of points directly through inter-point distances.</p>
-<p>In the sections that follow, we introduce three widely used distance-based techniques:</p>
+<p>In the sections that follow, we introduce three distance-based techniques:</p>
 <ul>
 <li><strong>Average Nearest Neighbor (ANN)</strong></li>
 <li><strong>Ripley’s K and L functions</strong></li>
@@ -660,7 +660,7 @@ div.csl-indent {
 </div>
 <div id="average-nearest-neighbor" class="section level2 hasAnchor" number="15.2">
 <h2><span class="header-section-number">15.2</span> Average Nearest Neighbor<a href="chp15_0.html#average-nearest-neighbor" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p><strong>Average Nearest Neighbor (ANN)</strong> analysis measures the average distance from each point in a study area to its nearest neighboring point. This provides a simple yet powerful summary of the spatial arrangement of points, helping to distinguish between clustered, random, or regularly spaced patterns.</p>
+<p><strong>Average Nearest Neighbor (ANN)</strong> analysis measures the average distance from each point in a study area to its nearest neighboring point. This provides a simple, yet powerful summary of the spatial arrangement of points, helping to distinguish between clustered, random, or regularly spaced patterns.</p>
 <p>In the example below, the average nearest neighbor distance for all points is 13,295 meters.</p>
 Reading layer <code>Walmarts' from data source</code>C:.shp’ using driver `ESRI Shapefile’
 Simple feature collection with 44 features and 40 fields
@@ -669,18 +669,18 @@ Dimension: XY
 Bounding box: xmin: 640627.2 ymin: 4614803 xmax: 869353.2 ymax: 4738331
 Projected CRS: NAD83 / UTM zone 18N
 <div class="figure"><span style="display:block;" id="fig:f11-ppp-dist"></span>
-<img src="15-Point_Patterns_2nd_files/figure-html/f11-ppp-dist-1.png" alt="A subset of distances between each point and its closest point. For example, fig.height=3.0, fig.width=5, message=FALSE, warning=FALSE, the point closest to point 3 is point 4 which is 16,616 meters away." width="672" />
+<img src="15-Point_Patterns_2nd_files/figure-html/f11-ppp-dist-1.png" alt="A subset of distances between each point and its closest point. For example, the point closest to point 3 is point 4 which is 16,616 meters away." width="672" />
 <p class="caption">
-Figure 15.1: A subset of distances between each point and its closest point. For example, fig.height=3.0, fig.width=5, message=FALSE, warning=FALSE, the point closest to point 3 is point 4 which is 16,616 meters away.
+Figure 15.1: A subset of distances between each point and its closest point. For example, the point closest to point 3 is point 4 which is 16,616 meters away.
 </p>
 </div>
 <div id="extending-the-concept-higher-order-neighbors" class="section level3 hasAnchor" number="15.2.1">
 <h3><span class="header-section-number">15.2.1</span> Extending the Concept: Higher-Order Neighbors<a href="chp15_0.html#extending-the-concept-higher-order-neighbors" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>While the basic ANN statistic captures only the nearest neighbor relationship, extending the concept to include second, third, and higher order neighbors reveals more nuanced spatial structures. This produces a curve that reflects how inter-point distances change with neighbor order.</p>
 <div class="figure"><span style="display:block;" id="fig:f11-ANN-plot"></span>
-<img src="15-Point_Patterns_2nd_files/figure-html/f11-ANN-plot-1.png" alt="ANN values for different neighbor order numbers. For example, the ANN for the first closest neighbor for all points is 13,295 meters; the ANN for the 2nd closest neighbor for all points is 18850 meters, and the ANN for the 43rd closest neighbor (the furthest neighbor) for all points is 182,818 meters,and so forth." width="336" />
+<img src="15-Point_Patterns_2nd_files/figure-html/f11-ANN-plot-1.png" alt="ANN values for different neighbor order numbers. For example, the ANN for the first closest neighbor for all points is 13,295 meters; the ANN for the 2nd closest neighbor for all points is 18850 meters, and the ANN for the 43rd closest neighbor (the furthest neighbor) for all points is 182,818 meters." width="336" />
 <p class="caption">
-Figure 15.2: ANN values for different neighbor order numbers. For example, the ANN for the first closest neighbor for all points is 13,295 meters; the ANN for the 2nd closest neighbor for all points is 18850 meters, and the ANN for the 43rd closest neighbor (the furthest neighbor) for all points is 182,818 meters,and so forth.
+Figure 15.2: ANN values for different neighbor order numbers. For example, the ANN for the first closest neighbor for all points is 13,295 meters; the ANN for the 2nd closest neighbor for all points is 18850 meters, and the ANN for the 43rd closest neighbor (the furthest neighbor) for all points is 182,818 meters.
 </p>
 </div>
 <p>The shape of the ANN curve provides insight into the spatial structure of the pattern. A steep initial slope followed by a gradual increase may indicate tight clustering, while a more linear increase suggests regular spacing.</p>
@@ -716,7 +716,7 @@ Figure 15.5: The same point pattern presented with two different study areas. Ho
 </p>
 </div>
 <p>When the study area is tightly fitted around the cluster, the pattern appears more dispersed. This highlights the modifiable areal unit problem (MAUP), a key concern in spatial analysis.</p>
-<p>ANN analysis assumes that the underlying point process is stationary—that is, the intensity of the process does not vary across space. If the process is non-stationary, observed clustering may reflect underlying environmental gradients or covariates rather than true inter-point interaction.</p>
+<p>ANN analysis assumes that the underlying point process is stationary–that is, the intensity of the process does not vary across space. If the process is non-stationary, observed clustering may reflect underlying environmental gradients or covariates rather than true inter-point interaction.</p>
 <p>Correcting for non-stationarity when performing hypothesis tests is discussed in the next chapter.</p>
 </div>
 <div id="testing-for-complete-spatial-randomness" class="section level3 hasAnchor" number="15.2.2">
@@ -785,7 +785,7 @@ Figure 15.6: Three different outcomes from simulated patterns following a CSR po
 Figure 15.7: Histogram of simulated ANN values (from 1000 simulations). This is the sample distribution of the null hypothesis, ANN<sub>simulated</sub> (under CSR). The red line shows our observed (Walmart) ANN value. About 32% of the simulated values are greater (more extreme) than our observed ANN value.
 </p>
 </div>
-<p>By using the same study region in each simulation, Monte Carlo methods automatically account for edge effects and irregular study area shapes—issues that are difficult to correct analytically.</p>
+<p>By using the same study region in each simulation, Monte Carlo methods automatically account for edge effects and irregular study area shapes (issues that are difficult to correct analytically).</p>
 </div>
 <div id="extracting-a-p-value-from-a-monte-carlo-test" class="section level4 hasAnchor" number="15.2.2.3">
 <h4><span class="header-section-number">15.2.2.3</span> Extracting a p-value from a Monte Carlo test<a href="chp15_0.html#extracting-a-p-value-from-a-monte-carlo-test" class="anchor-section" aria-label="Anchor link to header"></a></h4>
@@ -824,7 +824,7 @@ Figure 15.8: Walmart store distribution overlayed on top of a population density
 Figure 15.9: Examples of simulated point patterns generated under a non-stationary process, with population density serving as the spatial intensity function.
 </p>
 </div>
-<p>Note that even though we are no longer referring to a CSR point process, we are still treating this as a random point process since the points are randomly placed <em>following</em> the underlying population density distribution. Using the Monte Carlo (MC) techniques used with an earlier section, we can simulate thousands of such point patterns (following the population density) and compare our observed ANN value to those computed from our MC simulations.</p>
+<p>Note that even though we are no longer referring to a CSR point process, we are still treating this as a random point process since the points are randomly placed <em>following</em> the underlying population density distribution. Using the MC techniques, we can simulate thousands of such point patterns (following the population density) and compare our observed ANN value to those computed from our MC simulations.</p>
 <div class="figure"><span style="display:block;" id="fig:f12-ann-hetero-hist"></span>
 <img src="img/ANN_pop_dens.png" alt="Distribution of ANN values under a null model where population density governs point intensity." width="438" />
 <p class="caption">
@@ -898,7 +898,7 @@ Figure 15.14: The K function estimated from the Walmart stores point distributio
 </div>
 <p>A few important considerations are to be taken:</p>
 <ul>
-<li>The K function, as presented here, assumes a homogeneous underlying first-order process given that <span class="math inline">\(\hat{\lambda}\)</span> is assumed uniform for all locations with the study extent.</li>
+<li>The K function, as presented here, assumes a homogeneous underlying first-order process given that <span class="math inline">\(\hat{\lambda}\)</span> is assumed uniform for all locations within the study extent.</li>
 <li>The underlying process is assumed <strong>isotropic</strong> meaning that the relationship between points is a function of distance and not direction.</li>
 <li>Given that distance measurements are to be performed, coordinate systems used with the point pattern needs to preserve distance unless geodesic distances are to be computed.</li>
 </ul>
@@ -906,7 +906,7 @@ Figure 15.14: The K function estimated from the Walmart stores point distributio
 <p><span class="math display">\[
 \hat{K}(d) = \frac{A}{n(n-1)} \sum_{i=1}^{n} \sum_{j \neq i} \frac{I(d_{ij} \leq d)}{w_{ij}}
 \]</span></p>
-<p>where <span class="math inline">\(w_{ij}\)</span> is the isotropic correct weight that is the proportion of the circumference of the circle centered at <span class="math inline">\(i\)</span> with radius <span class="math inline">\(d\)</span> that lies within the study area <span class="math inline">\(A\)</span>. Note that the proportion is that of the circle’s <strong>perimeter length</strong> and not the circle’s area.</p>
+<p>where <span class="math inline">\(w_{ij}\)</span> is the isotropic corrected weight that is the proportion of the circumference of the circle centered at <span class="math inline">\(i\)</span> with radius <span class="math inline">\(d\)</span> that lies within the study area <span class="math inline">\(A\)</span>. Note that the proportion is that of the circle’s <strong>perimeter length</strong> and not the circle’s area.</p>
 <div class="figure"><span style="display:block;" id="fig:f11-K2"></span>
 <img src="img/K_function_iso.png" alt="The K-function estimated from the Walmart stores point distribution in MA (shown in black), and the isotropic edge corrected K function for the same point layer (shown in red) " width="253" />
 <p class="caption">
@@ -920,9 +920,9 @@ K_{expected}(d) = \pi d^2
 <p>This provides a benchmark for comparison.</p>
 <p>If the observed K function exceeds this expected value, it suggests <strong>clustering</strong> of points at distance <span class="math inline">\(d\)</span>. If it falls below, it suggests or <strong>dispersion</strong> of points at distance <span class="math inline">\(d\)</span>.</p>
 <div class="figure"><span style="display:block;" id="fig:f11-K3"></span>
-<img src="img/K_function_iso_theo.png" alt="The K-function estimated from the Walmart stores point distribution in MA (shown in black), and the isotropic edge corrected K function for the same point layer (shown in red). The thick grey line represents the theoretical K function under the assumption of **Complete Spatial Randomness. Note how not correcting for edge effect can mis-characterize the nature of the point pattern. The uncorrected K function suggests a pattern more disperesed than expected under CSR assumption for all distance values while the isotropic weighted K function suggests clustering," width="266" />
+<img src="img/K_function_iso_theo.png" alt="The K-function estimated from the Walmart stores point distribution in MA (shown in black), and the isotropic edge corrected K function for the same point layer (shown in red). The thick grey line represents the theoretical K function under the assumption of Complete Spatial Randomness (CSR). Note how not correcting for edge effect can mis-characterize the nature of the point pattern. The uncorrected K function suggests a pattern more disperesed than expected under CSR assumption for all distance values while the isotropic weighted K function suggests clustering," width="266" />
 <p class="caption">
-Figure 15.16: The K-function estimated from the Walmart stores point distribution in MA (shown in black), and the isotropic edge corrected K function for the same point layer (shown in red). The thick grey line represents the theoretical K function under the assumption of **Complete Spatial Randomness. Note how not correcting for edge effect can mis-characterize the nature of the point pattern. The uncorrected K function suggests a pattern more disperesed than expected under CSR assumption for all distance values while the isotropic weighted K function suggests clustering,
+Figure 15.16: The K-function estimated from the Walmart stores point distribution in MA (shown in black), and the isotropic edge corrected K function for the same point layer (shown in red). The thick grey line represents the theoretical K function under the assumption of Complete Spatial Randomness (CSR). Note how not correcting for edge effect can mis-characterize the nature of the point pattern. The uncorrected K function suggests a pattern more disperesed than expected under CSR assumption for all distance values while the isotropic weighted K function suggests clustering,
 </p>
 </div>
 </div>
@@ -932,16 +932,16 @@ Figure 15.16: The K-function estimated from the Walmart stores point distributio
 <p><span class="math display">\[
 L=\sqrt{\dfrac{K(d)}{\pi}}-d
 \]</span>
-Technically, the fundamental L function is written as <span class="math inline">\(L=\sqrt{\dfrac{K(d)}{\pi}}\)</span>, however, the <strong>centered</strong> version of the function presented above has the benefit of rotating the plot such that the baseline under CSR is rendered horizontal. This provides more separation between the estimated K functions an and the theoretical K function across the range of distances.</p>
+Technically, the fundamental L function is written as <span class="math inline">\(L=\sqrt{\dfrac{K(d)}{\pi}}\)</span>, however, the <strong>centered</strong> version of the function presented above has the benefit of rotating the plot such that the baseline under CSR is rendered horizontal. This provides more separation between the estimated K functions and the theoretical K function across the range of distances.</p>
 <p>Under CSR, <span class="math inline">\(L_{expected}(d) \approx 0\)</span>. Deviations from zero indicate departures from randomness:</p>
 <ul>
 <li><span class="math inline">\(L(d) &gt; 0\)</span>: clustering at distance <span class="math inline">\(d\)</span></li>
 <li><span class="math inline">\(L(d) &lt; 0\)</span>: dispersion at distance <span class="math inline">\(d\)</span></li>
 </ul>
 <div class="figure"><span style="display:block;" id="fig:f11-L"></span>
-<img src="img/L_function.png" alt="L function rendering of the K function plot shown above. Both the edge corrected (red line) and standard L functions (black line) are shown. The theoretical L function under CSR is shown as a horizontal line centered on 0. " width="266" />
+<img src="img/L_function.png" alt="L function rendering of the K function. Both the edge corrected (red line) and standard L functions (black line) are shown. The theoretical L function under CSR is shown as a horizontal line centered on 0. " width="266" />
 <p class="caption">
-Figure 15.17: L function rendering of the K function plot shown above. Both the edge corrected (red line) and standard L functions (black line) are shown. The theoretical L function under CSR is shown as a horizontal line centered on 0.
+Figure 15.17: L function rendering of the K function. Both the edge corrected (red line) and standard L functions (black line) are shown. The theoretical L function under CSR is shown as a horizontal line centered on 0.
 </p>
 </div>
 <p>The L function suggests that Walmart locations are more dispersed than expected under CSR up to a distance of 12 km but more clustered at distances greater than 12 km.</p>
