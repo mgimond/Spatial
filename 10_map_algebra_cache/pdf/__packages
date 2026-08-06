@@ -1,0 +1,10 @@
+sp
+raster
+lattice
+rasterVis
+ggplot2
+scales
+gridExtra
+abind
+sf
+stars

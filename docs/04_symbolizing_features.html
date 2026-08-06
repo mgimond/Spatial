@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>4&nbsp; Symbolizing features – Introduction to GIS and Spatial Analysis</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./05_statistical_maps.html" rel="next">
+<link href="./03_data_management.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-9e3e5b9121e68b3f077afb32f2c64d95.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./02_feature_representation.html">Working with Spatial Data</a></li><li class="breadcrumb-item"><a href="./04_symbolizing_features.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Symbolizing features</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Introduction to GIS and Spatial Analysis</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01_intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Working with Spatial Data</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02_feature_representation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Feature Representation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03_data_management.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">GIS Data Management</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04_symbolizing_features.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Symbolizing features</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05_statistical_maps.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Statistical maps</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06_pitfalls_to_avoid.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Pitfalls to avoid</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07_map_making_tips.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Good Map Making Tips</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08_spatial_operations_vector_overlays.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Spatial Selection and Vector Overlays</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09_coordinate_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Coordinate Systems</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10_map_algebra.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Map Algebra</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Spatial Analysis</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11_intro_spatial.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Analyzing Spatial Patterns</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12_poly_functions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Modeling Spatial Trends</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13_autocorrelation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Spatial Autocorrelation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14_ppa_1st.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">First-Order Point Pattern Analysis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./15_ppa_2nd.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Second-Order Point Pattern Analysis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./16_interpolation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Spatial Interpolation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">4.1</span> Introduction</a></li>
+  <li><a href="#color" id="toc-color" class="nav-link" data-scroll-target="#color"><span class="header-section-number">4.2</span> Color</a>
+  <ul class="collapse">
+  <li><a href="#hue" id="toc-hue" class="nav-link" data-scroll-target="#hue"><span class="header-section-number">4.2.1</span> Hue</a></li>
+  <li><a href="#lightness" id="toc-lightness" class="nav-link" data-scroll-target="#lightness"><span class="header-section-number">4.2.2</span> Lightness</a></li>
+  <li><a href="#saturation" id="toc-saturation" class="nav-link" data-scroll-target="#saturation"><span class="header-section-number">4.2.3</span> Saturation</a></li>
+  </ul></li>
+  <li><a href="#color-space" id="toc-color-space" class="nav-link" data-scroll-target="#color-space"><span class="header-section-number">4.3</span> Color Space</a></li>
+  <li><a href="#color-schemes" id="toc-color-schemes" class="nav-link" data-scroll-target="#color-schemes"><span class="header-section-number">4.4</span> Color Schemes</a>
+  <ul class="collapse">
+  <li><a href="#qualitative-color-scheme" id="toc-qualitative-color-scheme" class="nav-link" data-scroll-target="#qualitative-color-scheme"><span class="header-section-number">4.4.1</span> Qualitative color scheme</a></li>
+  <li><a href="#sequential-color-scheme" id="toc-sequential-color-scheme" class="nav-link" data-scroll-target="#sequential-color-scheme"><span class="header-section-number">4.4.2</span> Sequential color scheme</a></li>
+  <li><a href="#divergent-color-scheme" id="toc-divergent-color-scheme" class="nav-link" data-scroll-target="#divergent-color-scheme"><span class="header-section-number">4.4.3</span> Divergent color scheme</a></li>
+  </ul></li>
+  <li><a href="#choosing-an-appropriate-color-scheme" id="toc-choosing-an-appropriate-color-scheme" class="nav-link" data-scroll-target="#choosing-an-appropriate-color-scheme"><span class="header-section-number">4.5</span> Choosing an Appropriate Color Scheme</a></li>
+  <li><a href="#classification-intervals" id="toc-classification-intervals" class="nav-link" data-scroll-target="#classification-intervals"><span class="header-section-number">4.6</span> Classification Intervals</a></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">4.7</span> Summary</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./02_feature_representation.html">Working with Spatial Data</a></li><li class="breadcrumb-item"><a href="./04_symbolizing_features.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Symbolizing features</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Symbolizing features</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="introduction" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="introduction"><span class="header-section-number">4.1</span> Introduction</h2>
+<p>Effective map design is not just about placing data on a map, it’s about communicating information clearly and accurately. This chapter explores the principles and practices behind symbolizing spatial features, focusing on how color and classification schemes can be used to enhance the readability and interpretability of maps.</p>
+<p>The chapter begins by breaking down the three perceptual dimensions of color–<strong>hue</strong>, <strong>lightness</strong>, and <strong>saturation</strong>–and explains how each can be used to represent different types of data. It then introduces the concept of color spaces, including the commonly used HSV (Hue-Saturation-Value) model and perceptually accurate models like CIELAB and Munsell, highlighting how human perception of color can differ from software-generated color models.</p>
+<p>The chapter also covers classification schemes used in choropleth mapping:</p>
+<ul>
+<li><strong>Qualitative</strong> schemes for categorical data,</li>
+<li><strong>Sequential</strong> schemes for ordered data,</li>
+<li><strong>Divergent</strong> schemes for data with a meaningful midpoint.</li>
+</ul>
+<p>It emphasizes the importance of choosing appropriate classification intervals, such as <strong>equal interval</strong>, <strong>quantile</strong>, and <strong>Jenks natural breaks</strong>, and demonstrates how different choices can significantly affect the appearance and interpretation of a map.</p>
+<p>Finally, the chapter introduces tools like ColorBrewer, which help cartographers select color palettes that are visually effective, colorblind-safe, and suitable for grayscale printing.</p>
+</section>
+<section id="color" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="color"><span class="header-section-number">4.2</span> Color</h2>
+<p>Color plays a central role in map design, influencing how effectively spatial patterns and relationships are communicated. In cartography, color is not just aesthetic–it encodes meaning and guides interpretation. To use color effectively, it’s important to understand its three perceptual dimensions: <strong>hue</strong>, <strong>lightness</strong> and <strong>saturation</strong>. These dimensions interact to shape how we perceive and differentiate features on a map. In the following sections, we’ll explore each dimension and its implications for symbolizing different types of data.</p>
+<section id="hue" class="level3" data-number="4.2.1">
+<h3 data-number="4.2.1" class="anchored" data-anchor-id="hue"><span class="header-section-number">4.2.1</span> Hue</h3>
+<p><strong>Hue</strong> is the perceptual dimension most commonly associated with color names–such as red, green, or blue. In cartography, hue is typically used to represent <strong>categorical</strong> data, where each category is assigned a distinct color. This allows map readers to easily differentiate between classes without implying any order or magnitude. However, the choice of hues should be made carefully, as some colors may carry cultural connotations or be difficult to distinguish for individuals with color vision deficiencies.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-hue" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-hue-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="04_symbolizing_features_files/figure-html/fig-hue-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="288">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-hue-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.1: An example of eight different hues. Hues are associated with color names such as green, red or blue.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Note that magentas and purples are not part of the natural visible light spectrum; instead they are a mix of reds and blues (or violets) from the spectrum’s tail ends.</p>
+</section>
+<section id="lightness" class="level3" data-number="4.2.2">
+<h3 data-number="4.2.2" class="anchored" data-anchor-id="lightness"><span class="header-section-number">4.2.2</span> Lightness</h3>
+<p><strong>Lightness</strong>–sometimes referred to as <strong>value</strong>–describes how much light is reflected or emitted from a surface, influencing how bright or dark a color appears. In cartographic design, lightness is particularly useful for symbolizing <strong>ordinal</strong>, <strong>interval</strong>, or <strong>ratio</strong> data (i.e., data that have a meaningful ordering or numeric scale), where a progression from light to dark can intuitively represent increasing values. Unlike hue, which separates categories, lightness enables us to show variation within a single category or color. However, care should be taken to maintain sufficient contrast between classes, especially in grayscale or colorblind-safe designs</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-lightness" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-lightness-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="04_symbolizing_features_files/figure-html/fig-lightness-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="288">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-lightness-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.2: Eight different hues (across columns) with decreasing lightness values (across rows).
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="saturation" class="level3" data-number="4.2.3">
+<h3 data-number="4.2.3" class="anchored" data-anchor-id="saturation"><span class="header-section-number">4.2.3</span> Saturation</h3>
+<p><strong>Saturation</strong>–also referred to as chroma–describes the intensity or vividness of a color. Highly saturated colors appear bold and vibrant, while low-saturation colors appear muted or grayish. In cartographic design, saturation can be used to <strong>emphasize specific features</strong> or categories, but it should be applied with care. Overuse can lead to visual clutter or misinterpretation, especially when combined with other color dimensions. Saturation is best used to subtly enhance contrast or draw attention to key map elements.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-saturation" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-saturation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="04_symbolizing_features_files/figure-html/fig-saturation-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="288">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-saturation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.3: Eight different hues (across columns) with decreasing saturation values (across rows).
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="color-space" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="color-space"><span class="header-section-number">4.3</span> Color Space</h2>
+<p>The three perceptual dimensions of color–hue, lightness, and saturation–can be visualized as forming a <strong>three-dimensional color space</strong>. While one might expect this space to be a <strong>cube</strong>, it is more accurately represented as a <strong>cone</strong>: hue wraps around the circumference, saturation extends outward from the center, and lightness runs vertically.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-color_space" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-color_space-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="img/Color_space_std_small.jpg" class="img-fluid quarto-figure quarto-figure-center figure-img" width="192">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-color_space-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.4: A conventional hue-saturation-lightness color space. Hue varies around the circumference, saturation increases outward from the center, and lightness varies vertically.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>This model helps explain how colors blend, fade, or become indistinguishable as saturation or lightness changes.</p>
+<p>However, most software-defined color spaces assume symmetry which does not reflect how humans actually perceive color. For example, we can distinguish more shades of blue than yellow at the same saturation and lightness.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-munsell" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-munsell-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="04_symbolizing_features_files/figure-html/fig-munsell-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="768">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-munsell-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.5: A cross section of the color space with constant hues and lightness values and decreasing saturation values where the two hues merge.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>How many distinct yellows can you perceive? How many distinct blues? Do the counts seem to match? Unless you have exceptionally acute color vision, you’ll likely notice a discrepancy–even though the software has generated exactly 30 distinct shades of each. To confirm this, we can add borders around each color swatch to visually verify that the number of distinct colors is indeed the same.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-munsell_bis" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-munsell_bis-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="04_symbolizing_features_files/figure-html/fig-munsell_bis-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="768">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-munsell_bis-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.6: A cross section of the color space with each color distinctly outlined.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>By now, it should be evident that symmetrical color spaces—like those commonly used in software–do not accurately reflect how humans perceive color. Our visual system is more sensitive to certain hues and less so to others, resulting in perceptual asymmetries that these models fail to capture. More rigorously designed color spaces, such as <strong>CIELAB</strong> and <strong>Munsell</strong>, address this limitation by modeling color as a non-symmetrical space that better aligns with human perception.</p>
+<p>The Munsell color space is designed so that equal visual differences correspond more closely to equal perceptual differences.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-munsell_slice" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-munsell_slice-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="04_symbolizing_features_files/figure-html/fig-munsell_slice-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="384">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-munsell_slice-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.7: A slice of the Munsell color space illustrating that the range of distinguishable colors varies by hue, reflecting human color perception more accurately than symmetrical HSV models.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>As illustrated by the Munsell color space, our ability to distinguish colors is not uniform across hues. For example, we can perceive fewer distinct shades of yellow than blue at comparable lightness levels. In one comparison, 29 unique shades of yellow were discernible (excluding grayscale values where saturation = 0), while 36 shades of blue were distinguishable.</p>
+<p>Understanding how humans perceive color helps us choose colors that communicate data effectively. The next step is determining how colors should be assigned to map features based on the type of data being mapped.</p>
+<p>The next section introduces three foundational color schemes–<strong>qualitative</strong>, <strong>sequential</strong> and <strong>divergent</strong>–each tailored to different types of data and mapping goals.</p>
+</section>
+<section id="color-schemes" class="level2" data-number="4.4">
+<h2 data-number="4.4" class="anchored" data-anchor-id="color-schemes"><span class="header-section-number">4.4</span> Color Schemes</h2>
+<p>Once you’ve selected an appropriate color space, the next step is to determine how to apply color to your data. This involves choosing a classification scheme–a method for grouping data values into discrete <strong>classes</strong>, each of which is represented by a distinct <strong>color swatch</strong>. The choice of classification scheme depends on the nature of your data and the message you want your map to convey. In the following sections, we’ll explore three common color schemes: <strong>qualitative</strong>, <strong>sequential</strong>, and <strong>divergent</strong>.</p>
+<section id="qualitative-color-scheme" class="level3" data-number="4.4.1">
+<h3 data-number="4.4.1" class="anchored" data-anchor-id="qualitative-color-scheme"><span class="header-section-number">4.4.1</span> Qualitative color scheme</h3>
+<p><strong>Qualitative</strong> color schemes are used to symbolize data that have no inherent order–such as categories or types. These schemes assign distinct hues to each class. To maintain perceptual balance, the hues are typically chosen to have equal lightness and saturation, ensuring that no category appears more prominent than another.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-qualitative" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-qualitative-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="04_symbolizing_features_files/figure-html/fig-qualitative-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="384">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-qualitative-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.8: Example of four different qualitative color schemes. Color hex numbers are superimposed on each palette.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>These schemes are ideal for mapping variables like land cover types, political affiliations, or survey responses. However, care should be taken when selecting hues, especially in contexts where cultural associations may influence interpretation. For example, it may not make sense to assign <em>blue</em> to Republican regions or <em>red</em> to Democratic ones on a political map.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-qualitative_map" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-qualitative_map-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="04_symbolizing_features_files/figure-html/fig-qualitative_map-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="384">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-qualitative_map-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.9: Map of 2012 election results shown in a qualitative color scheme. Note the use of three hues (red, blue and gray) of equal lightness and saturation.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="sequential-color-scheme" class="level3" data-number="4.4.2">
+<h3 data-number="4.4.2" class="anchored" data-anchor-id="sequential-color-scheme"><span class="header-section-number">4.4.2</span> Sequential color scheme</h3>
+<p><strong>Sequential</strong> color schemes are used to represent data that follow a meaningful order, such as income, temperature, elevation, or infection rates. These schemes typically progress from light to dark, with lighter shades representing lower values and darker shades representing higher ones. This visual gradient helps convey magnitude and direction in the data. Most sequential schemes use a single hue, but some may incorporate two hues to emphasize a broader range of values.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-sequential" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-sequential-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="04_symbolizing_features_files/figure-html/fig-sequential-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="384">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-sequential-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.10: Example of four different sequential color schemes. Color hex numbers are superimposed on each palette.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>A <strong>choropleth</strong> map is a thematic map in which polygons are symbolized according to the value of an associated attribute. The symbolization is typically achieved using colors grouped into discrete classes or displayed as a continuous gradient. Choropleth maps are widely used to visualize spatial variation in quantities such as income, population density, housing value, and unemployment rates. Because the appearance of a choropleth map depends on both the choice of color scheme and the method used to classify the data, different representations of the same dataset can emphasize different spatial patterns.</p>
+<p>The following example shows a <strong>choropleth</strong> map of household income in Maine using a green sequential color scheme.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-sequential_MAP" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-sequential_MAP-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="04_symbolizing_features_files/figure-html/fig-sequential_MAP-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="384">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-sequential_MAP-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.11: Map of household income (in dollars) shown in a sequential color scheme. Note the use of a single hue (green) and 7 different lightness levels.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="divergent-color-scheme" class="level3" data-number="4.4.3">
+<h3 data-number="4.4.3" class="anchored" data-anchor-id="divergent-color-scheme"><span class="header-section-number">4.4.3</span> Divergent color scheme</h3>
+<p><strong>Divergent</strong> color schemes are used to represent ordered data that revolve around a meaningful <strong>central value</strong>–such as a median, mean, or zero. A divergent scheme is essentially two sequential schemes joined at a common midpoint. These schemes are particularly effective when the goal is to highlight differences on either side of a reference point, making them well-suited for visualizing change, deviation, or polarity.</p>
+<p>A typical divergent scheme uses two contrasting hues—one for values below the center and one for values above. Lightness and saturation are adjusted symmetrically to reflect the magnitude of deviation from the central value. This approach helps viewers quickly identify extremes and interpret the direction and intensity of variation.</p>
+<p>The following examples showcase several divergent palettes:</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-divergent" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-divergent-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="04_symbolizing_features_files/figure-html/fig-divergent-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="384">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-divergent-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.12: Example of four different divergent color schemes. Color hex numbers are superimposed onto each palette.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Building on the income data from the previous section, we can also represent income using a divergent color scheme–particularly useful when emphasizing variation around a central value. In this case, we center the scheme on the median household income of $36,641. Values below the median are shown using a brown hue, while values above the median are represented with a green-blue hue. Each hue is further divided into progressively lighter or darker shades to reflect the degree of deviation from the median, allowing for a more nuanced interpretation of income disparities across regions.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-divergent_map" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-divergent_map-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="04_symbolizing_features_files/figure-html/fig-divergent_map-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="384">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-divergent_map-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.13: This map of household income uses a divergent color scheme where two different hues (brown and blue-green) are used for two sets of values separated by the median income of $36,641. Each hue is further divided into progressively lighter or darker shades.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="choosing-an-appropriate-color-scheme" class="level2" data-number="4.5">
+<h2 data-number="4.5" class="anchored" data-anchor-id="choosing-an-appropriate-color-scheme"><span class="header-section-number">4.5</span> Choosing an Appropriate Color Scheme</h2>
+<p>Selecting the right color scheme for your map depends on both the nature of your data and the number of classes you wish to represent. Fortunately, most modern GIS software packages, including ArcGIS Pro and QGIS, provide built-in qualitative, sequential, and divergent color schemes that have been designed to be perceptually balanced and cartographically effective. As a result, users rarely need to create color schemes from scratch.</p>
+<p>Many of these palettes are derived from or inspired by <strong><a href="http://colorbrewer2.org/">ColorBrewer</a></strong>, a widely used resource developed by Cynthia Brewer and colleagues at Pennsylvania State University. ColorBrewer offers curated palettes tailored to different data types–qualitative, sequential, and divergent–and provides guidance on selecting colorblind-safe schemes and palettes that reproduce well in grayscale, making them especially useful for printed maps.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-colorbrewer_site" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-colorbrewer_site-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="img/ColorBrewer.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-colorbrewer_site-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.14: The ColorBrewer website, which provides cartographically designed qualitative, sequential, and divergent color schemes.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>One important design consideration is the number of color swatches used. ColorBrewer limits most schemes to 12 or fewer swatches, reflecting the reality that human perception struggles to reliably distinguish more than a handful of colors in a legend. For example, try matching nine shades of green in a map to their corresponding legend entries–it quickly becomes a challenge.</p>
+</section>
+<section id="classification-intervals" class="level2" data-number="4.6">
+<h2 data-number="4.6" class="anchored" data-anchor-id="classification-intervals"><span class="header-section-number">4.6</span> Classification Intervals</h2>
+<p>The way data values are grouped into intervals can significantly affect how a map looks and how its patterns are interpreted. In the previous examples, two different classification schemes were used: an <strong>equal interval</strong> scheme for the sequential map and a <strong>quantile interval</strong> scheme for the divergent map.</p>
+<p>Classification intervals define how the full range of data is divided into discrete classes, each represented by a color swatch. Different schemes produce different visual outcomes, even when applied to the same dataset. For instance, <strong>equal interval</strong> schemes divide the data range into evenly spaced segments, which is useful for uniformly distributed data. In contrast, <strong>quantile schemes</strong> ensure that each class contains an equal number of features, which can help balance visual representation across a map.</p>
+<p>Other options include the <strong>Jenks natural breaks</strong> method which uses an algorithm to identify clusters in the data, optimizing class boundaries to reflect inherent groupings. The following figure compares these three schemes–quantile, equal interval, and Jenks–applied to the same income dataset. Notice how each scheme emphasizes different aspects of the distribution.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-diff_class" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-diff_class-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="img/Three_breaks_compared_2.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:90.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-diff_class-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.15: The same income dataset classified using quantile, equal interval, and Jenks natural breaks methods. Note how different interval schemes reveal different spatial patterns.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The <strong>quantile interval</strong> scheme ensures that each color swatch is represented an equal number of times. If we have 20 polygons and 5 classes, the interval breaks will be such that each color is assigned to 4 different polygons.</p>
+<p>The <strong>equal interval</strong> scheme divides the range of values into equal interval widths. If the polygon values range from 10,000 to 25,000 and we have 5 classes, the intervals will be [10,000 ; 13,000], [13,000 ; 16,000], …, [22,000 ; 25,000].</p>
+<p>The <strong>Jenks interval</strong> scheme (aka natural breaks) uses an algorithm that identifies clusters in the dataset. The number of clusters is defined by the desired number of intervals.</p>
+<p>It may help to view the breaks when superimposed on top of a distribution of the attribute data. In the following figure, the three classification intervals are superimposed on a histogram of the per-household income data. The histogram shows the distribution of values as “bins” where each bin represents a range of income values. The y-axis shows the frequency (or number of occurrences) for values in each bin.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-diff_maps" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-diff_maps-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="img/Three_hist_intervals.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:90.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-diff_maps-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.16: Three different classification intervals used in the three maps. Note how each interval scheme encompasses different ranges of values.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="summary" class="level2" data-number="4.7">
+<h2 data-number="4.7" class="anchored" data-anchor-id="summary"><span class="header-section-number">4.7</span> Summary</h2>
+<p>This chapter introduces key principles for symbolizing spatial data using color and classification schemes to improve map readability and interpretation.</p>
+<ul>
+<li><strong>Color Dimensions</strong>: Explains how hue, lightness, and saturation represent different data types–categorical, ordered, and intensity based–and how they interact <strong>perceptually</strong>.</li>
+<li><strong>Color Spaces</strong>: Highlights the limitations of symmetrical hue-saturation-lightness models and introduces perceptually accurate alternatives such as <strong>CIELAB</strong> and <strong>Munsell</strong>.</li>
+<li><strong>Color Schemes</strong>: Describes three main approaches:
+<ul>
+<li><strong>Qualitative</strong> for unordered categories,</li>
+<li><strong>Sequential</strong> for ordered data,</li>
+<li><strong>Divergent</strong> for data centered around a meaningful midpoint.</li>
+</ul></li>
+<li>Color Selection Tools: Introduces <strong>ColorBrewer</strong> for choosing effective, accessible palettes.</li>
+<li><strong>Choropleth Maps</strong>: Introduces choropleth maps as thematic maps in which polygons are symbolized according to attribute values and explains how qualitative, sequential, and divergent color schemes can be used to communicate different types of data.</li>
+<li><strong>Classification Intervals</strong>: Compares equal interval, quantile, and Jenks natural breaks, showing how each affects data representation.</li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./03_data_management.html" class="pagination-link" aria-label="GIS Data Management">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">GIS Data Management</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./05_statistical_maps.html" class="pagination-link" aria-label="Statistical maps">
+        <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Statistical maps</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

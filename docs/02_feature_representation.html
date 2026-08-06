@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>2&nbsp; Feature Representation – Introduction to GIS and Spatial Analysis</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./03_data_management.html" rel="next">
+<link href="./01_intro.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-9e3e5b9121e68b3f077afb32f2c64d95.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./02_feature_representation.html">Working with Spatial Data</a></li><li class="breadcrumb-item"><a href="./02_feature_representation.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Feature Representation</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Introduction to GIS and Spatial Analysis</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01_intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Working with Spatial Data</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02_feature_representation.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Feature Representation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03_data_management.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">GIS Data Management</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04_symbolizing_features.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Symbolizing features</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05_statistical_maps.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Statistical maps</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06_pitfalls_to_avoid.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Pitfalls to avoid</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07_map_making_tips.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Good Map Making Tips</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08_spatial_operations_vector_overlays.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Spatial Selection and Vector Overlays</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09_coordinate_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Coordinate Systems</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10_map_algebra.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Map Algebra</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Spatial Analysis</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11_intro_spatial.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Analyzing Spatial Patterns</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12_poly_functions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Modeling Spatial Trends</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13_autocorrelation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Spatial Autocorrelation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14_ppa_1st.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">First-Order Point Pattern Analysis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./15_ppa_2nd.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Second-Order Point Pattern Analysis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./16_interpolation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Spatial Interpolation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">2.1</span> Introduction</a></li>
+  <li><a href="#vector-vs.-raster" id="toc-vector-vs.-raster" class="nav-link" data-scroll-target="#vector-vs.-raster"><span class="header-section-number">2.2</span> Vector vs.&nbsp;Raster</a>
+  <ul class="collapse">
+  <li><a href="#vector" id="toc-vector" class="nav-link" data-scroll-target="#vector"><span class="header-section-number">2.2.1</span> Vector</a></li>
+  <li><a href="#raster" id="toc-raster" class="nav-link" data-scroll-target="#raster"><span class="header-section-number">2.2.2</span> Raster</a></li>
+  </ul></li>
+  <li><a href="#object-vs.-field" id="toc-object-vs.-field" class="nav-link" data-scroll-target="#object-vs.-field"><span class="header-section-number">2.3</span> Object vs.&nbsp;Field</a>
+  <ul class="collapse">
+  <li><a href="#object-view" id="toc-object-view" class="nav-link" data-scroll-target="#object-view"><span class="header-section-number">2.3.1</span> Object View</a></li>
+  <li><a href="#field-view" id="toc-field-view" class="nav-link" data-scroll-target="#field-view"><span class="header-section-number">2.3.2</span> Field View</a></li>
+  </ul></li>
+  <li><a href="#scale" id="toc-scale" class="nav-link" data-scroll-target="#scale"><span class="header-section-number">2.4</span> Scale</a></li>
+  <li><a href="#attribute-tables" id="toc-attribute-tables" class="nav-link" data-scroll-target="#attribute-tables"><span class="header-section-number">2.5</span> Attribute Tables</a>
+  <ul class="collapse">
+  <li><a href="#measurement-levels" id="toc-measurement-levels" class="nav-link" data-scroll-target="#measurement-levels"><span class="header-section-number">2.5.1</span> Measurement Levels</a></li>
+  <li><a href="#data-type" id="toc-data-type" class="nav-link" data-scroll-target="#data-type"><span class="header-section-number">2.5.2</span> Data type</a></li>
+  </ul></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">2.6</span> Summary</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./02_feature_representation.html">Working with Spatial Data</a></li><li class="breadcrumb-item"><a href="./02_feature_representation.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Feature Representation</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Feature Representation</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="introduction" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="introduction"><span class="header-section-number">2.1</span> Introduction</h2>
+<p>Before we can analyze or visualize spatial data in a GIS, we must first decide how to represent real-world phenomena in a digital environment. This chapter introduces the foundational data models used in GIS–<strong>vector</strong> and <strong>raster</strong>–and explores how different types of geographic features are encoded using these models. Understanding how features are represented is essential for making informed decisions about data collection, storage, analysis, and visualization.</p>
+<p>We’ll also examine conceptual frameworks such as the <strong>object</strong> vs.&nbsp;<strong>field</strong> view of the world, the role of scale in determining how features are modeled, and how attribute data are structured and classified. These concepts form the backbone of spatial data modeling and are critical for interpreting and working with spatial data effectively throughout the rest of the course.</p>
+</section>
+<section id="vector-vs.-raster" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="vector-vs.-raster"><span class="header-section-number">2.2</span> Vector vs.&nbsp;Raster</h2>
+<p>To work in a GIS environment, real world observations (objects or events that can be recorded in 2D or 3D space) need to be reduced to spatial entities. These spatial entities can be represented in a GIS as a <strong>vector data model</strong> or a <strong>raster data model</strong>.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-vector_vs_raster" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-vector_vs_raster-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="img/vector_vs_raster.jpg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:2.5in">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-vector_vs_raster-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.1: Vector and raster representations of a river feature.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<section id="vector" class="level3" data-number="2.2.1">
+<h3 data-number="2.2.1" class="anchored" data-anchor-id="vector"><span class="header-section-number">2.2.1</span> Vector</h3>
+<p>Vector features can be decomposed into three different geometric primitives: <strong>points</strong>, <strong>polylines</strong> and <strong>polygons</strong>.</p>
+<p>Vector data models are used to represent discrete features like roads, buildings and boundaries. They also benefit from supporting rich attribute data and precise geometry.</p>
+<p>Let’s explore how different types of features are represented using the vector model.</p>
+<section id="point" class="level4" data-number="2.2.1.1">
+<h4 data-number="2.2.1.1" class="anchored" data-anchor-id="point"><span class="header-section-number">2.2.1.1</span> Point</h4>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-point" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-point-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="02_feature_representation_files/figure-html/fig-point-1.png" class="img-fluid figure-img" width="172">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-point-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.2: Three point objects defined by their X and Y coordinate values.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>A <strong>point</strong> is composed of one coordinate pair representing a specific location in a coordinate system. Points are the most basic geometric primitives having no length or area. By definition a point can’t be “seen” since it has no area; but this is not practical if such primitives are to be mapped. So points on a map are represented using <em>symbols</em> that have both area and shape (e.g.&nbsp;circle, square, plus signs).</p>
+<p>We seem capable of interpreting such symbols as points, but there may be instances when such interpretation may be ambiguous (e.g.&nbsp;is a round symbol delineating the area of a round feature on the ground such as a large oil storage tank or is it representing the point location of that tank?).</p>
+</section>
+<section id="polyline" class="level4" data-number="2.2.1.2">
+<h4 data-number="2.2.1.2" class="anchored" data-anchor-id="polyline"><span class="header-section-number">2.2.1.2</span> Polyline</h4>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-polyline" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-polyline-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="02_feature_representation_files/figure-html/fig-polyline-1.png" class="img-fluid figure-img" width="172">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-polyline-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.3: A simple polyline object defined by connected vertices.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>A <strong>polyline</strong> is composed of a sequence of two or more coordinate pairs called <strong>vertices</strong>. A vertex is defined by coordinate pairs, just like a point, but what differentiates a vertex from a point is its explicitly defined relationship with neighboring vertices. A vertex is connected to at least one other vertex.</p>
+<p>A polyline represents <strong>length</strong>. Like a point, a true line can’t be seen since it has no area. And like a point, a line is symbolized using shapes that have a color, width and style (e.g.&nbsp;solid, dashed, dotted, etc…). Roads and rivers are commonly stored as polylines in a GIS.</p>
+</section>
+<section id="polygon" class="level4" data-number="2.2.1.3">
+<h4 data-number="2.2.1.3" class="anchored" data-anchor-id="polygon"><span class="header-section-number">2.2.1.3</span> Polygon</h4>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-polygon" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-polygon-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="02_feature_representation_files/figure-html/fig-polygon-1.png" class="img-fluid figure-img" width="172">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-polygon-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.4: A simple polygon object defined by an area enclosed by connected vertices.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>A <strong>polygon</strong> is composed of three or more line segments whose starting and ending coordinate pairs are the same. Sometimes you will see the words <em>lattice</em> or <em>area</em> used in lieu of <em>polygon</em>.</p>
+<p>Polygons represent both <strong>length</strong> (i.e.&nbsp;the perimeter of the area) and <strong>area</strong>. They also embody the idea of an <em>inside</em> and an <em>outside</em>; in fact, the area that a polygon encloses is explicitly defined in a GIS environment. If it isn’t, then you are working with a polyline feature. If this does not seem intuitive, think of three connected lines defining a triangle: they can represent three connected road segments (thus polyline features), or they can represent the grassy strip enclosed by the connected roads (in which case an ‘inside’ is implied thus defining a polygon).</p>
+</section>
+</section>
+<section id="raster" class="level3" data-number="2.2.2">
+<h3 data-number="2.2.2" class="anchored" data-anchor-id="raster"><span class="header-section-number">2.2.2</span> Raster</h3>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-raster" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-raster-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="02_feature_representation_files/figure-html/fig-raster-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="172">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-raster-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.5: A simple raster object defined by a 10x10 array of cells or pixels.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>A <strong>raster</strong> data model uses an array of <strong>cells</strong>, or <strong>pixels</strong>, to represent real-world objects. Raster datasets are commonly used for representing and managing imagery, surface temperatures, digital elevation models, and any other continuous data.</p>
+<p>A raster can be thought of as a special case of an area object where the area is divided into a regular grid of cells. While rasters are often described as grids of cells, they can also be thought of as arrays of spatially referenced values, each tied to a specific location in space.</p>
+<p>In a raster data model, each cell (or pixel) is explicitly associated with a value, representing a measurement or classification at that location. This contrasts with the vector model, where attribute values are linked to geometric features (points, lines, or polygons) and may not be defined for every location in space.</p>
+<p>Raster datasets are organized as regular grids that are typically square in shape. If the spatial features of interest do not occupy the entire extent of the grid, the remaining cells are assigned special values such as <code>NULL</code> or <code>NoData</code> to indicate the absence of valid data.</p>
+</section>
+</section>
+<section id="object-vs.-field" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="object-vs.-field"><span class="header-section-number">2.3</span> Object vs.&nbsp;Field</h2>
+<p>While the vector/raster distinction focuses on data structure, the <strong>object</strong> vs.&nbsp;<strong>field</strong> perspective focuses on how we <strong>conceptualize</strong> spatial phenomena. This distinction is especially useful when deciding how to model and analyze different types of spatial features.</p>
+<section id="object-view" class="level3" data-number="2.3.1">
+<h3 data-number="2.3.1" class="anchored" data-anchor-id="object-view"><span class="header-section-number">2.3.1</span> Object View</h3>
+<p>The <strong>object view</strong> treats spatial features as discrete entities that exist independently and occupy specific locations. These features do not occur everywhere in space. Examples include point locations of cities, road networks, or polygonal representations of land parcels or urban areas. Objects are typically represented using the vector data model.</p>
+</section>
+<section id="field-view" class="level3" data-number="2.3.2">
+<h3 data-number="2.3.2" class="anchored" data-anchor-id="field-view"><span class="header-section-number">2.3.2</span> Field View</h3>
+<p>The <strong>field view</strong> treats spatial phenomena as <em>continuous surfaces</em> or distributions that vary across space. A field is a property that can be measured at any location within a study area. Common examples include surface elevation, temperature, or precipitation. These are typically represented using the raster data model but can be represented with polygons.</p>
+<p>Some features can be represented as either <em>objects</em> or <em>fields</em>, depending on the analytical context. For instance, the presence or absence of buildings can be modeled as:</p>
+<ul>
+<li><strong>Objects</strong>, if we are interested in the location and shape of individual buildings.</li>
+<li><strong>Fields</strong>, if we are interested in identifying areas where buildings do or do not exist (e.g., using a binary raster where 1 = presence, 0 = absence).</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-field_vs_object" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-field_vs_object-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="img/field_vs_object.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:4in">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-field_vs_object-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.6: Field and Object representation of buildings.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Ultimately, the choice between object and field representations depends on the nature of the phenomenon and the goals of the analysis.</p>
+</section>
+</section>
+<section id="scale" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="scale"><span class="header-section-number">2.4</span> Scale</h2>
+<p>In GIS, <strong>scale</strong> refers to the ratio between a distance on the map and the corresponding distance in the real world. For example, a scale of 1:10,000 means that one unit on the map represents 10,000 units on the ground.</p>
+<p>It’s important to distinguish between two uses of the term:</p>
+<ul>
+<li><strong>Cartographic scale</strong> refers to the map’s level of detail.</li>
+<li><strong>Analytical scale</strong> refers to the spatial extent or resolution of a study.</li>
+</ul>
+<p>In cartographic terms, a <strong>large scale</strong> map (e.g., 1:10,000) shows a small area in great detail, while a <strong>small scale</strong> map (e.g., 1:10,000,000) shows a large area with less detail. This is opposite to how <em>“large scale”</em> is often used in everyday language, where it implies a broad or extensive scope.</p>
+<p>The following two maps of the Boston region illustrate this difference:</p>
+<ul>
+<li>At a small scale (1:10,000,000), Boston and other cities may be represented as simple points.</li>
+<li>At a large scale (1:34,000), Boston may be represented as a detailed polygon, and roads may appear as polygons rather than simple lines.</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-small_scale" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-small_scale-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="img/Boston_small_scale.jpg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:3.5in">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-small_scale-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.7: Map of the Boston area at a 1:10,000,000 scale. Note that in geography, this is considered small scale whereas in layperson terms, this extent is often referred to as a large scale (i.e.&nbsp;covering a large area).
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-large_scale" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-large_scale-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="img/Boston_large_scale.jpg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:3.5in">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-large_scale-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.8: Map of the Boston area at a 1:34,000 scale. Note that in geography, this is considered large scale whereas in layperson terms, this extent is often referred to as a small scale (i.e.&nbsp;covering a small area).
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Understanding scale is essential for choosing appropriate data and representation methods in GIS analysis.</p>
+</section>
+<section id="attribute-tables" class="level2" data-number="2.5">
+<h2 data-number="2.5" class="anchored" data-anchor-id="attribute-tables"><span class="header-section-number">2.5</span> Attribute Tables</h2>
+<p>In GIS, <strong>attributes</strong> are non-spatial data that describe the characteristics of spatial features such as a city’s population, a road’s name, or a parcel’s land use type. A feature on a GIS map is linked to its record in the attribute table by a unique numerical identifier (ID).</p>
+<p>Each feature in a GIS layer is associated with one or more records in the attribute table, enabling a <strong>one-to-one</strong> or <strong>many-to-one</strong> relationship between geometry and descriptive data. Most GIS software allows users to click on a map feature and view its associated attributes directly.</p>
+<p>Raster datasets also store <em>attribute</em> information. In such case, each unique integer value may correspond to a class label or description if the attribute is categorical in nature. However, most raster datasets used in this course will represent continuous data stored as an integer or double.</p>
+<section id="measurement-levels" class="level3" data-number="2.5.1">
+<h3 data-number="2.5.1" class="anchored" data-anchor-id="measurement-levels"><span class="header-section-number">2.5.1</span> Measurement Levels</h3>
+<p>Attribute data can be broken down into four <strong>measurement levels</strong>:</p>
+<ul>
+<li><p><strong>Nominal</strong> data which have no implied order, size or quantitative information (e.g.&nbsp;paved and unpaved roads)</p></li>
+<li><p><strong>Ordinal</strong> data have an implied order (e.g.&nbsp;ranked scores), however, we cannot quantify the difference since a linear scale is not implied.</p></li>
+<li><p><strong>Interval</strong> data are numeric and have a linear scale, however they do not have a true zero and can therefore not be used to measure <em>relative</em> magnitudes. For example, one cannot say that 60°F is twice as warm as 30°F since when presented in degrees °C the temperature values are 15.5°C and -1.1°C respectively (and 15.5 is clearly not twice as big as -1.1).</p></li>
+<li><p><strong>Ratio</strong> scale data are interval data with a true zero such as monetary value (e.g.&nbsp;$1, $20, $100).</p></li>
+</ul>
+</section>
+<section id="data-type" class="level3" data-number="2.5.2">
+<h3 data-number="2.5.2" class="anchored" data-anchor-id="data-type"><span class="header-section-number">2.5.2</span> Data type</h3>
+<p>In GIS, choosing the correct <strong>data type</strong> for an attribute is essential for accurate data storage, efficient processing, and meaningful analysis. ArcGIS supports several common data types, including <strong>integer</strong>, <strong>float</strong>, <strong>double</strong>, and <strong>text</strong>. The choice of data type should align with the attribute’s measurement level and intended use.</p>
+<p>The following table summarizes popular data types available in most GIS applications:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Stored values</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Short integer</td>
+<td>-32,768 to 32,767</td>
+<td>Whole numbers</td>
+</tr>
+<tr class="even">
+<td>Long integer</td>
+<td>-2,147,483,648 to 2,147,483,647</td>
+<td>Whole numbers</td>
+</tr>
+<tr class="odd">
+<td>Float</td>
+<td>-3.4 * E-38 to 1.2 E38</td>
+<td>Real numbers</td>
+</tr>
+<tr class="even">
+<td>Double</td>
+<td>-2.2 * E-308 to 1.8 * E308</td>
+<td>Real numbers</td>
+</tr>
+<tr class="odd">
+<td>Text</td>
+<td>Up to 64,000 characters</td>
+<td>Letters and words</td>
+</tr>
+</tbody>
+</table>
+<p>While whole numbers can be stored as floats or doubles (e.g., storing 2 as 2.0), doing so increases storage requirements. This may not be a concern for small datasets, but for large datasets with tens of thousands of records, it can impact file size and processing speed.</p>
+<p>Conversely, storing decimal values as integers can lead to significant data loss. For example, values such as 0.2, 0.01, 0.34, 0.1, and 0.876 would all round to either 0 or 1, obscuring meaningful differences. This can distort map outputs, especially in choropleth visualizations, where subtle variations are important as shown in the following two figures.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-decimal_data" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-decimal_data-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="02_feature_representation_files/figure-html/fig-decimal_data-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-decimal_data-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.9: Map of data represented as decimal (float) values. Data source: spData package <span class="citation" data-cites="spData">(<a href="references.html#ref-spData" role="doc-biblioref">Bivand et al. 2026</a>)</span>
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-integer_data" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-integer_data-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="02_feature_representation_files/figure-html/fig-integer_data-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-integer_data-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.10: Map of same data represented as integers instead of float. Data source: spData package <span class="citation" data-cites="spData">(<a href="references.html#ref-spData" role="doc-biblioref">Bivand et al. 2026</a>)</span>
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="summary" class="level2" data-number="2.6">
+<h2 data-number="2.6" class="anchored" data-anchor-id="summary"><span class="header-section-number">2.6</span> Summary</h2>
+<p>This chapter introduces the foundational concepts of how geographic features are represented in a GIS environment. It begins by distinguishing between the two primary data models–<em>vector</em> and <em>raster</em>–and explains how real-world entities are encoded as points, lines, polygons, or grids of cells.</p>
+<p>The discussion then shifts to conceptual frameworks, including the object vs.&nbsp;field view of spatial phenomena, which helps clarify how the same feature can be represented differently depending on the analytical context. The importance of scale is also addressed, with a focus on how map detail and spatial extent influence representation choices.</p>
+<p>Finally, the chapter explores attribute tables, which store non-spatial information linked to spatial features, and introduces key concepts such as measurement levels (nominal, ordinal, interval, ratio) and data types (integer, float, double, text). These distinctions are critical for ensuring accurate data storage, querying, and analysis in GIS workflows.</p>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="ref-spData" class="csl-entry" role="listitem">
+Bivand, Roger, Jakub Nowosad, and Robin Lovelace. 2026. <em>spData: Datasets for Spatial Analysis</em>. <a href="https://doi.org/10.32614/CRAN.package.spData">https://doi.org/10.32614/CRAN.package.spData</a>.
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./01_intro.html" class="pagination-link" aria-label="Introduction">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./03_data_management.html" class="pagination-link" aria-label="GIS Data Management">
+        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">GIS Data Management</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

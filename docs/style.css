@@ -1,0 +1,17 @@
+/* Part titles */
+a.sidebar-item-text[data-bs-toggle="collapse"] {
+    color: #B58E0E; 
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-top: 1px solid #d9d9d9;
+    padding-top: 0.5rem;
+}
+
+/* Center figure captions */
+.figure-caption,
+.quarto-figure-caption,
+figcaption {
+  text-align: center;
+}
+

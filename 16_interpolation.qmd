@@ -1,0 +1,824 @@
+# Spatial Interpolation 
+
+
+## Introduction
+
+Given a distribution of meteorological stations reporting precipitation values, how can we estimate precipitation at locations where no observations were collected?
+
+```{r}
+#| label: fig-precip_map
+#| fig-cap: "Average yearly precipitation (reported in inches) for several meteorological sites in Texas."
+#| fig-align: "center"
+#| echo: false
+#| fig-height: 3
+#| fig-width: 4
+#| results: hide
+#| 
+library(terra)
+library(tmap)
+library(sf)
+
+# Load precipitation point data
+#z <- gzcon(url("https://github.com/mgimond/Spatial/raw/main/Data/precip.rds"))
+P <- readRDS("Data/precip.rds")
+P_crs <- crs(P)
+
+# Load extent data
+#z <- gzcon(url("https://github.com/mgimond/Spatial/raw/main/Data/texas.rds"))
+W <- readRDS("Data/texas.rds")
+
+# Force the point object extent to that of Texas
+P@bbox <- W@bbox
+
+# Plot the data
+tm_shape(st_as_sf(W)) + tm_polygons() + 
+  tm_shape(st_as_sf(P)) +
+  tm_dots(fill="Precip_in", size=0.5, 
+          fill.scale = tm_scale_intervals(n=5, values = "brewer.rd_bu", style = "pretty"), 
+          fill.legend = tm_legend(title = "Precipitation (in)")) +
+  tm_text(text = "Precip_in", options = opt_tm_text(just="left"),
+          xmod=.5, 
+          size = 0.7) 
+```
+
+To answer this question, we first need to clarify the nature of our point dataset. In Chapters 14 and 15, we worked with point data representing a complete enumeration of discrete events or observations. In those cases, the phenomenon of interest existed only at the observed point locations and could therefore only be measured at those locations. For example, when mapping the density of retail stores or crime incidents, the points themselves represent the complete set of observed events.
+
+Here, however, the point data represent **samples** of an underlying phenomenon that can be measured *anywhere* within our study area. Precipitation is not limited to the locations of meteorological stations; the stations merely provide observations of a continuous environmental field. Consequently, creating a point-density map from these data would only answer a question such as "*Where are the meteorological stations concentrated within Texas?*" rather than "*How does precipitation vary across Texas?*"
+
+To estimate values at unsampled locations, we use **spatial interpolation** methods. Interpolation techniques use the values observed at sampled locations to predict values elsewhere in the study area, thereby transforming a set of discrete sample points into a continuous surface.
+
+Many interpolation methods exist, but most can be grouped into two broad categories: 
+
+- **Deterministic interpolation**, which predicts values using mathematical rules based directly on the observed data.
+- **Statistical interpolation**, which incorporates an explicit statistical model of spatial variation and spatial dependence.
+
+In the sections that follow, we examine representative methods from each category and explore how their performance can be evaluated.
+
+## Deterministic Approach to Interpolation
+
+**Deterministic interpolation** methods estimate values at unsampled locations using mathematical rules based directly on the observed data. These methods do not explicitly model statistical properties such as spatial autocorrelation or uncertainty. Instead, they infer values using assumptions about the influence of nearby observations.
+
+In this section, we explore two deterministic methods: **proximity** (also called **Thiessen**) interpolation and **Inverse Distance Weighted (IDW)** interpolation.
+
+### Proximity interpolation
+
+**Proximity interpolation** (also known as **Thiessen interpolation**) is perhaps the simplest interpolation method and one of the oldest. The idea is straightforward: every unsampled location is assigned the value of its nearest sampled point. 
+
+This is accomplished by partitioning the study area into a set of *tessellated* regions. Boundaries are constructed midway between neighboring sample locations, creating a set of polygons where every location inside a polygon is closer to its enclosed sample point than to any other sample point. Each polygon therefore inherits the value of its sample point.
+
+```{r}
+#| label: fig-proximity
+#| fig-cap: "Thiessen interpolation in which every unsampled location inherits the value of the nearest sampled point. The resulting tessellated surface is composed of polygons whose boundaries are equidistant from neighboring sample locations."
+#| fig-align: "center"
+#| echo: false
+#| fig-height: 3.3
+#| fig-width: 4
+#| results: hide
+
+library(spatstat)  # Used for the dirichlet tesselation function
+library(sf)
+library(sp)
+
+# Create a tessellated surface
+P.ppp <- st_as_sf(P) |> st_geometry() |> as.ppp()
+Window(P.ppp) <- as.owin(st_geometry(st_as_sf(W)))
+th <- dirichlet(P.ppp) |> st_as_sfc()
+st_crs(th) <- P_crs
+th.z  <- over(as_Spatial(th), P, fn=mean, na.rm = TRUE)
+th.spdf  <-  SpatialPolygonsDataFrame(as_Spatial(th), th.z)
+th.clp <- terra::intersect(W,th.spdf)
+
+tm_shape(st_as_sf(th.clp)) + 
+  tm_polygons(fill="Precip_in", 
+              fill.scale = tm_scale_intervals(n=5, values = "brewer.rd_bu", style = "pretty"), 
+              fill.legend = tm_legend(title = "Precipitation (in)")) 
+```
+
+One limitation of this approach is that values change abruptly across polygon boundaries. As a result, the interpolated surface is discontinuous, whereas most environmental variables such as temperature, elevation, and precipitation tend to vary more gradually across space.
+
+Thiessen's method was particularly useful at a time when interpolation had to be performed manually. Today, modern computing allows us to implement more sophisticated interpolation techniques that produce smoother surfaces, one of which is introduced next.
+
+### Inverse Distance Weighted (IDW)
+
+The **Inverse Distance Weighted (IDW)** method estimates values at unsampled locations by computing a weighted average of nearby sampled values. The underlying assumption is simple: observations that are closer to an unsampled location should exert a greater influence on the prediction than observations that are farther away.
+
+The interpolated value at an unsampled location $j$ is computed as:
+
+$$
+\hat{Z_j} = \frac{\sum_i{Z_i/d^n_{ij}}}{\sum_i{1/d^n_{ij}}}
+$$
+where:
+
+- $\hat{Z_j}$ is the predicted value at location $j$,
+- $Z_i$ is the observed value at sampled location $i$,
+- $d_{ij}$ is the distance between locations $i$ and $j$,
+- $n$ is the **power coefficient**, which controls how quickly a point's influence decreases with distance.
+
+The hat, $\hat{}$, above the variable $z$ indicates that the value is being estimated rather than directly observed.
+
+The power coefficient $n$ controls the relative importance of nearby and distant observations. Larger values of $n$ cause the influence of distant points to decrease rapidly, giving nearby points much greater control over the prediction. As $n$ becomes very large, the resulting surface begins to resemble a Thiessen interpolation because the prediction is dominated by the closest sample point.
+
+Conversely, smaller values of $n$ reduce the differences among the weights assigned to neighboring points. In the extreme case where all points receive similar weights, the interpolated value approaches the average of the nearby observations.
+
+The following figure shows an IDW interpolation generated using a power coefficient of $n=2$. The sampled precipitation values are superimposed on the interpolated raster.
+
+```{r}
+#| label: fig-idw1
+#| fig-cap: "An IDW interpolation of the average yearly precipitation (reported in inches) for several meteorological sites in Texas. An IDW power coefficient of 2 was used in this example."
+#| fig-align: "center"
+#| echo: false
+#| fig-height: 3.3
+#| fig-width: 4
+#| results: hide
+#| 
+library(gstat) # Use gstat's idw routine
+library(sp)    # Used for the spsample function
+library(terra)
+library(sf)
+library(tmap)
+
+# Create an empty grid where n is the total number of cells
+grd              <- as.data.frame(spsample(W, "regular", n=50000))
+names(grd)       <- c("X", "Y")
+coordinates(grd) <- c("X", "Y")
+gridded(grd)     <- TRUE  # Create SpatialPixel object
+fullgrid(grd)    <- TRUE  # Create SpatialGrid object
+
+# Add P's projection information to the empty grid
+proj4string(P) <- proj4string(P) # Temp fix until new proj env is adopted
+proj4string(grd) <- proj4string(P)
+
+# Interpolate the surface using a power value of 2 (idp=2.0)
+P.idw <- gstat::idw(Precip_in ~ 1, P, newdata=grd,idp=2.0)
+P.idw@data <- P.idw@data[1] # Remove variance layer
+
+# Convert to raster object then clip to Texas
+r   <- rast(P.idw)
+r.m <- mask(r, st_as_sf(W))
+
+# Plot
+tm_shape(r.m) + 
+  tm_raster(n=10, palette="RdBu", auto.palette.mapping=FALSE, title="Predicted precip") +
+  tm_shape(st_as_sf(P)) + tm_dots(size=0.5) +
+  tm_legend(legend.outside=TRUE)
+```
+
+The power coefficient controls how rapidly the influence of a sampled point decreases with distance from the prediction location. In the following example, an $n$ value of $15$ is used. Relative to the previous interpolation, nearby points exert much stronger influence on the predicted values, whereas distant points have very little impact. As a result, the interpolated surface begins to resemble a proximity (Thiessen) interpolation, with localized zones of influence surrounding the sampled points.
+
+```{r}
+#| label: fig-idw2
+#| fig-cap: "An IDW interpolation of the average yearly precipitation (reported in inches) for several meteorological sites in Texas. An IDW power coefficient of 15 was used in this example."
+#| fig-align: "center"
+#| echo: false
+#| fig-height: 3.3
+#| fig-width: 4
+#| results: hide
+
+# Create an empty grid where n is the total number of cells
+grd              <- as.data.frame(spsample(W, "regular", n=50000))
+names(grd)       <- c("X", "Y")
+coordinates(grd) <- c("X", "Y")
+gridded(grd)     <- TRUE  # Create SpatialPixel object
+fullgrid(grd)    <- TRUE  # Create SpatialGrid object
+
+# Add P's projection information to the empty grid
+proj4string(P) <- proj4string(P) # Temp fix until new proj env is adopted
+proj4string(grd) <- proj4string(P)
+
+# Interpolate the surface using a power value of 15 (idp=15)
+P.idw <- gstat::idw(Precip_in ~ 1, P, newdata=grd, idp=15)
+P.idw@data <- P.idw@data[1] # Remove variance layer
+
+# Convert to raster object then clip to Texas
+r       <- rast(P.idw)
+r.m     <- mask(r, st_as_sf(W))
+
+# Plot
+tm_shape(r.m) + tm_raster(n=10, palette="RdBu", auto.palette.mapping=FALSE, title="Predicted precip") +
+  tm_shape(st_as_sf(P)) + tm_dots(size=0.5) +
+  tm_legend(legend.outside=TRUE)
+```
+
+
+### Evaluating Interpolation Accuracy
+
+Selecting the best interpolation parameters can be challenging. Beyond simply *eyeballing* the results, how can we quantify the *accuracy* of an interpolated surface? One approach is to divide the sample points into two groups: a **training** set used to generate the interpolation and a **validation** set used to assess its performance. While straightforward to implement, this approach reduces the amount of information available to the interpolator and can therefore lead to less reliable estimates.
+
+A more efficient approach is to temporarily remove one point from the dataset, interpolate its value using all remaining points, and then compare the predicted value to the observed value at the omitted location. This process is repeated for every point in the dataset while keeping the interpolation parameters fixed. The procedure is commonly known as **jackknifing** or **leave-one-out cross-validation**.
+
+The performance of the interpolator can be summarized using the **Root Mean Squared Error (RMSE)**:
+
+$$
+RMSE = \sqrt{\frac{\sum_{i=1}^n (\hat {Z_{i}} - Z_i)^2}{n}}
+$$
+
+where $\hat {Z_{i}}$ is the interpolated value at the unsampled location *i* (i.e. location where the sample point was removed), $Z_i$ is the true value at location *i* and $n$ is the number of points in the dataset.
+
+We can visualize the results by plotting the predicted values against the observed values. The solid diagonal line represents perfect agreement between predicted and observed values. If the interpolator were perfectly accurate, all points would fall on this line. The red dashed line is a fitted regression line included to help visualize the overall pattern of agreement.
+
+```{r}
+#| label: fig-rmse_plot
+#| fig-cap: "Scatter plot comparing predicted and observed precipitation values following leave-one-out cross-validation. Points closer to the one-to-one line indicate better agreement between interpolated and observed values."
+#| fig-align: "center"
+#| echo: false
+#| fig-height: 3.3
+#| fig-width: 4
+#| results: hide
+
+# Leave-one-out validation routine
+IDW.out <- vector(length = length(P))
+for (i in 1:length(P)) {
+  IDW.out[i] <- gstat::idw(Precip_in ~ 1, P[-i,], P[i,], idp=2.0)$var1.pred
+}
+
+# Plot differences
+OP <- par(pty="s", mar=c(4,3,0,0))
+  plot(IDW.out ~ P$Precip_in, asp=1, xlab="Observed", ylab="Predicted", pch=16,
+       col=rgb(0,0,0,0.5))
+  abline(lm(IDW.out ~ P$Precip_in), col="red", lw=2,lty=2)
+  abline(0,1)
+```
+
+
+```{r echo=FALSE, message=FALSE, results='hide'}
+# Compute RMSE
+RMSE <- sqrt( sum((IDW.out - P$Precip_in)^2) / length(P))
+```
+
+The computed RMSE from the above working example is `r round(RMSE,3)` inches. 
+
+We can further evaluate interpolation uncertainty by creating a confidence-interval map. This involves generating all $n$ leave-one-out interpolation surfaces and computing a confidence interval for each raster cell.
+
+Locations whose predicted values vary substantially across the leave-one-out realizations will have larger confidence intervals, indicating greater uncertainty. Conversely, locations whose predicted values remain relatively stable across the realizations will have smaller confidence intervals, indicating greater confidence in the prediction.
+
+The following map shows the 95% confidence interval associated with each location in the study area.
+
+```{r}
+#| label: fig-confidence_map
+#| fig-cap: "Spatial distribution of interpolation uncertainty derived from leave-one-out cross-validation. Areas with larger confidence intervals are more sensitive to the omission of individual sample points and therefore have greater uncertainty in their predicted values."
+#| fig-align: "center"
+#| echo: false
+#| fig-height: 3.3
+#| results: hide
+
+# #######################################
+# Use the jackknife technique to estimate 
+# a confidence interval at each 
+# unsampled point.
+# #######################################
+img <- gstat::idw(Precip_in~1, P, newdata=grd, idp=2.0, nmin=10,nmax=15)
+n   <- length(P)
+Zi  <- matrix(nrow = length(img$var1.pred), ncol = n)
+
+# Remove a point then interpolate (do this n times for each point)
+#st <- stack()
+st <- rast()
+for (i in 1:n){
+  Z1 <- gstat::idw(Precip_in~1, P[-i,], newdata=grd, idp=2.0,nmax=15)
+  #st <- addLayer(st,raster(Z1,layer=1))
+  st <- c(st, rast(Z1)$var1.pred  )
+  # Calculated pseudo-value Z at j
+  Zi[,i] <- n * img$var1.pred - (n-1) * Z1$var1.pred
+}
+
+# Jackknife estimator of parameter Z at location j
+Zj <- as.matrix(apply(Zi, 1, sum, na.rm=T) / n )
+
+# Compute (Zi* - Zj)^2
+c1 <- apply(Zi,2,'-',Zj)            # Compute the subtraction
+c1 <- apply(c1^2, 1, sum, na.rm=T ) # sum the square of the subtraction
+
+# Compute the confidence interval
+CI <- sqrt( 1/(n*(n-1)) * c1)
+
+# Create (CI / interpolated value) raster
+img.sig   <- img
+img.sig$v <- CI /img$var1.pred 
+
+# Plot the data
+r <- rast(img.sig)$v
+r.m <- mask(r, st_as_sf(W))
+
+tm_shape(r.m) +  tm_raster(n=7, palette="YlOrRd", 
+            auto.palette.mapping=FALSE,
+            title="95% confidence interval (in inches)") +
+  tm_shape(st_as_sf(P)) + tm_dots(size=0.5) +
+  tm_legend(legend.outside=TRUE)
+
+```
+
+IDW is one of the most widely used interpolation methods because of its simplicity and ease of implementation. In many situations it produces reasonable results. However, the choice of power coefficient remains somewhat subjective and the method does not explicitly model the spatial structure of the data.
+
+A second class of interpolation methods incorporates information about large-scale spatial trends (first-order effects) and spatial autocorrelation (second-order effects). These statistically based approaches, introduced next, provide a more rigorous framework for interpolation.
+
+## Statistical Approach to Interpolation
+
+Unlike deterministic methods, which rely on predefined mathematical rules, **statistical interpolation** methods use models to characterize spatial variation in the observed data. These methods can incorporate information about large-scale spatial trends (**first-order effects**) as well as spatial autocorrelation (**second-order effects**) when estimating values at unsampled locations.
+
+In this section, we explore two examples of statistical interpolation: **surface trend** and **Kriging**.
+
+### Trend Surfaces
+
+A trend surface models how an attribute varies as a function of spatial location. You can think of trend surface modeling as a regression in which the predictor variables are the spatial coordinates $X$ and $Y$. The resulting model is then used to estimate values at unsampled locations.
+
+Trend surfaces describe broad, large-scale variation across a study area and therefore capture what we previously referred to as a **first-order effect**. In Chapter 12, trend surfaces were introduced as a tool for characterizing spatial trends in continuous fields. Here, we revisit them as an interpolation method that can be used to predict values at unsampled locations.
+
+We will explore three trend surface models of increasing complexity: a **0th-order**, **1st-order**, and **2nd-order** trend surface.
+
+**0^th^ Order Trend Surface**
+
+The simplest possible trend surface assumes that the attribute being modeled does not vary across space. In this case, every unsampled location is assigned the same value: the mean of the observed sample values. The model takes the form:
+$$
+Z = a
+$$
+
+where $a$ is the mean precipitation value of all sample points (`r round(mean(P$Precip_in),1)` inches in our working example). This model produces a perfectly flat (horizontal) surface in which every location is assigned the same precipitation value.
+
+```{r}
+#| label: fig-poly0
+#| fig-cap: "The simplest model where all interpolated surface values are equal to the mean precipitation, 27.09 in."
+#| fig-align: "center"
+#| echo: false
+#| fig-height: 3.3
+#| results: hide
+
+# Define the polynomial equation
+f.0  <- as.formula(Precip_in ~ 1)
+
+# Run the regression model
+lm.0 <- lm( f.0 , data=P)
+
+# Use the regression model output to interpolate the surface
+dat.0th <- SpatialGridDataFrame(grd, data.frame(var1.pred = predict(lm.0, newdata=grd)))
+
+# Convert to raster object to take advantage of rasterVis' imaging
+# environment
+r   <- rast(dat.0th)
+r.m <- mask(r, st_as_sf(W))
+
+# tm_shape(r.m) + tm_raster( title="Predicted precip") +tm_shape(P) + tm_dots(size=0.2) +
+#   tm_legend(legend.outside=TRUE)
+
+tm_shape(r.m) +  tm_raster(n=7, palette="RdBu", 
+            auto.palette.mapping=FALSE,
+            title="Predicted precip") +
+  tm_shape(st_as_sf(P)) + tm_dots(size=0.5) +
+  tm_legend(outside=TRUE, position = c("right", "top"))
+ 
+```
+
+Because all spatial variation is ignored, the resulting map is generally uninformative. Nevertheless, the 0^th^-order trend surface provides a useful baseline against which more complex trend surface models can be compared. In the next example, we allow the surface to vary as a function of location, producing a 1^st^-order trend surface.
+
+**1^st^ Order Trend Surface**
+
+A 1^st^-order trend surface allows the interpolated value to vary as a linear function of spatial location. The resulting surface is a tilted plane whose slope and orientation are determined by the fitted coefficients. The model takes the form:
+
+$$
+Z = a + bX + cY
+$$
+where $X$ and $Y$ are the spatial coordinates and $a$, $b$, and $c$ are coefficients estimated from the observed data.
+
+```{r}
+#| label: fig-poly1
+#| fig-cap: "Result of a first order interpolation."
+#| fig-align: "center"
+#| echo: false
+#| fig-height: 3.3
+#| fig-width: 4
+#| results: hide
+
+# Define the 1st order polynomial equation
+f.1 <- as.formula(Precip_in ~ X + Y) 
+ 
+# Add X and Y to P
+P$X <- coordinates(P)[,1]
+P$Y <- coordinates(P)[,2]
+
+# Run the regression model
+lm.1 <- lm( f.1, data=P)
+
+# Use the regression model output to interpolate the surface
+dat.1st <- SpatialGridDataFrame(grd, data.frame(var1.pred = predict(lm.1, newdata=grd))) 
+
+r   <- rast(dat.1st)
+r.m <- mask(r, st_as_sf(W))
+
+# tm_shape(r.m) + tm_raster(n=10, palette="RdBu", auto.palette.mapping=FALSE,title="Predicted precip") +tm_shape(P) + tm_dots(size=0.2) +
+#   tm_legend(legend.outside=TRUE)
+tm_shape(r.m) +  tm_raster(n=10, palette="RdBu", 
+            auto.palette.mapping=FALSE,
+            title="Predicted precip") +
+  tm_shape(st_as_sf(P)) + tm_dots(size=0.5) +
+  tm_legend(legend.outside=TRUE)
+ 
+```
+
+Unlike the 0^th^-order model, which assigns the same value everywhere, the 1^st^-order trend surface captures broad spatial variation across the study area. In this example, the model highlights a pronounced east-west precipitation gradient.
+
+However, a tilted plane assumes that the rate of change is constant across the entire study area. Is the precipitation trend truly uniform from east to west? To allow for curvature in the trend surface, we next consider a more flexible model: the 2^nd^-order (quadratic) trend surface.
+
+**2^nd^ Order Trend Surface**
+
+A 2^nd^-order trend surface extends the 1^st^-order model by allowing the rate of change to vary across space. The resulting surface is no longer a tilted plane but can bend and curve to accommodate more complex spatial patterns. The model takes the form:
+
+$$
+Z = a + bX + cY + dX^2 + eY^2 + fXY
+$$
+where the quadratic terms ($X^2$ and $Y^2$) and the interaction term ($XY$) allow the surface to capture curvature and changes in slope across the study area.
+
+```{r}
+#| label: fig-poly2
+#| fig-cap: "Result of a second order interpolation."
+#| fig-align: "center"
+#| echo: false
+#| fig-height: 3.3
+#| fig-width: 4
+#| results: hide
+
+# Define the 1st order polynomial equation
+f.2 <- as.formula(Precip_in ~ X + Y + I(X*X)+I(Y*Y) + I(X*Y))
+ 
+# Run the regression model
+lm.2 <- lm( f.2, data=P)
+
+# Use the regression model output to interpolate the surface
+dat.2nd <- SpatialGridDataFrame(grd, data.frame(var1.pred = predict(lm.2, newdata=grd))) 
+
+r   <- rast(dat.2nd)
+r.m <- mask(r, st_as_sf(W))
+
+# tm_shape(r.m) + tm_raster(n=10, palette="RdBu", auto.palette.mapping=FALSE, title="Predicted precip") +tm_shape(P) + tm_dots(size=0.2) +
+#   tm_legend(legend.outside=TRUE)
+
+tm_shape(r.m) +  tm_raster(n=10, palette="RdBu", 
+            auto.palette.mapping=FALSE,
+            title="Predicted precip") +
+  tm_shape(st_as_sf(P)) + tm_dots(size=0.5) +
+  tm_legend(legend.outside=TRUE) 
+```
+
+Relative to the 1^st^-order trend surface, this model captures a slight curvature in the east-west precipitation gradient. However, the improvement is modest, suggesting that the additional model complexity may not be justified for this dataset.
+
+As trend surface order increases, the fitted surface becomes more flexible and can capture increasingly complex spatial patterns. However, higher-order models also risk fitting noise in the sampled data rather than meaningful spatial structure. In practice, it is often preferable to use the simplest model that adequately characterizes the observed trend.
+
+
+### Ordinary Kriging
+
+Several forms of kriging interpolators exist: ordinary, universal and simple just to name a few. In this chapter, we focus on **ordinary kriging** (**OK**), one of the most widely used geostatistical interpolation methods.
+
+Unlike deterministic interpolators such as Thiessen interpolation and IDW, which rely on predefined distance-based rules, ordinary kriging explicitly models the spatial structure of the data. In particular, it uses information about **spatial autocorrelation** to determine how much influence neighboring observations should have on an unsampled location.
+
+As discussed in previous chapters, spatial phenomena often exhibit both **first-order effects** (large-scale spatial trends) and **second-order effects** (spatial autocorrelation). The final interpolation incorporates information from both first-order effects (through the trend model) and second-order effects (through the variogram and kriging interpolation).
+
+The ordinary kriging workflow typically involves five steps:
+
++ Removing any **spatial trend** in the data (if present).
++ Computing the **experimental variogram**, $\gamma$, which quantifies spatial autocorrelation.
++ Defining a **variogram model** that characterizes the spatial autocorrelation structure.
++ Interpolating the residual surface using the variogram model.
++ Adding the interpolated residual surface back to the trend surface to produce the final prediction map.
+
+These steps are outlined in the following subsections.
+
+#### De-trending the data
+
+One assumption underlying ordinary kriging is that the mean and variance of the phenomenon being studied remain constant across the study area. In other words, the data should not exhibit a spatial trend (sometimes referred to as **drift** in the geostatistics literature) across its studied extent.
+
+As discussed earlier in this chapter, trend surfaces provide a convenient way to model broad spatial variation. Many software packages allow the user to fit and remove a trend surface, typically using a first-, second-, or third-order polynomial. In our example, we use the 1st-order trend surface because the 2nd-order model provided only a modest improvement over the simpler fit.
+
+Removing the trend produces a set of **residuals**, which represent the variation not explained by the large-scale spatial pattern. These residuals are then used in the variogram and kriging calculations that follow. Once the residual surface has been interpolated, the fitted trend surface is added back to produce the final prediction map.
+
+```{r echo=FALSE}
+# Define the 1st order polynomial equation
+f.1 <- as.formula(Precip_in ~ X + Y) 
+ 
+# Run the regression model
+lm.1 <- lm( f.1, data=P) 
+
+# Copy the residuals to the point object
+P$res <- lm.1$residuals
+```
+
+
+```{r}
+#| label: fig-detrend_map
+#| fig-cap: "Detrended precipitation residuals obtained after removing the 1st-order trend surface. These residuals represent local variation not explained by the large-scale east-west precipitation gradient and form the input to the variogram analysis."
+#| fig-align: "center"
+#| echo: false
+#| fig-height: 3.3
+#| fig-width: 4
+#| results: hide
+
+OP <- par(mar=c(0,0,0,0))
+plot(W, col=rgb(0,0,0,0.05), border="grey")
+plot(P, pch=20, cex=(P$res/61  +0.5) * 4, col=rgb(0,0,0,0.5), add=T) 
+text(P, sprintf("%.1f",P$res), pos=4, col="grey70", cex=0.7)
+par(OP)
+```
+
+#### Experimental Variogram
+
+The key idea behind kriging is that observations closer together in space tend to be more similar than observations farther apart. To quantify this relationship, we examine how differences between attribute values change as the distance between sample locations increases.
+
+We begin by computing a quantity called the semivariance, denoted by $\gamma$. Semivariance measures how different two observations are from one another. Small values of $gamma$ indicate that two locations have similar attribute values, whereas large values indicate greater dissimilarity. 
+
+For a pair of locations, semivariance is computed as:
+
+$$
+\gamma = \frac{(Z_2 - Z_1)^2}{2} 
+$$
+where $Z_1$ and $Z_2$ are the attribute values observed at the two locations.
+
+For example, consider two meteorological stations whose detrended precipitation values are -1.2 and 1.6.
+
+
+```{r}
+#| label: fig-two_sites
+#| fig-cap: "Locations of two sample sites used to demonstrate the calculation of *gamma*."
+#| fig-align: "center"
+#| echo: false
+#| fig-height: 2.5
+#| results: hide
+#| 
+OP <- par(mar=c(0,0,0,0))
+plot(W, col=rgb(0,0,0,0.05), border="grey")
+plot(P, pch=20,  cex=( (P$res/61  +1)), col=rgb(0,0,0,0.5), add=T) 
+plot(P[c(2,21), ], pch=20, cex=(P$res/61  +1.5), col=rgb(1,0,0), add=T)
+text(P[c(2,21), ], sprintf("%.1f",P$res[c(2,21)]), pos=4, col="grey40", cex=0.8)
+par(OP)
+```
+
+Their semivariance is:
+
+$$
+\gamma = \frac{(-1.2 - (1.6))^2}{2} = 3.92
+$$
+
+We can repeat this calculation for every pair of sample locations in the dataset. Plotting the resulting semivariance values against the distances separating the corresponding point pairs produces the following graph:
+
+```{r}
+#| label: fig-variogram
+#| fig-cap: "Experimental variogram cloud of precipitation residuals. Each point represents the semivariance associated with a pair of sample locations, plotted against the distance separating those locations. The red point corresponds to the pair illustrated in @fig-two_sites"
+#| fig-align: "center"
+#| echo: false
+#| fig-height: 3.3
+#| results: hide
+
+var.cld  <- gstat::variogram(res ~ 1, P, cloud = TRUE, cutoff=1000000)
+var.df  <- as.data.frame(var.cld)
+index1  <- which(with(var.df, left==21 & right==2))
+
+OP <- par( mar=c(4,6,1,1))
+plot(var.cld$dist/1000 , var.cld$gamma, col="grey", 
+     xlab = "Distance between point pairs (km)",
+     ylab = expression( frac((res[2] - res[1])^2 , 2)) )
+points(var.cld$dist[index1]/1000 , var.cld$gamma[index1], col="red", pch=16)
+par(OP)
+```
+
+The red point represents the semivariance computed in the previous example. The corresponding pair of stations is separated by approximately `r round(var.df[index1,]$dist/1000)` km. 
+
+The above graph is called an **experimental variogram cloud** (or **experimental semivariogram cloud**). The terms *variogram* and *semivariogram* are commonly used interchangeably in introductory geostatistics, and we will use the term *variogram* throughout the remainder of this chapter.
+
+The word *experimental* is important because the graph is constructed from a sample of observations rather than from the complete continuous field. Our goal in the next step is to use these sample-based estimates to model the underlying spatial autocorrelation structure of the precipitation field.
+
+#### Sample Experimental Variogram
+
+Although the variogram cloud contains all pairwise semivariance information, it can be difficult to interpret because of the large number of point pairs. In our example, just 50 sample points generate 465 point pairs, even when considering only the first third of the maximum lag distance.
+
+A common way to simplify the variogram cloud is to group point pairs into distance intervals called **lags**. The semivariance values within each lag are then summarized, typically by computing their average.
+
+In the following example, the variogram cloud is divided into 15 lag intervals. The average semivariance within each lag is shown as a red point. These summary points are referred to as **sample experimental variogram estimates**, and the resulting graph is called the **sample experimental variogram**.
+
+```{r}
+#| label: fig-sample_variogram
+#| fig-cap: "Sample experimental variogram plot of precipitation residual values."
+#| fig-align: "center"
+#| echo: false
+#| fig-height: 3.3
+#| results: hide
+
+# Compute the sample experimental variogram
+var.smpl <- gstat::variogram(f.1, P, cloud = FALSE, cutoff=1000000, width=89900)
+
+bins.ct <- c(0, var.smpl$dist , max(var.cld$dist) )
+bins <- vector()
+for (i in 1: (length(bins.ct) - 1) ){
+  bins[i] <- mean(bins.ct[ seq(i,i+1, length.out=2)] ) 
+}
+bins[length(bins)] <- max(var.cld$dist)
+var.bins <- findInterval(var.cld$dist, bins)
+
+# Point data cloud with bin boundaries
+OP <- par( mar = c(5,6,1,1))
+plot(var.cld$gamma ~ eval(var.cld$dist/1000), col=rgb(0,0,0,0.2), pch=16, cex=0.7,
+     xlab = "Distance between point pairs (km)",
+     ylab = expression( gamma ) )
+points( var.smpl$dist/1000, var.smpl$gamma, pch=21, col="black", bg="red", cex=1.3)
+abline(v=bins/1000, col="red", lty=2)
+par(OP)
+```
+
+#### Experimental Variogram Model
+
+The sample experimental variogram provides a useful summary of the spatial autocorrelation present in the data. However, kriging requires a smooth mathematical function from which semivariance values can be predicted at any distance. We therefore fit a mathematical model to the sample experimental variogram.
+
+Many variogram models have been proposed, and the models available often depend on the software being used. Examples of commonly used variogram models are shown below.
+
+```{r}
+#| label: fig-variogram_model
+#| fig-cap: "A subset of variogram models available in R's `gstat` package."
+#| fig-align: "center"
+#| echo: false
+#| fig-height: 5
+#| results: hide
+
+library(stringr)
+library(lattice)
+kk <- str_extract_all(gstat::vgm()$long, "\\([^()]+\\)")
+kk <- substring(kk, 2, nchar(kk)-1)
+gstat::show.vgms(strip=strip.custom(factor.levels=kk))
+```
+
+The goal is to identify the model that best describes the sample experimental variogram. Most variogram models are characterized by parameters that control the shape of the curve, including the **nugget**, **range**, and **sill** (or **partial sill**).
+
+The following figure illustrates these parameters. The **nugget** is the value where the variogram model intersects the y-axis. A non-zero nugget implies that nearby observations are not perfectly identical, which may reflect measurement error or variability occurring at scales smaller than the sampling distance.
+
+The **partial sill** is the vertical distance between the nugget and the plateau of the variogram. If the nugget is zero, the partial sill and sill are equivalent, and the term **sill** is typically used. The **range** is the distance at which the variogram levels off, indicating the distance beyond which observations are no longer strongly spatially correlated.
+
+```{r}
+#| label: fig-model_explained
+#| fig-cap: "Graphical description of the range, sill and nugget parameters in a variogram model."
+#| fig-align: "center"
+#| echo: false
+#| fig-height: 3.3
+#| results: hide
+
+# Following plot is a modified version of Bivand et al.'s fig. 8.6
+library(lattice)
+library(gstat)
+ccol <- 'blue' 
+data(meuse)
+coordinates(meuse) <- c("x","y")
+v <- variogram(log(zinc) ~ 1, meuse, width = 300)
+v.fit <- fit.variogram(v, vgm(psill=10, "Sph", range=600, nugget=0.5))
+plot(v, v.fit, pch = 16,col="grey", panel = function(x,y,subscripts,...) {
+  	larrows(0,v.fit$psill[1], v.fit$range[2], v.fit$psill[1], 
+			col=ccol, ends = 'both', length=.1, angle=15)
+		larrows(v.fit$range[2],0, v.fit$range[2], v.fit$psill[1], 
+			col=ccol, ends = 'both', length=.1, angle=20)
+		larrows(v.fit$range[2],v.fit$psill[1], v.fit$range[2], 
+			sum(v.fit$psill), 
+			col=ccol, ends = 'both', length=.1, angle=15)
+		ltext(v.fit$rang[2]/2, 1.2*v.fit$psill[1], "range", col=ccol,
+			adj = c(.5, 0), cex=.9)
+		ltext(1.02 * v.fit$rang[2], 0.5 *v.fit$psill[1], "nugget", col=ccol,
+			adj = c(0, 0.5), cex=.9)
+		ltext(1.02 * v.fit$rang[2], v.fit$psill[1] + 0.5 * v.fit$psill[2], 
+			"partial sill", col=ccol, adj = c(0, 0.5), cex=.9)
+		vgm.panel.xyplot(x,y,subscripts,...)
+	}
+)
+```
+
+In our working example, we fit a **spherical variogram model**, one of the most commonly used variogram models in geostatistics. Other frequently used models include the **linear** and **Gaussian** variogram models.
+
+```{r}
+#| label: fig-spherical_model
+#| fig-cap: "A spherical model fit to our residual variogram."
+#| fig-align: "center"
+#| echo: false
+#| fig-height: 3
+#| results: hide
+
+# Compute the sample variogram, note the f.1 trend model is one of the parameters
+# passed to variogram(). This tells the function to create the variogram on
+# the de-trended data
+var.smpl <- variogram(f.1, P, cloud = FALSE, cutoff=1000000, width=89900)
+
+
+# Compute the variogram model by passing the nugget, sill and range values
+# to fit.variogram() via the vgm() function.
+dat.fit  <- fit.variogram(var.smpl, fit.ranges = FALSE, fit.sills = FALSE,
+                          vgm(psill=18, model="Sph", range=500000, nugget=0))
+
+# The following plot allows us to gauge the fit
+plot(var.smpl, dat.fit, xlim=c(0,1000000))
+```
+
+#### Kriging Interpolation
+
+The variogram model is used by the kriging interpolator to determine *localized* weighting parameters. Recall that in IDW interpolation, the influence of neighboring points is controlled by a user-defined power coefficient that is applied uniformly across the entire study area. Every location therefore uses the same distance-decay rule.
+
+Kriging takes a different approach. Instead of relying on a user-specified power parameter, it uses the variogram model to determine the weights assigned to neighboring observations. In effect, the interpolation weights are derived from the observed spatial autocorrelation structure of the data. Locations whose values have historically exhibited stronger spatial dependence exert greater influence on the prediction than locations exhibiting weaker dependence.
+
+The mathematical implementation of kriging is considerably more involved than that of IDW and will not be covered here. Conceptually, however, kriging can be thought of as an interpolation method in which the data themselves determine the weighting scheme through the variogram model.
+
+The resulting interpolation of the residual surface is shown below.
+
+```{r}
+#| label: fig-krige01
+#| fig-cap: "Kriged interpolation of the detrended precipitation residuals. The surface represents local-scale variation not explained by the broader precipitation trend."
+#| fig-align: "center"
+#| echo: false
+#| fig-height: 3.3
+#| results: hide
+
+dat.krg <- krige( res~1, P, grd, dat.fit)
+
+r <- rast(dat.krg)$var1.pred
+r.m <- mask(r, st_as_sf(W))
+
+# Plot the raster and the sampled points
+# tm_shape(r.m) + tm_raster(n=10, palette="RdBu", auto.palette.mapping=FALSE,title="Predicted residual \nprecip") +tm_shape(P) + tm_dots(size=0.2) +
+#   tm_legend(legend.outside=TRUE)
+
+tm_shape(r.m) +  tm_raster(n=10, palette="RdBu", 
+            auto.palette.mapping=FALSE,
+            title="Predicted residual \nprecip") +
+  tm_shape(st_as_sf(P)) + tm_dots(size=0.5) +
+  tm_legend(legend.outside=TRUE)
+
+```
+
+Recall that kriging was applied to the **detrended residuals** rather than to the original precipitation values. Consequently, Figure 16.17 represents localized variation not explained by the large-scale east-west trend. To generate the final precipitation map, the interpolated residual surface is added back to the trend surface.
+
+```{r}
+#| label: fig-krige02
+#| fig-cap: "The final kriged surface."
+#| fig-align: "center"
+#| echo: false
+#| fig-height: 3.3
+#| results: hide
+
+# gstat's krige() function allows us to include the trend model thus saving us from
+# having to detrend the data, krige the residuals, then combine the rasters. Instead,
+# all we need to do is pass krige() the trend formula
+
+# Define trend model
+f.1 <- as.formula(Precip_in ~ X + Y) 
+
+# Perform the krige interpolation (note the use of the variogram model
+# created in an earlier step)
+dat.krg <- krige( f.1, P, grd, dat.fit)
+
+# Convert kriged surface to a raster object
+r <- rast(dat.krg)$var1.pred
+r.m <- mask(r, st_as_sf(W))
+
+# tm_shape(r.m) + tm_raster(n=10, palette="RdBu", auto.palette.mapping=FALSE, title="Predicted precip") +tm_shape(P) + tm_dots(size=0.2) +
+#   tm_legend(legend.outside=TRUE)
+
+tm_shape(r.m) +  tm_raster(n=10, palette="RdBu", 
+            auto.palette.mapping=FALSE,
+            title="Predicted precip") +
+  tm_shape(st_as_sf(P)) + tm_dots(size=0.5) +
+  tm_legend(legend.outside=TRUE)
+
+
+```
+
+A valuable by-product of kriging is a map of the **prediction variance**, which provides a measure of uncertainty associated with the interpolated values. Lower variance indicates greater confidence in the prediction, whereas higher variance indicates greater uncertainty. Note that variance is reported in squared units.
+
+```{r}
+#| label: fig-krige03
+#| fig-cap: "Prediction variance map produced by the kriging interpolation. Areas with larger variance indicate greater uncertainty in the predicted precipitation values, whereas areas with smaller variance indicate greater confidence in the prediction."
+#| fig-align: "center"
+#| echo: false
+#| fig-height: 3.3
+#| results: hide
+
+# The dat.krg object stores not just the interpolated values, but the 
+# variance values as well. These can be passed to the raster object
+# instead of the interpolated values as follows
+r <- rast(dat.krg)$var1.var
+r.m <- mask(r, st_as_sf(W))
+
+# tm_shape(r.m) + tm_raster(n=7, palette ="Reds", ,title="Variance map \n(in squared inches)") +tm_shape(P) + tm_dots(size=0.2) +
+#   tm_legend(legend.outside=TRUE)
+
+tm_shape(r.m) +  tm_raster(n=10, palette="Reds", 
+            auto.palette.mapping=FALSE,
+            title="Variance map \n(in squared inches)") +
+  tm_shape(st_as_sf(P)) + tm_dots(size=0.5) +
+  tm_legend(legend.outside=TRUE)
+
+```
+
+## Summary
+
+Spatial interpolation estimates values at unsampled locations from point observations that represent samples of a continuous field.
+
+- Interpolation methods can be divided into two broad categories: **deterministic** and **statistical** approaches.
+
+- **Thiessen (proximity)** interpolation assigns each unsampled location the value of the nearest sampled point, producing a tessellated surface with abrupt boundaries.
+
+- **Inverse Distance Weighted (IDW)** interpolation predicts values using a weighted average of nearby observations, where closer points exert greater influence than distant points.
+
+- The accuracy of an interpolation can be evaluated using **leave-one-out cross-validation** (jackknifing), **RMSE**, and maps of **interpolation uncertainty**.
+
+- **Trend surfaces** model broad spatial patterns using polynomial functions of spatial coordinates and can be used to interpolate values at unsampled locations.
+
+- **Ordinary kriging** differs from deterministic methods by explicitly incorporating information about spatial autocorrelation when determining interpolation weights. It involves removing large-scale trends, modeling spatial autocorrelation with a variogram, interpolating the residuals, and then adding the trend back to produce the final surface.
+
+- The **variogram** describes how similarity between observations changes with distance and forms the foundation of kriging interpolation.

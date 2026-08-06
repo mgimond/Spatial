@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>14&nbsp; First-Order Point Pattern Analysis – Introduction to GIS and Spatial Analysis</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./15_ppa_2nd.html" rel="next">
+<link href="./13_autocorrelation.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-9e3e5b9121e68b3f077afb32f2c64d95.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./11_intro_spatial.html">Spatial Analysis</a></li><li class="breadcrumb-item"><a href="./14_ppa_1st.html"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">First-Order Point Pattern Analysis</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Introduction to GIS and Spatial Analysis</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01_intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Working with Spatial Data</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02_feature_representation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Feature Representation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03_data_management.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">GIS Data Management</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04_symbolizing_features.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Symbolizing features</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05_statistical_maps.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Statistical maps</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06_pitfalls_to_avoid.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Pitfalls to avoid</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07_map_making_tips.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Good Map Making Tips</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08_spatial_operations_vector_overlays.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Spatial Selection and Vector Overlays</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09_coordinate_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Coordinate Systems</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10_map_algebra.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Map Algebra</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Spatial Analysis</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11_intro_spatial.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Analyzing Spatial Patterns</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12_poly_functions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Modeling Spatial Trends</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13_autocorrelation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Spatial Autocorrelation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14_ppa_1st.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">First-Order Point Pattern Analysis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./15_ppa_2nd.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Second-Order Point Pattern Analysis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./16_interpolation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Spatial Interpolation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">14.1</span> Introduction</a></li>
+  <li><a href="#understanding-intensity-and-density-in-point-patterns" id="toc-understanding-intensity-and-density-in-point-patterns" class="nav-link" data-scroll-target="#understanding-intensity-and-density-in-point-patterns"><span class="header-section-number">14.2</span> Understanding Intensity and Density in Point Patterns</a></li>
+  <li><a href="#global-density" id="toc-global-density" class="nav-link" data-scroll-target="#global-density"><span class="header-section-number">14.3</span> Global density</a></li>
+  <li><a href="#local-density" id="toc-local-density" class="nav-link" data-scroll-target="#local-density"><span class="header-section-number">14.4</span> Local density</a>
+  <ul class="collapse">
+  <li><a href="#quadrat-density" id="toc-quadrat-density" class="nav-link" data-scroll-target="#quadrat-density"><span class="header-section-number">14.4.1</span> Quadrat density</a></li>
+  <li><a href="#kernel-density" id="toc-kernel-density" class="nav-link" data-scroll-target="#kernel-density"><span class="header-section-number">14.4.2</span> Kernel density</a></li>
+  <li><a href="#non-parametric-intensity-modeling-with-covariates" id="toc-non-parametric-intensity-modeling-with-covariates" class="nav-link" data-scroll-target="#non-parametric-intensity-modeling-with-covariates"><span class="header-section-number">14.4.3</span> Non-parametric Intensity Modeling with Covariates</a></li>
+  <li><a href="#parametric-intensity-modeling-with-covariates" id="toc-parametric-intensity-modeling-with-covariates" class="nav-link" data-scroll-target="#parametric-intensity-modeling-with-covariates"><span class="header-section-number">14.4.4</span> Parametric Intensity Modeling with Covariates</a></li>
+  </ul></li>
+  <li><a href="#PPM" id="toc-PPM" class="nav-link" data-scroll-target="#PPM"><span class="header-section-number">14.5</span> Hypothesis Testing for Covariate Effects</a></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">14.6</span> Summary</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./11_intro_spatial.html">Spatial Analysis</a></li><li class="breadcrumb-item"><a href="./14_ppa_1st.html"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">First-Order Point Pattern Analysis</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">First-Order Point Pattern Analysis</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="introduction" class="level2" data-number="14.1">
+<h2 data-number="14.1" class="anchored" data-anchor-id="introduction"><span class="header-section-number">14.1</span> Introduction</h2>
+<p>In spatial <strong>point pattern</strong> analysis, <strong>first-order effects</strong> refer to variations in the intensity of points across a study area due to external factors. These effects describe how the likelihood of observing a point changes from one location to another, independent of the presence or absence of other points. For example, oak trees may be more densely distributed in areas with favorable soil conditions, or retail stores may cluster in regions with higher population density. In both cases, the spatial variation is driven by underlying environmental or socioeconomic covariates rather than interactions between the points themselves.</p>
+<p>This concept is analogous to the spatial trend models introduced in Chapter 12 for continuous fields. There, we modeled how attribute values varied as a function of location. Here, we focus on how the intensity of a point process varies across space. In both cases, the objective is to characterize first-order effects before investigating potential second-order effects.</p>
+<p>This chapter focuses on techniques for detecting and modeling these first-order effects. We begin with simple descriptive tools such as <strong>global</strong> and <strong>local</strong> density measures, then move to more refined methods such as kernel density estimation and covariate-adjusted intensity modeling. Finally, we introduce statistical models, such as the Poisson point process model, that allow us to formally test hypotheses about how external variables influence point intensity. By characterizing and accounting for first-order effects, we lay the groundwork for the second-order analyses presented in the next chapter where the focus shifts from spatial variation in intensity to interactions among points.</p>
+</section>
+<section id="understanding-intensity-and-density-in-point-patterns" class="level2" data-number="14.2">
+<h2 data-number="14.2" class="anchored" data-anchor-id="understanding-intensity-and-density-in-point-patterns"><span class="header-section-number">14.2</span> Understanding Intensity and Density in Point Patterns</h2>
+<p>In point pattern analysis, the terms <strong>intensity</strong> and <strong>density</strong> are closely related but conceptually distinct. Understanding the difference is important when interpreting spatial patterns and building models.</p>
+<ul>
+<li><p><strong>Density</strong> refers to the <strong>observed number of points per unit area</strong> in a dataset. It’s a descriptive statistic: what we actually count from the data. For example, if there are 31 trees in a 100 square meter plot, the density is 0.31 trees per square meter.</p></li>
+<li><p><strong>Intensity</strong>, on the other hand, refers to the <strong>underlying rate or likelihood</strong> that a point occurs at a location. It’s a property of the <strong>process</strong> that generated the pattern, not simply the observed pattern itself. Intensity is often denoted by the symbol <span class="math inline">\(\lambda\)</span> and can vary across space. When we estimate intensity from observed data, we use <span class="math inline">\(\widehat{\lambda}\)</span> to indicate that it’s an approximation.</p></li>
+</ul>
+<p>Think of it this way: density is <em>what we observe</em>, intensity is <em>what we infer</em>. If the intensity is constant across the study area, the process is said to be <strong>homogeneous</strong>. If intensity varies across space, the process is <strong>inhomogeneous</strong>.</p>
+<p>Spatial variation in intensity is the point-pattern analogue of a spatial trend in continuous field data. In both cases, the goal is to characterize first-order effects before examining possible second-order interactions. We therefore need tools that can model how intensity changes with location or covariates.</p>
+</section>
+<section id="global-density" class="level2" data-number="14.3">
+<h2 data-number="14.3" class="anchored" data-anchor-id="global-density"><span class="header-section-number">14.3</span> Global density</h2>
+<p>A basic estimate of a point pattern’s <em>intensity</em>, <span class="math inline">\(\widehat{\lambda}\)</span>, is its global density: the average number of observed points per unit area across the entire study region. While density is an observed quantity and intensity is a property of the underlying process, the global density provides a simple estimate of intensity under the assumption that the process is homogeneous. It is computed as the ratio of the total number of observed points, <span class="math inline">\(n\)</span>, to the surface area of the study region, <span class="math inline">\(a\)</span>:</p>
+<p><span class="math inline">\(\begin{equation}
+\widehat{\lambda} = \frac{n}{a}
+\label{eq:global-density}
+\end{equation}\)</span></p>
+<p>This estimate assumes that the underlying point process is homogeneous, meaning the intensity is constant throughout the region.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-gobal_dens" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-gobal_dens-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="14_ppa_1st_files/figure-html/fig-gobal_dens-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="240">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-gobal_dens-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;14.1: Example of a point pattern containing 31 observed points within a study area of 100 square units. Under the assumption of a homogeneous point process, the global intensity estimate <span class="math inline">\(\widehat{\lambda}\)</span> is 31/100 = 0.31 points per unit area.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>While useful as a summary statistic, global density provides only a single value for the entire study area and can mask important spatial variation. To investigate whether intensity changes across space, we need local density measures.</p>
+</section>
+<section id="local-density" class="level2" data-number="14.4">
+<h2 data-number="14.4" class="anchored" data-anchor-id="local-density"><span class="header-section-number">14.4</span> Local density</h2>
+<p>A point pattern’s density can vary across space, and measuring it at different locations allows us to assess whether the underlying process’s local intensity, <span class="math inline">\(\widehat{\lambda}_i\)</span>, is spatially uniform or not. Spatial variation in intensity is a hallmark of a <strong>first-order effect</strong>, where external factors influence the likelihood of observing points in some parts of the study area more than others. Estimating local density therefore provides a way to explore how intensity changes across space and whether the assumption of a homogeneous process is reasonable.</p>
+<p>Identifying non-uniform intensity is important because many second-order analyses (covered in the next chapter) assume <strong>stationarity</strong>: the assumption that the underlying process generating the points has a constant intensity across the study area.</p>
+<p>As with spatial trends in continuous fields, variation in intensity can create the <em>appearance</em> of clustering even when no interaction exists among points.</p>
+<p>Local density methods do not directly explain why intensity varies, but they can help identify areas where the underlying process may be stronger or weaker, thereby guiding subsequent modeling efforts.</p>
+<p>Several techniques are available for estimating local density. In this chapter, we focus on two widely used methods: <em>quadrat density</em>, which divides the study area into discrete subregions, and <em>kernel density</em>, which uses a moving window to produce a smooth surface of estimated intensity.</p>
+<section id="quadrat-density" class="level3" data-number="14.4.1">
+<h3 data-number="14.4.1" class="anchored" data-anchor-id="quadrat-density"><span class="header-section-number">14.4.1</span> Quadrat density</h3>
+<p>One simple way to estimate local density is to divide the study area into smaller regions and compute a separate density value for each region. <strong>Quadrat density</strong> analysis involves dividing the study area into sub-regions called quadrats. For each quadrat, the <strong>local density</strong> is computed by dividing the number of points within the quadrat by its area. This provides a spatially localized estimate of point intensity. In effect, quadrat analysis replaces the single global density value introduced earlier with a collection of local density estimates distributed across the study area.</p>
+<p>This method assumes that the intensity of the point process is roughly constant within each quadrat, which may not hold if quadrats are too large or poorly aligned with underlying spatial variation.</p>
+<p>Quadrats can take various shapes such as hexagons and triangles. The following example divides the study area into four equally sized square quadrats and computes a local density value for each.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-quad01" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-quad01-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="14_ppa_1st_files/figure-html/fig-quad01-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="211">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-quad01-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;14.2: Example of a quadrat density analysis. The study area is divided into four equally sized quadrats, and a local density value is computed for each by dividing the number of points within the quadrat by its area.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The choice of quadrat size, number, and shape can influence the measure of local density and must be chosen with care. If very small quadrat sizes are used, you risk having many empty quadrats which may prove uninformative. If very large quadrat sizes are used, you risk missing subtle changes in spatial density distributions such as an east-west gradient in density values.</p>
+<p>Instead of dividing the study area into uniform shapes, quadrats can also be defined based on an underlying <strong>covariate</strong>: a spatial variable believed to influence point intensity (e.g., elevation, land cover, or population density). For example, if it’s believed that the underlying point pattern process is driven by elevation, quadrats can be defined by sub-regions such as different ranges of elevation values (labeled 1 through 4 on the right-hand plot in the following example). This can result in quadrats with non-uniform shape and area. This idea moves us from describing where points occur to exploring whether intensity may be related to an underlying environmental variable.</p>
+<blockquote class="blockquote">
+<p>Converting a continuous field into discretized areas is sometimes referred to as <strong>tessellation</strong>. The end product is a <strong>tessellated surface</strong>.</p>
+</blockquote>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-quad02" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-quad02-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="14_ppa_1st_files/figure-html/fig-quad02-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="576">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-quad02-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;14.3: Example of covariate-based quadrats. The elevation surface (left) is divided into four elevation classes (right), creating a tessellated surface that can be used to examine how point density varies with elevation.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>If the local intensity changes across the tessellated covariate, then there is evidence of a dependence between the process that generated the point pattern and the covariate. In our example, sub-regions 1 through 4 have surface areas of 23.54, 25.2, 25.21, 26.06 map units respectively. To compute these regions’ point densities, we simply divide the number of points by the respective area values. The resulting point counts and density estimates are shown below.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-quad03" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-quad03-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="14_ppa_1st_files/figure-html/fig-quad03-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="576">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-quad03-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;14.4: Density estimates for elevation-defined subregions. The left panel shows the number of observed points within each elevation class, while the right panel shows the corresponding densities after accounting for differences in subregion area.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>We can plot the relationship between point density and elevation region to help assess whether intensity varies systematically with elevation.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-quad04" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-quad04-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="14_ppa_1st_files/figure-html/fig-quad04-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-quad04-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;14.5: Relationship between point density and elevation class. The increasing density values suggest that point intensity may be associated with elevation, although the quadrat approach alone cannot determine whether this relationship is statistically significant.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>It’s important to note that how one <em>chooses</em> to tessellate a surface can have an influence on the resulting density distribution. For example, dividing the elevation into seven sub-regions produces the following density values.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-quad05" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-quad05-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="14_ppa_1st_files/figure-html/fig-quad05-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="576">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-quad05-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;14.6: Local density estimates computed using a different tessellation of the elevation surface. Changes in the density values reflect the influence of zone definition on quadrat-based analyses, an example of the Modifiable Areal Unit Problem (MAUP).
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>While the higher density observed in the western portion of the study area remains evident, the density pattern elsewhere depends on how the elevation surface is partitioned.</p>
+<p>The quadrat analysis approach has advantages: it is straightforward to compute and easy to interpret. However, it is susceptible to the <a href="./06_pitfalls_to_avoid.html#maup">modifiable areal unit problem</a> (MAUP) as illustrated by the previous two examples.</p>
+<p>Quadrat density is most useful when the study area can be meaningfully divided into regions of interest, or when a covariate provides a natural way to segment space. However, quadrat methods can struggle to capture gradual or continuous changes in intensity across space. This limitation motivates the kernel density methods introduced next.</p>
+</section>
+<section id="kernel-density" class="level3" data-number="14.4.2">
+<h3 data-number="14.4.2" class="anchored" data-anchor-id="kernel-density"><span class="header-section-number">14.4.2</span> Kernel density</h3>
+<p>While quadrat density provides localized estimates of intensity, it imposes <em>sharp</em> boundaries between neighboring regions. In reality, intensity often changes continuously across space. <strong>Kernel density estimation (KDE)</strong> addresses this limitation by replacing fixed quadrats with a <strong>moving window</strong> that produces a smooth estimate of spatial intensity.</p>
+<p>Like quadrat density, KDE computes localized density values, but it does so using a moving window that overlaps across space, producing a continuous surface of estimated intensity. This moving window is defined by a <strong>kernel</strong>. A kernel is a mathematical function that defines how much influence each point has on the estimated intensity at a given location.</p>
+<p>The kernel density method produces a grid of intensity estimates in which each cell’s value reflects the weighted contribution of nearby points within the kernel window centered on that cell. As the window moves across the study area, a separate density estimate is computed at each location.</p>
+<p>The simplest kernel function is a <strong>uniform kernel</strong> where each point within the kernel window is assigned equal weight.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-kernel01" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-kernel01-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="14_ppa_1st_files/figure-html/fig-kernel01-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-kernel01-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;14.7: Example of kernel density estimation using a 3 × 3 uniform kernel. A density estimate is computed for each cell by counting the points within the kernel window and dividing by the kernel area. For example, the cell centered at (x=1.5, y=7.5) contains one point within its 3 × 3 unit neighborhood and therefore has a local density estimate of 1/9=0.11.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Not all kernel functions assign equal weight to points within the kernel window. More commonly, points closer to the center of the kernel receive greater weight than points farther away. Many kernel functions follow a <em>Gaussian</em> or <em>quartic</em> distribution, causing the influence of a point to decrease with distance from the kernel center. These weighting schemes tend to produce smoother estimates of spatial intensity.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-kernel02" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-kernel02-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="14_ppa_1st_files/figure-html/fig-kernel02-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-kernel02-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;14.8: Example of kernel density estimation using a 3 × 3 quartic kernel. Each point within the kernel window contributes to the density estimate according to its distance from the kernel center, with nearby points receiving greater weight. The resulting intensity surface is smoother than that produced by the uniform kernel shown in <a href="#fig-kernel01" class="quarto-xref">Figure&nbsp;<span>14.7</span></a>.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>While kernel density estimation produces a smooth map of estimated point intensity, it remains primarily a descriptive tool. A common exploratory step is to compare the resulting intensity surface to an underlying covariate such as elevation, land cover, or population density. This can help identify potential spatial relationships, for instance, whether areas of high point intensity tend to correspond to areas with high covariate values. Such comparisons can provide useful clues about the processes shaping the point pattern, but they do not directly model the relationship between intensity and the covariate. To do that, we need methods that explicitly estimate intensity as a function of one or more covariates.</p>
+</section>
+<section id="non-parametric-intensity-modeling-with-covariates" class="level3" data-number="14.4.3">
+<h3 data-number="14.4.3" class="anchored" data-anchor-id="non-parametric-intensity-modeling-with-covariates"><span class="header-section-number">14.4.3</span> Non-parametric Intensity Modeling with Covariates</h3>
+<p>In an earlier section, we learned that we could use a covariate, such as elevation, to define the sub-regions (quadrats) within which densities were computed.</p>
+<p>Here, instead of dividing the study region into discrete sub-regions, we estimate an <strong>intensity function</strong>, denoted <span class="math inline">\(\rho(z)\)</span>, that describes how point intensity varies as a function of a covariate <span class="math inline">\(z\)</span> (e.g., elevation). This function is then used to model the spatial intensity <span class="math inline">\(\widehat{\lambda}(x)\)</span> at each location <span class="math inline">\(x\)</span> in the study area.</p>
+<p>In this framework, <span class="math inline">\(\rho(z)\)</span> describes the relationship between intensity and the covariate, whereas <span class="math inline">\(\widehat{\lambda}(x)\)</span> represents the resulting intensity surface across the study region after applying that relationship to the spatial distribution of the covariate.</p>
+<p>Several approaches can be used to estimate <span class="math inline">\(\rho(z)\)</span> including the <em>ratio</em>, <em>re-weight</em> and <em>transform</em> methods. We will not examine the differences among these methods here, but it is worth noting that there is more than one way to estimate the relationship between intensity and a covariate.</p>
+<p>In the following example, elevation is used as the covariate and <span class="math inline">\(\rho(z)\)</span> is estimated using the <em>ratio</em> method. This method compares the observed density of points at different covariate values to the density of the covariate itself, producing an estimate of relative intensity. The resulting <span class="math inline">\(\rho(z)\)</span> function is shown in the center panel, while the right panel maps the modeled spatial intensity <span class="math inline">\(\widehat{\lambda}(x)\)</span> derived from the elevation surface.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-kernel03" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-kernel03-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="14_ppa_1st_files/figure-html/fig-kernel03-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="787">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-kernel03-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;14.9: Non-parametric estimation of intensity as a function of elevation using the ratio method. The left panel shows the observed point pattern superimposed on the elevation raster. The center panel shows the estimated intensity function, <span class="math inline">\(\rho(z)\)</span> as a function of elevation; the shaded envelope represents the 95% confidence interval. The right panel maps the modeled spatial intensity, <span class="math inline">\(\widehat{\lambda}(x)\)</span>, obtained by applying the estimated <span class="math inline">\(\rho(z)\)</span> relationship to the elevation raster.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>One way to assess how well the covariate explains the observed point pattern is to compare the modeled intensity surface to the observed intensity surface derived from kernel density estimation. The following scatter plot compares the modeled intensity values to the observed kernel density estimates at corresponding locations.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-kernel04" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-kernel04-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="14_ppa_1st_files/figure-html/fig-kernel04-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="240">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-kernel04-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;14.10: Comparison of modeled intensity and observed kernel density estimates. Each point represents a location in the study area, with the x-axis showing the observed kernel density and the y-axis showing the intensity predicted from elevation. The red diagonal line represents perfect agreement between observed and predicted intensity.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>A red one-to-one diagonal line is added to the plot. The scatter plot compares the modeled intensity (based on elevation) to the observed kernel density estimates. While the overall relationship is positive, the points deviate from the one-to-one line, indicating that the elevation-based model does not perfectly reproduce the observed intensity surface.</p>
+<p>Some of this discrepancy may reflect increased uncertainty at higher elevation values, where fewer observations are available to estimate the relationship between intensity and elevation. This uncertainty is evident in the <span class="math inline">\(\rho(z)\)</span> <em>vs.&nbsp;elevation</em> plot (<a href="#fig-kernel03" class="quarto-xref">Figure&nbsp;<span>14.9</span></a>) where the 95% confidence envelope widens at higher elevations. Such widening is common in spatial modeling when covariate values are unevenly represented across the study area.</p>
+<p>Modeling intensity as a function of a covariate allows us to explore first-order effects more rigorously. It helps determine whether external factors, such as elevation or population density, can explain the spatial distribution of points.</p>
+<p>While this approach still relies on kernel-based methods, it differs conceptually from the kernel density estimation introduced in the previous section. Standard kernel density estimation uses only the observed point locations to estimate intensity and can then be compared to a covariate map to identify potential associations. Here, however, the covariate is <em>incorporated</em> directly into the estimation procedure. Instead of asking whether a density surface resembles a covariate, we explicitly estimate how intensity changes as a function of that covariate.</p>
+<p>This approach yields a non-parametric estimate of the relationship between intensity and a covariate, providing insight into first-order effects. The function <span class="math inline">\(\rho(z)\)</span> captures this relationship without assuming a specific parametric form. In the next section, we explore a complementary approach, <strong>Poisson point process modeling</strong>, which specifies intensity as a parametric log-linear function of one or more covariates.</p>
+</section>
+<section id="parametric-intensity-modeling-with-covariates" class="level3" data-number="14.4.4">
+<h3 data-number="14.4.4" class="anchored" data-anchor-id="parametric-intensity-modeling-with-covariates"><span class="header-section-number">14.4.4</span> Parametric Intensity Modeling with Covariates</h3>
+<p>Up to this point, we have focused on non-parametric techniques for describing how point intensity varies across space and with underlying covariates. While these methods can reveal important first-order patterns, they do not provide an explicit statistical model relating intensity to a covariate. In many applications, it is useful to specify this relationship directly using a formal statistical framework.</p>
+<blockquote class="blockquote">
+<p><strong>Note:</strong> A useful way to think about the difference between parametric and non-parametric approaches is that <strong>parametric models summarize a relationship with a few numbers</strong>, whereas <strong>non-parametric models summarize a relationship with a fitted curve whose shape is determined largely by the data</strong>. In the previous section, the <span class="math inline">\(\rho(z)\)</span> function was estimated without assuming a specific mathematical form. In this section, we assume a specific log-linear form whose shape is determined by a small set of parameters.</p>
+</blockquote>
+<p>One widely used approach is the <strong>Poisson point process model (PPM)</strong> which expresses point intensity as a function of one or more covariates. A simple PPM takes the form:</p>
+<p><span class="math display">\[
+\begin{equation}
+\lambda(i) = e^{\alpha + \beta Z(i)}
+\label{eq:density-covariate}
+\end{equation}
+\]</span></p>
+<p>This equation defines how the expected point intensity varies as a function of the covariate <span class="math inline">\(Z(i)\)</span>. The term <span class="math inline">\(\lambda(i)\)</span> represents the modeled intensity at location <span class="math inline">\(i\)</span>, while <span class="math inline">\(e^{\alpha}\)</span> is the baseline intensity when the covariate is <em>zero</em>. The term <span class="math inline">\(e^{\beta}\)</span> represents the multiplicative change in intensity associated with a one-unit increase in the covariate <span class="math inline">\(Z(i)\)</span>. The parameters <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> are estimated from the data using maximum likelihood, a procedure that identifies the parameter values that best explain the observed point pattern given the covariate surface. Note that the units of intensity are determined by the coordinate reference system (for example, stores per square kilometer), and the interpretation of <span class="math inline">\(\beta\)</span> depends on the scale and units of the covariate.</p>
+<p>The equation is a form of a <strong>log-linear</strong> model commonly used in spatial statistics to model intensity. While it resembles logistic regression in structure, the quantity being modeled is different. In a Poisson point process model, the response variable is <strong>intensity</strong>, whereas logistic regression models <strong>probability</strong>. Taking the natural logarithm of both sides yields the more familiar linear form:</p>
+<p><span class="math display">\[
+\log{\lambda}(i) = \alpha + \beta Z(i)
+\]</span> where <span class="math inline">\(\alpha + \beta Z(i)\)</span> is the <strong>linear predictor</strong>.</p>
+<blockquote class="blockquote">
+<p>Note: The log-linear form of a Poisson point process model resembles that of logistic regression, a model many students may have encountered in an introductory statistics course. However, the two approaches serve different purposes. Logistic regression models the probability of occurrence, while a Poisson point process model models the intensity of occurrence. Although mathematical connections exist between these frameworks, they should not be interpreted as equivalent models. One such connection is given by the transformation <span class="math inline">\(\lambda = P / (1 - P)\)</span>, which leads to: <span class="math display">\[
+P(i) = \frac{e^{\alpha + \beta Z(i)}}{1 + e^{\alpha + \beta Z(i)}}
+\]</span></p>
+</blockquote>
+<p>This relationship is useful when interpreting intensity in terms of probability, particularly in presence/absence modeling.</p>
+<p>The Poisson point process model assumes that events occur independently and that intensity varies smoothly as a function of the covariate. It does not account for interactions among points and is therefore designed to model <em>first-order effects</em> rather than the <strong>second-order interactions</strong> examined in the next chapter.</p>
+<p>The advantage of this framework is that it provides both parameter estimates and formal statistical tests for assessing whether a covariate contributes to explaining the observed point pattern.</p>
+<p>To illustrate, consider the distribution of Starbucks cafés in Massachusetts. The point pattern is clearly non-uniform, suggesting that café locations may be influenced by underlying socioeconomic factors. One plausible covariate is population density, since areas with larger populations may support a greater number of retail establishments. The following figure compares Starbucks locations to the population density distribution.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-starbucks" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-starbucks-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="14_ppa_1st_files/figure-html/fig-starbucks-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-starbucks-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;14.11: Location of Starbucks cafés in Massachusetts overlaid on population density. The apparent concentration of stores in densely populated areas suggests that population density may be an important predictor of point intensity. Note that the population density classes are displayed on a logarithmic scale to better differentiate values.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>We can fit a Poisson point process model to these data where the modeled intensity takes the form:</p>
+<p><span class="math display">\[
+\begin{equation}
+Starbucks\ intensity(i) = e^{\alpha + \beta\ population(i)}
+\label{eq:walmart-model}
+\end{equation}
+\]</span></p>
+<p>The parameters <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> are typically estimated using a procedure called <em>maximum likelihood</em>. Its implementation is not covered here but is widelydiscussed in introductory statistics textbooks. The index <span class="math inline">\((i)\)</span> reminds us that both the modeled intensity and the population density can vary as a function of location.</p>
+<p>In our example, the estimated value of <span class="math inline">\(\alpha\)</span> is -5.151. This indicates that when population density is <em>zero</em>, the baseline intensity of the point process is e<sup>-5.151</sup> = 0.00579 cafes per square kilometer (the units are determined by the coordinate reference system), a value close to zero as one might expect.</p>
+<p>The estimated value of <span class="math inline">\(\beta\)</span> is 0.00017. This indicates that for every one-unit increase in the population density raster, the intensity of the point process is multiplied by e<sup>0.00017</sup> = 1.00017.</p>
+<p>Thus, higher population density is associated with a higher expected intensity of Starbucks locations.</p>
+<p>The following figure shows the fitted intensity function as a function of population density, along with a 95% confidence envelope. This plot helps visualize the estimated relationship between population density and store intensity while highlighting uncertainty in the fitted model.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-pppm01" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-pppm01-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="14_ppa_1st_files/figure-html/fig-pppm01-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="345">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pppm01-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;14.12: Poisson point process model fitted to the relationship between Starbucks café locations and population density. The fitted curve represents the estimated intensity of Starbucks locations as a function of population density, while the shaded envelope shows the 95% confidence interval. The model assumes a log-linear relationship between intensity and the covariate. Intensity is reported as the expected number of stores per square kilometer.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Fitting a Poisson point process model provides an estimate of how intensity varies with a covariate. However, the presence of a fitted relationship does not necessarily imply that the covariate meaningfully improves our understanding of the observed point pattern. In the next section, we compare the covariate-based model to a simpler null model (e.g., a homogeneous intensity model) using formal statistical tests. This allows us to assess whether the covariate explains a significant portion of the observed variation in point intensity.</p>
+</section>
+</section>
+<section id="PPM" class="level2" data-number="14.5">
+<h2 data-number="14.5" class="anchored" data-anchor-id="PPM"><span class="header-section-number">14.5</span> Hypothesis Testing for Covariate Effects</h2>
+<p>A Poisson point process model can always be fitted to an observed point pattern, but the presence of a fitted relationship does not necessarily imply that the covariate meaningfully explains the observed distribution of points. To assess whether a covariate improves our understanding of the point pattern, we compare the fitted model to a simpler alternative.</p>
+<p>In this framework, a model that assumes homogeneous intensity across space serves as the <strong>null hypothesis</strong>, while a model that allows intensity to vary as a function of a covariate serves as the <strong>alternative hypothesis</strong>.</p>
+<p>For example, we may wish to determine whether the spatial distribution of Walmart stores is better explained by population density than by a model that assumes no spatial preference. In other words, we want to assess whether variation in store intensity can reasonably be attributed to population density rather than to random variation alone.</p>
+<p>The following figure shows Walmart store locations relative to population density in Massachusetts.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-walmarts" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-walmarts-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="14_ppa_1st_files/figure-html/fig-walmarts-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-walmarts-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;14.13: Walmart store locations and population density in Massachusetts. This figure motivates the hypothesis that store intensity may vary as a function of population density rather than remaining constant across the study area. Population density values are displayed on a logarithmic scale.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>To determine whether population density provides a meaningful explanation for the observed Walmart distribution, we fit both the null and alternative models and compare their fit using a <strong>likelihood ratio test</strong>. This test evaluates whether the additional complexity of the covariate-based model is justified by a significantly better fit to the observed point pattern.</p>
+<p>A Poisson point process model fitted to the Walmart point pattern using the <code>ppm</code> function in the <code>spatsat</code> package <span class="citation" data-cites="Spatstat">(<a href="references.html#ref-Spatstat" role="doc-biblioref">Baddeley et al. 2016</a>)</span> produces the following output for the null model:</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>Stationary Poisson process
+Fitted to point pattern dataset 'P'
+Intensity: 0.0021276
+             Estimate      S.E.   CI95.lo   CI95.hi Ztest     Zval
+log(lambda) -6.152761 0.1507557 -6.448236 -5.857285   *** -40.8128</code></pre>
+</div>
+</div>
+<p>Whereas the null model assumes a constant intensity across the study area, the alternative model allows intensity to vary with population density. Fitting this model produces the following output:</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>Nonstationary Poisson process
+Fitted to point pattern dataset 'P'
+
+Log intensity:  ~pop
+
+Fitted trend coefficients:
+  (Intercept)           pop 
+-6.2551180493  0.0001043115 
+
+                 Estimate         S.E.       CI95.lo       CI95.hi Ztest
+(Intercept) -6.2551180493 1.611991e-01 -6.571062e+00 -5.9391736579   ***
+pop          0.0001043115 3.851572e-05  2.882207e-05  0.0001798009    **
+                  Zval
+(Intercept) -38.803683
+pop           2.708284
+Problem:
+ Values of the covariate 'pop' were NA or undefined at 0.7% (4 out of 572) of 
+the quadrature points</code></pre>
+</div>
+</div>
+<p>Using the estimated coefficients from the fitted models, we can express the intensity functions explicitly.</p>
+<p>The null model, which assumes homogeneous intensity across the study area, takes the form:</p>
+<p><span class="math display">\[
+\lambda(i) = e^{-6.2}
+\]</span></p>
+<p>The alternative model, which allows intensity to vary as a function of population density, takes the form:</p>
+<p><span class="math display">\[
+\lambda(i) = e^{-6.3 + 1.04\times10^{-4}population}
+\]</span></p>
+<p>To better understand how these models differ, we can visualize the estimated intensity (<span class="math inline">\(\widehat{\lambda}\)</span>) as a function of population density for both the null and alternative models.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-Ho_vs_H" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Ho_vs_H-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="14_ppa_1st_files/figure-html/fig-Ho_vs_H-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="768">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Ho_vs_H-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;14.14: Estimated intensity functions from the Poisson point process models. The left panel shows the alternative model, in which intensity varies as a function of population density, while the right panel shows the null model, which assumes a constant intensity across the study area. Shaded envelopes represent 95% confidence intervals.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The fitted intensity functions clearly differ, but this does not necessarily imply that the population-density model provides a significantly better explanation of the observed point pattern than the null model. The relatively wide confidence intervals associated with the covariate-based model, especially at higher population densities, suggest uncertainty in the estimated relationship. This highlights the need for formal statistical testing before concluding that population density contributes meaningfully to the observed variation in store intensity.</p>
+<p>To formally assess whether the covariate-based model provides a significantly better fit than the null model, we use a likelihood ratio test. This test compares the log-likelihoods of the two models and evaluates whether the improvement in fit achieved by the more complex model is greater than would be expected by chance alone.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Deviance Table
+
+Model 1: ~1      Poisson
+Model 2: ~pop    Poisson
+  Npar Df Deviance Pr(&gt;Chi)  
+1    5                       
+2    6  1   4.2531  0.03918 *
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<p>The value reported under <code>PR(&gt;Chi)</code> is the p-value. It represents the probability of observing an improvement in fit at least as large as the one obtained here if the null model were true. In our example, the resulting p-value is 0.039. This indicates that, under the assumption of homogeneous intensity, there is approximately a 3.9% chance of observing a difference between the two models this large or larger simply due to random variation. Because this probability is small, the results provide evidence that population density improves our ability to explain the spatial distribution of Walmart stores.</p>
+<p>In summary, the likelihood ratio test suggests that population density is a meaningful covariate for explaining variation in Walmart store intensity. While uncertainty remains in the estimated relationship, the covariate-based model provides a significantly better fit than the homogeneous-intensity model.</p>
+</section>
+<section id="summary" class="level2" data-number="14.6">
+<h2 data-number="14.6" class="anchored" data-anchor-id="summary"><span class="header-section-number">14.6</span> Summary</h2>
+<p>This chapter introduced methods for analyzing <strong>first-order effects</strong> in spatial point patterns. Rather than focusing on interactions among points, first-order analyses seek to understand how point intensity varies across space and how that variation may be related to underlying environmental or socioeconomic factors.</p>
+<ul>
+<li><strong>Intensity</strong> refers to the underlying rate at which events occur across space, whereas density refers to the observed number of points per unit area.</li>
+<li>A <strong>homogeneous</strong> point process assumes constant intensity across the study area, while an <strong>inhomogeneous</strong> process allows intensity to vary spatially.</li>
+<li><strong>Global density</strong> provides a single estimate of intensity for an entire study region and serves as a useful baseline summary measure.</li>
+<li><strong>Local density</strong> methods allow intensity to be estimated at different locations, helping identify spatial variation that may indicate first-order effects.</li>
+<li><strong>Quadrat density</strong> estimates local intensity by partitioning the study area into subregions, but results can be sensitive to quadrat size and placement, an example of the modifiable areal unit problem (MAUP).</li>
+<li><strong>Kernel density estimation (KDE)</strong> replaces fixed quadrats with a moving window, producing a smoother representation of spatial intensity.</li>
+<li>Density and intensity surfaces can be compared to covariates such as elevation or population density to explore potential explanations for spatial variation in point intensity.</li>
+<li><strong>Non-parametric intensity modeling</strong> estimates the relationship between intensity and a covariate without assuming a specific functional form.</li>
+<li>Poisson point process models (PPMs) provide a parametric framework for expressing intensity as a function of one or more covariates.</li>
+<li>PPMs focus on <strong>first-order effects</strong>, assuming that events occur independently and that intensity varies as a function of external factors rather than interactions among points.</li>
+<li><strong>Likelihood ratio tests</strong> can be used to compare a covariate-based intensity model to a simpler homogeneous-intensity model, allowing us to assess whether a covariate significantly improves our understanding of the observed point pattern.</li>
+<li>Throughout this chapter, the emphasis has been on explaining where point intensity is high or low and why it varies across space. In the next chapter, we turn our attention to <strong>second-order effects</strong>, asking whether points exhibit clustering, dispersion, or interaction beyond what would be expected from the underlying intensity surface alone.</li>
+</ul>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="ref-Spatstat" class="csl-entry" role="listitem">
+Baddeley, Adrian, Ege Rubak, and Rolf Turner. 2016. <em>Spatial Point Patterns, Methodology and Applications with r</em>. CRC Press.
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./13_autocorrelation.html" class="pagination-link" aria-label="Spatial Autocorrelation">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Spatial Autocorrelation</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./15_ppa_2nd.html" class="pagination-link" aria-label="Second-Order Point Pattern Analysis">
+        <span class="nav-page-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Second-Order Point Pattern Analysis</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

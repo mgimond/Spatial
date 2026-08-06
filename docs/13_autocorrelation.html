@@ -1,0 +1,1367 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>13&nbsp; Spatial Autocorrelation – Introduction to GIS and Spatial Analysis</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./14_ppa_1st.html" rel="next">
+<link href="./12_poly_functions.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-9e3e5b9121e68b3f077afb32f2c64d95.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./11_intro_spatial.html">Spatial Analysis</a></li><li class="breadcrumb-item"><a href="./13_autocorrelation.html"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Spatial Autocorrelation</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Introduction to GIS and Spatial Analysis</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01_intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Working with Spatial Data</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02_feature_representation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Feature Representation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03_data_management.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">GIS Data Management</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04_symbolizing_features.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Symbolizing features</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05_statistical_maps.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Statistical maps</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06_pitfalls_to_avoid.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Pitfalls to avoid</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07_map_making_tips.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Good Map Making Tips</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08_spatial_operations_vector_overlays.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Spatial Selection and Vector Overlays</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09_coordinate_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Coordinate Systems</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10_map_algebra.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Map Algebra</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Spatial Analysis</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11_intro_spatial.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Analyzing Spatial Patterns</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12_poly_functions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Modeling Spatial Trends</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13_autocorrelation.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Spatial Autocorrelation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14_ppa_1st.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">First-Order Point Pattern Analysis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./15_ppa_2nd.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Second-Order Point Pattern Analysis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./16_interpolation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Spatial Interpolation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">13.1</span> Introduction</a></li>
+  <li><a href="#global-morans-i" id="toc-global-morans-i" class="nav-link" data-scroll-target="#global-morans-i"><span class="header-section-number">13.2</span> Global Moran’s <em>I</em></a>
+  <ul class="collapse">
+  <li><a href="#computing-the-morans-i" id="toc-computing-the-morans-i" class="nav-link" data-scroll-target="#computing-the-morans-i"><span class="header-section-number">13.2.1</span> Computing the Moran’s <em>I</em></a></li>
+  <li><a href="#monte-carlo-approach-to-estimating-significance" id="toc-monte-carlo-approach-to-estimating-significance" class="nav-link" data-scroll-target="#monte-carlo-approach-to-estimating-significance"><span class="header-section-number">13.2.2</span> Monte Carlo approach to estimating significance</a></li>
+  </ul></li>
+  <li><a href="#morans-i-at-different-distance-bands" id="toc-morans-i-at-different-distance-bands" class="nav-link" data-scroll-target="#morans-i-at-different-distance-bands"><span class="header-section-number">13.3</span> Moran’s <em>I</em> at different distance bands</a></li>
+  <li><a href="#local-morans-i" id="toc-local-morans-i" class="nav-link" data-scroll-target="#local-morans-i"><span class="header-section-number">13.4</span> Local Moran’s <em>I</em></a>
+  <ul class="collapse">
+  <li><a href="#significance-testing-for-local-morans-i" id="toc-significance-testing-for-local-morans-i" class="nav-link" data-scroll-target="#significance-testing-for-local-morans-i"><span class="header-section-number">13.4.1</span> Significance Testing for Local Moran’s I</a></li>
+  <li><a href="#multiple-comparisons-and-false-discovery-rate" id="toc-multiple-comparisons-and-false-discovery-rate" class="nav-link" data-scroll-target="#multiple-comparisons-and-false-discovery-rate"><span class="header-section-number">13.4.2</span> Multiple Comparisons and False Discovery Rate</a></li>
+  </ul></li>
+  <li><a href="#morans-i-equation-explained" id="toc-morans-i-equation-explained" class="nav-link" data-scroll-target="#morans-i-equation-explained"><span class="header-section-number">13.5</span> Moran’s I equation explained</a>
+  <ul class="collapse">
+  <li><a href="#local-morans-i-1" id="toc-local-morans-i-1" class="nav-link" data-scroll-target="#local-morans-i-1"><span class="header-section-number">13.5.1</span> Local Moran’s I</a></li>
+  <li><a href="#global-morans-i-1" id="toc-global-morans-i-1" class="nav-link" data-scroll-target="#global-morans-i-1"><span class="header-section-number">13.5.2</span> Global Moran’s I</a></li>
+  </ul></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">13.6</span> Summary</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./11_intro_spatial.html">Spatial Analysis</a></li><li class="breadcrumb-item"><a href="./13_autocorrelation.html"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Spatial Autocorrelation</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Spatial Autocorrelation</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="introduction" class="level2" data-number="13.1">
+<h2 data-number="13.1" class="anchored" data-anchor-id="introduction"><span class="header-section-number">13.1</span> Introduction</h2>
+<p>In the previous chapter, we explored how polynomial functions can be used to model spatial trends that capture broad, location-driven variation in continuous spatial fields. By fitting and removing global trends, we revealed residuals that may still exhibit spatial structure. This chapter builds on that foundation by introducing <strong>spatial autocorrelation</strong>, a second-order property that describes how values at one location relate to values at nearby locations.</p>
+<p>This concept is rooted in <strong>Tobler’s First Law of Geography</strong> which states:</p>
+<blockquote class="blockquote">
+<p><em>“The first law of geography: Everything is related to everything else, but near things are more related than distant things.”</em> Waldo R. Tobler <span class="citation" data-cites="Tobler1970">(<a href="references.html#ref-Tobler1970" role="doc-biblioref">Tobler 1970</a>)</span></p>
+</blockquote>
+<p>This principle raises an important question: <em>How can we determine whether nearby locations are actually more similar than we would expect under a random spatial arrangement?</em> Spatial autocorrelation provides a statistical framework for quantifying and testing such spatial dependence. In this chapter, we focus on Moran’s I, one of the most widely used measures of spatial autocorrelation.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-rand_maps" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-rand_maps-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="img/Random_maps.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="600">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-rand_maps-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;13.1: Conceptual illustration of spatial autocorrelation. Geographic variables such as population density and elevation typically exhibit spatial structure (left). Randomly rearranging the same values across space removes that structure (right).
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>As illustrated in <a href="#fig-rand_maps" class="quarto-xref">Figure&nbsp;<span>13.1</span></a>, many geographic variables exhibit broad areas of similar values. If the same values were distributed independently across space, the resulting maps would appear much more fragmented.</p>
+<p>To make the mathematical foundations of autocorrelation more accessible, we shift from the raster-based data used in the previous chapter to a simpler dataset composed of <strong>polygonal areal units</strong> (e.g., counties). This allows us to clearly illustrate how spatial relationships are defined, how spatial weights are constructed, and how measures like <strong>Moran’s I</strong> are computed.</p>
+<p>This chapter focuses on:</p>
+<ul>
+<li>Defining spatial autocorrelation and its role in spatial statistics.</li>
+<li>Constructing spatial weights to represent neighborhood relationships.</li>
+<li>Computing and interpreting <strong>global</strong> and <strong>local Moran’s I</strong> statistics.</li>
+<li>Using permutation-based hypothesis testing to assess significance.</li>
+</ul>
+</section>
+<section id="global-morans-i" class="level2" data-number="13.2">
+<h2 data-number="13.2" class="anchored" data-anchor-id="global-morans-i"><span class="header-section-number">13.2</span> Global Moran’s <em>I</em></h2>
+<p>While maps can sometimes reveal clusters of similar values, visual interpretation alone cannot tell us how strong those patterns are or whether they are stronger than we might expect by chance. To move beyond subjective impressions, we need a quantitative measure of spatial association. Specifically, we want to quantify the degree to which similar attribute values are clustered or dispersed across space.</p>
+<p>One widely used statistic for this purpose is <strong>Moran’s I</strong> , a measure of <strong>global spatial autocorrelation</strong>. It quantifies the overall tendency for features with similar values to occur near one another, given a specified definition of neighborhood (e.g., contiguity or distance). Conceptually, Moran’s I measures the relationship between a variable and a spatially lagged version of that same variable.</p>
+<section id="computing-the-morans-i" class="level3" data-number="13.2.1">
+<h3 data-number="13.2.1" class="anchored" data-anchor-id="computing-the-morans-i"><span class="header-section-number">13.2.1</span> Computing the Moran’s <em>I</em></h3>
+<p>Let’s start with a working example: 2020 median per capita income for the state of Maine.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-map03" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-map03-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="13_autocorrelation_files/figure-html/fig-map03-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-map03-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;13.2: Map of 2020 median per capita income for Maine counties (USA).
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>At first glance, the county-level income distribution appears clustered, with high-income counties tending to occur near other high-income counties and low-income counties tending to occur near other low-income counties. However, visual inspection alone cannot tell us how strong this apparent clustering is, nor whether it reflects a meaningful spatial process. To move beyond a qualitative assessment, we need a quantitative measure of the degree to which similar (or dissimilar) values occur near one another. One of the most widely used measures for this purpose is the <strong>Moran’s I statistic</strong>.</p>
+<blockquote class="blockquote">
+<p><strong>Trend versus Autocorrelation</strong><br>
+The pattern shown in <a href="#fig-map03" class="quarto-xref">Figure&nbsp;<span>13.2</span></a> may reflect a broad spatial trend (a first-order effect), local spatial dependence (a second-order effect), or both. In practice, analysts often assess spatial autocorrelation using the residuals remaining after a first-order trend has been modeled and removed. For pedagogical simplicity, we set that complication aside here and apply Moran’s I directly to the observed income values.</p>
+</blockquote>
+<p>The Moran’s <em>I</em> statistic is a measure of spatial autocorrelation that quantifies the degree to which similar values (like income) cluster together in space. It is computed as the correlation between a variable and its spatially lagged counterpart, based on a defined spatial weights matrix.</p>
+<p>But before we go about computing this correlation, we need to come up with a way to define a neighbor. One approach is to define a neighbor as being any contiguous polygon. For example, the northernmost county (Aroostook), has four contiguous neighbors while the southern most county (York) has just two contiguous counties. Other neighborhood definitions can include distance bands (e.g.&nbsp;counties within 100 km) and k nearest neighbors (e.g.&nbsp;the 2 closest neighbors). Note that distance bands and k nearest neighbors are usually measured using the polygon’s centroids and not their boundaries.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-map04" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-map04-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="img/Diff_neighbors.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="600">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-map04-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;13.3: Three alternative ways of defining neighbors: contiguity, distance bands, and k nearest neighbors. The choice of neighborhood definition determines which features interact in the autocorrelation analysis and can influence the resulting Moran’s I statistic. Orange numbers indicate the number of neighbors associated with each county.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Once we’ve defined a neighborhood structure, we can summarize the attribute values surrounding each polygon. For example, we might compute the average income of a polygon’s neighbors. This neighborhood summary is called a <strong>spatial lag</strong> because it represents the value of the variable in the surrounding area rather than at the focal polygon itself. In our working example, we compute the average neighboring income value (<em>Income<sub>lag</sub></em>) for each county.</p>
+<p>If nearby counties tend to have similar incomes, then counties with high income values should be associated with high lagged-income values, while counties with low income values should be associated with low lagged-income values.</p>
+<p>We then plot <em>Income<sub>lag</sub></em> against <em>Income</em> for each county. When both variables are standardized (converted to z-scores), the slope of the fitted regression line is equal to the Moran’s I statistic.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-map05" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-map05-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="13_autocorrelation_files/figure-html/fig-map05-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="336">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-map05-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;13.4: Scatter plot of spatially lagged income (neighboring income) versus county income. The positive relationship suggests that counties with similar income values tend to occur near one another. When both axes are standardized (converted to z-scores), the slope of the fitted line equals the Moran’s <em>I</em> statistic.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>If there is no degree of association between <em>Income</em> and <em>Income<sub>lag</sub></em>, the slope will be close to flat (resulting in a Moran’s <em>I</em> value near 0). In our working example, the slope is far from flat with a Moran’s <em>I</em> value of 0.28. Positive values indicate clustering of similar values, negative values indicate neighboring dissimilarity, and values near zero suggest little spatial association. The observed Moran’s I value is positive, suggesting that similar income values tend to occur near one another. The next question is whether this level of clustering is stronger than we would expect under a random spatial arrangement. There are two approaches to estimating the significance: an analytical solution and a Monte Carlo solution. The analytical solution makes some restrictive assumptions about the data and thus cannot always be reliable. The other approach (and the one favored here) is a Monte Carlo test. This approach avoids parametric assumptions about the data distribution or spatial layout, relying instead on the assumption that values are exchangeable under the null hypothesis.</p>
+</section>
+<section id="monte-carlo-approach-to-estimating-significance" class="level3" data-number="13.2.2">
+<h3 data-number="13.2.2" class="anchored" data-anchor-id="monte-carlo-approach-to-estimating-significance"><span class="header-section-number">13.2.2</span> Monte Carlo approach to estimating significance</h3>
+<p>In a Monte Carlo permutation test, we assess the significance of an observed Moran’s <em>I</em> statistic by comparing it to a distribution of values generated under the null hypothesis of spatial randomness. This is done by <strong>permuting</strong> the attribute values across spatial units while keeping the spatial structure (e.g., neighborhood relationships) fixed.</p>
+<p>For each permutation, the attribute values are shuffled among the polygons and a new Moran’s <em>I</em> value is computed.</p>
+<p>If the observed clustering is no stronger than expected under randomness, the Moran’s I values computed from the permutations should resemble the observed value. Conversely, if the observed pattern is unusually clustered, the observed statistic should stand apart from most of the randomized outcomes.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-map06" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-map06-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="13_autocorrelation_files/figure-html/fig-map06-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="288">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-map06-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;13.5: Results from 199 permutations. Plot shows Moran’s <em>I</em> lines (in gray) computed from each random permutation of income values. The observed Moran’s <em>I</em> line for the original dataset is shown in red.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Repeating this process many times yields a <strong>sampling distribution</strong> of Moran’s <em>I</em> values that would be expected if the observed values were randomly distributed across space.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-map07" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-map07-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="13_autocorrelation_files/figure-html/fig-map07-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="288">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-map07-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;13.6: Histogram of Moran’s I values generated under the null hypothesis of spatial randomness. The red line marks the observed Moran’s <em>I</em> value (0.28), which lies in the upper tail of the null distribution.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Notice that most randomized Moran’s I values are centered near zero, which is what we would expect under spatial randomness.</p>
+<p>In our working example, the 199 simulations suggest that our observed Moran’s <em>I</em> value of 0.28 would be unlikely if the income values were randomly distributed across counties. A pseudo <em>p-value</em> can be computed as the proportion of simulated Moran’s I values that are at least as extreme as the observed statistic:</p>
+<p><span class="math display">\[
+\dfrac{N_{extreme}+1}{N+1}
+\]</span></p>
+<p>where <span class="math inline">\(N_{extreme}\)</span> is the number of simulated Moran’s <em>I</em> values at least as extreme as the observed statistic and <span class="math inline">\(N\)</span> is the total number of simulations. The addition of 1 to both the numerator and denominator ensures that the observed statistic is included as one of the possible outcomes and prevents a p-value of exactly zero.</p>
+<p>Here, out of 199 simulations, just three simulated <em>I</em> values were more extreme than our observed statistic, <span class="math inline">\(N_{extreme}\)</span> = 3, so <span class="math inline">\(p\)</span> is equal to (3 + 1) / (199 + 1) = 0.02. Because only four of the 200 outcomes (the observed statistic plus three simulated values) were at least as extreme as the observed Moran’s I, the observed pattern would be unlikely if the income values were randomly distributed across counties. We therefore have evidence against the null hypothesis of spatial randomness.</p>
+<p>It is important to distinguish permutation tests from other simulation approaches commonly used in statistics. In this permutation example, we shuffled the observed income values among polygons without replacement–this is referred to as a <strong>permutation-based randomization</strong>. This should not be confused with a <strong>distribution-based simulation</strong> where new values are randomly generated from a theoretical distribution and assigned to features. In such a scenario, one chooses to randomly assign a set of values to each feature in a data layer from a <em>theorized distribution</em> (for example, a <em>Normal</em> distribution). This may result in a completely different set of values for each permutation outcome. Note that you would only adopt this approach if the theorized distribution underpinning the value of interest is known <em>a priori</em>.</p>
+<p>Another important consideration when computing a permutation-based p-value from a permutation test is the number of simulations to perform. In the above example we ran 199 permutations, thus, the smallest p-value we could possibly come up with is 1 / (199 + 1) or a p-value of 0.005. You should therefore choose a number of permutations, <span class="math inline">\(N\)</span>, large enough to allow for finer resolution of p-values and more robust inference.</p>
+</section>
+</section>
+<section id="morans-i-at-different-distance-bands" class="level2" data-number="13.3">
+<h2 data-number="13.3" class="anchored" data-anchor-id="morans-i-at-different-distance-bands"><span class="header-section-number">13.3</span> Moran’s <em>I</em> at different distance bands</h2>
+<p>So far we have defined neighbors using polygon contiguity. While this approach is common, it implicitly assumes that spatial relationships operate only among immediately adjacent polygons. In practice, spatial processes often operate across a range of distances. This raises an important question: at what spatial scale is autocorrelation strongest? One way to explore this question is to compute Moran’s I repeatedly using different distance-based neighborhood definitions.</p>
+<p>The procedure is conceptually identical to the one used earlier, except that the neighborhood definition changes from one analysis to the next. The steps for this type of analysis are straightforward:</p>
+<ol type="1">
+<li>Define a neighborhood structure based on a specific distance band.</li>
+<li>Compute lagged values for the defined set of neighbors.</li>
+<li>Calculate the Moran’s <em>I</em> value for the defined neighborhood.</li>
+<li>Repeat for additional distance bands to observe how autocorrelation changes with spatial scale.</li>
+</ol>
+<p>For example, the Moran’s <em>I</em> values for income distribution in the state of Maine at distances of 75, 125, up to 325 km are presented in the following plot:</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-mc_distance" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-mc_distance-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="img/MoranI_distance_band.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="500">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-mc_distance-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;13.7: Moran’s <em>I</em> computed at increasing distance bands. Positive values indicate that counties separated by those distances tend to have similar incomes, while negative values indicate dissimilarity. Red points mark statistically significant Moran <em>I</em> values (p ≤ 0.05).
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The plot suggests that there is significant spatial autocorrelation between counties within 75 km of one another, but as the distances between counties increase, autocorrelation shifts from positive to negative, indicating that nearby counties tend to have similar income levels, while counties farther apart tend to be more dissimilar. This pattern is consistent with Tobler’s First Law: nearby counties tend to be more similar than distant counties. Beyond a certain distance, however, income values become increasingly dissimilar, leading to negative autocorrelation.</p>
+</section>
+<section id="local-morans-i" class="level2" data-number="13.4">
+<h2 data-number="13.4" class="anchored" data-anchor-id="local-morans-i"><span class="header-section-number">13.4</span> Local Moran’s <em>I</em></h2>
+<p>The global Moran’s I statistic summarizes spatial autocorrelation across the entire study area. While useful, it does not tell us <em>where</em> clusters of similar or dissimilar values occur. To identify these local patterns, we can decompose the global statistic into a set of localized measures of autocorrelation. This is commonly referred to as <strong>Local Moran’s I</strong>.</p>
+<p>A local Moran’s <em>I</em> analysis is best suited for relatively large datasets, particularly when hypothesis testing is of interest. We therefore switch to a different dataset: household income data for Massachusetts (USA), aggregated to U.S. Census county subdivisions. As with the Maine example, we temporarily ignore potential first-order trends for pedagogical simplicity and apply the analysis directly to the observed values.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-dataset" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-dataset-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="13_autocorrelation_files/figure-html/fig-dataset-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="480">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-dataset-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;13.8: Median household income for Massachusetts county subdivisions in 2020. The large number of spatial units makes this dataset well suited for exploring localized patterns of spatial autocorrelation.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Applying a contiguity-based neighborhood definition, we compute the average neighboring income value (<em>Income lag</em>) for each county subdivision and plot it against the subdivision’s own income value. As with the Global Moran’s I analysis, this scatterplot compares each observation to its surrounding neighborhood. However, rather than focusing on the overall slope of the point cloud, we are now interested in the position of individual points because they help reveal localized patterns of spatial association.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-chunk10" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-chunk10-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="13_autocorrelation_files/figure-html/fig-chunk10-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="288">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-chunk10-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;13.9: Moran scatterplot of median household income versus spatially lagged income for Massachusetts county subdivisions.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The vertical and horizontal reference lines mark the mean values for income and lagged income, respectively, dividing the scatterplot into four quadrants. Observations in the upper-right quadrant represent high values surrounded by high values (<strong>high-high</strong>) and are shown in red. Observations in the lower-left quadrant represent low values surrounded by low values (<strong>low-low</strong>) and are shown in dark blue. The remaining quadrants identify spatial outliers: high values surrounded by low values (<strong>high-low</strong>, light blue) and low values surrounded by high values (<strong>low-high</strong>, orange).</p>
+<p>The quadrant classifications shown in the Moran scatterplot (<a href="#fig-chunk10" class="quarto-xref">Figure&nbsp;<span>13.9</span></a>) can be mapped back to their corresponding county subdivisions. This allows us to identify where high-high, low-low, high-low, and low-high spatial relationships occur across the study area.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-map10" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-map10-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="13_autocorrelation_files/figure-html/fig-map10-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="480">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-map10-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;13.10: Spatial distribution of the four Moran scatterplot quadrants. High-high and low-low polygons indicate local similarity, while high-low and low-high polygons indicate local spatial outliers.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The Moran scatterplot and corresponding map help identify <em>potential</em> local clusters and spatial outliers. However, visual classification alone does not tell us whether these local patterns are stronger than we might expect under a random spatial arrangement. Each spatial unit therefore has its own Local Moran’s I statistic, denoted <span class="math inline">\(I_i\)</span>, which quantifies the degree of spatial autocorrelation around that unit. The calculation of <span class="math inline">\(I_i\)</span> is shown later in the chapter.</p>
+<section id="significance-testing-for-local-morans-i" class="level3" data-number="13.4.1">
+<h3 data-number="13.4.1" class="anchored" data-anchor-id="significance-testing-for-local-morans-i"><span class="header-section-number">13.4.1</span> Significance Testing for Local Moran’s I</h3>
+<p>While the scatterplot helps visually identify potential clusters, statistical significance must be assessed to determine whether these patterns are likely to have occurred by chance.</p>
+<p>As with the global Moran’s <em>I</em>, there is both an analytical and a Monte Carlo approach to assessing the significance of <span class="math inline">\(I_i\)</span>. In a Monte Carlo approach, the value of the focal feature remains fixed while the values of all other features are repeatedly shuffled among locations. After each permutation, a new <span class="math inline">\(I_i\)</span> is computed using the randomized neighborhood values. Repeating this process many times generates a reference distribution of <span class="math inline">\(I_i\)</span> values that we would expect if the observed values were randomly distributed across the study area.</p>
+<p>To illustrate, consider a polygon in eastern Massachusetts with a high observed <span class="math inline">\(I_i\)</span> value. We assess its significance by comparing it to a distribution of <span class="math inline">\(I_i\)</span> values generated through permutation.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-map11" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-map11-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="13_autocorrelation_files/figure-html/fig-map11-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="336">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-map11-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;13.11: County subdivision used to illustrate the assessment of Local Moran’s I significance. The observed Local Moran’s I statistic for this polygon is 0.85 and will be compared to values generated from repeated permutations.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Its Local Moran’s <em>I</em> statistic is 0.85. To assess its significance, we perform a permutation test in which the income value of the focal polygon is held constant while the income values of all other polygons are randomly reassigned. Each permutation generates a new <span class="math inline">\(I_i\)</span> value based on a different neighborhood configuration. A few example permutations are shown below.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-map12" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-map12-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="13_autocorrelation_files/figure-html/fig-map12-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="768">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-map12-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;13.12: Examples of Local Moran’s I values generated during the permutation procedure. The income value of the focal polygon remains fixed while lagged income values are randomly reassigned, producing different realizations of <span class="math inline">\(I_i\)</span> under the null hypothesis of spatial randomness.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>You’ll note that even though the income value of the focal polygon remains unchanged, its Local Moran’s <em>I</em> statistic varies because the income values assigned to neighboring polygons change from one permutation to the next.</p>
+<p>Repeating this process many times generates a reference distribution of <span class="math inline">\(I_i\)</span> values under the null hypothesis that income values are randomly distributed across Massachusetts. The observed <span class="math inline">\(I_i\)</span> can then be compared to this distribution to assess whether the local pattern is more extreme than would be expected by chance. The resulting distribution of <span class="math inline">\(I_i\)</span> values for our example polygon is shown in the following histogram.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-map13" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-map13-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="13_autocorrelation_files/figure-html/fig-map13-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="240">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-map13-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;13.13: Reference distribution of Local Moran’s <em>I</em> values generated from repeated permutations. The red vertical line marks the observed <span class="math inline">\(I_i\)</span> value; its position relative to the simulated distribution is used to assess statistical significance.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>About 9.3% of the simulated values are more extreme than our observed <span class="math inline">\(I_i\)</span> giving us a permutation-based p-value of 0.09.</p>
+<p>If we repeat this permutation test for every polygon in the dataset, we can compute a permutation-based <em>p</em>-value for each Local Moran’s <em>I</em> statistic and map the results. These <em>p</em>-values indicate how unusual the observed local patterns are relative to what would be expected under spatial randomness. Note that the mapped <em>p</em>-values represent the probability of obtaining an <span class="math inline">\(I_i\)</span> value at least as extreme as the observed value (equivalent to a <strong>one-tailed test</strong>).</p>
+<p>In the following map, lower <em>p</em>-values identify locations where the observed <span class="math inline">\(I_i\)</span> values are less likely to have arisen by chance.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-map14" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-map14-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="13_autocorrelation_files/figure-html/fig-map14-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="480">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-map14-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;13.14: Map of permutation-based <em>p</em>-values for Local Moran’s <em>I</em>. These values can be used to identify statistically significant local clusters and spatial outliers by applying a chosen significance threshold.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The permutation-based <em>p</em>-values can be used to filter the Local Moran’s <em>I</em> classifications based on a chosen significance level. For example, the following scatterplot and map show only those high-high, low-low, high-low, and low-high relationships whose permutation-based <em>p</em>-value is 0.05 or less.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-map15" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-map15-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="13_autocorrelation_files/figure-html/fig-map15-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="864">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-map15-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;13.15: Moran scatterplot classifications filtered using a permutation-based significance threshold of <em>p</em> <span class="math inline">\(\le\)</span> 0.05. Only high-high, low-low, high-low, and low-high relationships deemed statistically significant are shown.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Note that statistical significance is not limited to high-high and low-low clusters. High-low and low-high relationships can also be statistically significant.</p>
+<p><a href="#fig-map15" class="quarto-xref">Figure&nbsp;<span>13.15</span></a> used a significance threshold of 0.05. Applying a more stringent threshold of 0.01 retains only the strongest evidence of local spatial association, as shown in the following figure.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-map16" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-map16-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="13_autocorrelation_files/figure-html/fig-map16-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="864">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-map16-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;13.16: Moran scatterplot classifications filtered using a permutation-based significance threshold of <em>p</em> <span class="math inline">\(\le\)</span> 0.01. Only high-high, low-low, high-low, and low-high relationships deemed statistically significant are shown.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="multiple-comparisons-and-false-discovery-rate" class="level3" data-number="13.4.2">
+<h3 data-number="13.4.2" class="anchored" data-anchor-id="multiple-comparisons-and-false-discovery-rate"><span class="header-section-number">13.4.2</span> Multiple Comparisons and False Discovery Rate</h3>
+<p>While permutation tests are less sensitive to issues such as non-normality and irregular spatial arrangements than many parametric approaches, they are not immune to interpretational challenges. In particular, when significance is assessed for every feature in a dataset, some polygons may appear significant purely by chance. To illustrate, suppose the income values were generated by a completely random process. One possible realization might look like the following:</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-map17" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-map17-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="13_autocorrelation_files/figure-html/fig-map17-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="768">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-map17-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;13.17: Example realization of a random spatial process. Although the income values were assigned randomly, several polygons are associated with low permutation-based <em>p</em>-values, illustrating how statistically significant Local Moran’s <em>I</em> values can arise by chance when many tests are performed.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Notice that several polygons are associated with low permutation-based p-values even though the underlying process is completely random. In fact, one polygon has a permutation-based p-value of 0.001 or less. This is not necessarily evidence of a meaningful spatial pattern. When significance is assessed for many features simultaneously, some low p-values are expected to occur by chance alone. In our example, 343 polygons result in 343 separate significance tests. This is analogous to repeatedly drawing cards from a deck: the more opportunities you have to draw the ace of spades, the greater the chance that you will eventually draw one.</p>
+<p>Another realization of a random spatial process is shown in the following figure.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-map18" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-map18-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="13_autocorrelation_files/figure-html/fig-map18-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="768">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-map18-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;13.18: A second realization of a random spatial process. As in <a href="#fig-map17" class="quarto-xref">Figure&nbsp;<span>13.17</span></a>, several polygons exhibit low permutation-based p-values despite the absence of true spatial autocorrelation.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Several polygons are associated with very low permutation-based p-values (the smallest <em>p</em>-value in this example is 0.0006). If these results were viewed in isolation, one might conclude that several polygons exhibit significant local spatial autocorrelation. However, because the underlying process is completely random, these apparent discoveries are false positives arising purely by chance, a classic example of a <em>Type I</em> error caused by multiple comparisons.</p>
+<p>To further illustrate this issue, consider generating 200 independent realizations of a random spatial process. For each realization, we compute a permutation-based <em>p</em>-value for every polygon, resulting in a large number of simultaneous hypothesis tests and, consequently, many opportunities for false positives. This generates 200×343 local hypothesis tests and their associated <em>p</em>-values. Even though all realizations are random, approximately 10% of the resulting <em>p</em>-values are 0.05 or less. This value should be interpreted as an empirical outcome of this simulation rather than a theoretical expectation, since Local Moran’s <em>I</em> tests are not independent and neighboring polygons often share information through their spatial relationships. The distribution of <em>p</em>-values across all simulations is shown in the following figure.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-map19" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-map19-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="13_autocorrelation_files/figure-html/fig-map19-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="768">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-map19-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;13.19: Distribution of permutation-based <em>p</em>-values from 200 realizations of a random spatial process. Blue labels denote the <em>p</em>-value classes and red labels show the percentage of observations in each class. Even under complete spatial randomness, a substantial number of tests produce low p-values, highlighting the accumulation of false positives when many hypothesis tests are performed simultaneously.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>This problem is known in statistics as the <strong>multiple comparison problem</strong>. Several approaches have been proposed to address it, each with its own strengths and limitations. One of the most widely used solutions is the <em>False Discovery Rate</em> correction (FDR). Rather than attempting to eliminate all false positives, the FDR approach seeks to control the expected proportion of false positives among the set of features declared significant.</p>
+<p>There are several implementations of the FDR procedure. One common approach begins by ranking the permutation-based <em>p</em>-values, <span class="math inline">\(p\)</span>, from smallest to largest and assigning a rank, <span class="math inline">\(i\)</span>, to each value. Next, a reference value is computed for each rank as <span class="math inline">\(i(\alpha/n)\)</span> where <span class="math inline">\(\alpha\)</span> is the desired significance level (0.05, for example) and <span class="math inline">\(n\)</span> is the total number of observations (e.g.&nbsp;polygons) for which a permutation-based <em>p</em>-value has been computed (343 in our working example). All <em>p</em>-values that satisfy <span class="math inline">\(p_i \le i(\alpha/n)\)</span> are considered significant at the chosen <span class="math inline">\(\alpha\)</span> level.</p>
+<p>Applying the FDR correction to the permutation-based significance threshold of 0.05 produces a more conservative cluster map than the one shown in <a href="#fig-map15" class="quarto-xref">Figure&nbsp;<span>13.15</span></a>, reducing the likelihood of false positives arising from multiple comparisons.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-map20" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-map20-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="13_autocorrelation_files/figure-html/fig-map20-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="864">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-map20-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;13.20: Local Moran’s I classifications deemed significant at <span class="math inline">\(\alpha = 0.05\)</span> after applying the False Discovery Rate (FDR) correction. Compared to the uncorrected results, fewer polygons are identified as significant, reducing the likelihood of false positives.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Applying the FDR correction to a significance threshold of 0.01 yields an even more conservative set of clusters than those shown in <a href="#fig-map16" class="quarto-xref">Figure&nbsp;<span>13.16</span></a>. By accounting for the large number of simultaneous hypothesis tests, the correction retains only the strongest evidence of local spatial association, as shown in the following figure.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-map21" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-map21-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="13_autocorrelation_files/figure-html/fig-map21-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="864">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-map21-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;13.21: Local Moran’s I classifications deemed significant at <span class="math inline">\(\alpha = 0.01\)</span> after applying the False Discovery Rate (FDR) correction. The more stringent significance threshold retains only the strongest local spatial relationships.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>It is important to recognize that there is no universally accepted solution to the multiple-comparison problem. Spatial data introduce additional complications because neighboring features often share information. For example, the same polygon may contribute to the Local Moran’s I calculations of several neighboring polygons, violating the assumption that individual tests are independent. These and other sources of dependence make inferential interpretation in a spatial context particularly challenging. As a result, significance maps derived from Local Moran’s I analyses should be interpreted with caution.</p>
+</section>
+</section>
+<section id="morans-i-equation-explained" class="level2" data-number="13.5">
+<h2 data-number="13.5" class="anchored" data-anchor-id="morans-i-equation-explained"><span class="header-section-number">13.5</span> Moran’s I equation explained</h2>
+<p>The Moran’s <em>I</em> statistic can be expressed in several mathematically equivalent forms, each offering different insights into its structure and interpretation. One commonly used formulation is:</p>
+<p><span class="math display">\[
+I = \frac{N}{\sum\limits_i (X_i-\bar X)^2}
+    \frac{\sum\limits_i \sum\limits_j w_{ij}(X_i-\bar X)(X_j-\bar X)}{\sum\limits_i \sum\limits_j w_{ij}} \tag{1}
+\]</span></p>
+<p>Here, <span class="math inline">\(N\)</span> is the total number of spatial units, <span class="math inline">\(X_i\)</span> and <span class="math inline">\(X_j\)</span> are the attribute values at locations <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span>, <span class="math inline">\(\bar{X}\)</span> is the mean of <span class="math inline">\(X\)</span>, and <span class="math inline">\(w_{ij}\)</span> is the spatial weight between locations <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span>–typically defined by contiguity, distance, or other spatial relationships.</p>
+<p>There are a few key components of Equation (1) worth highlighting. First, you’ll note the standardization of both sets of values by the subtraction of each value in <span class="math inline">\(X_i\)</span> or <span class="math inline">\(X_j\)</span> by the mean of <span class="math inline">\(X\)</span>. This highlights the fact that we are seeking to compare the deviation of each value from an overall mean and not the deviation of their absolute values.</p>
+<p>Second, you’ll note an inverted variance term on the left-hand side of equation (1): this is a measure of spread. You might recall from an introductory statistics course that the variance can be computed as:</p>
+<p><span class="math display">\[
+s^2 = \frac{\sum\limits_i (X_i-\bar X)^2}{N}\tag{2}
+\]</span> Note that a more common measure of variance, the sample variance, where one divides the above numerator by <span class="math inline">\((n-1)\)</span> can also be adopted in the Moran’s <em>I</em> calculation.</p>
+<p>Equation (1) is thus dividing the large fraction on the right-hand side by the variance. Standardization causes Moran’s I to behave similarly to a correlation coefficient with values typically falling near the range [-1,1]. However, the exact bounds depend on the spatial weights matrix and may extend beyond this interval. We can re-write the Moran’s I equation by plugging in <span class="math inline">\(s^2\)</span> as follows:</p>
+<p><span class="math display">\[
+I = \frac{\sum\limits_i \sum\limits_j w_{ij}\frac{(X_i-\bar X)}{s}\frac{(X_j-\bar X)}{s}}{\sum\limits_i \sum\limits_j w_{ij}} \tag{3}
+\]</span> Note that here <span class="math inline">\(s\times s = s^2\)</span>. You might recognize the numerator as a sum of the product of standardized <em>z</em>-values between neighboring features. If we let <span class="math inline">\(z_i = \frac{(X_i-\bar X)}{s}\)</span> and <span class="math inline">\(z_j = \frac{(X_j-\bar X)}{s}\)</span>, The Moran’s I equation can be reduced to:</p>
+<p><span class="math display">\[
+I = \frac{\sum\limits_i \sum\limits_j w_{ij}(z_i\ z_j)}{\sum\limits_i \sum\limits_j w_{ij}} \tag{4}
+\]</span></p>
+<p>Recall that we are comparing a variable <span class="math inline">\(X\)</span> at location <span class="math inline">\(i\)</span> to the values observed at neighboring locations <span class="math inline">\(j\)</span>. If we define,</p>
+<p><span class="math display">\[
+y_i = \sum\limits_j w_{ij} z_j
+\]</span> then <span class="math inline">\(y_i\)</span> represents a spatially lagged value. When the weights matrix is <em>row-standardized</em>, the weights associated with each feature sum to one and <span class="math inline">\(y_i\)</span> becomes the weighted average of the neighboring standardized values.</p>
+<p>the Moran’s I coefficient can be rewritten as:</p>
+<p><span class="math display">\[
+I = \frac{\sum\limits_i z_i y_i}{\sum\limits_i \sum\limits_j w_{ij}}  \tag{5}
+\]</span></p>
+<p>Under row-standardized weights, <span class="math inline">\(y_i\)</span> is the average z-value making the product <span class="math inline">\(z_i y_i\)</span> a local measure of <em>spatial association</em>.</p>
+<p>The product <span class="math inline">\(z_iy_i\)</span> is a local measure of spatial autocorrelation, <span class="math inline">\(I_i\)</span>. If we <em>don’t</em> summarize across all locations <span class="math inline">\(i\)</span>, under row-standardized weights, Local Moran’s I can be expressed as:</p>
+<p><span class="math display">\[
+I_i = z_iy_i  \tag{6}
+\]</span> The global Moran’s <em>I</em> statistic, <span class="math inline">\(I\)</span>, is thus the average of all <span class="math inline">\(I_i\)</span> values.</p>
+<p><span class="math display">\[
+I = \frac{\sum\limits_i I_i}{\sum\limits_i \sum\limits_j w_{ij}}  \tag{5}
+\]</span></p>
+<p>Let’s explore elements of the Moran’s <em>I</em> equation using the following sample dataset.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-map22" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-map22-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="13_autocorrelation_files/figure-html/fig-map22-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-map22-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;13.22: Simulated spatial dataset used to demonstrate the components of the Moran’s I equation. The left panel displays cell identifiers, the middle panel shows the observed values, and the right panel shows the standardized (<em>z</em>) values derived from those observations.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The first step in the computation of a Moran’s <em>I</em> index is the generation of a spatial weights matrix. The weights can take on many different values. For example, one could assign a value of <code>1</code> to a neighboring cell as shown in the following matrix.</p>
+<div class="cell" data-layout-align="center">
+<div id="tbl-map23" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-layout-align="center">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-map23-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;13.1: Binary spatial weights matrix used in the calculation of Moran’s I. Rows correspond to focal locations (<span class="math inline">\(i\)</span>) and columns correspond to neighboring locations (<span class="math inline">\(j\)</span>). Neighbor pairs are assigned a weight of 1, while non-neighbor pairs are assigned a weight of 0.
+</figcaption>
+<div aria-describedby="tbl-map23-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="13_autocorrelation_files/figure-html/tbl-map23-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>For example, cell ID <code>1</code> (whose value is 25 and whose standardized value, <span class="math inline">\(z_1\)</span>, is 0.21) has for neighbors cells <code>2</code>, <code>5</code> and <code>6</code>. Computationally (working with the standardized values), this gives us a summarized lagged value, <span class="math inline">\(y_1(lag)\)</span> of:</p>
+<p><span class="math display">\[
+\begin{align*}
+y_1 =  \sum\limits_j w_{1j} z_j {}={} &amp; (0)(0.21)+(1)(1.17)+(0)(1.5)+ ... + \\
+                                      &amp; (1)(0.69)+(1)(0.93)+(0)(-0.36)+...+ \\
+                                      &amp; (0)(-0.76) = 2.79
+\end{align*}                                  
+\]</span></p>
+<p>Computing the spatially lagged values for the other 15 cells generates the following scatterplot:</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-map24" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-map24-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="13_autocorrelation_files/figure-html/fig-map24-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="288">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-map24-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;13.23: Moran scatterplot based on binary spatial weights. The red point identifies cell 1. Note that the lagged values (<span class="math inline">\(y_i\)</span>) span a much larger range than the original standardized values (<span class="math inline">\(z_i\)</span>) because each neighboring value contributes equally and the weights are not standardized.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>You’ll note that the range of lagged values along the <span class="math inline">\(y\)</span>-axis is much greater than that of the original standardized values along the <span class="math inline">\(x\)</span>-axis. This is not necessarily problematic because Moran’s I is computed from standardized values. However, the differing scales reveal a limitation of binary weights: features with many neighbors tend to have larger lagged values than features with fewer neighbors simply because more neighboring values contribute to the sum. For example, feature ID 12, which has five neighbors, will tend to have a larger lagged value than feature ID 1, which has only three neighbors. This motivates the use of row-standardized weights where the weights associated with each feature sum to one.</p>
+<p>A more natural weight is one where the values are standardized across each row of the weights matrix such that the weights across each row sum to one. For example:</p>
+<div class="cell" data-layout-align="center">
+<div id="tbl-map25" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-layout-align="center">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-map25-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;13.2: Row-standardized spatial weights matrix used in the computation of Moran’s I. Standardizing each row removes the influence of differing numbers of neighbors by ensuring that all rows sum to one.
+</figcaption>
+<div aria-describedby="tbl-map25-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="13_autocorrelation_files/figure-html/tbl-map25-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>The spatially lagged value for cell ID <code>1</code> is thus computed as:</p>
+<p><span class="math display">\[
+\begin{align*}
+y_1 =  \sum\limits_j w_{1j} z_j {}={} &amp; (0)(0.21)+(0.333)(1.17)+(0)(1.5)+...+ \\
+                                      &amp; (0.333)(0.69)+(0.333)(0.93)+(0)(-0.36)+...+ \\
+                                      &amp; (0)(-0.76) = 0.93
+\end{align*}
+\]</span></p>
+<p>Multiplying each neighbor by the standardized weight, then summing these values, is simply computing the neighbor’s mean value.</p>
+<p>Using the standardized weights generates the following scatter plot. Plot on the left shows the raw values on the <em>x</em> and <em>y</em> axes; plot on the right shows the standardized values <span class="math inline">\(z_i\)</span> and <span class="math inline">\(y_i = \sum\limits_j w_{ij} z_j\)</span>. You’ll note that the shape of the point cloud is the same in both plots given that the axes on the left plot are scaled such as to match the standardized scales in both axes.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-map26" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-map26-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="13_autocorrelation_files/figure-html/fig-map26-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="576">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-map26-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;13.24: Moran scatterplots generated using row-standardized weights. The left plot uses the original values and their lagged counterparts, while the right plot uses standardized values (<span class="math inline">\(z_i\)</span> and <span class="math inline">\(y_i\)</span>). Row standardization causes each lagged value to represent a weighted average of neighboring values.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Note the difference in the point cloud pattern from that generated using the binary weights (<a href="#fig-map24" class="quarto-xref">Figure&nbsp;<span>13.23</span></a>). Under row-standardization, the lagged values represent weighted averages of neighboring values rather than simple sums, reducing the influence of varying neighbor counts on the calculation of <span class="math inline">\(y_i\)</span>. Other weighting schemes can also be used, including inverse-distance and <em>k</em>-nearest-neighbor weights. However, most software implementations of Moran’s I adopt row-standardized weights because they facilitate interpretation and reduce the influence of differing numbers of neighbors.</p>
+<section id="local-morans-i-1" class="level3" data-number="13.5.1">
+<h3 data-number="13.5.1" class="anchored" data-anchor-id="local-morans-i-1"><span class="header-section-number">13.5.1</span> Local Moran’s I</h3>
+<p>Once a spatial weight is chosen, and both <span class="math inline">\(z_i\)</span> and <span class="math inline">\(y_i\)</span> are computed, we can compute the <span class="math inline">\(z_iy_i\)</span> product for all locations of <span class="math inline">\(i\)</span> thus giving us a measure of the local Moran’s I statistic. Taking feature ID of <code>1</code> in our example, we compute <span class="math inline">\(I_1(lag) = 0.21 \times 0.93 = 0.19\)</span>. Computing <span class="math inline">\(I_i\)</span> for all cells gives us the following plot.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-map27" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-map27-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="13_autocorrelation_files/figure-html/fig-map27-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="576">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-map27-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;13.25: Local Moran’s <em>I</em> values for the simulated dataset. Positive values indicate locations surrounded by neighbors with similar standardized values, whereas negative values indicate locations surrounded by dissimilar neighboring values. The scatterplot (left) and map (right) show the same <span class="math inline">\(I_i\)</span> values.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Here, we are adopting a different color scheme from that used earlier. Green colors highlight features whose values are surrounded by similar values. These can be either positive values surrounded by standardized values that tend to be positive or negative values surrounded by values that tend to be negative. In both cases, the calculated <span class="math inline">\(I_i\)</span> will be positive. Red colors highlight features whose values are surrounded by dissimilar values. These can be either negative values surrounded by values that tend to be positive or positive values surrounded by values that tend to be negative. In both cases, the calculated <span class="math inline">\(I_i\)</span> will be negative. In our example, two features have a negative Moran’s <em>I</em> coefficient: cell IDs <code>7</code> and <code>12</code>.</p>
+</section>
+<section id="global-morans-i-1" class="level3" data-number="13.5.2">
+<h3 data-number="13.5.2" class="anchored" data-anchor-id="global-morans-i-1"><span class="header-section-number">13.5.2</span> Global Moran’s I</h3>
+<p>The Global Moran’s <em>I</em> coefficient, <span class="math inline">\(I\)</span> can be viewed as a summary of the local Moran’s <em>I</em> coefficients. Using row-standardized weights, the global Moran’s I statistic can be expressed as a weighted average of the local Moran’s I statistics.</p>
+<p><span class="math display">\[
+\begin{pmatrix}
+\frac{0.19+0.7+1.15+0.68+0.18+0.15+-0.24+0.44+0.25+0.12+0.14+-0.29+1.18+1.39+0.71+0.39}{\sum\limits_i\sum\limits_j w_{ij}} = 0.446
+\end{pmatrix}
+\]</span> In this example, <span class="math inline">\(\sum\limits_i \sum\limits_j w_{ij}\)</span> is the sum of all 256 values in <a href="#tbl-map25" class="quarto-xref">Table&nbsp;<span>13.2</span></a> which, using standardized weights, sums to 16.</p>
+<p><span class="math inline">\(I\)</span> is thus the slope that best fits the data in the Moran scatterplot. This can be plotted using either the standardized values or the raw values.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-map28" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-map28-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="13_autocorrelation_files/figure-html/fig-map28-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="576">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-map28-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;13.26: Moran scatterplot showing the fitted Global Moran’s <em>I</em> slope (red line). A positive slope indicates that locations with above-average values tend to be surrounded by neighbors whose values are also above average, while locations with below-average values tend to be surrounded by neighbors whose values are also below average.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="summary" class="level2" data-number="13.6">
+<h2 data-number="13.6" class="anchored" data-anchor-id="summary"><span class="header-section-number">13.6</span> Summary</h2>
+<p>This chapter introduced spatial autocorrelation as a second-order property describing how values at one location relate to values at nearby locations. Using Moran’s <em>I</em> as a central measure, we explored how spatial relationships can be quantified, tested, and interpreted across different spatial scales.</p>
+<ul>
+<li><strong>Spatial autocorrelation</strong> measures the degree to which nearby locations have similar or dissimilar attribute values.</li>
+<li><strong>Global Moran’s <em>I</em></strong> provides a summary measure of spatial autocorrelation for an entire study area and can be interpreted as the relationship between a variable and its spatially lagged counterpart.</li>
+<li>The computation of Moran’s <em>I</em> depends on a <strong>spatial weights matrix</strong>, which defines neighborhood relationships based on contiguity, distance, nearest neighbors, or other criteria.</li>
+<li><strong>Permutation tests</strong> provide a flexible, non-parametric approach for assessing whether observed Moran’s <em>I</em> values are more extreme than would be expected under spatial randomness.</li>
+<li>Spatial autocorrelation can vary with <strong>distance</strong>, making it possible to explore how spatial relationships strengthen, weaken, or change sign across spatial scales.</li>
+<li><strong>Local Moran’s <em>I</em></strong> decomposes the global statistic into feature-level measures, allowing local clusters and spatial outliers to be identified.</li>
+<li>Permutation-based significance tests can be applied to Local Moran’s <em>I</em> statistics to assess whether local patterns are unlikely to have occurred by chance.</li>
+<li>Because Local Moran’s <em>I</em> involves many simultaneous hypothesis tests, results are susceptible to the <strong>multiple-comparison problem</strong>, increasing the likelihood of false positives.</li>
+<li>Procedures such as the <strong>False Discovery Rate (FDR)</strong> correction can help control the expected proportion of false discoveries, although no single correction completely resolves the challenges of spatial inference.</li>
+<li>Moran’s <em>I</em> can be viewed as a spatially weighted measure of association, providing a bridge between descriptive analysis of spatial patterns and formal statistical inference.</li>
+</ul>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="ref-Tobler1970" class="csl-entry" role="listitem">
+Tobler, Waldo R. 1970. <span>“<span class="nocase">A Computer Movie Simulating Urban Growth in the Detroit Region</span>.”</span> <em>Economic Geography</em> 46 (2): 234–40. <a href="http://www.geog.ucsb.edu/~tobler/publications/pdf_docs/A-Computer-Movie.pdf">http://www.geog.ucsb.edu/~tobler/publications/pdf_docs/A-Computer-Movie.pdf</a>.
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./12_poly_functions.html" class="pagination-link" aria-label="Modeling Spatial Trends">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Modeling Spatial Trends</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./14_ppa_1st.html" class="pagination-link" aria-label="First-Order Point Pattern Analysis">
+        <span class="nav-page-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">First-Order Point Pattern Analysis</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

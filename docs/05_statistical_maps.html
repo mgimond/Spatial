@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>5&nbsp; Statistical maps – Introduction to GIS and Spatial Analysis</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./06_pitfalls_to_avoid.html" rel="next">
+<link href="./04_symbolizing_features.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-9e3e5b9121e68b3f077afb32f2c64d95.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./02_feature_representation.html">Working with Spatial Data</a></li><li class="breadcrumb-item"><a href="./05_statistical_maps.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Statistical maps</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Introduction to GIS and Spatial Analysis</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01_intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Working with Spatial Data</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02_feature_representation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Feature Representation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03_data_management.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">GIS Data Management</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04_symbolizing_features.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Symbolizing features</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05_statistical_maps.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Statistical maps</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06_pitfalls_to_avoid.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Pitfalls to avoid</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07_map_making_tips.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Good Map Making Tips</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08_spatial_operations_vector_overlays.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Spatial Selection and Vector Overlays</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09_coordinate_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Coordinate Systems</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10_map_algebra.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Map Algebra</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Spatial Analysis</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11_intro_spatial.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Analyzing Spatial Patterns</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12_poly_functions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Modeling Spatial Trends</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13_autocorrelation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Spatial Autocorrelation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14_ppa_1st.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">First-Order Point Pattern Analysis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./15_ppa_2nd.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Second-Order Point Pattern Analysis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./16_interpolation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Spatial Interpolation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">5.1</span> Introduction</a></li>
+  <li><a href="#statistical-distribution-maps" id="toc-statistical-distribution-maps" class="nav-link" data-scroll-target="#statistical-distribution-maps"><span class="header-section-number">5.2</span> Statistical distribution maps</a>
+  <ul class="collapse">
+  <li><a href="#quantile-map" id="toc-quantile-map" class="nav-link" data-scroll-target="#quantile-map"><span class="header-section-number">5.2.1</span> Quantile map</a></li>
+  <li><a href="#boxplot-map" id="toc-boxplot-map" class="nav-link" data-scroll-target="#boxplot-map"><span class="header-section-number">5.2.2</span> Boxplot map</a></li>
+  <li><a href="#iqr-map" id="toc-iqr-map" class="nav-link" data-scroll-target="#iqr-map"><span class="header-section-number">5.2.3</span> IQR map</a></li>
+  <li><a href="#standard-deviation-map" id="toc-standard-deviation-map" class="nav-link" data-scroll-target="#standard-deviation-map"><span class="header-section-number">5.2.4</span> Standard deviation map</a></li>
+  <li><a href="#outlier-maps" id="toc-outlier-maps" class="nav-link" data-scroll-target="#outlier-maps"><span class="header-section-number">5.2.5</span> Outlier maps</a></li>
+  </ul></li>
+  <li><a href="#mapping-uncertainty" id="toc-mapping-uncertainty" class="nav-link" data-scroll-target="#mapping-uncertainty"><span class="header-section-number">5.3</span> Mapping uncertainty</a>
+  <ul class="collapse">
+  <li><a href="#evaluating-spatial-patterns-under-uncertainty" id="toc-evaluating-spatial-patterns-under-uncertainty" class="nav-link" data-scroll-target="#evaluating-spatial-patterns-under-uncertainty"><span class="header-section-number">5.3.1</span> Evaluating Spatial Patterns Under Uncertainty</a></li>
+  <li><a href="#class-comparison-maps" id="toc-class-comparison-maps" class="nav-link" data-scroll-target="#class-comparison-maps"><span class="header-section-number">5.3.2</span> Class comparison maps</a></li>
+  </ul></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">5.4</span> Summary</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./02_feature_representation.html">Working with Spatial Data</a></li><li class="breadcrumb-item"><a href="./05_statistical_maps.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Statistical maps</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Statistical maps</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="introduction" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="introduction"><span class="header-section-number">5.1</span> Introduction</h2>
+<p>In the previous chapter, equal interval and quantile classification schemes were introduced as tools for symbolizing choropleth maps. In this chapter, we revisit these methods from a statistical perspective and explore additional classification approaches that are based on the underlying distribution of the data.</p>
+<p>This chapter builds on those foundations by focusing on the statistical principles that underlie map classification. A key challenge in choropleth mapping is deciding how to convert a continuous distribution of values into a manageable number of classes. Different classification methods can produce very different representations of the same dataset and may emphasize different spatial patterns. We therefore examine several commonly used approaches, including equal intervals, quantiles, boxplot-based classifications, and standard deviation units.</p>
+<p>Even after selecting a classification scheme, an important question remains: how much confidence should we place in the mapped patterns? Many spatial datasets, particularly those derived from sample surveys, are estimates accompanied by margins of error or standard errors. These uncertainties can affect rankings, classifications, and the apparent strength of spatial patterns. The chapter concludes by introducing techniques for visualizing and evaluating uncertainty in statistical maps.</p>
+<p>By the end of this chapter, you should be able to select and interpret common classification schemes and assess how uncertainty influences the conclusions drawn from choropleth maps.</p>
+</section>
+<section id="statistical-distribution-maps" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="statistical-distribution-maps"><span class="header-section-number">5.2</span> Statistical distribution maps</h2>
+<p>Many spatial variables, such as income, temperature, elevation, or population density, are measured on a continuous scale. As a result, every geographic unit in a dataset can potentially have a unique value. In a choropleth map, these values are represented by varying shades or colors assigned to polygons. For example, a map of Massachusetts displaying median household income could assign a unique color to every census tract. Although this approach preserves the full variability in the data, the resulting map can be visually overwhelming and may obscure broader spatial patterns.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-continuous" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-continuous-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="05_statistical_maps_files/figure-html/fig-continuous-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="624">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-continuous-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5.1: Choropleth map of household income using a continuous color gradient. Although each tract receives a color that closely reflects its value, the large number of unique colors makes broader spatial patterns difficult to identify.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>While technically accurate, such maps often obscure broader patterns and make interpretation difficult. To improve interpretability, continuous values are often grouped into a smaller number of classes before colors are assigned to the map. The challenge then becomes determining where the class boundaries should be placed.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-equalint" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-equalint-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="05_statistical_maps_files/figure-html/fig-equalint-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="624">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-equalint-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5.2: Equal interval classification of household income. The full range of income values is divided into 10 intervals of equal width. The histogram shows the number of polygons assigned to each interval, illustrating that equal-width classes do not necessarily contain equal numbers of observations.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The histogram accompanying the map is rotated vertically so that each bin aligns with its corresponding color swatch in the legend. The length of each gray bar represents the number of polygons assigned to that class, allowing us to see how observations are distributed across the classification intervals.</p>
+<p>In an <strong>equal interval</strong> classification, the full range of values is divided into intervals of equal width. As a result, each color swatch represents the same span of income values, but not necessarily the same number of polygons. This distinction is evident in the histogram, where some classes contain many observations while others contain relatively few. Because equal interval classification does not emphasize a central reference point, a sequential color scheme–typically progressing from light to dark–is used to represent increasing values.</p>
+<section id="quantile-map" class="level3" data-number="5.2.1">
+<h3 data-number="5.2.1" class="anchored" data-anchor-id="quantile-map"><span class="header-section-number">5.2.1</span> Quantile map</h3>
+<p>While an equal interval classification ensures that each color swatch represents the same range of values, it does not guarantee that each class contains the same number of polygons. When the data distribution is skewed, some classes may contain many observations while others contain only a handful.</p>
+<p><strong>Quantile</strong> classification takes the opposite approach by dividing the data so that each class contains approximately the same number of polygons. As a result, every color swatch appears with roughly equal frequency on the map, often making spatial patterns and clusters easier to identify.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-quantile" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-quantile-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="05_statistical_maps_files/figure-html/fig-quantile-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="624">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-quantile-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5.3: Quantile classification of household income. Each class contains approximately the same number of polygons, although the range of income values represented by each class may differ substantially.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Unlike the equal interval choropleth map, the class widths shown in the legend are not equal. Some color swatches represent a narrow range of income values while others represent a much wider range. This occurs because the classification is designed to place approximately the same number of polygons into each class. The histogram illustrates this tradeoff: the bars are more balanced in height than in the equal interval example, but the intervals themselves vary considerably in width.</p>
+<p>Quantile choropleth maps are particularly useful for exploratory analysis because they emphasize relative rankings and ensure that all classes are well represented. However, this comes at a cost: the intervals are not equal in width, and observations with very similar values may be assigned to different classes while observations with very different values may be placed in the same class.</p>
+<p>Equal interval and quantile maps represent two common approaches to classification: one prioritizes equal value ranges, while the other prioritizes equal numbers of observations. The next methods use summary statistics from the distribution itself to define class boundaries.</p>
+</section>
+<section id="boxplot-map" class="level3" data-number="5.2.2">
+<h3 data-number="5.2.2" class="anchored" data-anchor-id="boxplot-map"><span class="header-section-number">5.2.2</span> Boxplot map</h3>
+<p>Equal interval and quantile classifications divide the distribution into classes using either the range of values or the number of observations. A <strong>boxplot</strong> classification takes a different approach by using <strong>summary statistics</strong> derived directly from the distribution itself. A boxplot summarizes a distribution using measures of location and spread, including the lower quartile (Q1), median, upper quartile (Q3), and whiskers that extend toward the most extreme non-outlying observations. It also identifies observations that fall unusually far from the rest of the data, commonly referred to as outliers. The distance between Q1 and Q3 is known as the interquartile range (IQR) and contains the middle 50% of the observations.</p>
+<p>In the context of mapping, these summary statistics can be used to define classification breaks. A <strong>boxplot map</strong> applies color swatches to polygons based on where their values fall within the boxplot-defined intervals.</p>
+<p>This method is particularly useful when the goal is to highlight the shape of the distribution–whether it is symmetrical, skewed, or contains outliers. Because the boxplot includes a measure of centrality (the median), a divergent color scheme is often appropriate. This allows the map to visually emphasize deviations from the center, helping to identify regions that are unusually high or low relative to the bulk of the data.</p>
+<p>Unlike the previous examples, the following graphic is a boxplot rather than a histogram because the classification breaks are derived directly from boxplot summary statistics.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-boxmap" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-boxmap-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="05_statistical_maps_files/figure-html/fig-boxmap-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="624">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-boxmap-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5.4: Boxplot classification of household income. Class boundaries are defined by the quartiles and whiskers of the income distribution, creating categories that highlight the center, spread, and potential outliers in the data.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Boxplot choropleth maps are particularly useful when the objective is to identify values that are typical, unusually high, or unusually low relative to the rest of the distribution. Because the classification is anchored to robust summary statistics rather than equal ranges or counts, the resulting map is less sensitive to skewed distributions and extreme values.</p>
+</section>
+<section id="iqr-map" class="level3" data-number="5.2.3">
+<h3 data-number="5.2.3" class="anchored" data-anchor-id="iqr-map"><span class="header-section-number">5.2.3</span> IQR map</h3>
+<p>The boxplot map uses several summary statistics from the distribution to create multiple classes. In some situations, however, our primary interest is simply determining which observations fall within the central portion of the distribution and which fall outside it. The <strong>interquartile range (IQR) map</strong> simplifies the boxplot classification by focusing on the middle 50% of observations–those lying between the first quartile (Q1) and third quartile (Q3). Values are therefore grouped into three categories: below the IQR, within the IQR, and above the IQR.</p>
+<p>This approach is particularly useful when the goal is to highlight the “core” of the distribution–those observations that are neither exceptionally high nor low. By emphasizing the middle range, the IQR map can reveal spatial patterns that are less influenced by outliers or extreme values. For example, while previous maps may have consistently emphasized an east-west gradient in income across Massachusetts, the IQR map may show that middle-income households are more evenly distributed across the state.</p>
+<p>Because the objective is to emphasize the middle of the distribution rather than the extremes, the IQR category is often assigned the most visually prominent color. In the following example, the middle 50% of income values are symbolized using a darker shade (black), while observations above and below the IQR are shown using lighter shades.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-iqr" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-iqr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="05_statistical_maps_files/figure-html/fig-iqr-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="624">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-iqr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5.5: IQR classification of household income. Black polygons represent observations within the middle 50% of the distribution (between the first and third quartiles), while lighter shades identify observations below and above this central range.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Unlike previous classification schemes, the IQR map is not intended to distinguish fine differences among all observations. Instead, it emphasizes which regions are representative of the overall distribution and which fall outside its central range.</p>
+</section>
+<section id="standard-deviation-map" class="level3" data-number="5.2.4">
+<h3 data-number="5.2.4" class="anchored" data-anchor-id="standard-deviation-map"><span class="header-section-number">5.2.4</span> Standard deviation map</h3>
+<p>Quantile maps and <strong>standard deviation maps</strong> both classify observations according to their relationship to the overall distribution. Quantile maps do so using percentiles, ensuring that each class contains approximately the same number of observations. Standard deviation maps take a different approach by measuring how far observations fall above or below the mean. Rather than emphasizing an observation’s rank within the distribution, they emphasize its deviation from the average.</p>
+<p>When a dataset is approximately normally distributed (i.e., follows a bell-shaped distribution), class boundaries can be defined using units of standard deviation. A standard deviation map groups observations according to their distance from the mean, with class breaks commonly placed at ±1, ±2, and ±3 standard deviations.</p>
+<p>Each class therefore represents a specific degree of departure from the mean, making it easier to identify regions that fall within the expected range and those that stand out as unusually high or low. For example, observations within one standard deviation of the mean are often considered typical, whereas those beyond two or three standard deviations may be regarded as exceptional.</p>
+<p>Standard deviation choropleth maps are particularly useful when the goal is to evaluate how unusual a value is relative to the average rather than to compare absolute ranges or percentile ranks. Because the classification is centered on the mean, a divergent color scheme is typically used, with a neutral color representing average values and increasingly intense hues indicating greater departures above and below the mean.</p>
+<p>The accompanying histogram is overlaid with a normal distribution curve because standard deviation classifications are most meaningful when the underlying data are approximately bell-shaped. Unlike equal interval or quantile maps, the class boundaries correspond to fixed distances from the mean rather than equal value ranges or equal numbers of observations.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-sdmap" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-sdmap-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="05_statistical_maps_files/figure-html/fig-sdmap-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="624">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-sdmap-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5.6: Standard deviation classification of household income. Class boundaries are defined by ±1, ±2, and ±3 standard deviations from the mean income, allowing regions to be interpreted according to their distance from the average.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Standard deviation maps are most informative when the data are approximately symmetrical and the mean provides a meaningful measure of central tendency. For highly skewed distributions or datasets containing extreme outliers, the resulting classes may be unbalanced and can lead to misleading interpretations. As with any classification method, the suitability of a standard deviation map should be evaluated in the context of the underlying distribution.</p>
+</section>
+<section id="outlier-maps" class="level3" data-number="5.2.5">
+<h3 data-number="5.2.5" class="anchored" data-anchor-id="outlier-maps"><span class="header-section-number">5.2.5</span> Outlier maps</h3>
+<p>The classification methods discussed thus far have focused on describing the overall distribution of values by assigning every observation to a meaningful class. In some situations, however, our primary interest is not in the full distribution but in identifying the relatively small number of observations that differ markedly from the rest. Such observations are commonly referred to as outliers.</p>
+<p>Outlier maps are designed to emphasize these unusually high or low values while treating the remaining observations as a background reference. They are particularly useful when the goal is to identify regions that warrant further investigation, such as areas with exceptionally high income, unusually low population density, or elevated disease rates.</p>
+<p>Importantly, there is no single definition of an outlier. Different statistical approaches identify unusual observations in different ways, often leading to different sets of highlighted regions. The following sections introduce three common approaches: <strong>boxplot outlier map</strong>, <strong>standard deviation outlier maps</strong> and <strong>quantile outlier maps</strong>.</p>
+<section id="boxplot-outlier-map" class="level4" data-number="5.2.5.1">
+<h4 data-number="5.2.5.1" class="anchored" data-anchor-id="boxplot-outlier-map"><span class="header-section-number">5.2.5.1</span> Boxplot outlier map</h4>
+<p>Recall that a boxplot identifies outliers as observations lying beyond the whiskers, which typically extend 1.5 times the interquartile range (IQR) beyond the first and third quartiles. A <strong>boxplot outlier map</strong> applies this definition spatially by highlighting only those observations that fall outside the whisker boundaries. Values within the whiskers are grouped into a single background class, allowing unusually high and low observations to stand out clearly.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-outlier1" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-outlier1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="05_statistical_maps_files/figure-html/fig-outlier1-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="624">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-outlier1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5.7: Boxplot outlier map of household income. Tracts with income values beyond the upper or lower boxplot whiskers are highlighted, while all remaining tracts are grouped into a neutral background class.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>You’ll note the asymmetrical distribution of outliers, with more than a dozen tracts identified as unusually high-income and only one tract identified as unusually low-income. This imbalance reflects the right-skewed nature of the income distribution, where a small number of very high values extend farther from the bulk of the data than the lowest values.</p>
+</section>
+<section id="standard-deviation-outlier-map" class="level4" data-number="5.2.5.2">
+<h4 data-number="5.2.5.2" class="anchored" data-anchor-id="standard-deviation-outlier-map"><span class="header-section-number">5.2.5.2</span> Standard deviation outlier map</h4>
+<p>While a standard deviation map assigns all observations to classes based on their distance from the mean, a <strong>standard deviation outlier map</strong> focuses only on the most extreme departures from the average. A common approach is to define outliers as observations that fall more than two standard deviations above or below the mean. If the data are approximately normally distributed, these thresholds correspond to the outer tails of the distribution representing only a small fraction of the observations. Values within ±2 standard deviations of the mean are grouped into a neutral background category allowing unusually high and low values to stand out more clearly.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-outlier2" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-outlier2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="05_statistical_maps_files/figure-html/fig-outlier2-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="624">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-outlier2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5.8: Standard deviation outlier map of household income. Regions with values beyond ±2 standard deviations from the mean are highlighted, while all other regions are grouped into a neutral background class.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Unlike the boxplot outlier map, the observations identified here depend directly on the mean and standard deviation of the dataset. As a result, the regions highlighted as outliers may differ from those identified using the boxplot approach, particularly when the distribution is skewed or contains extreme values.</p>
+<p>Because this method depends on the mean and standard deviation, it performs best when the distribution is approximately symmetrical.</p>
+</section>
+<section id="quantile-outlier-map" class="level4" data-number="5.2.5.3">
+<h4 data-number="5.2.5.3" class="anchored" data-anchor-id="quantile-outlier-map"><span class="header-section-number">5.2.5.3</span> Quantile outlier map</h4>
+<p>Unlike boxplot and standard deviation outlier maps, which define outliers using specific statistical properties of the distribution, a <strong>quantile outlier map</strong> defines outliers according to rank. Observations are classified by their percentile position within the dataset, and only those falling beyond selected percentile thresholds are highlighted. For example, the upper and lower 2.5 percent of observations can be identified by dividing the dataset into 40 quantiles and mapping only the outermost classes.</p>
+<p>Because quantile outlier maps are based on ranks rather than distances from the mean or quartiles, they guarantee that a fixed proportion of observations will be labeled as outliers. This makes them particularly useful for skewed distributions where mean- or variance-based definitions may perform poorly.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-outlier3" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-outlier3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="05_statistical_maps_files/figure-html/fig-outlier3-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="700">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-outlier3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5.9: Quantile outlier map of household income. Regions falling within the lowest and highest 2.5 percent of values are highlighted, while all remaining regions are grouped into a neutral background category.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Unlike the standard deviation outlier map, this approach identifies a fixed proportion of observations as outliers regardless of the shape of the distribution. As a result, some observations may be classified as outliers even though they lie relatively close to the center of the data. The method therefore emphasizes <strong>relative rank</strong> rather than <strong>statistical distance</strong>.</p>
+<p>Quantile outlier maps are particularly useful for exploratory analysis because they provide a simple, distribution-free approach to identifying unusually high and low observations. However, because the number of outliers is determined by user-defined percentile thresholds, the observations that are flagged are not necessarily statistically unusual. Instead, they represent the highest- and lowest-ranked values in the dataset.</p>
+<p>The classification methods described so far assume that the mapped values are known exactly. In practice, however, many spatial datasets are estimates accompanied by uncertainty.</p>
+</section>
+</section>
+</section>
+<section id="mapping-uncertainty" class="level2" data-number="5.3">
+<h2 data-number="5.3" class="anchored" data-anchor-id="mapping-uncertainty"><span class="header-section-number">5.3</span> Mapping uncertainty</h2>
+<p>Thus far, the classification methods presented in this chapter have treated mapped values as if they were known exactly. In practice, however, many spatial datasets—particularly those derived from sample surveys such as the U.S. Census Bureau’s American Community Survey (ACS)—are estimates rather than direct measurements. As a result, every estimate is accompanied by a measure of uncertainty.</p>
+<p>Uncertainty is commonly expressed as either a <strong>standard error (SE)</strong> or a <strong>margin of error (MoE)</strong>. These measures indicate how much the reported estimate might vary from the true population value due to sampling variability. For example, the ACS reports margins of error based on a 90% confidence interval, meaning that if many samples were repeatedly drawn from the same population, approximately 90% of the resulting intervals would contain the true value.</p>
+<p>This uncertainty presents an important challenge for map interpretation. A map may suggest that one region has a higher income, population, or unemployment rate than another, but if the uncertainty surrounding the estimates is large, that apparent difference may not be statistically meaningful. As a result, understanding uncertainty is often just as important as understanding the estimates themselves.</p>
+<p>One common approach to visualizing uncertainty is to create a separate map showing the uncertainty measure alongside the map of estimated values. The following figure presents an example using household income estimates and their associated standard errors.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-map1" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-map1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="05_statistical_maps_files/figure-html/fig-map1-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-map1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5.10: Maps of household income estimates (left) and their associated standard errors (right). Areas with high estimated incomes do not necessarily have low uncertainty, highlighting the importance of considering both maps when interpreting spatial patterns.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>While side-by-side maps separate estimates from uncertainty, they require viewers to compare two visualizations simultaneously and mentally integrate the information. An alternative is to overlay uncertainty directly onto the estimate map using textures or hatch marks. For example, a map of income estimates might use shades of green to represent income levels, with different hatch patterns indicating the degree of uncertainty. This approach allows viewers to assess both value and reliability within a single display.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-map2" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-map2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="img/Income_and_uncertainty.jpg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-map2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5.11: Household income estimates represented by color intensity and associated uncertainty represented by hatch patterns. The map allows viewers to evaluate both the magnitude of an estimate and the confidence that can be placed in it.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Although overlay techniques allow estimates and uncertainty to be displayed simultaneously, they require viewers to interpret two visual variables at once. Another approach is to map the upper and lower bounds of the confidence interval as separate maps. These maps provide a direct representation of the range of plausible values but still require viewers to compare multiple maps and mentally synthesize the information.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-map_MoE" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-map_MoE-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="05_statistical_maps_files/figure-html/fig-map_MoE-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-map_MoE-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5.12: Upper (left) and lower (right) bounds of the 90% confidence interval for household income. Together, the maps depict the range of plausible income values for each region.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Mapping the upper and lower confidence limits provides a more complete picture of uncertainty than a map of standard errors alone. By showing the range of plausible values for each region, these maps help convey the extent to which estimates may vary due to sampling error. However, they still leave an important question unanswered: how does uncertainty affect our interpretation of spatial patterns? Addressing this question requires examining how rankings and spatial relationships change when uncertainty is taken into account.</p>
+<section id="evaluating-spatial-patterns-under-uncertainty" class="level3" data-number="5.3.1">
+<h3 data-number="5.3.1" class="anchored" data-anchor-id="evaluating-spatial-patterns-under-uncertainty"><span class="header-section-number">5.3.1</span> Evaluating Spatial Patterns Under Uncertainty</h3>
+<p>While the maps presented earlier in this chapter offer ways to visualize uncertainty such as margins of error or standard errors, they do not fully address a key reason we map data in the first place: to compare values across space. In spatial analysis, we are often interested in identifying regions with relatively high or low values and ranking them accordingly. These comparisons implicitly assume that the observed estimates are stable and that their relative ordering would persist if a different sample were collected. However, this assumption is not always justified.</p>
+<p>To explore this issue, we begin by examining confidence intervals associated with each polygon’s estimate. These intervals reveal that many regions have overlapping ranges of plausible values, meaning that the true value for one region could be higher or lower than that of a neighboring region. For example, a county that appears to have a lower income than another may, in fact, have a higher income once sampling uncertainty is taken into account. Such overlap reduces our confidence in spatial rankings and raises questions about the stability of the patterns we observe on a map.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-MoE_plot1" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-MoE_plot1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="05_statistical_maps_files/figure-html/fig-MoE_plot1-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="480">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-MoE_plot1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5.13: County income estimates and their associated 90% confidence intervals. Note that many confidence intervals overlap, indicating that apparent differences in county rankings may not be statistically meaningful.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Consider Piscataquis County, whose income estimate (represented by the gray point in the plot) is lower than that of neighboring Oxford County. Based solely on the point estimates, we might conclude that Oxford ranks above Piscataquis in income. However, their 90% confidence intervals overlap substantially, indicating that this apparent difference may not be statistically reliable. If a different sample were drawn from each county, the resulting estimates could shift enough to reverse their ranking. In other words, the ordering implied by the point estimates may not reflect the ordering of the true underlying values. The following example demonstrates how such rank reversals can occur when sampling uncertainty is taken into account, potentially altering the spatial patterns observed on a map.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-sim_values" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-sim_values-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="05_statistical_maps_files/figure-html/fig-sim_values-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="480">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-sim_values-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5.14: One possible realization of county income estimates generated from the 90% confidence intervals. Note that the ordering of several counties differs from that shown in the original estimates.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>In one such simulated sample, Oxford County’s income estimate falls below those of both Piscataquis and Franklin counties, reversing their original rankings. A similar shift occurs for Sagadahoc County, which drops below Hancock and Lincoln counties. These changes illustrate how sampling uncertainty can affect not only individual estimates but also the relative ordering of regions. What appears to be a clear spatial hierarchy in the original data may, in fact, be sensitive to the particular sample used to generate the estimates.</p>
+<p>But how do these shifts affect the geographic patterns we see on a map? One way to assess this is to compare the <strong>original</strong> income map with a <strong>simulated</strong> income map generated by randomly sampling values within each county’s confidence interval. Such a comparison provides insight into the stability of observed spatial patterns and helps reveal which features of the map are robust to uncertainty and which may be artifacts of sampling variability.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-sim_map" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-sim_map-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="05_statistical_maps_files/figure-html/fig-sim_map-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="480">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-sim_map-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5.15: Original county income estimates (left) and one simulated realization generated from the associated 90% confidence intervals (right). Note that some counties change relative rank, altering the spatial pattern of income across the state.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The previous figure showed only one possible realization of the income estimates. Because many values within each county’s confidence interval are plausible, numerous alternative maps could be generated. A few additional simulated realizations are shown below.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-sim_map2" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-sim_map2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="05_statistical_maps_files/figure-html/fig-sim_map2-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="960">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-sim_map2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5.16: Original county income estimates (left) and four simulated maps generated from the associated 90% confidence intervals (R2–R5). Features that appear consistently across the realizations are more likely to represent robust spatial patterns, whereas features that vary among maps may be artifacts of sampling variability.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="class-comparison-maps" class="level3" data-number="5.3.2">
+<h3 data-number="5.3.2" class="anchored" data-anchor-id="class-comparison-maps"><span class="header-section-number">5.3.2</span> Class comparison maps</h3>
+<p>Effectively conveying both estimates and their associated uncertainty in a single map remains a challenge. As Sun and Wong <span class="citation" data-cites="DataQuality2010">(<a href="references.html#ref-DataQuality2010" role="doc-biblioref">Sun and Wong 2010</a>)</span> note, the appropriate strategy often depends on the context and purpose of the analysis. One useful approach is the <strong>class comparison method</strong>, which evaluates whether a polygon’s margin of error (MoE) extends beyond the boundaries of its assigned classification. In a choropleth map, class membership is often interpreted as meaningful because polygons assigned to different classes are assumed to represent different levels of the mapped variable. If uncertainty allows an estimate to fall into one or more adjacent classes, confidence in that classification is reduced. The class comparison method addresses this issue by displaying not only the estimated value but also whether the confidence interval surrounding that estimate crosses into neighboring classes.</p>
+<p>For example, if we adopt the classification breaks [0 , 20600 , 22800 , 25000 , 27000 , 34000 ], we find that many polygons have MoEs that span multiple class boundaries.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-compInt" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-compInt-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="05_statistical_maps_files/figure-html/fig-compInt-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="528">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-compInt-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5.17: County income estimates and their associated 90% confidence intervals. Vertical dashed lines represent class boundaries. Several confidence intervals cross into adjacent classes, indicating uncertainty in class assignment.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Consider Piscataquis County. Its income estimate falls within the second classification interval (20600 to 22800 ), yet the lower end of its 90% confidence interval extends into the first interval. This means that we cannot be 90% confident that the county truly belongs in the second class; its actual value may fall in the lower class instead. In contrast, counties such as Cumberland and Penobscot have confidence intervals that remain entirely within their assigned classes, providing greater confidence in their classification.</p>
+<p>Rather than requiring the reader to inspect confidence intervals individually, this information can be incorporated directly into a choropleth map using hatch patterns. The underlying color continues to represent the estimated income value, while the hatch pattern indicates whether the estimate’s confidence interval extends beyond its assigned class.</p>
+<p>For example, income could be plotted using varying shades of green with hatch symbols indicating if the lower interval crosses into a lower class (135° hatch), if the upper interval crosses into an upper class (45° hatch), if both interval ends cross into a different class (90°-vertical-hatch) or if both interval ends remain inside the estimate’s class (no hatch).</p>
+<div class="cell" data-layout-align="center" data-fig.margin="treu">
+<div class="cell-output-display">
+<div id="fig-ComPlot" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ComPlot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="05_statistical_maps_files/figure-html/fig-ComPlot-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ComPlot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5.18: Class comparison map of household income. Colors represent income classes, while hatch patterns indicate whether the associated confidence intervals remain within the assigned class or extend into neighboring classes.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Class comparison maps provide a practical way to visualize uncertainty directly within a choropleth map. Rather than portraying uncertainty as a separate variable, they focus on whether an observation’s class assignment is reliable. Regions with hatch marks should be interpreted cautiously because their true values may belong to neighboring classes. As a result, class comparison maps help distinguish robust classifications from those that are sensitive to sampling variability.</p>
+</section>
+</section>
+<section id="summary" class="level2" data-number="5.4">
+<h2 data-number="5.4" class="anchored" data-anchor-id="summary"><span class="header-section-number">5.4</span> Summary</h2>
+<p>This chapter explored statistical approaches to classifying and interpreting continuous spatial data. Different classification methods emphasize different aspects of a distribution and can produce very different representations of the same dataset.</p>
+<ul>
+<li><strong>Equal interval maps</strong> divide the range of values into classes of equal width and are useful when comparing absolute differences among observations.</li>
+<li><strong>Quantile maps</strong> assign approximately the same number of observations to each class, emphasizing relative rank and often revealing spatial patterns that may be hidden in equal interval maps.</li>
+<li><strong>Boxplot, IQR, and standard deviation maps</strong> use statistical properties of the distribution to define class boundaries and highlight different aspects of the data, such as central tendency, variability, and deviation from the mean.</li>
+<li><strong>Outlier maps</strong> focus attention on unusually high or low values using definitions based on boxplots, standard deviations, or quantiles.</li>
+<li>The choice of classification scheme influences how spatial patterns are perceived and interpreted. No single method is universally superior; each has strengths and limitations that depend on the distribution of the data and the objectives of the analysis.</li>
+<li>Many spatial datasets contain <strong>uncertainty</strong>, often expressed as a standard error or margin of error. Ignoring this uncertainty can lead to overconfidence in spatial rankings and apparent patterns.</li>
+<li><strong>Confidence interval plots, simulated maps, and class comparison maps</strong> provide ways to assess how uncertainty affects classifications, rankings, and the stability of observed spatial patterns.</li>
+</ul>
+<p>Understanding both the statistical distribution of mapped values and the uncertainty associated with those values leads to more informed and defensible interpretations of choropleth maps.</p>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="ref-DataQuality2010" class="csl-entry" role="listitem">
+Sun, M., and W. S. Wong. 2010. <span>“<span class="nocase">Incorporating Data Quality Information in Mapping American Community Survey Data</span>.”</span> <em>Cartography and Geography Information Science</em> 37 (4): 285–300.
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./04_symbolizing_features.html" class="pagination-link" aria-label="Symbolizing features">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Symbolizing features</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./06_pitfalls_to_avoid.html" class="pagination-link" aria-label="Pitfalls to avoid">
+        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Pitfalls to avoid</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

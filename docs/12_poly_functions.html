@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>12&nbsp; Modeling Spatial Trends – Introduction to GIS and Spatial Analysis</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./13_autocorrelation.html" rel="next">
+<link href="./11_intro_spatial.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-9e3e5b9121e68b3f077afb32f2c64d95.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./11_intro_spatial.html">Spatial Analysis</a></li><li class="breadcrumb-item"><a href="./12_poly_functions.html"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Modeling Spatial Trends</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Introduction to GIS and Spatial Analysis</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01_intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Working with Spatial Data</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02_feature_representation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Feature Representation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03_data_management.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">GIS Data Management</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04_symbolizing_features.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Symbolizing features</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05_statistical_maps.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Statistical maps</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06_pitfalls_to_avoid.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Pitfalls to avoid</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07_map_making_tips.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Good Map Making Tips</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08_spatial_operations_vector_overlays.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Spatial Selection and Vector Overlays</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09_coordinate_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Coordinate Systems</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10_map_algebra.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Map Algebra</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Spatial Analysis</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11_intro_spatial.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Analyzing Spatial Patterns</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12_poly_functions.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Modeling Spatial Trends</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13_autocorrelation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Spatial Autocorrelation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14_ppa_1st.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">First-Order Point Pattern Analysis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./15_ppa_2nd.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Second-Order Point Pattern Analysis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./16_interpolation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Spatial Interpolation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">12.1</span> Introduction</a></li>
+  <li><a href="#polynomial-functions" id="toc-polynomial-functions" class="nav-link" data-scroll-target="#polynomial-functions"><span class="header-section-number">12.2</span> Polynomial functions</a></li>
+  <li><a href="#polynomial-functions-in-one-dimension" id="toc-polynomial-functions-in-one-dimension" class="nav-link" data-scroll-target="#polynomial-functions-in-one-dimension"><span class="header-section-number">12.3</span> Polynomial functions in one dimension</a></li>
+  <li><a href="#transitioning-from-a-one-dimensional-to-a-two-dimensional-space" id="toc-transitioning-from-a-one-dimensional-to-a-two-dimensional-space" class="nav-link" data-scroll-target="#transitioning-from-a-one-dimensional-to-a-two-dimensional-space"><span class="header-section-number">12.4</span> Transitioning from a one-dimensional to a two-dimensional space</a></li>
+  <li><a href="#evaluating-a-models-goodness-of-fit" id="toc-evaluating-a-models-goodness-of-fit" class="nav-link" data-scroll-target="#evaluating-a-models-goodness-of-fit"><span class="header-section-number">12.5</span> Evaluating a model’s goodness of fit</a></li>
+  <li><a href="#a-note-about-adopting-traditional-statistical-measures-of-significance-to-spatial-functions" id="toc-a-note-about-adopting-traditional-statistical-measures-of-significance-to-spatial-functions" class="nav-link" data-scroll-target="#a-note-about-adopting-traditional-statistical-measures-of-significance-to-spatial-functions"><span class="header-section-number">12.6</span> A note about adopting traditional statistical measures of significance to spatial functions</a></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">12.7</span> Summary</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./11_intro_spatial.html">Spatial Analysis</a></li><li class="breadcrumb-item"><a href="./12_poly_functions.html"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Modeling Spatial Trends</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Modeling Spatial Trends</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="introduction" class="level2" data-number="12.1">
+<h2 data-number="12.1" class="anchored" data-anchor-id="introduction"><span class="header-section-number">12.1</span> Introduction</h2>
+<p>Polynomial functions are a foundational tool for modeling spatial trends, particularly <strong>first-order effects</strong>, in spatial data. These models help describe how a variable changes across space due to absolute location, rather than proximity to neighboring values. In spatial statistics, modeling spatial trend is often a critical first step before exploring second-order properties such as spatial autocorrelation.</p>
+<p>Polynomial functions are parametric, meaning their form is predefined and their coefficients are estimated by fitting the model to data. In spatial statistics and GIS, polynomial models fitted to geographic coordinates are often referred to as <strong>trend surfaces</strong>. A trend surface is a mathematical model that describes broad spatial variation as a function of location. The terms <em>trend surface</em>, <em>polynomial surface</em>, and <em>polynomial trend model</em> are often used interchangeably in the literature. The goal of a trend surface is not to capture local variation, but rather to summarize the dominant large-scale pattern in the data (i.e., <strong>first-order spatial trend</strong>). In practice, trend surfaces are used to:</p>
+<ul>
+<li>Describe broad spatial variation in a variable.</li>
+<li>Remove global trend to expose residuals for further analysis.</li>
+<li>Support interpolation across unsampled locations.</li>
+</ul>
+<p>In spatial analysis, polynomial functions typically consist of non-negative integer powers of the x and y coordinates. These models are most appropriate for <strong>spatially continuous fields</strong>: Phenomena that can be measured at any location within the study area using ratio or interval scales (e.g., precipitation, elevation, population density). They are <em>not</em> suitable for discrete features such as crime events or tree locations.</p>
+<p>While the examples in this chapter focus on raster data, the principles of polynomial trend modeling apply across spatial data models, including point and polygon data. The goal is to capture the <strong>overall spatial pattern</strong> without overfitting local variation. To that end, it is best to use the lowest polynomial order necessary to represent the trend.</p>
+<p>Once the first-order trend is removed, we can ask whether the residuals still exhibit spatial structure. This question leads directly to spatial autocorrelation, the primary second-order effect examined in the next chapter.</p>
+<p>In the sections that follow, we will:</p>
+<ul>
+<li>Explore polynomial functions in one and two dimensions.</li>
+<li>Learn how to fit and evaluate models using regression techniques.</li>
+<li>Use residuals to assess model fit.</li>
+</ul>
+</section>
+<section id="polynomial-functions" class="level2" data-number="12.2">
+<h2 data-number="12.2" class="anchored" data-anchor-id="polynomial-functions"><span class="header-section-number">12.2</span> Polynomial functions</h2>
+<p>Polynomial functions are mathematical models that seek to describe global trends in a dataset using the general form:</p>
+<p><span class="math display">\[
+\begin{equation}
+\tag{1}
+z_i = \beta \boldsymbol{s_i} + \varepsilon_i
+\end{equation}
+\]</span></p>
+<p>where <span class="math inline">\(z_i\)</span> is a scalar of interest (e.g., precipitation, income, elevation, etc.) and <span class="math inline">\(\boldsymbol{s_i}\)</span> denotes location in one, two or n-dimensional space. The term <span class="math inline">\(\varepsilon\)</span> refers to the residuals–i.e., parts of the observed data not explained by the model. The subscript <span class="math inline">\(i\)</span> reminds us that the value <span class="math inline">\(z\)</span> and its residual are a function of location <span class="math inline">\(i\)</span>.</p>
+<p>In spatial analysis, we usually work in two-dimensional space, hence location <span class="math inline">\(s\)</span> is defined by the coordinate pair (x, y). Thus, equation (1) can be expressed as a multivariate regression with the x and y coordinate values being two independent variables.</p>
+<p><span class="math display">\[
+\begin{equation}
+\tag{2}
+z_i = \beta_0 + \beta_1 x_i + \beta_2 y_i + \beta_3 x_i^2 + \beta_4 y_i^2 + ... + \varepsilon_i
+\end{equation}
+\]</span></p>
+<p>Here, the ellipsis “…” is a placeholder for higher order polynomial values and interaction terms.</p>
+<p>Fitting a polynomial function requires two steps: (1) defining the model, in this case the polynomial order, which can be linear, quadratic, cubic, quartic, quintic, etc., (2) then fitting the model to the data using, for example, ordinary least squares regression methods.</p>
+<p>Because distances in the x and y directions are assumed to be in the same units and scale (i.e., a unit change in x is equal to a unit change in y), it is best to work off a projected (aka Cartesian) coordinate system. Hence, the projected coordinates system should do a decent job in preserving distance within the study extent.</p>
+</section>
+<section id="polynomial-functions-in-one-dimension" class="level2" data-number="12.3">
+<h2 data-number="12.3" class="anchored" data-anchor-id="polynomial-functions-in-one-dimension"><span class="header-section-number">12.3</span> Polynomial functions in one dimension</h2>
+<p>It may be best to first explore a polynomial function in one dimension. In what follows, we will work with the distribution of 2020 total precipitation for the state of Kansas (USA). The following figure shows a raster representation of the 2020 total precipitation (in mm) for Kansas.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-121" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-121-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="img/poly_fig1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="500">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-121-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;12.1: Map of the total 2020 precipitation distribution for Kansas (USA).
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>However, we will first focus on the bottom row of pixels which will provide us with a one-dimensional (east-west) dataset.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-1211b" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-1211b-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="img/poly_fig2.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="500">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-1211b-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;12.2: Row of pixels used to explore the trend along a one-dimensional space.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>A scatter plot of the precipitation values along the east-west gradient is shown next. Each point represents the precipitation value at a specific pixel location.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-122" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-122-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="12_poly_functions_files/figure-html/fig-122-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="336">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-122-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;12.3: Scatter plot of precipitation along the east-west gradient defined in <a href="#fig-1211b" class="quarto-xref">Figure&nbsp;<span>12.2</span></a>.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The simplest model that can be fitted to the data is the mean precipitation value, a constant. It can be visualized as a horizontal line. This is also known as a 0<sup>th</sup> order polynomial model where:</p>
+<p><span class="math display">\[
+\begin{equation}
+\tag{3}
+Precipitation_i = \beta_0  x_i^0 + \varepsilon = \beta_0 + \varepsilon
+\end{equation}
+\]</span></p>
+<p>Here, <span class="math inline">\(\beta_0\)</span> is nothing more than the mean precipitation value (756.8 mm in our working example). Recall that we are only focusing on the east-west precipitation values, hence the <span class="math inline">\(y\)</span> coordinate value is ignored in equation (3).</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-123" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-123-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="12_poly_functions_files/figure-html/fig-123-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="336">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-123-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;12.4: The mean precipitation fitted to the data. This is the simplest form of a polynomial function where the power is set to 0.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>While such a simple model may not prove useful in modeling trends, it serves as a reference for how well other polynomial models perform. Model evaluation will be addressed later in this chapter.</p>
+<p>It is clear from the plot that the precipitation is far from constant across the east-west slice of the data. It shows a distinct upward trend that may be better represented using a sloped line. We can modify the above model by augmenting the polynomial order:</p>
+<p><span class="math display">\[
+\begin{equation}
+\tag{4}
+Precipitation_i = \beta_0 + \beta_1 x_i^1 + \varepsilon_i
+\end{equation}
+\]</span></p>
+<p>Equation (4) is mathematically defined as a first-order polynomial model, but it is more often described as a linear trend model. With the model defined a priori, the model is then fitted to the points.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-124" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-124-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="12_poly_functions_files/figure-html/fig-124-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="336">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-124-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;12.5: A first-order polynomial function being fitted to the precipitation data. This is often referred to as a linear trend model.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>There are many approaches to finding the “best fit” with the most popular being the ordinary least squares method. This approach seeks to minimize the distance between the points and the fitted model when measured parallel to the y-axis. These are shown as red colored line segments in the following plot.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-125" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-125-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="12_poly_functions_files/figure-html/fig-125-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="336">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-125-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;12.6: The first-order polynomial function (blue line) is shown with the residual lines (in red). The function is fitted to the data in such a way to reduce the sum of the squared residual values.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The distance between the modeled line and each precipitation value is the residual (<span class="math inline">\(\varepsilon_i\)</span>). This is part of the data not explained by the model.</p>
+<p>Fitting the first-order polynomial to the data gives us the coefficients of 305.8 and 1.6 for <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> respectively.</p>
+<p>The <span class="math inline">\(\beta_1\)</span> coefficient tells us that for every km increase in the (positive) x direction, precipitation increases by 1.6 mm. Note that the interpretation of the coefficient is dependent on the mapping units used. Typically, projection units are in meters or feet. But, when working at a scale like the State of Kansas, it is best to report changes in value as a function of larger mapping units such kilometers or miles.</p>
+<p>Statisticians rarely stop at this stage when fitting a model to the data. It is good practice to plot the residuals against the x value. This diagnostic plot is useful in assessing if the overall trend in the data was properly characterized by our polynomial model. To help guide our eyes, we add a non-parametric curve to the data which does not make any assumptions about the pattern in the data. Here, we make use of a loess fit but note that many other non-parametric models can be used for this purpose.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-126" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-126-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="12_poly_functions_files/figure-html/fig-126-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="336">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-126-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;12.7: The residuals are checked for any lingering pattern that may have been missed by the first-order polynomial function. A non-parametric line such as a loess is used to identify any pattern in the data.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The diagnostic plot suggests that the first-order polynomial model we adopted does not fully capture the overall trend in the data. There appears to be some curvature in the residuals. This may suggest that we increase the polynomial order by an extra degree.</p>
+<p>A second-order polynomial model in a one-dimensional space takes on the form:</p>
+<p><span class="math display">\[
+\begin{equation}
+\tag{5}
+Precipitation_i = \beta_0 + \beta_1 x_i + \beta_2 x_i^2 + \varepsilon_i
+\end{equation}
+\]</span></p>
+<p>This model generates a curved fit often called a quadratic model.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-127" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-127-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="12_poly_functions_files/figure-html/fig-127-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="336">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-127-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;12.8: A second-order polynomial function is fitted to the data. This is also referred to as a quadratic function.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The residual diagnostic plot for this model shows a significant improvement in that the non-parametric fit (dashed blue line) does not show an overall trend in the data suggesting that a second-order polynomial model is a good fit for our data.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-128" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-128-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="12_poly_functions_files/figure-html/fig-128-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="336">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-128-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;12.9: The lack of an overall pattern in the residuals suggests that the second-order polynomial function does a decent job in capturing the trend in precipitation.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>A unique characteristic of spatial data is the presence of autocorrelation which is very much apparent in both the original scatter plot and the diagnostic plot. One might be tempted to try and capture this non-random pattern in a polynomial model. For example, fitting a 20<sup>th</sup> order polynomial model would do a decent job in capturing both the overall trend and localized variation as shown in the following plot.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-129" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-129-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="12_poly_functions_files/figure-html/fig-129-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="336">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-129-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;12.10: An example of a higher polynomial order function fitted to the data. This is an example of an overfitted model.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>But, doing so is ill-advised. The model has 20 coefficients! Polynomial models are intended to capture general trends in the data. There are more sophisticated and specialized statistical methods used to capture localized spatial autocorrelation as will be demonstrated in the next chapter. A general rule of thumb is to avoid going above a 3<sup>rd</sup> order polynomial model. Any higher order model is likely to capture some aspects of spatial autocorrelation.</p>
+</section>
+<section id="transitioning-from-a-one-dimensional-to-a-two-dimensional-space" class="level2" data-number="12.4">
+<h2 data-number="12.4" class="anchored" data-anchor-id="transitioning-from-a-one-dimensional-to-a-two-dimensional-space"><span class="header-section-number">12.4</span> Transitioning from a one-dimensional to a two-dimensional space</h2>
+<p>The polynomial functions described in the earlier section can easily be extended to a two-dimensional space. Next, we fit polynomial functions to the full precipitation extent for the state of Kansas. This adds the y-coordinate variable to the model.</p>
+<p>We learned that the 0<sup>th</sup> order polynomial is a horizontal line in one dimensional space. For a two-dimensional space, this is a horizontal plane that can be defined as:</p>
+<p><span class="math display">\[
+\begin{equation}
+\tag{6}
+Precipitation_i = \beta_0 + \beta_1 x_i^0  + \beta_2 y_i^0  + \varepsilon_i = \beta^{'} + \varepsilon_i
+\end{equation}
+\]</span></p>
+<p>where <span class="math inline">\(\beta^{'} = (\beta_0 + \beta_1 + \beta_2)\)</span> is the mean precipitation for the entire study extent (660 mm in our working example). The following figure shows this plane in a three-dimensional space.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-1210a" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-1210a-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="img/poly_fig3.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="600">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-1210a-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;12.11: A 0th order polynomial function fitted to the full two-dimensional precipitation data. The z-axis is assigned the precipitation variable.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>An east-west trend is apparent in the three-dimensional scatter plot suggesting that we should seek a first-order polynomial, at the very least. The model takes on the form:</p>
+<p><span class="math display">\[
+\begin{equation}
+\tag{7}
+Precipitation_i = \beta_0 + \beta_1 x_i  + \beta_2 y_i  + \varepsilon_i
+\end{equation}
+\]</span></p>
+<p>The model defines a plane that can be tilted in any direction. As was the case with the one-dimensional dataset, we can leverage the least squares method to fit the model to the data. This results in the following coefficients:</p>
+<p><span class="math display">\[
+\begin{equation}
+\tag{8}
+Precipitation_i = 402 + 1.15 x_i - 0.45 y_i  + \varepsilon_i
+\end{equation}
+\]</span></p>
+<p>The coefficients tell us by how much the precipitation changes along the x and y coordinate directions. In our working example, precipitation increases by 1.15 mm in the x direction (west to east) and decreases by 0.45 mm in the y direction (south to north). The precipitation gradient is greater in the x-direction than in the y direction. The following figure shows a three-dimensional rendering of the plane.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-1211" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-1211-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="img/poly_fig4.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="600">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-1211-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;12.12: A first-order polynomial function fitted to the two-dimensional precipitation data.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The same model can be viewed as a two-dimensional raster where each pixel represents the modeled precipitation.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-1212" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-1212-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="12_poly_functions_files/figure-html/fig-1212-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-1212-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;12.13: A raster view of the first-order polynomial function shown in Figure <a href="#fig-1211" class="quarto-xref">Figure&nbsp;<span>12.12</span></a>
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>How well does the first-order polynomial fit our data? We may first want to look at the residuals.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-1213" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-1213-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="12_poly_functions_files/figure-html/fig-1213-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-1213-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;12.14: The residuals from the fitting of the first-order polynomial function. Note the cluster of low precipitation values revealed by removing the trend.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The overall trend observed in the original raster is no longer obvious. However, subtle trends are more difficult to make out when viewing a two-dimensional dataset than a one-dimensional dataset. A more effective way to assess model fit in two-dimensional space is to split the residuals into their x and y coordinate components by plotting the residuals as a function of x and y respectively.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-1214" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-1214-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="12_poly_functions_files/figure-html/fig-1214-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-1214-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;12.15: The residuals from the fitting of the first-order polynomial function as viewed from the x-coordinate axis and the y-coordinate axis.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The plots suggest a very mild curvature in the residuals along the x coordinate. A similar, but more complex curvature can be observed along the y-coordinate. It may be worthwhile to augment the function by another polynomial order giving us a second-order polynomial function to see if it removes some of these trends. Such a function is also called a quadratic polynomial function. It takes on the form:</p>
+<p><span class="math display">\[
+\begin{equation}
+\tag{9}
+Precipitation_i = \beta_0 + \beta_1 x_i  + \beta_2 y_i + \beta_3 x_i^2  + \beta_4 y_i^2 + \beta_5 x_iy_i + \varepsilon_i
+\end{equation}
+\]</span></p>
+<p>Note that in addition to adding the squared coordinate values, the function also adds the interactive terms <span class="math inline">\(xy\)</span>. The interaction term captures situations where the coefficients for <span class="math inline">\(x\)</span> or <span class="math inline">\(y\)</span> are no longer a constant. For example, if the effect of the x coordinate value on precipitation changes as a function of changing y coordinate values, then x’s coefficient can no longer be deemed a constant. This is captured by the <span class="math inline">\(x_iy_i\)</span> term in equation 9.</p>
+<p>The least squares method can be used to fit the function to the data. In our example, this gives us:</p>
+<p><span class="math display">\[
+\begin{equation}
+\tag{10}
+Precipitation_i = 378 + 1.43 x_i -0.66 y_i -0.0003 x_i^2 +0.0013 y_i^2 -0.0005 x_iy_i + \varepsilon_i
+\end{equation}
+\]</span></p>
+<p>The coefficients suggest that the <span class="math inline">\(x_i\)</span> and <span class="math inline">\(y_i\)</span> coordinate values have a greater influence on the estimate of precipitation than their <span class="math inline">\(x_i^2\)</span> and <span class="math inline">\(y_i^2\)</span> counterparts despite the <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> terms being raised to the power of 2. Note too that the exceedingly small <span class="math inline">\(x_iy_i\)</span> coefficient suggests little to no interaction between the <span class="math inline">\(x_i\)</span> and <span class="math inline">\(y_i\)</span> coordinate values.</p>
+<p>The next figure shows this curved surface in a three-dimensional space.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-1215" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-1215-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="img/poly_fig5.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="600">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-1215-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;12.16: A second-order polynomial function fitted to the precipitation data. Note the slight curvature in the trend.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The next figure shows the quadratic surface as a two-dimensional raster.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-1216" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-1216-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="12_poly_functions_files/figure-html/fig-1216-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-1216-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;12.17: A raster view of the second-order polynomial function shown in <a href="#fig-1215" class="quarto-xref">Figure&nbsp;<span>12.16</span></a>.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Note that the resulting residuals look barely different from those of the 1st order polynomial model.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-1218" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-1218-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="12_poly_functions_files/figure-html/fig-1218-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-1218-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;12.18: The residuals from the fitting of the second-order polynomial function.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>It is therefore best to assess the goodness of fit by plotting the residuals against the x and y coordinate values.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-1219" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-1219-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="12_poly_functions_files/figure-html/fig-1219-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-1219-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;12.19: The residuals from the fitting of the second-order polynomial function as viewed from the x-coordinate axis and the y-coordinate axis.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The second-order polynomial is an improvement over the first-order polynomial, especially along the x-coordinate axis where the slight curvature observed in the first-order polynomial model’s residuals is no longer apparent. Note that the range of residual values are also slightly less with the 2<sup>nd</sup> order function versus the first-order function.</p>
+<p>Mathematically, there is no limit to the polynomial order you choose. For example, you could explore a third order polynomial function (a cubic polynomial) or even a fourth order polynomial function (a quartic polynomial). But, as was forewarned with the one-dimensional analysis presented earlier in this chapter, doing so increases the chance of overfitting the data. Recall that the purpose of modeling the trend is to capture the data’s <em>overall</em> pattern. Polynomial functions are not intended to capturing <em>local</em> variability in the data.</p>
+<p>One option that may help eliminate the need for higher polynomial orders is to transform (aka re-express) the variable <span class="math inline">\(z_i\)</span>. Transforming the data can render a curvilinear function straight (or flat in a two-dimensional space). Transforming the variable may also be scientifically justified. There are many datasets that benefit from a non-linear scale. For example, earthquake magnitudes are measured on a log scale and some count datasets can benefit from a square root transformation.</p>
+</section>
+<section id="evaluating-a-models-goodness-of-fit" class="level2" data-number="12.5">
+<h2 data-number="12.5" class="anchored" data-anchor-id="evaluating-a-models-goodness-of-fit"><span class="header-section-number">12.5</span> Evaluating a model’s goodness of fit</h2>
+<p>The diagnostic plots have, so far, been visual. We can adopt a more rigorous and systematic approach to evaluating how well the functions fit the data. A popular statistical measure of “fit” is the coefficient of determination, <span class="math inline">\(R^2\)</span>. It is computed by subtracting one from the ratio of the sum of residuals squared in the fitted model to the sum of residuals squared one would get if we had fitted the mean value.</p>
+<p><span class="math display">\[
+\begin{equation}
+\tag{11}
+R^2 = 1 - \frac{\sum(residuals_{model})^2}{\sum(residuals_{mean})^2}
+\end{equation}
+\]</span></p>
+<p>If the residuals from the model are smaller than those we would have gotten if we adopted the simpler mean model, <span class="math inline">\(R^2\)</span> ends up being large. <span class="math inline">\(R^2\)</span> ranges from 0 (no improvement whatsoever over the mean) to 1 (a perfect fit where the residuals from the fitted model are zero). In our working example, the first-order polynomial model resulted in an <span class="math inline">\(R^2\)</span> of 0.87. The second-order polynomial resulted in an <span class="math inline">\(R^2\)</span> of 0.90, a slight improvement over the first-order polynomial. Note that the <span class="math inline">\(R^2\)</span> value is sometimes reported as a percentage rather than a fraction.</p>
+</section>
+<section id="a-note-about-adopting-traditional-statistical-measures-of-significance-to-spatial-functions" class="level2" data-number="12.6">
+<h2 data-number="12.6" class="anchored" data-anchor-id="a-note-about-adopting-traditional-statistical-measures-of-significance-to-spatial-functions"><span class="header-section-number">12.6</span> A note about adopting traditional statistical measures of significance to spatial functions</h2>
+<p>Because underlying residuals are likely to exhibit spatial autocorrelation, traditional methods used to assess “statistical significance” of a model and its coefficient should be avoided. For example, the cluster of low residual values in the eastern part of Kansas is a good indication that spatial autocorrelation is present in our data.</p>
+</section>
+<section id="summary" class="level2" data-number="12.7">
+<h2 data-number="12.7" class="anchored" data-anchor-id="summary"><span class="header-section-number">12.7</span> Summary</h2>
+<p>This chapter introduced polynomial functions as a parametric tool for modeling first-order spatial effects, the broad location-driven variation in spatial data. Polynomial models, often referred to as <strong>trend surfaces</strong>, describe large-scale spatial patterns as a function of geographic coordinates and are commonly applied to continuous spatial fields such as precipitation, elevation, and population density.</p>
+<ul>
+<li>Trend surfaces are <strong>polynomial functions</strong> fitted to spatial coordinates and used to model broad spatial variation across a study area.</li>
+<li>Polynomial models are most useful for characterizing <strong>first-order effects</strong>, or large-scale spatial trends associated with absolute location.</li>
+<li>Trend surfaces can be fitted in one or two-dimensional space using regression techniques such as ordinary least squares. Increasing the polynomial order allows more complex trends to be modeled, but excessively high orders can lead to <strong>overfitting</strong> and may begin capturing <strong>local spatial variation</strong> rather than the underlying trend.</li>
+<li><strong>Residuals</strong> represent the portion of the data not explained by the trend surface and provide an important diagnostic tool for evaluating model performance.</li>
+<li>The primary goal of trend modeling is not to explain all variation in the data, but rather to account for broad spatial trends and isolate the remaining unexplained variation.</li>
+<li>Once a first-order trend has been modeled and removed, the residuals can be examined for <strong>remaining spatial structure</strong>. Determining whether neighboring residuals are more similar (or dissimilar) than expected by chance leads directly to the study of spatial autocorrelation, the principal second-order effect examined in the next chapter.</li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./11_intro_spatial.html" class="pagination-link" aria-label="Analyzing Spatial Patterns">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Analyzing Spatial Patterns</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./13_autocorrelation.html" class="pagination-link" aria-label="Spatial Autocorrelation">
+        <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Spatial Autocorrelation</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

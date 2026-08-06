@@ -1,0 +1,20 @@
+# Preface {.unnumbered}
+
+These pages compile lecture notes for my *Introduction to GIS and Spatial Analysis course* (ES214). The material is organized to broadly follow the course structure, though many chapters can be read independently. 
+
+The course, and this book, is divided into two main parts: 
+
+1. **Spatial Data Management and Visualization**
+2. **Spatial Analysis and Spatial Statistics**. 
+
+The first part focuses on the representation, manipulation, and visualization of spatial data and is typically taught using [ArcGIS Pro](https://www.esri.com/en-us/arcgis/products/arcgis-pro/overview). The second part introduces the principles of spatial analysis and spatial statistics and relies heavily on [R](https://www.r-project.org/) for computation, modeling, and visualization.
+
+ArcGIS Pro was selected as the primary GIS platform because of its widespread use in government, industry, and consulting organizations throughout North America. However, the concepts presented in this book are largely software-independent. Open-source alternatives such as [QGIS](http://qgis.org)can be used for many of the workflows discussed in the text, and several chapters can be completed without access to ArcGIS Pro. A [separate website](https://sites.google.com/colby.edu/mgimond-arcgis-pro/) provides ArcGIS Pro tutorials used in this course.
+
+R plays a central role in the spatial analysis portion of the book because of its extensive collection of spatial analysis and spatial statistics packages, its support for reproducible research through scripting, and its availability as a free and open-source software environment. In addition to statistical analysis, R is capable of many traditional GIS operations such as buffering, clipping, reprojection, raster processing, and spatial data management. 
+
+While ArcGIS Pro and QGIS provide powerful graphical environments for creating and editing spatial data, the use of R encourages a reproducible workflow in which analytical steps can be documented, shared, and replicated.
+
+Supplementary R tutorials and examples are now maintained separately from this textbook and are available through their own [online repository](https://mgimond.github.io/spatial_appendix/). 
+
+The resources used as references for this course are listed in the [Reference](references.html). 

@@ -1,0 +1,1240 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>10&nbsp; Map Algebra – Introduction to GIS and Spatial Analysis</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./11_intro_spatial.html" rel="next">
+<link href="./09_coordinate_systems.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-9e3e5b9121e68b3f077afb32f2c64d95.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./02_feature_representation.html">Working with Spatial Data</a></li><li class="breadcrumb-item"><a href="./10_map_algebra.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Map Algebra</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Introduction to GIS and Spatial Analysis</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01_intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Working with Spatial Data</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02_feature_representation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Feature Representation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03_data_management.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">GIS Data Management</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04_symbolizing_features.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Symbolizing features</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05_statistical_maps.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Statistical maps</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06_pitfalls_to_avoid.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Pitfalls to avoid</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07_map_making_tips.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Good Map Making Tips</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08_spatial_operations_vector_overlays.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Spatial Selection and Vector Overlays</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09_coordinate_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Coordinate Systems</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10_map_algebra.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Map Algebra</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Spatial Analysis</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11_intro_spatial.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Analyzing Spatial Patterns</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12_poly_functions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Modeling Spatial Trends</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13_autocorrelation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Spatial Autocorrelation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14_ppa_1st.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">First-Order Point Pattern Analysis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./15_ppa_2nd.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Second-Order Point Pattern Analysis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./16_interpolation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Spatial Interpolation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">10.1</span> Introduction</a></li>
+  <li><a href="#local-operations-and-functions" id="toc-local-operations-and-functions" class="nav-link" data-scroll-target="#local-operations-and-functions"><span class="header-section-number">10.2</span> Local operations and functions</a></li>
+  <li><a href="#focal-operations-and-functions" id="toc-focal-operations-and-functions" class="nav-link" data-scroll-target="#focal-operations-and-functions"><span class="header-section-number">10.3</span> Focal operations and functions</a></li>
+  <li><a href="#zonal-operations-and-functions" id="toc-zonal-operations-and-functions" class="nav-link" data-scroll-target="#zonal-operations-and-functions"><span class="header-section-number">10.4</span> Zonal operations and functions</a></li>
+  <li><a href="#global-operations-and-functions" id="toc-global-operations-and-functions" class="nav-link" data-scroll-target="#global-operations-and-functions"><span class="header-section-number">10.5</span> Global operations and functions</a></li>
+  <li><a href="#operators-and-functions" id="toc-operators-and-functions" class="nav-link" data-scroll-target="#operators-and-functions"><span class="header-section-number">10.6</span> Operators and functions</a>
+  <ul class="collapse">
+  <li><a href="#mathematical-operators-and-functions" id="toc-mathematical-operators-and-functions" class="nav-link" data-scroll-target="#mathematical-operators-and-functions"><span class="header-section-number">10.6.1</span> Mathematical operators and functions</a></li>
+  <li><a href="#logical-comparison" id="toc-logical-comparison" class="nav-link" data-scroll-target="#logical-comparison"><span class="header-section-number">10.6.2</span> Logical comparison</a></li>
+  <li><a href="#boolean-or-logical-operators" id="toc-boolean-or-logical-operators" class="nav-link" data-scroll-target="#boolean-or-logical-operators"><span class="header-section-number">10.6.3</span> Boolean (or Logical) operators</a></li>
+  <li><a href="#combining-operations" id="toc-combining-operations" class="nav-link" data-scroll-target="#combining-operations"><span class="header-section-number">10.6.4</span> Combining operations</a></li>
+  </ul></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">10.7</span> Summary</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./02_feature_representation.html">Working with Spatial Data</a></li><li class="breadcrumb-item"><a href="./10_map_algebra.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Map Algebra</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Map Algebra</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="introduction" class="level2" data-number="10.1">
+<h2 data-number="10.1" class="anchored" data-anchor-id="introduction"><span class="header-section-number">10.1</span> Introduction</h2>
+<p>In Chapter 2, raster data were introduced as a spatial data model in which the study area is represented as a regular grid of cells. Unlike vector data, where attributes are linked to discrete features such as points, lines, and polygons, raster datasets assign a value to every cell in the grid. Because each cell stores a value at a known location, mathematical and logical operations can be applied systematically across the entire study area.</p>
+<p>This cell-based structure makes raster data particularly well suited for spatial analysis. For example, we may wish to:</p>
+<ul>
+<li>identify locations with elevations greater than 500 m,</li>
+<li>calculate the average elevation surrounding each cell,</li>
+<li>summarize precipitation for each watershed,</li>
+<li>determine the distance from every location to the nearest road.</li>
+</ul>
+<p>These types of analyses involve transforming and combining raster values to generate new spatial information.</p>
+<p>One framework for performing such analyses is <strong>Map Algebra</strong>, a system of spatial operations developed by <strong>Dana Tomlin</strong> <span class="citation" data-cites="DTomlin">(<a href="references.html#ref-DTomlin" role="doc-biblioref">Tomlin 1990</a>)</span>. Map Algebra treats raster layers as mathematical objects that can be manipulated using arithmetic, logical, and statistical operations. The framework organizes raster analysis according to the spatial context used in the calculation.</p>
+<p>Tomlin identified three primary categories of raster operations:</p>
+<ul>
+<li><strong>Local operations</strong>, which compute new values using information associated with the same location.</li>
+<li><strong>Focal operations</strong>, which compute new values using information from neighboring locations.</li>
+<li><strong>Zonal operations</strong>, which compute new values by summarizing information within predefined regions.</li>
+</ul>
+<p>O’Sullivan and Unwin <span class="citation" data-cites="Unwin1">(<a href="references.html#ref-Unwin1" role="doc-biblioref">O’Sullivan and Unwin 2010</a>)</span> later proposed a fourth category:</p>
+<ul>
+<li><strong>Global operations</strong>, which compute new values using information from all locations in the study area.</li>
+</ul>
+<p>Together, these four categories form the foundation of raster-based spatial analysis and provide a useful framework for understanding many GIS tools and modeling workflows.</p>
+<p>A useful way to distinguish among map algebra operations is to consider how much of the raster is involved in computing each output value. At one extreme, an operation may use only the value stored in a single cell. At the other extreme, it may draw information from the entire raster. Between these extremes are operations that use neighboring cells or predefined regions.</p>
+<p>We begin with local operations, the simplest type of map algebra function, in which the output value is computed using only information associated with the same location.</p>
+</section>
+<section id="local-operations-and-functions" class="level2" data-number="10.2">
+<h2 data-number="10.2" class="anchored" data-anchor-id="local-operations-and-functions"><span class="header-section-number">10.2</span> Local operations and functions</h2>
+<p><strong>Local operations</strong> are the simplest type of map algebra function. They compute a new value for each cell using only information associated with that same location. In other words, the value assigned to an output cell depends exclusively on the value or values occupying the corresponding cell location in one or more input rasters.</p>
+<p>Because only coincident cell locations are used in the calculation, local operations do not require information from neighboring cells or from other parts of the raster. Common local operations include arithmetic calculations, logical comparisons, and reclassification of raster values.</p>
+<p>For instance, starting with an original raster layer, we might apply a sequence of operations–first multiplying each cell value by 2, then adding 1. The result is a new raster in which each cell reflects the cumulative effect of those operations applied to the corresponding cell in the original layer. This is an example of a <strong>unary operation</strong>, where only a single raster is involved in the computation.</p>
+<p>The following figure illustrates a local operation in which every cell value is transformed using the expression <code>output = (2 x input) + 1</code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-local01" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-local01-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="10_map_algebra_files/figure-html/fig-local01-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="480">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-local01-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;10.1: Local map algebra operation where each output cell is computed as <code>(2 × input) + 1</code>. The value assigned to each output cell depends only on the corresponding input cell.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Local operations can also involve multiple raster layers. In the previous example, the output values were derived from a single raster layer. However, local operations can also combine values from two or more raster layers at the same location.</p>
+<p>For example, two rasters can be added together by summing the values of coincident cells. The resulting raster assigns each output cell the combined value of the corresponding cells from the input layers. This is an example of a <strong>binary operation</strong> because two raster layers participate in the calculation.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-local02" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-local02-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="10_map_algebra_files/figure-html/fig-local02-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-local02-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;10.2: Example of a local binary operation where corresponding cells from two raster layers are added together. Each output value is computed using only the values stored at the same location in the input rasters.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Local operations also include <strong>reclassification</strong>, where a range of input raster values is assigned a new, common value. Rather than performing arithmetic on raster values, reclassification groups values into categories that may be easier to interpret or analyze. Common applications include converting continuous elevation values into elevation classes, grouping land suitability scores into categories such as low, medium, and high suitability, or simplifying a raster prior to further analysis.</p>
+<p>For example, we might reclassify the input raster values as follows:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: right;">Original values</th>
+<th style="text-align: left;">Reclassified values</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1-10</td>
+<td style="text-align: left;">10</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">11-20</td>
+<td style="text-align: left;">20</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">21-30</td>
+<td style="text-align: left;">30</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">31-40</td>
+<td style="text-align: left;">40</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">41-50</td>
+<td style="text-align: left;">50</td>
+</tr>
+</tbody>
+</table>
+<p>In this example, every input value between 1 and 10 is assigned an output value of 10, values between 11 and 20 are assigned 20, and so on. Because the output value depends only on the value of the corresponding input cell, reclassification remains a local operation.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-local03" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-local03-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="10_map_algebra_files/figure-html/fig-local03-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="480">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-local03-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;10.3: Example of a local reclassification operation. Each output cell is assigned a new value based on the value range containing the corresponding input cell. Since the transformation depends only on the input value at the same location, reclassification is a local operation.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The next category of functions, known as focal operations, expands the scope of the analysis by incorporating information from neighboring cells when computing each output value.</p>
+</section>
+<section id="focal-operations-and-functions" class="level2" data-number="10.3">
+<h2 data-number="10.3" class="anchored" data-anchor-id="focal-operations-and-functions"><span class="header-section-number">10.3</span> Focal operations and functions</h2>
+<p><strong>Focal operations</strong> differ from local operations in that they incorporate information from neighboring cells when computing a new value for each location. Whereas local operations use only the value associated with the same cell location, focal operations define a neighborhood around each cell and use information from that neighborhood in the calculation.</p>
+<p>The neighborhood is commonly centered on the cell being evaluated and may consist of the eight immediately adjacent cells, a larger square or circular window, or another user-defined shape. The output value assigned to the center cell therefore depends not only on its own value, but also on the values of nearby cells.</p>
+<p>For example, a focal operation might calculate the average value of all cells within the neighborhood and assign that average to the center cell. This approach is often used for <strong>smoothing</strong> data, reducing local variability, detecting spatial patterns, and identifying transitions across a surface.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-focal01" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-focal01-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="10_map_algebra_files/figure-html/fig-focal01-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="480">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-focal01-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;10.4: Example of a focal averaging operation using a 3×3 neighborhood. Each output cell is assigned the average value of the corresponding input cell and its surrounding neighbors. Cells along the raster boundary are assigned NoData values because the full neighborhood cannot be evaluated.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Notice in the example above that the edge cells in the output raster have been assigned a value of <code>NA</code> (No Data). This occurs because the neighborhood around those cells extends beyond the raster boundary, where no values exist. These boundary-related issues are commonly referred to as <strong>edge effects</strong>.</p>
+<p>Different GIS applications handle edge effects differently. Some assign a NoData value whenever the full neighborhood cannot be evaluated, while others ignore the missing cells and compute the summary statistic using only the available neighboring values. The latter approach is demonstrated in the next example.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-focal02" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-focal02-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="10_map_algebra_files/figure-html/fig-focal02-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="480">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-focal02-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;10.5: Focal averaging operation using a 3×3 neighborhood where missing cells beyond the raster boundary are ignored. Unlike <a href="#fig-focal01" class="quarto-xref">Figure&nbsp;<span>10.4</span></a>, edge cells receive valid output values because the average is computed from the available neighboring cells only.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Focal (or neighborhood) operations require the definition of a window region, commonly referred to as a <strong>kernel</strong>. A kernel defines which neighboring cells contribute to the calculation performed at each location. In the examples above, a simple 3×3 kernel was used, where each output value was influenced by the values of cells in the surrounding neighborhood.</p>
+<p>The kernel itself can vary in both size and shape. For example, a focal operation might use a 3x3 square, or a circular neighborhood defined by a specified radius. The choice of kernel influences the spatial scale of the analysis and therefore the resulting output raster.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-kernels" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-kernels-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="10_map_algebra_files/figure-html/fig-kernels-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="480">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-kernels-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;10.6: Examples of kernel shapes used to define focal neighborhoods. The square kernel includes all cells within a 3 × 3 moving window, whereas the circular kernel includes cells within a specified radius of the focal cell.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p><a href="#fig-kernels" class="quarto-xref">Figure&nbsp;<span>10.6</span></a> illustrates two common neighborhood definitions. In practice, focal operations are not limited to selecting a neighborhood shape; they can also specify which cells within that neighborhood participate in the calculation. For example, a 3×3 square kernel may include all nine cells or exclude the center cell, depending on the analytical objective.</p>
+<p>The following example uses a 3×3 square kernel in which the center cell is <em>excluded</em>. As a result, each output value is computed from the eight neighboring cells surrounding the focal location rather than from the focal cell itself.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-focal03" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-focal03-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="10_map_algebra_files/figure-html/fig-focal03-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="480">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-focal03-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;10.7: Focal averaging operation using a 3×3 kernel with the center cell excluded. Each output value is computed from the eight neighboring cells surrounding the target location.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>In addition to defining the shape and size of the neighborhood, a kernel can also specify how much influence each neighboring cell has on the output value. This influence is expressed through a set of <strong>weights</strong> assigned to the cells within the kernel.</p>
+<p>For example, in a 3×3 neighborhood used for focal averaging, each cell might contribute an equal weight of 1/9 to the final value. Such a kernel treats all neighboring cells as equally important. However, weights can also be assigned unequally to emphasize some cells more than others. These weighted neighborhoods are often defined using <strong>kernel functions</strong>.</p>
+<p>One commonly used kernel function is the <strong>Gaussian</strong> kernel, which assigns greater weight to cells near the center of the neighborhood and progressively smaller weights to cells farther away. As a result, nearby cells exert a stronger influence on the output value than distant cells.</p>
+<p>The following example applies a Gaussian kernel to the same raster used in the previous examples.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-focal04" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-focal04-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="10_map_algebra_files/figure-html/fig-focal04-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="480">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-focal04-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;10.8: Focal averaging operation using a Gaussian kernel. Cells closest to the center of the neighborhood receive the greatest weight, causing nearby values to exert more influence on the output than distant values.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Thus far, focal operations have summarized values within neighborhoods centered on individual cells. In many applications, however, we are interested in summarizing values across larger predefined regions such as watersheds, counties, or management units. These are the focus of zonal operations.</p>
+</section>
+<section id="zonal-operations-and-functions" class="level2" data-number="10.4">
+<h2 data-number="10.4" class="anchored" data-anchor-id="zonal-operations-and-functions"><span class="header-section-number">10.4</span> Zonal operations and functions</h2>
+<p><strong>Zonal operations</strong> differ from local and focal operations in that they summarize values across predefined regions rather than individual cells or neighborhoods. Whereas focal operations define a neighborhood around every cell, zonal operations define larger regions, called <strong>zones</strong>, that may contain many cells.</p>
+<p>A zone is typically derived from a separate raster or polygon layer and represents a meaningful geographic region such as a watershed, county, land parcel, or landcover class. All cells belonging to the same zone are treated as a single analytical unit.</p>
+<p>Zonal operations compute a summary statistic for each zone using the values from another raster layer. Common summary statistics include the mean, sum, minimum, maximum, and standard deviation.</p>
+<p>In the following example, raster cell values are aggregated into three zones whose boundaries are delineated by red polygons. Each output zone is assigned the average value of the cells contained within that zone.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-zonal01" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-zonal01-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="10_map_algebra_files/figure-html/fig-zonal01-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="576">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-zonal01-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;10.9: Example of a zonal operation in which raster values are averaged within three predefined zones. All cells belonging to the same zone contribute to a single summary value, which is then assigned to the entire zone.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Although zonal operations can generate new spatial layers, the output is often tabular rather than spatial. In many GIS workflows, the goal is to summarize a raster variable for a set of spatial regions rather than create a new map. For example, a zonal operation might be used to calculate the average elevation within each state, the total population within each watershed, or the percentage of each county covered by water. The resulting output is typically a table in which each zone is associated with one or more summary statistics. Thus, zonal operations serve as an important bridge between raster and vector data by summarizing raster values for meaningful geographic regions.</p>
+<p>Local, focal, and zonal operations all compute output values using information drawn from a limited spatial context. In contrast, some raster operations require information from the entire study area when calculating output values. These are known as global operations.</p>
+</section>
+<section id="global-operations-and-functions" class="level2" data-number="10.5">
+<h2 data-number="10.5" class="anchored" data-anchor-id="global-operations-and-functions"><span class="header-section-number">10.5</span> Global operations and functions</h2>
+<p><strong>Global operations</strong> and functions may use some or all input cells when computing the value of each output cell. Unlike local, focal, and zonal operations, which rely on information from a limited spatial context, global operations draw information from potentially the entire study area.</p>
+<p>A common example is the <strong>Euclidean Distance</strong> tool, which calculates the shortest straight-line distance between each cell and a specified source or destination. In the example below, a new raster assigns to each cell the distance to the nearest cell with a value of 1-note that only two such cells exist in the input raster.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-global01" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-global01-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="10_map_algebra_files/figure-html/fig-global01-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="480">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-global01-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;10.10: Example of a global operation using Euclidean distance. Each output cell is assigned the shortest straight-line distance to the nearest source cell (value = 1) in the input raster. Each cell’s dimension is 10 by 10 units. Unlike local, focal, and zonal operations, the calculation may require information from locations across the entire raster.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Euclidean distance is only one example of a global operation. Other global functions may compute summary statistics for an entire raster, identify least-cost paths across a landscape, or evaluate measures of spatial dependence. What these approaches have in common is that the calculation potentially depends on information drawn from all locations in the study area.</p>
+</section>
+<section id="operators-and-functions" class="level2" data-number="10.6">
+<h2 data-number="10.6" class="anchored" data-anchor-id="operators-and-functions"><span class="header-section-number">10.6</span> Operators and functions</h2>
+<p>Thus far, we have focused on the spatial context of raster operations—whether calculations are performed at individual cells, within neighborhoods, across zones, or using information from an entire raster. Regardless of the spatial context, raster calculations are ultimately built from a relatively small set of operators and functions.</p>
+<p>These operators and functions can be grouped into three broad categories:</p>
+<ul>
+<li><strong>Mathematical operators and functions</strong>, which perform arithmetic calculations on raster values.</li>
+<li><strong>Logical comparison operators</strong>, which evaluate whether specified conditions are true or false.</li>
+<li><strong>Boolean operators</strong>, which combine multiple logical conditions into more complex expressions.</li>
+</ul>
+<p>These building blocks can be used individually or combined to create more sophisticated map algebra expressions.</p>
+<section id="mathematical-operators-and-functions" class="level3" data-number="10.6.1">
+<h3 data-number="10.6.1" class="anchored" data-anchor-id="mathematical-operators-and-functions"><span class="header-section-number">10.6.1</span> Mathematical operators and functions</h3>
+<p>Many map algebra operations rely on familiar <strong>mathematical expressions</strong>. In fact, several mathematical operators have already been introduced in the local operation examples, including multiplication and addition. These operators manipulate raster values using arithmetic rules similar to those used in spreadsheets and programming languages.</p>
+<p>Common mathematical operators include addition, subtraction, multiplication, division, and the modulo (or modulus) operator, which returns the remainder of a division. Mathematical functions can also be applied to raster values. Examples include square-root, logarithmic, trigonometric, and exponential functions.</p>
+<p>The following table lists a few commonly used operators and functions together with their ArcGIS and R syntax.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 29%">
+<col style="width: 23%">
+<col style="width: 23%">
+<col style="width: 23%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Operation</th>
+<th>ArcGIS Syntax</th>
+<th>R Syntax</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Addition</td>
+<td><code>+</code></td>
+<td><code>+</code></td>
+<td><code>input1 + input2</code></td>
+</tr>
+<tr class="even">
+<td>Subtraction</td>
+<td><code>-</code></td>
+<td><code>-</code></td>
+<td><code>input1 - input2</code></td>
+</tr>
+<tr class="odd">
+<td>Multiplication</td>
+<td><code>*</code></td>
+<td><code>*</code></td>
+<td><code>input1 * input2</code></td>
+</tr>
+<tr class="even">
+<td>Division</td>
+<td><code>/</code></td>
+<td><code>/</code></td>
+<td><code>input1 / input2</code></td>
+</tr>
+<tr class="odd">
+<td>Modulo</td>
+<td><code>Mod()</code></td>
+<td><code>%%</code></td>
+<td><code>Mod(input1, 100)</code>, <code>input1 %% 10</code></td>
+</tr>
+<tr class="even">
+<td>Square root</td>
+<td><code>SquareRoot()</code></td>
+<td><code>sqrt()</code></td>
+<td><code>SquareRoot(input1)</code>, <code>sqrt(input1)</code></td>
+</tr>
+</tbody>
+</table>
+<p>Mathematical operators are frequently used to transform raster values, combine multiple raster layers, and compute suitability or risk indices from several input variables.</p>
+<p>The operators and functions introduced thus far generate new numeric raster values. In many GIS applications, however, we are interested in identifying locations that satisfy specific criteria rather than computing new numeric quantities. Such operations rely on logical comparison operators.</p>
+</section>
+<section id="logical-comparison" class="level3" data-number="10.6.2">
+<h3 data-number="10.6.2" class="anchored" data-anchor-id="logical-comparison"><span class="header-section-number">10.6.2</span> Logical comparison</h3>
+<p>Unlike mathematical operators, which generate new numeric values, <strong>logical comparison operators</strong> evaluate whether a condition is true or false. The result is typically stored as a value of <code>1</code> if the condition is true and <code>0</code> if the condition is false.</p>
+<p>Logical comparison operators include <em>greater than</em>, <em>less than</em>, <em>equal</em>, and <em>not equal</em>.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Logical comparison</th>
+<th>Syntax</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Greater than</td>
+<td><code>&gt;</code></td>
+</tr>
+<tr class="even">
+<td>Less than</td>
+<td><code>&lt;</code></td>
+</tr>
+<tr class="odd">
+<td>Equal</td>
+<td><code>==</code></td>
+</tr>
+<tr class="even">
+<td>Not equal</td>
+<td><code>!=</code></td>
+</tr>
+</tbody>
+</table>
+<p>For example, the following figure compares two rasters on a cell-by-cell basis using the expression <code>input1 &gt; input2</code>. Cells where the condition is true are assigned a value of <code>1</code>, whereas cells where the condition is false are assigned a value of <code>0</code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-logical01" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-logical01-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="10_map_algebra_files/figure-html/fig-logical01-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="480">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-logical01-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;10.11: Output of the logical comparison <code>input1</code> &gt; <code>input2</code>. Each output cell is assigned a value of <code>1</code> when the corresponding cell in <code>input1</code> is greater than the corresponding cell in <code>input2</code>, and a value of <code>0</code> otherwise.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Logical comparison operations are commonly used to identify locations that satisfy specified criteria. For example, they can be used to select areas with elevations greater than 500 m, slopes steeper than 15°, or distances less than 100 m from a road. The resulting binary raster can then be used in subsequent map algebra operations.</p>
+<p>When assessing whether two cells are equal, some programming environments such as R and ArcGIS’s <em>Raster Calculator</em> require the use of the <em>double equality</em> syntax, <code>==</code>, as in <code>input1 == input2</code>. In these programming environments, the single equality syntax is usually interpreted as an <em>assignment operator</em> so <code>input1 = input2</code> would instruct the computer to assign the cell values in <code>input2</code> to <code>input1</code> (which is not what we want to do here).</p>
+<p>Some applications make use of special functions to test a condition. For example, ArcGIS has a function called <code>Con(condition, out1, out2)</code> which assigns the value <code>out1</code> if the condition is met and a value of <code>out2</code> if it’s not. For example, ArcGIS’s raster calculator expression</p>
+<pre><code>Con( input1 &gt; input2, 1, 0)</code></pre>
+<p>outputs a value of <code>1</code> if <code>input1</code> is greater than <code>input2</code> and <code>0</code> if not. It generates the same output as the one shown in the above figure. In many programming environments, including ArcGIS and R, <code>TRUE</code> and <code>FALSE</code> can be represented numerically as <code>1</code> and <code>0</code>, respectively. As a result, the expression <code>input1 &gt; input2</code> often produces the same output as <code>Con(input1 &gt; input2, 1, 0)</code>.</p>
+<p>The comparison operators introduced in this section evaluate a single condition. In many GIS applications, however, we are interested in locations that must satisfy multiple conditions simultaneously. Such expressions are constructed using Boolean operators.</p>
+</section>
+<section id="boolean-or-logical-operators" class="level3" data-number="10.6.3">
+<h3 data-number="10.6.3" class="anchored" data-anchor-id="boolean-or-logical-operators"><span class="header-section-number">10.6.3</span> Boolean (or Logical) operators</h3>
+<p>Comparison operators evaluate a single condition and return a value of <code>TRUE</code> or <code>FALSE</code> (often represented as <code>1</code> and <code>0</code>). In many GIS applications, however, a single condition is not sufficient. We may wish to identify locations that satisfy multiple criteria simultaneously. For example, a suitability analysis might seek locations that are both within 100 m of a road and on slopes less than 15°.</p>
+<p><strong>Boolean operators</strong> provide a way to combine multiple logical conditions into a single expression. The three Boolean operators are <strong>AND</strong>, <strong>OR</strong> and <strong>NOT</strong>.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Boolean</th>
+<th style="text-align: left;">ArcGIS</th>
+<th style="text-align: left;">R</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">AND</td>
+<td style="text-align: left;">&amp;</td>
+<td style="text-align: left;">&amp;</td>
+<td><code>input1 &amp; input2</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">OR</td>
+<td style="text-align: left;"><code>|</code></td>
+<td style="text-align: left;"><code>|</code></td>
+<td><code>input1 | input2</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">NOT</td>
+<td style="text-align: left;"><code>~</code></td>
+<td style="text-align: left;"><code>!</code></td>
+<td><code>~input2</code>, <code>! input2</code></td>
+</tr>
+</tbody>
+</table>
+<p>In many programming environments, any non-zero value is treated as <code>TRUE</code>, whereas a value of <code>0</code> is treated as <code>FALSE</code>. The Boolean operators act on these logical states rather than on the original raster values.</p>
+<p>For example:</p>
+<ul>
+<li><strong>AND</strong> returns <code>TRUE</code> only if both conditions are true.</li>
+<li><strong>OR</strong> returns <code>TRUE</code> if at least one condition is true.</li>
+<li><strong>NOT</strong> reverses a logical condition, changing <code>TRUE</code> to <code>FALSE</code> and <code>FALSE</code> to <code>TRUE</code>.</li>
+</ul>
+<p>The following example demonstrates the <strong>AND</strong> operator applied to two rasters. Because non-zero values are treated as <code>TRUE</code>, a cell in the output raster is assigned a value of <code>1</code> only when both corresponding input cells are non-zero.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-boolean01" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-boolean01-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="10_map_algebra_files/figure-html/fig-boolean01-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="480">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-boolean01-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;10.12: Output of the Boolean operation <code>input1 AND input2</code>. Because all non-zero values are interpreted as <code>TRUE</code>, an output cell is assigned a value of <code>1</code> only when both corresponding input cells are non-zero. Otherwise, the output value is <code>0</code>.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The <strong>AND</strong> operator is often used to identify locations that satisfy multiple criteria simultaneously. Two other commonly used Boolean operators are <strong>OR</strong> and <strong>NOT</strong>. The <strong>OR</strong> operator returns <code>TRUE</code> if at least one of the specified conditions is true, whereas the <strong>NOT</strong> operator reverses a logical state, converting <code>TRUE</code> values to <code>FALSE</code> and <code>FALSE</code> values to <code>TRUE</code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-boolean02" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-boolean02-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="10_map_algebra_files/figure-html/fig-boolean02-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="480">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-boolean02-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;10.13: Output of the Boolean operation <code>input1 OR input2</code>. Because all non-zero values are interpreted as <code>TRUE</code>, an output cell is assigned a value of <code>1</code> whenever at least one of the corresponding input cells is non-zero. Otherwise, the output value is <code>0</code>.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The <strong>NOT</strong> operator is particularly useful when excluding locations from an analysis. For example, if a raster uses non-zero values to indicate suitable locations and zeros to indicate unsuitable locations, applying the NOT operator reverses this classification. The following example demonstrates the effect of applying the NOT operator to a raster layer.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-boolean03" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-boolean03-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="10_map_algebra_files/figure-html/fig-boolean03-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="480">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-boolean03-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;10.14: Output of the Boolean operation <code>NOT input2</code>. Cells with a value of <code>0</code> (FALSE) in the input raster are assigned a value of <code>1</code> (TRUE) in the output raster, whereas all non-zero values (TRUE) are converted to <code>0</code> (FALSE).
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="combining-operations" class="level3" data-number="10.6.4">
+<h3 data-number="10.6.4" class="anchored" data-anchor-id="combining-operations"><span class="header-section-number">10.6.4</span> Combining operations</h3>
+<p>In practice, raster analyses rarely rely on a single comparison or Boolean operation. More often, multiple conditions are combined to identify locations that meet a specific set of criteria. This approach is common in suitability analysis, where candidate locations must satisfy several environmental, geographic, or regulatory requirements simultaneously.</p>
+<p>Complex map algebra expressions are typically constructed by first evaluating individual conditions using comparison operators. Each comparison produces a raster of <code>TRUE</code> and <code>FALSE</code> values (often represented as <code>1</code> and <code>0</code>). These logical rasters can then be combined using Boolean operators such as <strong>AND</strong>, <strong>OR</strong>, and <strong>NOT</strong>.</p>
+<p>For example, suppose we wish to identify locations where raster values in <code>input1</code> are greater than 0 but less than 4, and where corresponding values in <code>input2</code> are also greater than 0. This expression can be written as <code>((input1 &gt; 0) &amp; (input1 &lt; 4)) &amp; (input2 &gt; 0)</code>.</p>
+<p>The following figure illustrates the result of applying this combined expression to the two raster layers.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-combining01" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-combining01-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="10_map_algebra_files/figure-html/fig-combining01-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="480">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-combining01-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;10.15: Output of the operation ((<code>input1</code>&gt;<code>0</code>) &amp; (<code>input1</code>&lt;<code>4</code>)) &amp; (<code>input2</code>&gt;<code>0</code>). A value of 1 in the output raster indicates that the condition is true and a value of 0 indicates that the condition is false.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Expressions such as this form the foundation of many raster suitability analyses. For example, suppose we are interested in identifying locations suitable for a new solar farm. We might require that:</p>
+<ul>
+<li>slope be less than 10°,</li>
+<li>distance to roads be less than 500 m, and</li>
+<li>land cover not be classified as wetlands.</li>
+</ul>
+<p>Each criterion can be evaluated separately using comparison operators. The resulting logical rasters can then be combined using Boolean operators to identify locations that satisfy all requirements simultaneously.</p>
+<p>In practice, many raster suitability analyses assign scores to criteria and combine them using mathematical operators in addition to Boolean constraints. For example, slope, solar exposure, and distance to infrastructure might each be assigned suitability scores that are summed or weighted to produce an overall suitability index, while Boolean expressions are used to exclude areas that fail to meet minimum requirements.</p>
+</section>
+</section>
+<section id="summary" class="level2" data-number="10.7">
+<h2 data-number="10.7" class="anchored" data-anchor-id="summary"><span class="header-section-number">10.7</span> Summary</h2>
+<p>This chapter introduced <strong>Map Algebra</strong>, a framework for analyzing raster data using mathematical and logical operations.</p>
+<ul>
+<li><p>Raster data are well suited to map algebra because every cell stores a value at a known location.</p></li>
+<li><p>Map algebra operations can be grouped into four categories:</p>
+<ul>
+<li><strong>Local</strong>: uses information from the same cell.</li>
+<li><strong>Focal</strong>: uses information from neighboring cells.</li>
+<li><strong>Zonal</strong>: summarizes values within predefined regions.</li>
+<li><strong>Global</strong>: uses information from part or all of the raster.</li>
+</ul></li>
+<li><p>Raster calculations can be built using <strong>mathematical</strong>, <strong>logical comparison</strong>, and <strong>Boolean</strong> operators.</p></li>
+<li><p>Comparison operators evaluate conditions and return <strong>TRUE/FALSE</strong> (or <strong>1/0</strong>) values.</p></li>
+<li><p>Boolean operators such as <strong>AND</strong>, <strong>OR</strong>, and <strong>NOT</strong> combine multiple conditions into a single expression.</p></li>
+<li><p>Map algebra provides the foundation for many raster-based analyses including suitability modeling, terrain analysis, and environmental modeling.</p></li>
+</ul>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="ref-Unwin1" class="csl-entry" role="listitem">
+O’Sullivan, David, and David Unwin. 2010. <em>Geographic Information Analysis</em>. Wiley.
+</div>
+<div id="ref-DTomlin" class="csl-entry" role="listitem">
+Tomlin, Dana C. 1990. <em>GIS and Cartographic Modeling</em>. Prentice Hall.
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./09_coordinate_systems.html" class="pagination-link" aria-label="Coordinate Systems">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Coordinate Systems</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./11_intro_spatial.html" class="pagination-link" aria-label="Analyzing Spatial Patterns">
+        <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Analyzing Spatial Patterns</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

@@ -1,0 +1,71 @@
+project:
+  type: book
+  output-dir: docs
+
+execute:
+  freeze: auto
+  cache: true
+  warning: false
+  message: false
+
+book:
+  title: "Introduction to GIS and Spatial Analysis"
+  author: "Manuel Gimond"
+  date: "7/8/2026"
+  chapters:
+    - index.qmd
+    - 01_intro.qmd
+    
+    - part: Working with Spatial Data
+      chapters:
+      - 02_feature_representation.qmd
+      - 03_data_management.qmd
+      - 04_symbolizing_features.qmd
+      - 05_statistical_maps.qmd
+      - 06_pitfalls_to_avoid.qmd
+      - 07_map_making_tips.qmd
+      - 08_spatial_operations_vector_overlays.qmd
+      - 09_coordinate_systems.qmd
+      - 10_map_algebra.qmd
+      
+    - part: Spatial Analysis
+      chapters:
+      - 11_intro_spatial.qmd
+      - 12_poly_functions.qmd
+      - 13_autocorrelation.qmd
+      - 14_ppa_1st.qmd
+      - 15_ppa_2nd.qmd
+      - 16_interpolation.qmd
+      - references.qmd
+
+number-sections: true  
+   
+bibliography: references.bib
+
+format:
+  html:
+    css: style.css
+    theme:
+      - cosmo
+
+  pdf:
+    keep-tex: true
+    fig-pos: H
+    tbl-pos: H
+    documentclass: book
+    include-in-header:
+      text: |
+        \usepackage[
+          margin=0.9in,
+          twoside=false]{geometry}
+        \usepackage{caption}
+        % Make the whole caption smaller, use sans-serif font, and italic text
+        \captionsetup{font={small,sf,it}}
+        % Make the prefix label (e.g., "Figure 1.1") bold and sans-serif
+        \captionsetup{labelfont={bf,sf}}
+        % Add extra vertical whitespace above and below the caption block
+        \addtolength{\skip\footins}{10pt}
+        \raggedbottom
+
+
+

@@ -1,0 +1,13 @@
+spatstat.data
+spatstat.univar
+spatstat.geom
+spatstat.random
+nlme
+spatstat.explore
+rpart
+spatstat.model
+spatstat.linnet
+spatstat
+ggplot2
+sf
+terra
