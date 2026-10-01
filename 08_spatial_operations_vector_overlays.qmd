@@ -191,7 +191,7 @@ knitr::include_graphics("img/Intersect.png")
 ```{r}
 #| label: fig-clip
 #| fig.align: "center"
-#| fig-cap: "A Clip operation restricts the input layer to the area enclosed by the clip layer. The output retains only the geometry and attributes of the input layer; the clip layer serves solely as a spatial boundary and does not contribute attributes to the output."
+#| fig-cap: "A Clipping operation where the clipping feature is the orange circle and the clipped feature (input layer) is the blue rectangle. The output retains only the geometry and attributes of the clipped feature; the clipping feature serves solely as a spatial (outer) boundary and does not contribute attributes nor internal geometry to the output."
 #| echo: false
 knitr::include_graphics("img/Clip.png")
 ``` 

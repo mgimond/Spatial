@@ -205,7 +205,7 @@
 
 \title{Introduction to GIS and Spatial Analysis}
 \author{Manuel Gimond}
-\date{2026-07-08}
+\date{2026-10-01}
 \begin{document}
 \frontmatter
 \maketitle
@@ -252,7 +252,7 @@ ArcGIS Pro was selected as the primary GIS platform because of its
 widespread use in government, industry, and consulting organizations
 throughout North America. However, the concepts presented in this book
 are largely software-independent. Open-source alternatives such as
-\href{http://qgis.org}{QGIS}can be used for many of the workflows
+\href{http://qgis.org}{QGIS} can be used for many of the workflows
 discussed in the text, and several chapters can be completed without
 access to ArcGIS Pro. A
 \href{https://sites.google.com/colby.edu/mgimond-arcgis-pro/}{separate
@@ -3134,15 +3134,14 @@ v2. However, this conclusion does not follow from the data because the
 relationship was observed \textbf{only after values were aggregated into
 spatial units}. The observed correlation exists \emph{only} at the level
 of the aggregated units--it may not hold, and often does not hold, at
-the individual level.\\
+the individual level.
+
 To avoid the ecological fallacy, analysts should carefully distinguish
 between the scale of the data and the scale of the conclusions being
 drawn. It is appropriate to state, \emph{``At this level of aggregation,
-we observe a strong relationship between v1 and v2,''}. but it is
-incorrect to claim that this relationship necessarily exists at finer
-scales. It is \emph{not} appropriate to conclude that the same
-relationship necessarily exists among the individuals within those
-aggregated units.
+we observe a strong relationship between v1 and v2''}, but it is
+\emph{incorrect} to claim that this relationship necessarily exists at
+finer scales.
 
 The ecological fallacy highlights the risks of interpreting aggregated
 data. Another challenge arises when the aggregated values themselves are
@@ -3989,10 +3988,12 @@ than as a separate tool.
 
 }
 
-\caption{\label{fig-clip}A Clip operation restricts the input layer to
-the area enclosed by the clip layer. The output retains only the
-geometry and attributes of the input layer; the clip layer serves solely
-as a spatial boundary and does not contribute attributes to the output.}
+\caption{\label{fig-clip}A Clipping operation where the clipping feature
+is the orange circle and the clipped feature (input layer) is the blue
+rectangle. The output retains only the geometry and attributes of the
+clipped feature; the clipping feature serves solely as a spatial (outer)
+boundary and does not contribute attributes nor internal geometry to the
+output.}
 
 \end{figure}%
 
